@@ -1,102 +1,133 @@
-import AppleIcon from "@/components/svg/AppleIcon";
-import FacebookIcon from "@/components/svg/FacebookIcon";
-import GoogleIcon from "@/components/svg/GoogleIcon";
+import React from "react";
+import EyeOffIcon from "@/components/svg/EyeOffIcon";
+import UserIcon from "@/components/svg/UserIcon";
+import { useAppDispatch } from "@/store/hooks";
+import { LoginRequest } from "@/store/services/erp-main/types";
+import { useNavigate } from "react-router-dom";
+import { useLoginMutation } from "@/store/services/erp-main/api/auth";
+import { setCredentials } from "@/store/services/erp-main/authSlice";
 
 export default function LoginScreen() {
+	const [formState, setFormState] = React.useState<LoginRequest>({
+		email: "",
+		password: "",
+	});
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+
+	const [login, { isLoading }] = useLoginMutation();
+
+	const handleChange = ({
+		target: { name, value },
+	}: React.ChangeEvent<HTMLInputElement>) =>
+		setFormState((prev) => ({ ...prev, [name]: value }));
+
 	return (
 		<div className="font-[sans-serif] text-[#333]">
 			<div className="min-h-screen flex fle-col items-center justify-center py-6 px-4">
-				<div className="grid md:grid-cols-2 items-center gap-10 max-w-6xl w-full">
-					<div className="max-md:text-center">
-						<h2 className="lg:text-5xl text-4xl font-extrabold lg:leading-[55px]">
-							Streamlined Access with Akaar ERP
-						</h2>
-						<p className="text-sm mt-6">
-							Experience seamless login functionality tailored exclusively for
-							Akaar ERP users. Navigate effortlessly through our intuitively
-							designed login form for hassle-free access to your account.
-						</p>
-						<p className="text-sm mt-10">
-							Don't have an account{" "}
-							<a
-								href="javascript:void(0);"
-								className="text-blue-600 font-semibold hover:underline ml-1"
-							>
-								Register here
-							</a>
-						</p>
-					</div>
-					<form className="space-y-6 max-w-md md:ml-auto max-md:mx-auto w-full">
-						<h3 className="text-3xl font-extrabold mb-8 max-md:text-center">
-							Sign in
-						</h3>
-						<div>
-							<input
-								name="email"
-								type="email"
-								autoComplete="email"
-								required
-								className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-600"
-								placeholder="Email address"
-							/>
-						</div>
-						<div>
-							<input
-								name="password"
-								type="password"
-								autoComplete="current-password"
-								required
-								className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-600"
-								placeholder="Password"
-							/>
-						</div>
-						<div className="flex items-center justify-between">
-							<div className="flex items-center">
-								<input
-									id="remember-me"
-									name="remember-me"
-									type="checkbox"
-									className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-								/>
-								<label
-									// for="remember-me"
-									className="ml-3 block text-sm"
-								>
-									Remember me
-								</label>
+				<div className="grid md:grid-cols-2 items-center gap-4 max-w-7xl w-full">
+					<div className="border border-gray-300 rounded-md p-6 max-w-md shadow-[0_2px_22px_-4px_rgba(93,96,127,0.2)] max-md:mx-auto">
+						<form className="space-y-6">
+							<div className="mb-10">
+								<h3 className="text-3xl font-extrabold">Sign in</h3>
+								<p className="text-sm mt-4">
+									Sign in to your account and explore a world of possibilities.
+									Your journey begins here.
+								</p>
 							</div>
-							<div className="text-sm">
+							<div>
+								<label className="text-sm mb-2 block">User name</label>
+								<div className="relative flex items-center">
+									<input
+										name="email"
+										onChange={handleChange}
+										type="email"
+										required
+										className="w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]"
+										placeholder="Enter user email"
+									/>
+									<UserIcon />
+								</div>
+							</div>
+							<div>
+								<label className="text-sm mb-2 block">Password</label>
+								<div className="relative flex items-center">
+									<input
+										name="password"
+										type="password"
+										onChange={handleChange}
+										required
+										className="w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]"
+										placeholder="Enter password"
+									/>
+									<EyeOffIcon />
+								</div>
+							</div>
+							<div className="flex items-center justify-between gap-2">
+								<div className="flex items-center">
+									<input
+										id="remember-me"
+										name="remember-me"
+										type="checkbox"
+										className="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+									/>
+									<label
+										// for="remember-me"
+										className="ml-3 block text-sm"
+									>
+										Remember me
+									</label>
+								</div>
+								<div className="text-sm">
+									<a
+										href="jajvascript:void(0);"
+										className="text-blue-600 hover:underline"
+									>
+										Forgot your password?
+									</a>
+								</div>
+							</div>
+							<div className="!mt-10">
+								<button
+									type="button"
+									className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-[#333] hover:bg-black focus:outline-none"
+									onClick={async () => {
+										try {
+											const loginData = await login(formState).unwrap();
+											// console.log(loginData);
+											dispatch(
+												setCredentials({
+													user: loginData.data,
+													token: loginData.access_token,
+												})
+											);
+											navigate("/");
+										} catch (err) {
+											alert("Login Failed");
+										}
+									}}
+								>
+									Log in
+								</button>
+							</div>
+							<p className="text-sm !mt-10 text-center">
+								Don't have an account{" "}
 								<a
-									href="jajvascript:void(0);"
-									className="text-blue-600 hover:text-blue-500"
+									href="javascript:void(0);"
+									className="text-blue-600 hover:underline ml-1 whitespace-nowrap"
 								>
-									Forgot your password?
+									Register here
 								</a>
-							</div>
-						</div>
-						<div className="!mt-10">
-							<button
-								type="button"
-								className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
-							>
-								Log in
-							</button>
-						</div>
-						<p className="my-10 text-sm text-gray-400 text-center">
-							or continue with
-						</p>
-						<div className="space-x-6 flex justify-center">
-							<button type="button" className="border-none outline-none">
-								<GoogleIcon />
-							</button>
-							<button type="button" className="border-none outline-none">
-								<AppleIcon />
-							</button>
-							<button type="button" className="border-none outline-none">
-								<FacebookIcon />
-							</button>
-						</div>
-					</form>
+							</p>
+						</form>
+					</div>
+					<div className="lg:h-[400px] md:h-[300px] max-md:mt-10">
+						<img
+							src="https://readymadeui.com/login-image.webp"
+							className="w-full h-full object-cover"
+							alt="Dining Experience"
+						/>
+					</div>
 				</div>
 			</div>
 		</div>

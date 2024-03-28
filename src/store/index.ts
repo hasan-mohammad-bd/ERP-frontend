@@ -1,17 +1,24 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./slices/counterSlice";
+import counterReducer from "./services/json-placeholder/slices/counterSlice";
 import { jsonPlaceholderApi } from "./services/json-placeholder";
+import { authApi } from "./services/erp-main/api/auth";
+import authReducer from "./services/erp-main/authSlice";
 // import { setupListeners } from "@reduxjs/toolkit/query";
 
 export const store = configureStore({
 	reducer: {
 		counter: counterReducer,
+		auth: authReducer,
 		[jsonPlaceholderApi.reducerPath]: jsonPlaceholderApi.reducer,
+		[authApi.reducerPath]: authApi.reducer,
 	},
 	// Adding the api middleware enables caching, invalidation, polling,
 	// and other useful features of `rtk-query`.
 	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware().concat(jsonPlaceholderApi.middleware),
+		getDefaultMiddleware().concat(
+			jsonPlaceholderApi.middleware,
+			authApi.middleware // Add authApi middleware
+		),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

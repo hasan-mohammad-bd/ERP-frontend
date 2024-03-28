@@ -5,7 +5,10 @@ import {
 	AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { decrement, increment } from "./store/slices/counterSlice";
+import {
+	decrement,
+	increment,
+} from "./store/services/json-placeholder/slices/counterSlice";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { useGetPostsQuery } from "./store/services/json-placeholder/api/posts";
 import { useGetUsersQuery } from "./store/services/json-placeholder/api/users";
