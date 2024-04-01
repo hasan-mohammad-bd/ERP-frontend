@@ -1,9 +1,10 @@
 export interface User {
 	id: number;
-	name: string;
-	phone: string;
+	name: string | null;
+	image: string | null;
+	phone: string | null;
 	organization_id: number;
-	location_id: number;
+	location_id: number | null;
 	role_id: number;
 	email: string;
 	email_verified_at: string;

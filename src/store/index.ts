@@ -3,12 +3,14 @@ import counterReducer from "./services/json-placeholder/slices/counterSlice";
 import { jsonPlaceholderApi } from "./services/json-placeholder";
 import { authApi } from "./services/erp-main/api/auth";
 import authReducer from "./services/erp-main/authSlice";
+import commonReducer from "./services/erp-main/commonSlice";
 // import { setupListeners } from "@reduxjs/toolkit/query";
 
 export const store = configureStore({
 	reducer: {
 		counter: counterReducer,
 		auth: authReducer,
+		common: commonReducer,
 		[jsonPlaceholderApi.reducerPath]: jsonPlaceholderApi.reducer,
 		[authApi.reducerPath]: authApi.reducer,
 	},
