@@ -13,7 +13,7 @@ import {
 	increment,
 } from "@/store/services/json-placeholder/slices/counterSlice";
 
-function Lobby() {
+function Backup() {
 	const count = useAppSelector((state) => state.counter.value);
 	const dispatch = useAppDispatch();
 	const { data: posts } = useGetPostsQuery();
@@ -80,4 +80,4 @@ function Lobby() {
 	);
 }
 
-export default Lobby;
+export default Backup;

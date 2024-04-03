@@ -4,7 +4,7 @@ import { LoginRequest, LoginResponse } from "../types";
 
 export const authApi = createApi({
 	baseQuery: fetchBaseQuery({
-		baseUrl: "http://localhost:8000/api/",
+		baseUrl: import.meta.env.VITE_MAIN_API,
 		prepareHeaders: (headers, { getState }) => {
 			// By default, if we have a token in the store, let's use that for authenticated requests
 			const token = (getState() as RootState).auth.token;
