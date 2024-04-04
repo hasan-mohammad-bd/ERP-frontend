@@ -1,5 +1,6 @@
 import { Layout } from "@/layout";
 import ErrorPage from "@/pages/ErrorPage";
+import Employee from "@/pages/employee";
 import Lobby from "@/pages/lobby";
 import LoginScreen from "@/pages/login";
 import { PrivateOutlet } from "@/utils/PrivateOutlet";
@@ -15,12 +16,21 @@ const router = createBrowserRouter([
 		children: [
 			// Index route within the outlet
 			{
-				index: true,
-				element: (
-					<Layout>
-						<Lobby />
-					</Layout>
-				),
+				path: "dashboard/",
+				element: <Layout />,
+				errorElement: <ErrorPage />,
+				children: [{ index: true, element: <Lobby /> }],
+			},
+			{
+				path: "hrm/",
+				element: <Layout />,
+				children: [
+					{
+						path: "employees-list",
+						element: <Employee />,
+						errorElement: <ErrorPage />,
+					},
+				],
 			},
 		],
 	},

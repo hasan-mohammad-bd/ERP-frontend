@@ -5,33 +5,21 @@ export const NavItems: NavItem[] = [
 	{
 		title: "Dashboard",
 		icon: LayoutDashboard,
-		href: "/",
+		href: "/dashboard",
 		color: "text-sky-500",
 	},
 	{
-		title: "Example",
+		title: "Employee",
 		icon: BookOpenCheck,
-		href: "/example",
+		href: "/hrm",
 		color: "text-orange-500",
 		isChidren: true,
 		children: [
 			{
-				title: "Example-01",
+				title: "Employee List",
 				icon: BookOpenCheck,
 				color: "text-red-500",
-				href: "/example/employees",
-			},
-			{
-				title: "Example-02",
-				icon: BookOpenCheck,
-				color: "text-red-500",
-				href: "/example/example-02",
-			},
-			{
-				title: "Example-03",
-				icon: BookOpenCheck,
-				color: "text-red-500",
-				href: "/example/example-03",
+				href: "/hrm/employees-list",
 			},
 		],
 	},
