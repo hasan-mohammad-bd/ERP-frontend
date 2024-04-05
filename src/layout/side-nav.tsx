@@ -38,7 +38,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 	return (
 		<nav className="space-y-2">
 			{items.map((item) =>
-				item.isChidren ? (
+				item.isChildren ? (
 					<Accordion
 						type="single"
 						collapsible
@@ -51,7 +51,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 							<AccordionTrigger
 								className={cn(
 									buttonVariants({ variant: "ghost" }),
-									"group relative flex h-12 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
+									"group relative flex h-10 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
 								)}
 							>
 								<div>
@@ -71,7 +71,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 									<ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
 								)}
 							</AccordionTrigger>
-							<AccordionContent className="mt-2 space-y-4 pb-1">
+							<AccordionContent className="ml-3 mt-2 space-y-2 pb-1">
 								{item.children?.map((child) => (
 									<Link
 										key={child.title}
@@ -81,7 +81,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 										}}
 										className={cn(
 											buttonVariants({ variant: "ghost" }),
-											"group relative flex h-12 justify-start gap-x-3",
+											"group relative flex h-10 justify-start gap-x-3",
 											path === child.href && "bg-muted font-bold hover:bg-muted"
 										)}
 									>
@@ -108,7 +108,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 						}}
 						className={cn(
 							buttonVariants({ variant: "ghost" }),
-							"group relative flex h-12 justify-start",
+							"group relative flex h-10 justify-start",
 							path === item.href && "bg-muted font-bold hover:bg-muted"
 						)}
 					>
