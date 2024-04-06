@@ -1,11 +1,10 @@
-import { getToken } from "@/utils/token";
+// import { RootState } from "@/store";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getToken } from "@/utils/token";
 
-// Define a service using a base URL and expected endpoints
-export const hrmApi = createApi({
-	reducerPath: "hrmApi",
+export const authApi = createApi({
 	baseQuery: fetchBaseQuery({
-		baseUrl: import.meta.env.VITE_HRM_API,
+		baseUrl: import.meta.env.VITE_MAIN_API,
 		prepareHeaders: (headers, { getState }) => {
 			// By default, if we have a token in the store, let's use that for authenticated requests
 			// const token = (getState() as RootState).auth.token;
@@ -16,6 +15,6 @@ export const hrmApi = createApi({
 			return headers;
 		},
 	}),
-	tagTypes: ["departments"],
+	tagTypes: ["user"],
 	endpoints: () => ({}),
 });

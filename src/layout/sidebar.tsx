@@ -4,7 +4,7 @@ import { cn } from "@/utils";
 import { ArrowLeft } from "lucide-react";
 import { NavItems } from "@/constants/side-nav";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { toggleSideBar } from "@/store/services/erp-main/commonSlice";
+import { toggleSideBar } from "@/store/services/erp-main/slices/commonSlice";
 
 interface SidebarProps {
 	className?: string;

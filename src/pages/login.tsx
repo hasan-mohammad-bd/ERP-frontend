@@ -1,12 +1,13 @@
 import React from "react";
 import EyeOffIcon from "@/components/svg/EyeOffIcon";
 import UserIcon from "@/components/svg/UserIcon";
-import { useAppDispatch } from "@/store/hooks";
-import { LoginRequest } from "@/store/services/erp-main/types";
+import { useAppDispatch, useAuth } from "@/store/hooks";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "@/store/services/erp-main/api/auth";
-import { setCredentials } from "@/store/services/erp-main/authSlice";
+import { setToken } from "@/utils/token";
+import { setCredentials } from "@/store/services/erp-main/slices/authSlice";
 import LoadingOverlay from "@/components/common/loading-overly";
+import { LoginRequest } from "@/store/services/erp-main/api/user/types";
+import { useLoginMutation } from "@/store/services/erp-main/api/user";
 
 export default function LoginScreen() {
 	const [formState, setFormState] = React.useState<LoginRequest>({
@@ -22,6 +23,30 @@ export default function LoginScreen() {
 		target: { name, value },
 	}: React.ChangeEvent<HTMLInputElement>) =>
 		setFormState((prev) => ({ ...prev, [name]: value }));
+
+	//handling user navigation
+	const auth = useAuth();
+	React.useEffect(() => {
+		if (auth.user) {
+			navigate("/dashboard");
+		}
+	}, [auth, navigate]);
+
+	const handleLogin = async () => {
+		try {
+			const loginData = await login(formState).unwrap();
+			// console.log(loginData);
+			dispatch(
+				setCredentials({
+					user: loginData.data,
+					isLoading: false,
+				})
+			);
+			setToken(loginData.access_token);
+		} catch (err) {
+			alert("Login Failed");
+		}
+	};
 
 	return (
 		<>
@@ -94,21 +119,7 @@ export default function LoginScreen() {
 									<button
 										type="button"
 										className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-[#333] hover:bg-black focus:outline-none"
-										onClick={async () => {
-											try {
-												const loginData = await login(formState).unwrap();
-												// console.log(loginData);
-												dispatch(
-													setCredentials({
-														user: loginData.data,
-														token: loginData.access_token,
-													})
-												);
-												navigate("/dashboard");
-											} catch (err) {
-												alert("Login Failed");
-											}
-										}}
+										onClick={handleLogin}
 									>
 										Log in
 									</button>

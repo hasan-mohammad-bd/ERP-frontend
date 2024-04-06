@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import counterReducer from "./services/json-placeholder/slices/counterSlice";
 import { jsonPlaceholderApi } from "./services/json-placeholder";
-import { authApi } from "./services/erp-main/api/auth";
-import authReducer from "./services/erp-main/authSlice";
-import commonReducer from "./services/erp-main/commonSlice";
+import { authApi } from "./services/erp-main";
+import authReducer from "./services/erp-main/slices/authSlice";
+import commonReducer from "./services/erp-main/slices/commonSlice";
 import { hrmApi } from "./services/hrm";
 // import { setupListeners } from "@reduxjs/toolkit/query";
 

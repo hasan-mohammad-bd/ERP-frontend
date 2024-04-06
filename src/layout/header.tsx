@@ -4,14 +4,13 @@ import { MobileSidebar } from "./mobile-sidebar";
 import { Link } from "react-router-dom";
 import { cn } from "@/utils";
 import { UserNav } from "./user-nav";
-import { useAppSelector } from "@/store/hooks";
 import { MainNav } from "./main-nav";
 import { Search } from "./search";
 import { ModuleSelector } from "./module-selector";
+import { useAuth } from "@/store/hooks";
 
 export default function Header() {
-	const { user } = useAppSelector((state) => state.auth);
-
+	const { user } = useAuth();
 	return (
 		<div className="supports-backdrop-blur:bg-background/60 fixed left-0 right-0 top-0 z-20 border-b bg-background/95 backdrop-blur">
 			<div className="flex h-16 items-center px-4">

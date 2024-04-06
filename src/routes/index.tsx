@@ -5,7 +5,7 @@ import Department from "@/pages/hrm/department";
 import Lobby from "@/pages/lobby";
 import LoginScreen from "@/pages/login";
 import { PrivateOutlet } from "@/utils/PrivateOutlet";
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 
 const router = createBrowserRouter([
 	// Route for /login
@@ -16,6 +16,7 @@ const router = createBrowserRouter([
 		element: <PrivateOutlet />,
 		children: [
 			// Index route within the outlet
+			{ index: true, element: <Navigate to="dashboard/" /> },
 			{
 				path: "dashboard/",
 				element: <Layout />,

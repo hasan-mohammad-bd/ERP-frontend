@@ -7,8 +7,16 @@ const departmentApi = hrmApi.injectEndpoints({
 			query: () => "departments",
 			providesTags: ["departments"],
 		}),
+		removeDepartment: build.mutation<any, number>({
+			query: (departmentId) => ({
+				url: `departments/${departmentId}`,
+				method: "DELETE",
+			}),
+			invalidatesTags: ["departments"],
+		}),
 	}),
 	overrideExisting: false,
 });
 
-export const { useGetDepartmentsQuery } = departmentApi;
+export const { useGetDepartmentsQuery, useRemoveDepartmentMutation } =
+	departmentApi;

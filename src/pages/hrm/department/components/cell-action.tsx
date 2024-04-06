@@ -11,6 +11,8 @@ import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { type DepartmentColumn } from "@/lib/validators";
 import { useNavigate } from "react-router-dom";
+import { useRemoveDepartmentMutation } from "@/store/services/hrm/api/department";
+import { toast } from "sonner";
 
 interface CellActionProps {
 	data: DepartmentColumn;
@@ -19,17 +21,17 @@ interface CellActionProps {
 export function CellAction({ data }: CellActionProps) {
 	const navigate = useNavigate();
 	const [alertModalOpen, setAlertModalOpen] = useState(false);
+	const [deleteDepartment] = useRemoveDepartmentMutation();
 
-	// const { mutate: deleteEmployee, isLoading: deleteEmployeeIsLoading } =
-	//   api.employee.delete.useMutation({
-	//     onError: (err) => {
-	//       toast.error(err.message);
-	//     },
-	//     onSuccess: async (data) => {
-	//       toast.success("Delete Employee success");
-	//       await refetch();
-	//     },
-	//   });
+	const handleDepartmentDelete = async (id: number) => {
+		try {
+			await deleteDepartment(id);
+			toast.success("Department deleted successfully");
+			setAlertModalOpen(false);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		<div className="flex justify-center space-x-2">
@@ -79,7 +81,7 @@ export function CellAction({ data }: CellActionProps) {
 				name={data.name}
 				isOpen={alertModalOpen}
 				onClose={() => setAlertModalOpen(false)}
-				onConfirm={() => alert("Confirm")}
+				onConfirm={() => handleDepartmentDelete(data.id)}
 				loading={false}
 			/>
 		</div>

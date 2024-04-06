@@ -10,13 +10,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { UserAvatar } from "./user-avatar";
-import { User } from "@/store/services/erp-main/types";
+import { User } from "@/store/services/erp-main/api/user/types";
+import { useLogoutUserMutation } from "@/store/services/erp-main/api/user";
 
 type Props = {
 	user: Pick<User, "name" | "image" | "email">;
 };
 
 export function UserNav({ user }: Props) {
+	const [logout] = useLogoutUserMutation();
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger>
@@ -54,7 +57,11 @@ export function UserNav({ user }: Props) {
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem asChild>
-					<Button variant="outline" className="w-full">
+					<Button
+						variant="outline"
+						className="w-full cursor-pointer"
+						onClick={() => logout()}
+					>
 						<LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
 						Log Out
 					</Button>
