@@ -10,7 +10,6 @@ import {
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { type DepartmentColumn } from "@/lib/validators";
-import { useNavigate } from "react-router-dom";
 import { useRemoveDepartmentMutation } from "@/store/services/hrm/api/department";
 import { toast } from "sonner";
 
@@ -19,7 +18,6 @@ interface CellActionProps {
 }
 
 export function CellAction({ data }: CellActionProps) {
-	const navigate = useNavigate();
 	const [alertModalOpen, setAlertModalOpen] = useState(false);
 	const [deleteDepartment] = useRemoveDepartmentMutation();
 
@@ -42,9 +40,7 @@ export function CellAction({ data }: CellActionProps) {
 							variant="ghost"
 							size="icon"
 							className="hover:bg-secondary"
-							onClick={() => {
-								navigate(`/example/employees/${data.id}`);
-							}}
+							// onClick={() => toggleModal()}
 						>
 							<Pencil className="h-4 w-4 text-foreground" />
 						</Button>

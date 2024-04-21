@@ -1,13 +1,15 @@
 import { z } from "zod";
 
-// Example
-export const employeeFormSchema = z.object({
-	firstName: z.string().min(1),
-	lastName: z.string().min(1),
-	gender: z.string().min(1),
+// Department Form validation
+export const DepartmentFormSchema = z.object({
+	name: z.string().min(2, {
+		message: "Department name must be at least 2 characters.",
+	}),
+	parent_id: z.coerce.number().nullable().optional(),
+	sorting_index: z.coerce.number(),
 });
 
-export type EmployeeFromValues = z.infer<typeof employeeFormSchema>;
+export type DepartmentFromValues = z.infer<typeof DepartmentFormSchema>;
 
 export const departmentColumn = z.object({
 	id: z.number(),

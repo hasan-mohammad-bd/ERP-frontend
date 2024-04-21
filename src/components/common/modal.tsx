@@ -1,5 +1,3 @@
-"use client";
-
 import {
 	Dialog,
 	DialogTitle,
@@ -7,7 +5,6 @@ import {
 	DialogContent,
 	DialogDescription,
 } from "@/components/ui/dialog";
-import { useModal } from "@/providers/modal-provider";
 import {
 	Sheet,
 	SheetContent,
@@ -18,22 +15,24 @@ import {
 import { cn } from "@/utils";
 
 interface ModalProps {
-	type: "dialog" | "sheet";
+	type?: "dialog" | "sheet";
 	className?: string;
 	title: string;
-	description: string;
+	description?: string;
+	isOpen: boolean;
+	toggleModal: () => void;
 	children?: React.ReactNode;
 }
 
 export const Modal: React.FC<ModalProps> = ({
-	type,
+	type = "dialog",
 	className,
 	title,
 	description,
+	isOpen,
+	toggleModal,
 	children,
 }) => {
-	const { isOpen, toggleModal } = useModal();
-
 	return (
 		<>
 			{type === "dialog" ? (

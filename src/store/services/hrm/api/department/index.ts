@@ -1,4 +1,4 @@
-import { type DepartmentColumn } from "@/lib/validators";
+import { DepartmentFromValues, type DepartmentColumn } from "@/lib/validators";
 import { hrmApi } from "../..";
 
 const departmentApi = hrmApi.injectEndpoints({
@@ -6,6 +6,17 @@ const departmentApi = hrmApi.injectEndpoints({
 		getDepartments: build.query<{ data: DepartmentColumn[] }, void>({
 			query: () => "departments",
 			providesTags: ["departments"],
+		}),
+		createDepartment: build.mutation<
+			{ data: DepartmentColumn },
+			DepartmentFromValues
+		>({
+			query: (newDepartment) => ({
+				url: `departments`,
+				method: "POST",
+				body: newDepartment,
+			}),
+			invalidatesTags: ["departments"],
 		}),
 		removeDepartment: build.mutation<any, number>({
 			query: (departmentId) => ({
@@ -18,5 +29,8 @@ const departmentApi = hrmApi.injectEndpoints({
 	overrideExisting: false,
 });
 
-export const { useGetDepartmentsQuery, useRemoveDepartmentMutation } =
-	departmentApi;
+export const {
+	useGetDepartmentsQuery,
+	useCreateDepartmentMutation,
+	useRemoveDepartmentMutation,
+} = departmentApi;
