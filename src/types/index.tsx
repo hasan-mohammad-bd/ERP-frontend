@@ -8,3 +8,9 @@ export interface NavItem {
 	isChildren?: boolean;
 	children?: NavItem[];
 }
+
+export interface DeleteResponse {
+	success: boolean;
+	message: string;
+	data?: string;
+}

@@ -6,7 +6,7 @@ export const hrmApi = createApi({
 	reducerPath: "hrmApi",
 	baseQuery: fetchBaseQuery({
 		baseUrl: import.meta.env.VITE_HRM_API,
-		prepareHeaders: (headers, { getState }) => {
+		prepareHeaders: (headers) => {
 			// By default, if we have a token in the store, let's use that for authenticated requests
 			// const token = (getState() as RootState).auth.token;
 			const token = getToken();
@@ -16,6 +16,6 @@ export const hrmApi = createApi({
 			return headers;
 		},
 	}),
-	tagTypes: ["departments"],
+	tagTypes: ["departments", "designations"],
 	endpoints: () => ({}),
 });
