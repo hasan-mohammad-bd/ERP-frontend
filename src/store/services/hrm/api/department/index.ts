@@ -1,5 +1,6 @@
 import { DepartmentFromValues, type DepartmentColumn } from "@/lib/validators";
 import { hrmApi } from "../..";
+import { DeleteResponse } from "@/types";
 
 const departmentApi = hrmApi.injectEndpoints({
 	endpoints: (build) => ({
@@ -18,7 +19,7 @@ const departmentApi = hrmApi.injectEndpoints({
 			}),
 			invalidatesTags: ["departments"],
 		}),
-		removeDepartment: build.mutation<any, number>({
+		removeDepartment: build.mutation<DeleteResponse, number>({
 			query: (departmentId) => ({
 				url: `departments/${departmentId}`,
 				method: "DELETE",

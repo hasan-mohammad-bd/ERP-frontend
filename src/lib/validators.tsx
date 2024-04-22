@@ -24,3 +24,23 @@ export const updateEmployeeFormSchema = z.object({
 	lastName: z.string(),
 	gender: z.string(),
 });
+
+// Designation
+
+export const DesignationFormSchema = z.object({
+	name: z.string().min(2, {
+		message: "Department name must be at least 2 characters.",
+	}),
+	parent_id: z.coerce.number().nullable().optional(),
+	sorting_index: z.coerce.number(),
+});
+
+export type DesignationFromValues = z.infer<typeof DesignationFormSchema>;
+
+export const designationColumn = z.object({
+	id: z.number(),
+	name: z.string(),
+	sorting_index: z.coerce.number(),
+});
+
+export type DesignationColumn = z.infer<typeof designationColumn>;

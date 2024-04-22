@@ -4,6 +4,8 @@ import {
 	Building,
 	Users,
 	HandCoins,
+	FileBadge2
+	
 } from "lucide-react";
 
 import { type NavItem } from "@/types";
@@ -40,6 +42,12 @@ export const NavItems: NavItem[] = [
 		title: "Departments",
 		icon: Building,
 		href: "/hrm/departments",
+		color: "text-sky-500",
+	},
+	{
+		title: "Designations",
+		icon: FileBadge2,
+		href: "/hrm/designations",
 		color: "text-sky-500",
 	},
 ];
