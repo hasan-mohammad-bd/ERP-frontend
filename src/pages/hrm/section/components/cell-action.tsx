@@ -11,10 +11,9 @@ import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { type DesignationColumn } from "@/lib/validators";
 import { toast } from "sonner";
-import { AddDepartmentForm } from "./add-department-form";
+import { AddSectionForm } from "./add-section-form";
 import { Modal } from "@/components/common/modal";
-
-import { useRemoveDepartmentMutation } from "@/store/services/hrm/api/department";
+import { useRemoveSectionMutation } from "@/store/services/hrm/api/section";
 
 interface CellActionProps {
   data: DesignationColumn;
@@ -23,12 +22,12 @@ interface CellActionProps {
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [deleteDepartment] = useRemoveDepartmentMutation();
+  const [deleteSection] = useRemoveSectionMutation();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
-      await deleteDepartment(id);
-      toast.success("Designation deleted successfully");
+      await deleteSection(id);
+      toast.success("Section deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
@@ -44,7 +43,7 @@ export function CellAction({ data }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-							onClick={() => setUpdateModalOpen(true)}
+              onClick={() => setUpdateModalOpen(true)}
 
               // onClick={() => toggleModal()}
             >
@@ -52,7 +51,7 @@ export function CellAction({ data }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Update Departments</p>
+            <p>Update Section</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -72,7 +71,7 @@ export function CellAction({ data }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Delete Departments</p>
+            <p>Delete Designation</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -87,11 +86,14 @@ export function CellAction({ data }: CellActionProps) {
         loading={false}
       />
       <Modal
-        title="Update Department"
+        title="Update Section"
         isOpen={updateModalOpen}
         toggleModal={() => setUpdateModalOpen(false)}
       >
-        <AddDepartmentForm data={data} modalClose={() => setUpdateModalOpen(false)} />
+        <AddSectionForm
+          data={data}
+          modalClose={() => setUpdateModalOpen(false)}
+        />
       </Modal>
     </div>
   );

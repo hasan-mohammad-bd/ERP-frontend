@@ -11,18 +11,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { SectionFormSchema, SectionColumn, DepartmentFromValues } from "@/lib/validators";
+import { SectionFormSchema, SectionColumn, SectionFromValues } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
+import { useCreateSectionMutation, useUpdateSectionMutation } from "@/store/services/hrm/api/section";
 
-import { useCreateDepartmentMutation, useUpdateDepartmentMutation } from "@/store/services/hrm/api/department";
+interface AddSectionFormProps { modalClose: () => void; data?: SectionColumn; }
 
-interface AddDepartmentFormProps { modalClose: () => void; data?: SectionColumn; }
+export function AddSectionForm({ modalClose, data: previousData }: AddSectionFormProps ) {
+	const [createSection, { isLoading }] = useCreateSectionMutation();
+	const [updateSection, { isLoading: updateLoading }] = useUpdateSectionMutation();
 
-export function AddDepartmentForm({ modalClose, data: previousData }: AddDepartmentFormProps ) {
-	const [createDepartment, { isLoading }] = useCreateDepartmentMutation();
-	const [updateDepartment, { isLoading: updateLoading }] = useUpdateDepartmentMutation();
-
-	const form = useForm<DepartmentFromValues>({
+	const form = useForm<SectionFromValues>({
 		resolver: zodResolver(SectionFormSchema),
 		defaultValues: {
 			name: previousData?.name || "",
@@ -30,16 +29,16 @@ export function AddDepartmentForm({ modalClose, data: previousData }: AddDepartm
 		},
 	});
 
-	async function onSubmit(data: DepartmentFromValues) {
+	async function onSubmit(data: SectionFromValues) {
 		try {
 			if(previousData){
-				await updateDepartment({ departmentId: previousData.id, updatedDepartment: data });
-				toast.success("Department updated successfully");
+				await updateSection({ sectionId: previousData.id, updatedSection: data });
+				toast.success("Section updated successfully");
 				modalClose();
 			}
 			else{
-				await  createDepartment(data);
-				toast.success("Department created successfully");
+				await  createSection(data);
+				toast.success("Section created successfully");
 				modalClose();
 			}
 

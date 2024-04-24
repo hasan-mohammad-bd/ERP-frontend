@@ -3,6 +3,7 @@ import ErrorPage from "@/pages/ErrorPage";
 import Employee from "@/pages/employee";
 import Department from "@/pages/hrm/department";
 import Designation from "@/pages/hrm/designation";
+import Section from "@/pages/hrm/section";
 import Lobby from "@/pages/lobby";
 import LoginScreen from "@/pages/login";
 import { PrivateOutlet } from "@/utils/PrivateOutlet";
@@ -41,6 +42,11 @@ const router = createBrowserRouter([
 					{
 						path: "designations",
 						element: <Designation />,
+						errorElement: <ErrorPage />,
+					},
+					{
+						path: "sections",
+						element: <Section />,
 						errorElement: <ErrorPage />,
 					},
 				],

@@ -4,7 +4,8 @@ import {
 	Building,
 	Users,
 	HandCoins,
-	FileBadge2
+	FileBadge2,
+	AlignEndVertical  
 	
 } from "lucide-react";
 
@@ -48,6 +49,12 @@ export const NavItems: NavItem[] = [
 		title: "Designations",
 		icon: FileBadge2,
 		href: "/hrm/designations",
+		color: "text-sky-500",
+	},
+	{
+		title: "Sections",
+		icon: AlignEndVertical  ,
+		href: "/hrm/sections",
 		color: "text-sky-500",
 	},
 ];

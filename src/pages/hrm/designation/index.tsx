@@ -14,7 +14,7 @@ const Department = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const { data, isLoading } = useGetDesignationQuery();
 
-	const departments = data?.data || [];
+	const designations = data?.data || [];
 
 	// console.log(departments);
 	if (isLoading) return <Loading />;
@@ -33,9 +33,9 @@ const Department = () => {
 						</Button>
 					</div>
 					<Separator />
-					{departments && (
+					{designations && (
 						<div>
-							<DataTable columns={designationColumns} data={departments} />
+							<DataTable columns={designationColumns} data={designations} />
 						</div>
 					)}
 				</div>

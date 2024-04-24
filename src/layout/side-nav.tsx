@@ -21,7 +21,7 @@ interface SideNavProps {
 }
 
 export function SideNav({ items, setOpen, className }: SideNavProps) {
-	let path = useLocation().pathname;
+	const path = useLocation().pathname;
 	const { isOpen } = useAppSelector((state) => state.common);
 	const [openItem, setOpenItem] = useState("");
 	const [lastOpenItem, setLastOpenItem] = useState("");
