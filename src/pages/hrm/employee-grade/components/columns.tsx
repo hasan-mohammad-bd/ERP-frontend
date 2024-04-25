@@ -1,9 +1,9 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
-import { type DesignationColumn } from "@/lib/validators";
+import { type EmployeeGradeColumn,  } from "@/lib/validators";
 import { CellAction } from "./cell-action";
 
-export const designationColumns: ColumnDef<DesignationColumn>[] = [
+export const employeeGradeColumns: ColumnDef<EmployeeGradeColumn>[] = [
 	{
 		id: "select",
 		header: ({ table }) => (
@@ -30,7 +30,15 @@ export const designationColumns: ColumnDef<DesignationColumn>[] = [
 	},
 	{
 		accessorKey: "name",
-		header: "Designation Name",
+		header: "Employee Grade Name",
+	},
+	{
+		accessorKey: "min_salary",
+		header: "Min Salary",
+	},
+	{
+		accessorKey: "max_salary",
+		header: "Max Salary",
 	},
 	{
 		id: "actions",

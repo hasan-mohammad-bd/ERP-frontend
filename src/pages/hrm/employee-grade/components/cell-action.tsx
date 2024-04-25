@@ -9,25 +9,25 @@ import {
 
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
-import { type SectionColumn } from "@/lib/validators";
+import { type EmployeeGradeColumn} from "@/lib/validators";
 import { toast } from "sonner";
-import { AddSectionForm } from "./add-section-form";
+import { AddEmployeeGradeForm } from "./add-employee-grade-form";
 import { Modal } from "@/components/common/modal";
-import { useRemoveSectionMutation } from "@/store/services/hrm/api/section";
+import { useRemoveEmployeeGradeMutation } from "@/store/services/hrm/api/employee-grade";
 
 interface CellActionProps {
-  data: SectionColumn;
+  data: EmployeeGradeColumn;
 }
 
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [deleteSection] = useRemoveSectionMutation();
+  const [deleteEmployeeGrade, { isLoading: deleteLoading } ] = useRemoveEmployeeGradeMutation();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
-      await deleteSection(id);
-      toast.success("Section deleted successfully");
+      await deleteEmployeeGrade(id);
+      toast.success("Employee Grade deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
@@ -83,14 +83,14 @@ export function CellAction({ data }: CellActionProps) {
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
         onConfirm={() => handleDepartmentDelete(data.id)}
-        loading={false}
+        loading={deleteLoading}
       />
       <Modal
-        title="Update Section"
+        title="Update Employee Grade"
         isOpen={updateModalOpen}
         toggleModal={() => setUpdateModalOpen(false)}
       >
-        <AddSectionForm
+        <AddEmployeeGradeForm
           data={data}
           modalClose={() => setUpdateModalOpen(false)}
         />

@@ -3,6 +3,8 @@ import ErrorPage from "@/pages/ErrorPage";
 import Employee from "@/pages/employee";
 import Department from "@/pages/hrm/department";
 import Designation from "@/pages/hrm/designation";
+import EmployeeClass from "@/pages/hrm/employee-class";
+import EmployeeGrade from "@/pages/hrm/employee-grade";
 import Section from "@/pages/hrm/section";
 import Lobby from "@/pages/lobby";
 import LoginScreen from "@/pages/login";
@@ -47,6 +49,16 @@ const router = createBrowserRouter([
 					{
 						path: "sections",
 						element: <Section />,
+						errorElement: <ErrorPage />,
+					},
+					{
+						path: "employee-classes",
+						element: <EmployeeClass />,
+						errorElement: <ErrorPage />,
+					},
+					{
+						path: "employee-grades",
+						element: <EmployeeGrade />,
 						errorElement: <ErrorPage />,
 					},
 				],

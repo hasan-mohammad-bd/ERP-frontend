@@ -5,7 +5,9 @@ import {
 	Users,
 	HandCoins,
 	FileBadge2,
-	AlignEndVertical  
+	AlignEndVertical,
+	Fan,
+	Blinds 
 	
 } from "lucide-react";
 
@@ -55,6 +57,18 @@ export const NavItems: NavItem[] = [
 		title: "Sections",
 		icon: AlignEndVertical  ,
 		href: "/hrm/sections",
+		color: "text-sky-500",
+	},
+	{
+		title: "Employee Classes",
+		icon: Fan,
+		href: "/hrm/employee-classes",
+		color: "text-sky-500",
+	},
+	{
+		title: "Employee Grades",
+		icon: Blinds,
+		href: "/hrm/employee-grades",
 		color: "text-sky-500",
 	},
 ];

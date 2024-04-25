@@ -10,7 +10,7 @@ import { Modal } from "@/components/common/modal";
 import {  AddDesignationForm } from "./components/add-designation-form";
 import { useGetDesignationQuery } from "@/store/services/hrm/api/designation";
 
-const Department = () => {
+const Designation = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const { data, isLoading } = useGetDesignationQuery();
 
@@ -51,4 +51,4 @@ const Department = () => {
 	);
 };
 
-export default Department;
+export default Designation;

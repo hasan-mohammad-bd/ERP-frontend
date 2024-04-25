@@ -9,30 +9,32 @@ import {
 
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
-import { type SectionColumn } from "@/lib/validators";
+import { type EmployeeClassColumn } from "@/lib/validators";
 import { toast } from "sonner";
-import { AddSectionForm } from "./add-section-form";
+import { AddEmployeeClassForm } from "./add-employee-class-form";
 import { Modal } from "@/components/common/modal";
-import { useRemoveSectionMutation } from "@/store/services/hrm/api/section";
+import { useRemoveEmployeeClassMutation } from "@/store/services/hrm/api/employee-class";
+
 
 interface CellActionProps {
-  data: SectionColumn;
+  data: EmployeeClassColumn;
 }
 
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [deleteSection] = useRemoveSectionMutation();
+  const [deleteEmployeeClass, { isLoading: deleteLoading }] = useRemoveEmployeeClassMutation();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
-      await deleteSection(id);
+      await deleteEmployeeClass(id);
       toast.success("Section deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
     }
   };
+
 
   return (
     <div className="flex justify-center space-x-2">
@@ -51,7 +53,7 @@ export function CellAction({ data }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Update Section</p>
+            <p>Update Employee Class</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -71,7 +73,7 @@ export function CellAction({ data }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Delete Designation</p>
+            <p>Delete Employee Class</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -83,14 +85,14 @@ export function CellAction({ data }: CellActionProps) {
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
         onConfirm={() => handleDepartmentDelete(data.id)}
-        loading={false}
+        loading={deleteLoading}
       />
       <Modal
-        title="Update Section"
+        title="Update Employee Class"
         isOpen={updateModalOpen}
         toggleModal={() => setUpdateModalOpen(false)}
       >
-        <AddSectionForm
+        <AddEmployeeClassForm
           data={data}
           modalClose={() => setUpdateModalOpen(false)}
         />

@@ -1,9 +1,9 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
-import { type DesignationColumn } from "@/lib/validators";
+import {type SectionColumn} from "@/lib/validators";
 import { CellAction } from "./cell-action";
 
-export const designationColumns: ColumnDef<DesignationColumn>[] = [
+export const sectionColumns: ColumnDef<SectionColumn>[] = [
 	{
 		id: "select",
 		header: ({ table }) => (
@@ -30,7 +30,7 @@ export const designationColumns: ColumnDef<DesignationColumn>[] = [
 	},
 	{
 		accessorKey: "name",
-		header: "Department Name",
+		header: "Section Name",
 	},
 	{
 		id: "actions",

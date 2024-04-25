@@ -65,3 +65,46 @@ export const sectionColumn = z.object({
 
 export type SectionColumn = z.infer<typeof sectionColumn>;
 
+// Employee Class
+export const EmployeeClassFormSchema = z.object({
+	name: z.string().min(2, {
+		message: "Department name must be at least 2 characters.",
+	}),
+	parent_id: z.coerce.number().nullable().optional(),
+	sorting_index: z.coerce.number(),
+});
+
+export type EmployeeClassFromValues = z.infer<typeof EmployeeClassFormSchema>;
+
+export const employeeClassColumn = z.object({
+	id: z.number(),
+	name: z.string(),
+	sorting_index: z.coerce.number(),
+})
+
+export type EmployeeClassColumn = z.infer<typeof employeeClassColumn>;
+
+
+// Employee Grade
+
+export const EmployeeGradeFormSchema = z.object({
+	name: z.string().min(2, {
+		message: "Department name must be at least 2 characters.",
+	}),
+	parent_id: z.coerce.number().nullable().optional(),
+	sorting_index: z.coerce.number(),
+	max_salary: z.coerce.number(),
+	min_salary: z.coerce.number(),
+});
+
+export type EmployeeGradeFromValues = z.infer<typeof EmployeeGradeFormSchema>;
+
+export const employeeGradeColumn = z.object({
+	id: z.number(),
+	name: z.string(),
+	sorting_index: z.coerce.number(),
+	max_salary: z.coerce.number(),
+	min_salary: z.coerce.number(),
+})
+
+export type EmployeeGradeColumn = z.infer<typeof employeeGradeColumn>;

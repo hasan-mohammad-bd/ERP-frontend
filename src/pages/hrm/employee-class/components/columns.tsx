@@ -3,7 +3,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { type DesignationColumn } from "@/lib/validators";
 import { CellAction } from "./cell-action";
 
-export const designationColumns: ColumnDef<DesignationColumn>[] = [
+export const employeeClassColumns: ColumnDef<DesignationColumn>[] = [
 	{
 		id: "select",
 		header: ({ table }) => (
@@ -30,7 +30,7 @@ export const designationColumns: ColumnDef<DesignationColumn>[] = [
 	},
 	{
 		accessorKey: "name",
-		header: "Designation Name",
+		header: "Employee Class Name",
 	},
 	{
 		id: "actions",

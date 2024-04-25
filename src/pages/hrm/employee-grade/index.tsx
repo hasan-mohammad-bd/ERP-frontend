@@ -5,19 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
-import { sectionColumns } from "./components/columns";
+
 import { Modal } from "@/components/common/modal";
 
+import { useGetEmployeeGradesQuery } from "@/store/services/hrm/api/employee-grade";
+import { AddEmployeeGradeForm } from "./components/add-employee-grade-form";
+import { employeeGradeColumns } from "./components/columns";
 
-import { useGetSectionsQuery } from "@/store/services/hrm/api/section";
-import { AddSectionForm } from "./components/add-section-form";
-
-const Section = () => {
+const EmployeeGrade = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetSectionsQuery();
+  const { data, isLoading } = useGetEmployeeGradesQuery();
 
-
-  const sections = data?.data || [];
+  const employeeGrades = data?.data || [];
 
   // console.log(departments);
   if (isLoading) return <Loading />;
@@ -28,30 +27,30 @@ const Section = () => {
         <div className="flex-1 space-y-4 md:p-8">
           <div className="flex items-center justify-between">
             <Heading
-              title="Sections"
-              description="Manage sections for you business"
+              title="Employee Grades"
+              description="Manage employee grades for you business"
             />
             <Button onClick={() => setIsOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" /> Add Section
+              <Plus className="mr-2 h-4 w-4" /> Add Employee Grade
             </Button>
           </div>
           <Separator />
-          {sections && (
+          {employeeGrades && (
             <div>
-              <DataTable columns={sectionColumns} data={sections} />
+              <DataTable columns={employeeGradeColumns} data={employeeGrades} />
             </div>
           )}
         </div>
       </div>
       <Modal
-        title="Add Section"
+        title="Add Employee Grade"
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}
       >
-        <AddSectionForm modalClose={() => setIsOpen(false)} />
+        <AddEmployeeGradeForm modalClose={() => setIsOpen(false)} />
       </Modal>
     </>
   );
 };
 
-export default Section;
+export default EmployeeGrade;
