@@ -17,8 +17,10 @@ import {
   EmployeeGradeFormSchema,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
-import { useCreateEmployeeGradeMutation, useUpdateEmployeeGradeMutation } from "@/store/services/hrm/api/employee-grade";
-
+import {
+  useCreateEmployeeGradeMutation,
+  useUpdateEmployeeGradeMutation,
+} from "@/store/services/hrm/api/employee-grade";
 
 interface AddSectionFormProps {
   modalClose: () => void;
@@ -92,11 +94,11 @@ export function AddEmployeeGradeForm({
               name="sorting_index"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Sorting Index</FormLabel>
+                  <FormLabel>Sorting</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="Enter section sorting index"
+                      placeholder="Enter section sorting"
                       {...field}
                     />
                   </FormControl>
@@ -113,7 +115,7 @@ export function AddEmployeeGradeForm({
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="Enter section sorting index"
+                      placeholder="Enter section sorting"
                       {...field}
                     />
                   </FormControl>
@@ -130,7 +132,7 @@ export function AddEmployeeGradeForm({
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="Enter section sorting index"
+                      placeholder="Enter section sorting"
                       {...field}
                     />
                   </FormControl>

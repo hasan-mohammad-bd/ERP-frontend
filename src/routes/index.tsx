@@ -5,9 +5,11 @@ import Department from "@/pages/hrm/department";
 import Designation from "@/pages/hrm/designation";
 import EmployeeClass from "@/pages/hrm/employee-class";
 import EmployeeGrade from "@/pages/hrm/employee-grade";
+import Schedule from "@/pages/hrm/schedule";
 import Section from "@/pages/hrm/section";
 import Lobby from "@/pages/lobby";
 import LoginScreen from "@/pages/login";
+import Organization from "@/pages/web/organization";
 import { PrivateOutlet } from "@/utils/PrivateOutlet";
 import { Navigate, createBrowserRouter } from "react-router-dom";
 
@@ -59,6 +61,23 @@ const router = createBrowserRouter([
 					{
 						path: "employee-grades",
 						element: <EmployeeGrade />,
+						errorElement: <ErrorPage />,
+					},
+					{
+						path: "schedules",
+						element: <Schedule />,
+						errorElement: <ErrorPage />,
+					},
+				],
+			},
+			{
+				path: "web/",
+				element: <Layout />,
+				children: [
+
+					{
+						path: "organizations",
+						element: <Organization />,
 						errorElement: <ErrorPage />,
 					},
 				],

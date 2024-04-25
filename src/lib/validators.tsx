@@ -108,3 +108,50 @@ export const employeeGradeColumn = z.object({
 })
 
 export type EmployeeGradeColumn = z.infer<typeof employeeGradeColumn>;
+
+// Organization
+
+export const OrganizationFormSchema = z.object({
+	name: z.string().min(2, {
+		message: "Department name must be at least 2 characters.",
+	}),
+	parent_id: z.coerce.number().nullable().optional(),
+	sorting_index: z.coerce.number(),
+});
+
+export type OrganizationFromValues = z.infer<typeof OrganizationFormSchema>;
+
+export const organizationColumn = z.object({
+	id: z.number(),
+	name: z.string(),
+	sorting_index: z.coerce.number(),
+})
+
+export type OrganizationColumn = z.infer<typeof organizationColumn>;
+
+// Schedule
+
+export const ScheduleFormSchema = z.object({
+	name: z.string().min(2, {
+		message: "Department name must be at least 2 characters.",
+	}),
+	hour: z.string(),
+	start_time: z.string(),
+	end_time: z.string(),
+	sorting_index: z.coerce.number(),
+	organization_id: z.coerce.number().optional().nullable(),
+});
+
+export type ScheduleFromValues = z.infer<typeof ScheduleFormSchema>;
+
+export const scheduleColumn = z.object({
+	id: z.number(),
+	name: z.string(),
+	hour: z.string(),
+	start_time: z.string(),
+	end_time: z.string(),
+	sorting_index: z.coerce.number(),
+	organization: organizationColumn.nullable(),
+})
+
+export type ScheduleColumn = z.infer<typeof scheduleColumn>;

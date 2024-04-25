@@ -12,49 +12,50 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
-  DepartmentFormSchema,
-  DesignationColumn,
-  DesignationFromValues,
+  SectionFormSchema,
+  SectionColumn,
+  SectionFromValues,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
-import {
-  useCreateDesignationMutation,
-  useUpdateDesignationMutation,
-} from "@/store/services/hrm/api/designation";
 
-interface AddDesignationFormProps {
+import {
+  useCreateOrganizationMutation,
+  useUpdateOrganizationMutation,
+} from "@/store/services/erp-main/api/organization";
+
+interface AddSectionFormProps {
   modalClose: () => void;
-  data?: DesignationColumn;
+  data?: SectionColumn;
 }
 
-export function AddDesignationForm({
+export function AddOrganizationForm({
   modalClose,
   data: previousData,
-}: AddDesignationFormProps) {
-  const [createDesignation, { isLoading }] = useCreateDesignationMutation();
-  const [updateDesignation, { isLoading: updateLoading }] =
-    useUpdateDesignationMutation();
+}: AddSectionFormProps) {
+  const [createOrganization, { isLoading }] = useCreateOrganizationMutation();
+  const [updatedOrganization, { isLoading: updateLoading }] =
+    useUpdateOrganizationMutation();
 
-  const form = useForm<DesignationFromValues>({
-    resolver: zodResolver(DepartmentFormSchema),
+  const form = useForm<SectionFromValues>({
+    resolver: zodResolver(SectionFormSchema),
     defaultValues: {
       name: previousData?.name || "",
       sorting_index: previousData?.sorting_index || 0,
     },
   });
 
-  async function onSubmit(data: DesignationFromValues) {
+  async function onSubmit(data: SectionFromValues) {
     try {
       if (previousData) {
-        await updateDesignation({
-          designationId: previousData.id,
-          updatedDesignation: data,
+        await updatedOrganization({
+          organizationId: previousData.id,
+          updatedOrganization: data,
         });
-        toast.success("Designation updated successfully");
+        toast.success("Organization updated successfully");
         modalClose();
       } else {
-        await createDesignation(data);
-        toast.success("Designation created successfully");
+        await createOrganization(data);
+        toast.success("Organization created successfully");
         modalClose();
       }
     } catch (error) {
@@ -81,7 +82,7 @@ export function AddDesignationForm({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter department name" {...field} />
+                    <Input placeholder="Enter organization name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,7 +97,7 @@ export function AddDesignationForm({
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="Enter department sorting"
+                      placeholder="Enter organization sorting"
                       {...field}
                     />
                   </FormControl>

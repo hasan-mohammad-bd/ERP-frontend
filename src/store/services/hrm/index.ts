@@ -16,6 +16,6 @@ export const hrmApi = createApi({
 			return headers;
 		},
 	}),
-	tagTypes: ["departments", "designations", "sections", "employee-classes", "employee-grades"],
+	tagTypes: ["departments", "designations", "sections", "employee-classes", "employee-grades", "schedules"],
 	endpoints: () => ({}),
 });
