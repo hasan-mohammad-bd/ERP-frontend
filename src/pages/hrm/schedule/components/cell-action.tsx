@@ -13,7 +13,8 @@ import { type ScheduleColumn } from "@/lib/validators";
 import { toast } from "sonner";
 import { AddScheduleForm } from "./add-schedule-form";
 import { Modal } from "@/components/common/modal";
-import { useRemoveEmployeeGradeMutation } from "@/store/services/hrm/api/employee-grade";
+import { useRemoveScheduleMutation } from "@/store/services/hrm/api/schedule";
+
 
 interface CellActionProps {
   data: ScheduleColumn;
@@ -22,16 +23,17 @@ interface CellActionProps {
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [deleteEmployeeGrade, { isLoading: deleteLoading }] =
-    useRemoveEmployeeGradeMutation();
+  const [deleteSchedule, { isLoading: deleteLoading }] =
+    useRemoveScheduleMutation();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
-      await deleteEmployeeGrade(id);
-      toast.success("Employee Grade deleted successfully");
+      await deleteSchedule(id);
+      toast.success("Schedule deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
+
     }
   };
 
@@ -72,7 +74,7 @@ export function CellAction({ data }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Delete Designation</p>
+            <p>Delete Schedule</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -87,7 +89,7 @@ export function CellAction({ data }: CellActionProps) {
         loading={deleteLoading}
       />
       <Modal
-        title="Update Employee Grade"
+        title="Update Schedule"
         isOpen={updateModalOpen}
         toggleModal={() => setUpdateModalOpen(false)}
       >

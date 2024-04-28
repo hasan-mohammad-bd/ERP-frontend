@@ -67,11 +67,11 @@ export function AddScheduleForm({
           scheduleId: previousData.id,
           updatedSchedule: data,
         });
-        toast.success("Section updated successfully");
+        toast.success("Schedule updated successfully");
         modalClose();
       } else {
         await createSchedule(data);
-        toast.success("Section created successfully");
+        toast.success("Schedule created successfully");
         modalClose();
       }
     } catch (error) {
@@ -98,7 +98,7 @@ export function AddScheduleForm({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter section name" {...field} />
+                    <Input placeholder="Enter schedule name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -113,7 +113,7 @@ export function AddScheduleForm({
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="Enter section sorting"
+                      placeholder="Enter schedule sorting"
                       {...field}
                     />
                   </FormControl>
@@ -130,7 +130,7 @@ export function AddScheduleForm({
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="Enter section sorting"
+                      placeholder="Enter schedule hour"
                       {...field}
                     />
                   </FormControl>
@@ -147,7 +147,7 @@ export function AddScheduleForm({
                   <FormControl>
                     <Input
                       type="time"
-                      placeholder="Enter section sorting"
+                      placeholder="Enter schedule start time"
                       {...field}
                     />
                   </FormControl>
@@ -164,7 +164,7 @@ export function AddScheduleForm({
                   <FormControl>
                     <Input
                       type="time"
-                      placeholder="Enter section sorting"
+                      placeholder="Enter section end time"
                       {...field}
                     />
                   </FormControl>
@@ -177,7 +177,7 @@ export function AddScheduleForm({
               name="organization_id"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Organization</FormLabel>
+                  <FormLabel>Organization Name</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={String(previousData?.organization?.id)}
