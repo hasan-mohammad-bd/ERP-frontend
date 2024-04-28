@@ -27,11 +27,11 @@ const Schedule = () => {
         <div className="flex-1 space-y-4 md:p-8">
           <div className="flex items-center justify-between">
             <Heading
-              title="Employee Grades"
-              description="Manage employee grades for you business"
+              title="Schedule"
+              description="Manage schedule for you business"
             />
             <Button onClick={() => setIsOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" /> Add Employee Grade
+              <Plus className="mr-2 h-4 w-4" /> Add Schedule
             </Button>
           </div>
           <Separator />
@@ -43,7 +43,7 @@ const Schedule = () => {
         </div>
       </div>
       <Modal
-        title="Add Employee Grade"
+        title="Add Schedule"
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}
       >
