@@ -10,7 +10,11 @@ import {
 	Blinds,
 	Captions,
 	Store,
-	Clock
+	Clock,
+	Volume2,
+	Disc,
+	MapPin,
+	SquarePen
 	
 	
 	
@@ -93,6 +97,29 @@ export const NavItems: NavItem[] = [
 		]
 	},
 
+	{
+		title: "Job",
+		href: "/hrm",
+		icon: Volume2,
+		color: "text-sky-500",
+		isChildren: true,
+		children: [
+			{
+				title: "Vacancy Requisition",
+				icon: Disc ,
+				href: "/hrm/vacancy-requisitions",
+				color: "text-sky-500",
+			},
+			{
+				title: "Job Posts",
+				icon: SquarePen ,
+				href: "/hrm/job-posts",
+				color: "text-sky-500",
+			},
+
+		]
+	},
+
 
 
 
@@ -100,6 +127,13 @@ export const NavItems: NavItem[] = [
 		title: "Organizations",
 		icon: Store ,
 		href: "/web/organizations",
+		color: "text-sky-500",
+	},
+
+	{
+		title: "Locations",
+		icon: MapPin ,
+		href: "/web/locations",
 		color: "text-sky-500",
 	},
 ];

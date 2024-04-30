@@ -1,9 +1,9 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
-import { type DesignationColumn } from "@/lib/validators";
+import { LocationColumn } from "@/lib/validators";
 import { CellAction } from "./cell-action";
 
-export const organizationColumns: ColumnDef<DesignationColumn>[] = [
+export const locationColumns: ColumnDef<LocationColumn>[] = [
 	{
 		id: "select",
 		header: ({ table }) => (
@@ -34,7 +34,13 @@ export const organizationColumns: ColumnDef<DesignationColumn>[] = [
 	},
 	{
 		accessorKey: "sorting_index",
-		header: "Sorting",
+		header: "Sorting Index",
+	}
+,
+	{
+		accessorKey: "organization",
+		accessorFn: ({ organization }) => organization?.name,
+		header: "Organization",
 	},
 	{
 		id: "actions",

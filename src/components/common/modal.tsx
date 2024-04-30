@@ -36,7 +36,7 @@ export const Modal: React.FC<ModalProps> = ({
 	return (
 		<>
 			{type === "dialog" ? (
-				<Dialog open={isOpen} onOpenChange={toggleModal}>
+				<Dialog open={isOpen}  onOpenChange={toggleModal}>
 					<DialogContent className={cn(className)}>
 						<DialogHeader>
 							<DialogTitle>{title}</DialogTitle>

@@ -30,7 +30,7 @@ export const updateEmployeeFormSchema = z.object({
 
 export const DesignationFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "Department name must be at least 2 characters.",
+		message: "Designation name must be at least 2 characters.",
 	}),
 	parent_id: z.coerce.number().nullable().optional(),
 	sorting_index: z.coerce.number(),
@@ -49,7 +49,7 @@ export type DesignationColumn = z.infer<typeof designationColumn>;
 // Section
 export const SectionFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "Department name must be at least 2 characters.",
+		message: "Section name must be at least 2 characters.",
 	}),
 	parent_id: z.coerce.number().nullable().optional(),
 	sorting_index: z.coerce.number(),
@@ -68,7 +68,7 @@ export type SectionColumn = z.infer<typeof sectionColumn>;
 // Employee Class
 export const EmployeeClassFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "Department name must be at least 2 characters.",
+		message: "Employee Class name must be at least 2 characters.",
 	}),
 	parent_id: z.coerce.number().nullable().optional(),
 	sorting_index: z.coerce.number(),
@@ -89,7 +89,7 @@ export type EmployeeClassColumn = z.infer<typeof employeeClassColumn>;
 
 export const EmployeeGradeFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "Department name must be at least 2 characters.",
+		message: "Employee Grade name must be at least 2 characters.",
 	}),
 	parent_id: z.coerce.number().nullable().optional(),
 	sorting_index: z.coerce.number(),
@@ -113,7 +113,7 @@ export type EmployeeGradeColumn = z.infer<typeof employeeGradeColumn>;
 
 export const OrganizationFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "Department name must be at least 2 characters.",
+		message: "Organization name must be at least 2 characters.",
 	}),
 	parent_id: z.coerce.number().nullable().optional(),
 	sorting_index: z.coerce.number(),
@@ -133,7 +133,7 @@ export type OrganizationColumn = z.infer<typeof organizationColumn>;
 
 export const ScheduleFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "Department name must be at least 2 characters.",
+		message: "Schedule name must be at least 2 characters.",
 	}),
 	hour: z.string(),
 	start_time: z.string(),
@@ -155,3 +155,149 @@ export const scheduleColumn = z.object({
 })
 
 export type ScheduleColumn = z.infer<typeof scheduleColumn>;
+
+
+// Vacancy Requisition
+
+export const VacancyRequisitionFormSchema = z.object({
+	name: z.string().min(2, {
+		message: "Requisition name must be at least 2 characters.",
+	}),
+	sorting_index: z.coerce.number(),
+	vacancy_number: z.coerce.number(),
+	department_id: z.coerce.number().optional().nullable(),
+	organization_id: z.coerce.number().optional().nullable(),
+	designation_id: z.coerce.number().optional().nullable(),
+
+});
+
+export type VacancyRequisitionFromValues = z.infer<typeof VacancyRequisitionFormSchema>;
+
+export const vacancyRequisitionColumn = z.object({
+	id: z.number(),
+	name: z.string(),
+	sorting_index: z.coerce.number().nullable(),
+	vacancy_number: z.coerce.number(),
+	department: departmentColumn.nullable(),
+	organization: organizationColumn.nullable(),
+	designation: designationColumn.nullable(),
+
+})
+
+export type VacancyRequisitionColumn = z.infer<typeof vacancyRequisitionColumn>;
+
+
+// Location
+
+export const LocationFormSchema = z.object({
+	name: z.string().min(2, {
+		message: "location name must be at least 2 characters.",
+	}),
+	parent_id: z.coerce.number().nullable().optional(),
+	sorting_index: z.coerce.number(),
+	organization_id:  z.coerce.number().optional().nullable(),
+
+});
+
+export type LocationFromValues = z.infer<typeof LocationFormSchema>;
+
+export const locationColumn = z.object({
+	id: z.number(),
+	name: z.string(),
+	parent_id: z.coerce.number().nullable().optional(),
+	sorting_index: z.coerce.number(),
+	organization: organizationColumn.nullable(),
+
+
+
+})
+
+export type LocationColumn = z.infer<typeof locationColumn>;
+
+// employment status
+
+export const employmentStatusColumn = z.object({
+	name: z.string().min(2, {
+		message: "Employment status name must be at least 2 characters.",
+	}),
+	id: z.coerce.number(),
+	status: z.coerce.string(),
+});
+
+export type EmploymentStatusColumn = z.infer<typeof employmentStatusColumn>;
+
+
+// work place
+
+export const workPlaceColumn = z.object({
+	name: z.string().min(2, {
+		message: "Work place name must be at least 2 characters.",
+	}),
+	id: z.coerce.number(),
+	status: z.coerce.string(),
+});
+
+
+export type WorkPlaceColumn = z.infer<typeof workPlaceColumn>;
+
+//job post
+
+export const JobPostFormSchema = z.object({
+	title: z.string().min(2, {
+		message: "Job Post title must be at least 2 characters.",
+	}),
+	date: z.string().date(),
+	deadline: z.string().date(),
+	department_id: z.coerce.number().optional().nullable(),
+	organization_id:  z.coerce.number().optional().nullable(),
+	designation_id:  z.coerce.number().optional().nullable(),
+	location_id:  z.coerce.number().optional().nullable(),
+	vacancy_requisition_id:  z.coerce.number().optional().nullable(),
+	vacancy_number:  z.coerce.number(),
+	employment_status_id:  z.coerce.number().optional().nullable(),
+	work_place_id:  z.coerce.number().optional().nullable(),
+	min_age:  z.coerce.number(),
+	max_age:  z.coerce.number(),
+	responsibilities: z.string(),
+	education: z.string(),
+	experience: z.string(),
+	skills: z.string(),
+	show_salary:  z.coerce.number().optional().nullable(),
+	min_salary:  z.coerce.number(),
+	max_salary:  z.coerce.number(),
+	status: z.string(),
+	sorting_index: z.coerce.number(),
+
+})
+
+export type JobPostFromValues = z.infer<typeof JobPostFormSchema>;
+
+export const jobPostColumn = z.object({
+	id: z.number(),
+	title: z.string(),
+	date: z.string(),
+	deadline: z.string(),
+	department: departmentColumn.nullable(),
+	organization: organizationColumn.nullable(),
+	designation: designationColumn.nullable(),
+	location: locationColumn.nullable(),
+	vacancy_requisition: vacancyRequisitionColumn.nullable(),
+	vacancy_number: z.coerce.number().nullable(),
+	employment_status: employmentStatusColumn.nullable(),
+	work_place: z.object({ id: z.number(), name: z.string(), status: z.string() }).nullable(),
+	responsibilities: z.string(),
+	education: z.string(),
+	experience: z.string(),
+	skills: z.string(),
+	show_salary: z.number(), //1 or 0 
+	min_salary: z.coerce.number(),
+	max_salary: z.coerce.number(),
+	min_age:  z.coerce.number(),
+	max_age:  z.coerce.number(),
+	status: z.string(), //Active or Inactive
+	sorting_index: z.coerce.number(),
+})
+
+export type JobPostColumn = z.infer<typeof jobPostColumn>;
+
+

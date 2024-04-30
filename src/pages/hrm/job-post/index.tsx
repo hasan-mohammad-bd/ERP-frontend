@@ -1,0 +1,55 @@
+import { useState } from "react";
+import { Loading } from "@/components/common/loading";
+import { Heading } from "@/components/common/heading";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { Separator } from "@radix-ui/react-dropdown-menu";
+import { DataTable } from "@/components/ui/data-table/data-table";
+import { Modal } from "@/components/common/modal";
+import { AddJobPostForm } from "./components/add-job-post-form";
+import { jobPostColumns } from "./components/columns";
+import { useGetJobPostsQuery } from "@/store/services/hrm/api/job-post";
+
+const JobPost = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { data, isLoading } = useGetJobPostsQuery();
+
+  const jobPost = data?.data || [];
+
+  // console.log(departments);
+  if (isLoading) return <Loading />;
+
+  return (
+    <>
+      <div className="flex flex-col">
+        <div className="flex-1 space-y-4 md:p-8">
+          <div className="flex items-center justify-between">
+            <Heading
+              title="Job Post"
+              description="Manage job post for you business"
+            />
+            <Button onClick={() => setIsOpen(true)}>
+              <Plus className="mr-2 h-4 w-4" /> Add Job Post
+            </Button>
+          </div>
+          <Separator />
+          {jobPost && (
+            <div>
+              <DataTable columns={jobPostColumns} data={jobPost} />
+            </div>
+          )}
+        </div>
+      </div>
+      <Modal
+        title="Add Job Post"
+        isOpen={isOpen}
+        toggleModal={() => setIsOpen(false)}
+        className="w-[90%] max-w-6xl"
+      >
+        <AddJobPostForm modalClose={() => setIsOpen(false)} />
+      </Modal>
+    </>
+  );
+};
+
+export default JobPost;

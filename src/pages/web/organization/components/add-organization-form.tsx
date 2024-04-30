@@ -12,9 +12,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
-  SectionFormSchema,
-  SectionColumn,
-  SectionFromValues,
+
+  OrganizationColumn,
+  OrganizationFromValues,
+  OrganizationFormSchema,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
 
@@ -23,28 +24,28 @@ import {
   useUpdateOrganizationMutation,
 } from "@/store/services/erp-main/api/organization";
 
-interface AddSectionFormProps {
+interface AddOrganizationFormProps {
   modalClose: () => void;
-  data?: SectionColumn;
+  data?: OrganizationColumn;
 }
 
 export function AddOrganizationForm({
   modalClose,
   data: previousData,
-}: AddSectionFormProps) {
+}: AddOrganizationFormProps) {
   const [createOrganization, { isLoading }] = useCreateOrganizationMutation();
   const [updatedOrganization, { isLoading: updateLoading }] =
     useUpdateOrganizationMutation();
 
-  const form = useForm<SectionFromValues>({
-    resolver: zodResolver(SectionFormSchema),
+  const form = useForm<OrganizationFromValues>({
+    resolver: zodResolver(OrganizationFormSchema),
     defaultValues: {
       name: previousData?.name || "",
       sorting_index: previousData?.sorting_index || 0,
     },
   });
 
-  async function onSubmit(data: SectionFromValues) {
+  async function onSubmit(data: OrganizationFromValues) {
     try {
       if (previousData) {
         await updatedOrganization({
