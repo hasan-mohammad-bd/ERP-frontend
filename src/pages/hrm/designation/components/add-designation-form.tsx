@@ -12,8 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
-  DepartmentFormSchema,
   DesignationColumn,
+  DesignationFormSchema,
   DesignationFromValues,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
@@ -36,7 +36,7 @@ export function AddDesignationForm({
     useUpdateDesignationMutation();
 
   const form = useForm<DesignationFromValues>({
-    resolver: zodResolver(DepartmentFormSchema),
+    resolver: zodResolver(DesignationFormSchema),
     defaultValues: {
       name: previousData?.name || "",
       sorting_index: previousData?.sorting_index || 0,

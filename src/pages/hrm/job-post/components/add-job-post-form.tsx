@@ -478,7 +478,7 @@ export function AddJobPostForm({
                 )}
               />
 
-<FormField
+              <FormField
                 control={form.control}
                 name="sorting_index"
                 render={({ field }) => (
@@ -575,8 +575,6 @@ export function AddJobPostForm({
                   </FormItem>
                 )}
               />
-
-
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <FormField

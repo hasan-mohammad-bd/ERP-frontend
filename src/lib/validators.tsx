@@ -3,10 +3,16 @@ import { z } from "zod";
 // Department Form validation
 export const DepartmentFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "Department name must be at least 2 characters.",
+		message: "Name must be at least 2 characters.",
+	}).max(255, {
+		message: "Name must be at most 255 characters.",
 	}),
 	parent_id: z.coerce.number().nullable().optional(),
-	sorting_index: z.coerce.number(),
+	sorting_index: z.coerce.number().int().min(0, {
+		message: "Sorting index must be at least 0.",
+}).max(9999, {
+		message: "Sorting index must be at most 9999.",
+}),
 });
 
 export type DepartmentFromValues = z.infer<typeof DepartmentFormSchema>;
@@ -30,10 +36,16 @@ export const updateEmployeeFormSchema = z.object({
 
 export const DesignationFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "Designation name must be at least 2 characters.",
+		message: "Name must be at least 2 characters.",
+	}).max(255, {
+		message: "Name must be at most 255 characters.",
 	}),
 	parent_id: z.coerce.number().nullable().optional(),
-	sorting_index: z.coerce.number(),
+	sorting_index: z.coerce.number().int().min(0, {
+		message: "Sorting index must be at least 0.",
+}).max(9999, {
+		message: "Sorting index must be at most 9999.",
+}),
 });
 
 export type DesignationFromValues = z.infer<typeof DesignationFormSchema>;
@@ -49,10 +61,16 @@ export type DesignationColumn = z.infer<typeof designationColumn>;
 // Section
 export const SectionFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "Section name must be at least 2 characters.",
+		message: "Name must be at least 2 characters.",
+	}).max(255, {
+		message: "Name must be at most 255 characters.",
 	}),
 	parent_id: z.coerce.number().nullable().optional(),
-	sorting_index: z.coerce.number(),
+	sorting_index: z.coerce.number().int().min(0, {
+		message: "Sorting index must be at least 0.",
+}).max(9999, {
+		message: "Sorting index must be at most 9999.",
+}),
 });
 
 export type SectionFromValues = z.infer<typeof SectionFormSchema>;
@@ -68,10 +86,16 @@ export type SectionColumn = z.infer<typeof sectionColumn>;
 // Employee Class
 export const EmployeeClassFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "Employee Class name must be at least 2 characters.",
+		message: "Name must be at least 2 characters.",
+	}).max(255, {
+		message: "Name must be at most 255 characters.",
 	}),
 	parent_id: z.coerce.number().nullable().optional(),
-	sorting_index: z.coerce.number(),
+	sorting_index: z.coerce.number().int().min(0, {
+		message: "Sorting index must be at least 0.",
+}).max(9999, {
+		message: "Sorting index must be at most 9999.",
+}),
 });
 
 export type EmployeeClassFromValues = z.infer<typeof EmployeeClassFormSchema>;
@@ -89,10 +113,16 @@ export type EmployeeClassColumn = z.infer<typeof employeeClassColumn>;
 
 export const EmployeeGradeFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "Employee Grade name must be at least 2 characters.",
+		message: "Name must be at least 2 characters.",
+	}).max(255, {
+		message: "Name must be at most 255 characters.",
 	}),
 	parent_id: z.coerce.number().nullable().optional(),
-	sorting_index: z.coerce.number(),
+	sorting_index: z.coerce.number().int().min(0, {
+		message: "Sorting index must be at least 0.",
+}).max(9999, {
+		message: "Sorting index must be at most 9999.",
+}),
 	max_salary: z.coerce.number(),
 	min_salary: z.coerce.number(),
 });
@@ -113,10 +143,16 @@ export type EmployeeGradeColumn = z.infer<typeof employeeGradeColumn>;
 
 export const OrganizationFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "Organization name must be at least 2 characters.",
+		message: "Name must be at least 2 characters.",
+	}).max(255, {
+		message: "Name must be at most 255 characters.",
 	}),
 	parent_id: z.coerce.number().nullable().optional(),
-	sorting_index: z.coerce.number(),
+	sorting_index: z.coerce.number().int().min(0, {
+		message: "Sorting index must be at least 0.",
+}).max(9999, {
+		message: "Sorting index must be at most 9999.",
+}),
 });
 
 export type OrganizationFromValues = z.infer<typeof OrganizationFormSchema>;
@@ -133,12 +169,18 @@ export type OrganizationColumn = z.infer<typeof organizationColumn>;
 
 export const ScheduleFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "Schedule name must be at least 2 characters.",
+		message: "Name must be at least 2 characters.",
+	}).max(255, {
+		message: "Name must be at most 255 characters.",
 	}),
 	hour: z.string(),
 	start_time: z.string(),
 	end_time: z.string(),
-	sorting_index: z.coerce.number(),
+	sorting_index: z.coerce.number().int().min(0, {
+		message: "Sorting index must be at least 0.",
+}).max(9999, {
+		message: "Sorting index must be at most 9999.",
+}),
 	organization_id: z.coerce.number().optional().nullable(),
 });
 
@@ -161,9 +203,15 @@ export type ScheduleColumn = z.infer<typeof scheduleColumn>;
 
 export const VacancyRequisitionFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "Requisition name must be at least 2 characters.",
+		message: "Name must be at least 2 characters.",
+	}).max(255, {
+		message: "Name must be at most 255 characters.",
 	}),
-	sorting_index: z.coerce.number(),
+	sorting_index: z.coerce.number().int().min(0, {
+		message: "Sorting index must be at least 0.",
+}).max(9999, {
+		message: "Sorting index must be at most 9999.",
+}),
 	vacancy_number: z.coerce.number(),
 	department_id: z.coerce.number().optional().nullable(),
 	organization_id: z.coerce.number().optional().nullable(),
@@ -191,10 +239,16 @@ export type VacancyRequisitionColumn = z.infer<typeof vacancyRequisitionColumn>;
 
 export const LocationFormSchema = z.object({
 	name: z.string().min(2, {
-		message: "location name must be at least 2 characters.",
+		message: "Name must be at least 2 characters.",
+	}).max(255, {
+		message: "Name must be at most 255 characters.",
 	}),
 	parent_id: z.coerce.number().nullable().optional(),
-	sorting_index: z.coerce.number(),
+	sorting_index: z.coerce.number().int().min(0, {
+		message: "Sorting index must be at least 0.",
+}).max(9999, {
+		message: "Sorting index must be at most 9999.",
+}),
 	organization_id:  z.coerce.number().optional().nullable(),
 
 });
@@ -245,6 +299,8 @@ export type WorkPlaceColumn = z.infer<typeof workPlaceColumn>;
 export const JobPostFormSchema = z.object({
 	title: z.string().min(2, {
 		message: "Job Post title must be at least 2 characters.",
+	}).max(255, {
+		message: "Job Post title must be at most 255 characters.",
 	}),
 	date: z.string().date(),
 	deadline: z.string().date(),
@@ -266,7 +322,11 @@ export const JobPostFormSchema = z.object({
 	min_salary:  z.coerce.number(),
 	max_salary:  z.coerce.number(),
 	status: z.string(),
-	sorting_index: z.coerce.number(),
+	sorting_index: z.coerce.number().int().min(0, {
+		message: "Sorting index must be at least 0.",
+}).max(9999, {
+		message: "Sorting index must be at most 9999.",
+}),
 
 })
 

@@ -12,9 +12,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
-  SectionFormSchema,
-  SectionColumn,
   DepartmentFromValues,
+  DepartmentColumn,
+  DepartmentFormSchema,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
 
@@ -25,7 +25,7 @@ import {
 
 interface AddDepartmentFormProps {
   modalClose: () => void;
-  data?: SectionColumn;
+  data?: DepartmentColumn;
 }
 
 export function AddDepartmentForm({
@@ -37,7 +37,7 @@ export function AddDepartmentForm({
     useUpdateDepartmentMutation();
 
   const form = useForm<DepartmentFromValues>({
-    resolver: zodResolver(SectionFormSchema),
+    resolver: zodResolver(DepartmentFormSchema),
     defaultValues: {
       name: previousData?.name || "",
       sorting_index: previousData?.sorting_index || 0,
@@ -82,7 +82,7 @@ export function AddDepartmentForm({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter section name" {...field} />
+                    <Input placeholder="Enter department name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -97,7 +97,7 @@ export function AddDepartmentForm({
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="Enter section sorting"
+                      placeholder="Enter department sorting"
                       {...field}
                     />
                   </FormControl>
