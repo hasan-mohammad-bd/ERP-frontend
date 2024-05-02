@@ -7,13 +7,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, ZoomIn } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { JobPostColumn } from "@/lib/validators";
 import { toast } from "sonner";
 import { AddJobPostForm } from "./add-job-post-form";
 import { Modal } from "@/components/common/modal";
 import { useRemoveJobPostMutation } from "@/store/services/hrm/api/job-post";
+import ProductDetails from "./productDetails";
 
 interface CellActionProps {
   data: JobPostColumn;
@@ -22,6 +23,7 @@ interface CellActionProps {
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const [deleteJobPost, { isLoading: deleteLoading }] =
     useRemoveJobPostMutation();
 
@@ -65,6 +67,25 @@ export function CellAction({ data }: CellActionProps) {
               size="icon"
               className="hover:bg-secondary"
               onClick={() => {
+                setDetailsModalOpen(true);
+              }}
+            >
+              <ZoomIn className="h-4 w-4 text-foreground" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Delete Requisition</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:bg-secondary"
+              onClick={() => {
                 setAlertModalOpen(true);
               }}
             >
@@ -96,6 +117,14 @@ export function CellAction({ data }: CellActionProps) {
           data={data}
           modalClose={() => setUpdateModalOpen(false)}
         />
+      </Modal>
+      <Modal
+        title="Job Details"
+        isOpen={detailsModalOpen}
+        toggleModal={() => setDetailsModalOpen(false)}
+        className="w-[90%] max-w-6xl"
+      >
+        <ProductDetails data={data} />
       </Modal>
     </div>
   );
