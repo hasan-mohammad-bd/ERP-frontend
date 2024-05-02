@@ -22,11 +22,11 @@ interface CellActionProps {
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [deleteDesignation] = useRemoveDesignationMutation();
+  const [deleteDesignation , { isLoading: deleteLoading }] = useRemoveDesignationMutation();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
-      await deleteDesignation(id);
+      await deleteDesignation(id)
       toast.success("Designation deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
@@ -83,7 +83,7 @@ export function CellAction({ data }: CellActionProps) {
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
         onConfirm={() => handleDepartmentDelete(data.id)}
-        loading={false}
+        loading={deleteLoading}
       />
       <Modal
         title="Update Designation"

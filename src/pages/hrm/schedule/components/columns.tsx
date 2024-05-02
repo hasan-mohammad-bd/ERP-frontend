@@ -32,10 +32,10 @@ export const scheduleColumns: ColumnDef<ScheduleColumn>[] = [
     accessorKey: "name",
     header: "Schedule Name",
   },
-  {
+/*   {
     accessorKey: "hour",
     header: "Hour",
-  },
+  }, */
   {
     accessorKey: "start_time",
     header: "Start Time",

@@ -121,7 +121,7 @@ export function AddScheduleForm({
                 </FormItem>
               )}
             />
-            <FormField
+{/*             <FormField
               control={form.control}
               name="hour"
               render={({ field }) => (
@@ -137,7 +137,7 @@ export function AddScheduleForm({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="start_time"
@@ -184,7 +184,7 @@ export function AddScheduleForm({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a verified email to display" />
+                        <SelectValue placeholder="Select Organization" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -195,7 +195,7 @@ export function AddScheduleForm({
                           (organization: OrganizationColumn) => (
                             <SelectItem
                               key={organization.id}
-                              value={String(organization.id)} // Convert organization.id to string
+                              value={String(organization.id)}
                             >
                               {organization.name}
                             </SelectItem>

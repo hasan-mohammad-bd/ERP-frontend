@@ -33,6 +33,7 @@ export function CellAction({ data }: CellActionProps) {
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
+      
 
     }
   };
