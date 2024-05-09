@@ -5,6 +5,7 @@ import Department from "@/pages/hrm/department";
 import Designation from "@/pages/hrm/designation";
 import EmployeeClass from "@/pages/hrm/employee-class";
 import EmployeeGrade from "@/pages/hrm/employee-grade";
+import JobCandidate from "@/pages/hrm/job-candidate";
 import JobPost from "@/pages/hrm/job-post";
 import Schedule from "@/pages/hrm/schedule";
 import Section from "@/pages/hrm/section";
@@ -79,6 +80,11 @@ const router = createBrowserRouter([
 					{
 						path: "job-posts",
 						element: <JobPost />,
+						errorElement: <ErrorPage />,
+					},
+					{
+						path: "job-candidates",
+						element: <JobCandidate />,
 						errorElement: <ErrorPage />,
 					},
 				],

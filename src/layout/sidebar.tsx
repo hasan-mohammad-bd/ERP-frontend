@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { SideNav } from "./side-nav";
 import { cn } from "@/utils";
 import { ArrowLeft } from "lucide-react";

@@ -1,9 +1,9 @@
 import {
-	BookOpenCheck,
+	// BookOpenCheck,
 	LayoutDashboard,
 	Building,
 	Users,
-	HandCoins,
+	// HandCoins,
 	FileBadge2,
 	AlignEndVertical,
 	Fan,
@@ -14,7 +14,8 @@ import {
 	Volume2,
 	Disc,
 	MapPin,
-	SquarePen
+	SquarePen,
+	UserRoundCog
 	
 	
 	
@@ -36,7 +37,7 @@ export const NavItems: NavItem[] = [
 		color: "text-sky-500",
 		isChildren: true,
 		children: [
-			{
+/* 			{
 				title: "Employee List",
 				icon: BookOpenCheck,
 				color: "text-sky-500",
@@ -47,7 +48,7 @@ export const NavItems: NavItem[] = [
 				icon: HandCoins,
 				color: "text-sky-500",
 				href: "/hrm/employees-salary",
-			},
+			}, */
 			{
 				title: "Employee Classes",
 				icon: Fan,
@@ -114,6 +115,12 @@ export const NavItems: NavItem[] = [
 				title: "Job Posts",
 				icon: SquarePen ,
 				href: "/hrm/job-posts",
+				color: "text-sky-500",
+			},
+			{
+				title: "Job Candidates",
+				icon: UserRoundCog ,
+				href: "/hrm/job-candidates",
 				color: "text-sky-500",
 			},
 

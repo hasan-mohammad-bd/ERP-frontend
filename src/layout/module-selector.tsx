@@ -7,7 +7,6 @@ import {
 	Circle,
 	HelpCircle,
 	LucideIcon,
-	XCircle,
 } from "lucide-react";
 
 import { cn } from "@/utils";

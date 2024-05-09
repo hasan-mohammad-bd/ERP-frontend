@@ -1,0 +1,6 @@
+services:
+  akaar_erp_frontend:
+    container_name: akaar_erp_frontend
+    build: .
+    ports:
+      - "80:80"
