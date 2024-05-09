@@ -1,35 +1,29 @@
-# Use a node image to build the React app
-FROM node:20 AS build
+# Use Node.js as a base image
+FROM node:latest as build
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy package.json and yarn.lock to the working directory
+COPY package.json yarn.lock ./
 
 # Install dependencies
-RUN npm install
+# RUN yarn install
 
-# Copy the rest of the application
+# Copy all files to the working directory
 COPY . .
 
-# Reinstall dependencies to ensure they are installed correctly
-RUN rm -rf node_modules package-lock.json && npm install
-
 # Build the React app
-RUN npm run build
+# RUN yarn build
 
-# Use Nginx to serve the built React app
+# Use NGINX as a base image for serving the static files
 FROM nginx:alpine
 
-# Copy built React app from the previous stage
+# Copy the built app to NGINX's HTML directory
 COPY --from=build /app/dist /usr/share/nginx/html
-
-# Copy Nginx configuration file
-COPY nginx.conf /etc/nginx/nginx.conf
 
 # Expose port 80
 EXPOSE 80
 
-# Command to run Nginx in the foreground
+# Start NGINX
 CMD ["nginx", "-g", "daemon off;"]

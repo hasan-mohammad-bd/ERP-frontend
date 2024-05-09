@@ -1,6 +1,9 @@
+version: '3.8'
+
 services:
-  akaar_erp_frontend:
-    container_name: akaar_erp_frontend
-    build: .
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "80:80"
