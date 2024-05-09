@@ -90,11 +90,11 @@ export function AddEducationForm({
   return (
     <>
       {isLoading || updateLoading ? (
-        <div className=" h-[618px]">
+        <div className="h-[535px]">
           <Loading />
         </div>
       ) : (
-        <div className="flex  h-[618px] gap-x-4">
+        <div className="flex  h-[535px] gap-x-4">
           <div className={`${!previousData ? "w-full" : "w-1/2"} `}>
             <Form {...form}>
               <CardHeader>

@@ -123,11 +123,11 @@ export function AddAddressForm({ previousData }: AddAddressFormProps) {
   return (
     <>
       {isLoading || updateLoading ? (
-        <div className="h-56">
+        <div className="h-[535px]">
           <Loading />
         </div>
       ) : (
-        <div className="flex items-center h-[618px] gap-x-4">
+        <div className="flex items-center h-[535px] gap-x-4">
           <div className="w-1/2">
             <Form {...presentAddressForm}>
               <CardHeader>

@@ -12,12 +12,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
-
   DepartmentColumn,
   JobCandidateColumn,
   JobCandidateFormSchema,
   JobCandidateFromValues,
-
   ReligionColumn,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
@@ -66,7 +64,6 @@ export function AddJobCandidateForm({
   const [updateJobCandidate, { isLoading: updateLoading }] =
     useUpdateJobCandidateMutation();
 
-
   const { data: religions, isLoading: religionLoading } =
     useGetReligionsQuery();
 
@@ -90,17 +87,15 @@ export function AddJobCandidateForm({
       nid_number: previousData?.nid_number || "",
       marital_status: previousData?.marital_status || "Married",
       birth_date: previousData?.birth_date || "",
-      expected_salary: previousData?.expected_salary || 0,
+      // expected_salary: previousData?.expected_salary || 0,
       religion_id: previousData?.religion_id || 1,
       gender_id: previousData?.gender_id || 1,
-      present_address: previousData?.present_address || null,
-      permanent_address: previousData?.permanent_address || null,
-
-
+      // present_address: previousData?.present_address || null,
+      // permanent_address: previousData?.permanent_address || null,
     },
   });
 
-/*   const AddressForm = useForm<PresentAddressFormValues>({
+  /*   const AddressForm = useForm<PresentAddressFormValues>({
     resolver: zodResolver(PresentAddressFormSchema),
     defaultValues: {
       city_id: previousData?.present_address?.city.id || 1,
@@ -120,14 +115,11 @@ export function AddJobCandidateForm({
         });
 
         toast.success("Job Post updated successfully");
-        modalClose()
-
-
+        modalClose();
       } else {
         await createJobCandidate(data);
         toast.success("Job Post created successfully");
-        modalClose()
-  
+        modalClose();
       }
     } catch (error) {
       console.log(error);
@@ -145,7 +137,7 @@ export function AddJobCandidateForm({
           <Tabs defaultValue="basic-info" className="">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="basic-info">Basic Info</TabsTrigger>
-              <TabsTrigger disabled={!previousData}  value="address">
+              <TabsTrigger disabled={!previousData} value="address">
                 Address
               </TabsTrigger>
               <TabsTrigger disabled={!previousData} value="education">
@@ -155,7 +147,6 @@ export function AddJobCandidateForm({
                 Experience
               </TabsTrigger>
             </TabsList>
-
 
             {/* Basic Info */}
             <TabsContent value="basic-info">
@@ -170,208 +161,209 @@ export function AddJobCandidateForm({
                   <Form {...form}>
                     <form
                       onSubmit={form.handleSubmit(onSubmit)}
-                      className="space-y-3 grid grid-cols-3 gap-3"
+                      className=""
                     >
-                      <FormField
-                        control={form.control}
-                        name="first_name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>First Name</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                placeholder="Enter First Name"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="last_name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Last Name</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                placeholder="Enter Last Name"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="email"
-                                placeholder="Enter Email"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="phone"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Phone</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                placeholder="Enter Phone"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="alt_phone"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Alt Phone</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                placeholder="Enter Alt Phone"
-                                {...field}
-                                value={field.value || ""}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="nid_type"
-                        render={({ field }) => (
-                          <FormItem className="space-y-3">
-                            <FormLabel>NID Type</FormLabel>
-                            <FormControl>
-                              <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex flex-col space-y-1"
-                              >
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                  <FormControl>
-                                    <RadioGroupItem value="Nid" />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">
-                                    NID
-                                  </FormLabel>
-                                </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                  <FormControl>
-                                    <RadioGroupItem value="Passport" />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">
-                                    Passport
-                                  </FormLabel>
-                                </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                  <FormControl>
-                                    <RadioGroupItem value="BirthCertificate" />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">
-                                    Birth Certificate
-                                  </FormLabel>
-                                </FormItem>
-                              </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="nid_number"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>NID Number</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                placeholder="Enter NID Number"
-                                {...field}
-                                value={field.value || ""}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                      <div className="space-y-2 grid grid-cols-3 gap-3">
+                        <FormField
+                          control={form.control}
+                          name="first_name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>First Name</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  placeholder="Enter First Name"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="last_name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Last Name</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  placeholder="Enter Last Name"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Email</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="email"
+                                  placeholder="Enter Email"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Phone</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  placeholder="Enter Phone"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="alt_phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Alt Phone</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  placeholder="Enter Alt Phone"
+                                  {...field}
+                                  value={field.value || ""}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="nid_type"
+                          render={({ field }) => (
+                            <FormItem className="space-y-3">
+                              <FormLabel>NID Type</FormLabel>
+                              <FormControl>
+                                <RadioGroup
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                  className="flex items-center justify-between space-y-1"
+                                >
+                                  <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl>
+                                      <RadioGroupItem value="Nid" />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">
+                                      NID
+                                    </FormLabel>
+                                  </FormItem>
+                                  <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl>
+                                      <RadioGroupItem value="Passport" />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">
+                                      Passport
+                                    </FormLabel>
+                                  </FormItem>
+                                  <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl>
+                                      <RadioGroupItem value="BirthCertificate" />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">
+                                      Birth Certificate
+                                    </FormLabel>
+                                  </FormItem>
+                                </RadioGroup>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="nid_number"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>NID Number</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  placeholder="Enter NID Number"
+                                  {...field}
+                                  value={field.value || ""}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-                      <FormField
-                        control={form.control}
-                        name="marital_status"
-                        render={({ field }) => (
-                          <FormItem className="space-y-3">
-                            <FormLabel>Marital Status</FormLabel>
-                            <FormControl>
-                              <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex flex-col space-y-1"
-                              >
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                  <FormControl>
-                                    <RadioGroupItem value="Married" />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">
-                                    Married
-                                  </FormLabel>
-                                </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                  <FormControl>
-                                    <RadioGroupItem value="Unmarried" />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">
-                                    Unmarried
-                                  </FormLabel>
-                                </FormItem>
-                              </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="birth_date"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Birth Date</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="date"
-                                placeholder="Enter Birth Date"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                        <FormField
+                          control={form.control}
+                          name="marital_status"
+                          render={({ field }) => (
+                            <FormItem className="space-y-3">
+                              <FormLabel>Marital Status</FormLabel>
+                              <FormControl>
+                                <RadioGroup
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                  className="flex items-center space-y-1"
+                                >
+                                  <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl>
+                                      <RadioGroupItem value="Married" />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">
+                                      Married
+                                    </FormLabel>
+                                  </FormItem>
+                                  <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl>
+                                      <RadioGroupItem value="Unmarried" />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">
+                                      Unmarried
+                                    </FormLabel>
+                                  </FormItem>
+                                </RadioGroup>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="birth_date"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Birth Date</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="date"
+                                  placeholder="Enter Birth Date"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-                      <FormField
+                        {/*                       <FormField
                         control={form.control}
                         name="expected_salary"
                         render={({ field }) => (
@@ -387,85 +379,89 @@ export function AddJobCandidateForm({
                             <FormMessage />
                           </FormItem>
                         )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="religion_id"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Religion</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={
-                                previousData?.religion_id
-                                  ? String(previousData.religion_id)
-                                  : undefined
-                              }
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select Religion" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {religionLoading ? (
-                                  <Loading />
-                                ) : (
-                                  religionData?.map(
-                                    (religion: DepartmentColumn) => (
-                                      <SelectItem
-                                        key={religion.id}
-                                        value={String(religion.id)}
-                                      >
-                                        {religion.name}
-                                      </SelectItem>
+                      /> */}
+                        <FormField
+                          control={form.control}
+                          name="religion_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Religion</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.religion?.id
+                                    ? String(previousData.religion.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Religion" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {religionLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    religionData?.map(
+                                      (religion: DepartmentColumn) => (
+                                        <SelectItem
+                                          key={religion.id}
+                                          value={String(religion.id)}
+                                        >
+                                          {religion.name}
+                                        </SelectItem>
+                                      )
                                     )
-                                  )
-                                )}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="gender_id"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Gender</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={
-                                previousData?.gender_id
-                                  ? String(previousData.gender_id)
-                                  : undefined
-                              }
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select Gender" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {genderLoading ? (
-                                  <Loading />
-                                ) : (
-                                  genderData?.map((gender: ReligionColumn) => (
-                                    <SelectItem
-                                      key={gender.id}
-                                      value={String(gender.id)}
-                                    >
-                                      {gender.name}
-                                    </SelectItem>
-                                  ))
-                                )}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="gender_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Gender</FormLabel>
+
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.gender?.id
+                                    ? String(previousData.gender.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Gender" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {genderLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    genderData?.map(
+                                      (gender: ReligionColumn) => (
+                                        <SelectItem
+                                          key={gender.id}
+                                          value={String(gender.id)}
+                                        >
+                                          {gender.name}
+                                        </SelectItem>
+                                      )
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
                       <div>
                         <Button
                           variant="default"
@@ -482,16 +478,11 @@ export function AddJobCandidateForm({
               </Card>
             </TabsContent>
 
-            
-
             {/* address */}
-
 
             <TabsContent value="address">
               <Card>
-
                 <CardContent className="space-y-2">
-                 
                   <AddAddressForm previousData={previousData} />
                 </CardContent>
               </Card>
@@ -501,9 +492,7 @@ export function AddJobCandidateForm({
 
             <TabsContent value="education">
               <Card>
-
                 <CardContent className="space-y-2">
-                 
                   <AddEducationForm previousData={previousData} />
                 </CardContent>
               </Card>
