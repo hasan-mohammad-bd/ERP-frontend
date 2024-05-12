@@ -203,9 +203,21 @@ export const organizationColumn = z.object({
   id: z.number(),
   name: z.string(),
   sorting_index: z.coerce.number(),
+  
 });
 
 export type OrganizationColumn = z.infer<typeof organizationColumn>;
+
+//organization for dropdown
+export const organizationDropdownColumn = z.object({
+  id: z.number(),
+  name: z.string(),
+  sorting_index: z.coerce.number(),
+  child_organization: organizationColumn.array().optional().nullable(),
+})
+
+export type OrganizationDropdownColumn = z.infer<typeof organizationDropdownColumn>;
+
 
 // Schedule
 
@@ -473,6 +485,8 @@ export type EducationColumn = z.infer<typeof educationColumn>;
 //experiences
 
 export const ExperienceFormSchema = z.object({
+  model_type: z.string().optional().nullable(),
+  model_id: z.coerce.number().optional().nullable(),
   institution: z.string().min(2, {
     message: "Institution must be at least 2 characters.",
   }),
@@ -494,15 +508,18 @@ export const ExperienceFormSchema = z.object({
 
 export type ExperienceFormValues = z.infer<typeof ExperienceFormSchema>;
 
+
 export const experienceColumn = z.object({
 	id: z.number(),
 	institution: z.string(),
-	employment_status: z.string(),
-	designation: z.string(),
+  designation: z.string(),
+	employment_status: employmentStatusColumn.nullable(),
 	start_date: z.string(),
 	end_date: z.string().nullable(),
+  duration: z.string(),
 	description: z.string().nullable(),
 	sorting_index: z.coerce.number(),
+  file: z.string().optional().nullable(),
 })
 
 export type ExperienceColumn = z.infer<typeof experienceColumn>;

@@ -30,7 +30,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetOrganizationsQuery } from "@/store/services/erp-main/api/organization";
+import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
+
 
 interface AddScheduleFormProps {
   modalClose: () => void;
@@ -44,7 +45,8 @@ export function AddScheduleForm({
   const [createSchedule, { isLoading }] = useCreateScheduleMutation();
   const [updateSchedule, { isLoading: updateLoading }] =
     useUpdateScheduleMutation();
-  const { data, isLoading: organizationLoading } = useGetOrganizationsQuery();
+  const { data, isLoading: organizationLoading } = useGetOrganizationForDropDownQuery();
+
 
   const organizationData = data?.data || [];
 
@@ -78,6 +80,7 @@ export function AddScheduleForm({
       console.log(error);
     }
   }
+
 
   return (
     <>
@@ -180,7 +183,7 @@ export function AddScheduleForm({
                   <FormLabel>Organization Name</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={String(previousData?.organization?.id)}
+                    defaultValue={previousData?.organization?.id ? String(previousData.organization.id) : undefined}
                   >
                     <FormControl>
                       <SelectTrigger>

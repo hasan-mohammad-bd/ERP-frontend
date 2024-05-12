@@ -1,9 +1,9 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
-import { ScheduleColumn } from "@/lib/validators";
-import { CellAction } from "./cell-action";
+import { ExperienceColumn } from "@/lib/validators";
+import { CellActionExperience } from "./cell-action-experience";
 
-export const scheduleColumns: ColumnDef<ScheduleColumn>[] = [
+export const experienceColumns: ColumnDef<ExperienceColumn>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -28,34 +28,25 @@ export const scheduleColumns: ColumnDef<ScheduleColumn>[] = [
     enableSorting: false,
     enableHiding: false,
   },
+
   {
-    accessorKey: "name",
-    header: "Schedule Name",
-  },
-/*   {
-    accessorKey: "hour",
-    header: "Hour",
-  }, */
-  {
-    accessorKey: "start_time",
-    header: "Start Time",
+    accessorKey: "institution",
+    header: "Institution",
   },
   {
-    accessorKey: "end_time",
-    header: "End Time",
+    accessorKey: "designation",
+    header: "Designation",
   },
   {
-    accessorKey: "hour",
-    header: "Hour",
+    accessorKey: "start_date",
+    header: "Start date",
   },
-  {
-    accessorKey: "",
-    accessorFn: ({ organization }) => organization?.name,
-    header: "Organization",
-  },
+
+
+
   {
     id: "actions",
     enableSorting: false,
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => <CellActionExperience data={row.original} />,
   },
 ];

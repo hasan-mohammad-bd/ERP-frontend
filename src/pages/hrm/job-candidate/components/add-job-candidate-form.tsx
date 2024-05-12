@@ -50,6 +50,7 @@ import { useForm } from "react-hook-form";
 // import { useGetCountriesQuery } from "@/store/services/hrm/api/country";
 import { AddAddressForm } from "./add-address";
 import { AddEducationForm } from "./add-education";
+import { AddExperienceForm } from "./add-experience";
 
 interface AddJobCandidateFormProps {
   modalClose: () => void;
@@ -494,6 +495,16 @@ export function AddJobCandidateForm({
               <Card>
                 <CardContent className="space-y-2">
                   <AddEducationForm previousData={previousData} />
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* experience */}
+
+            <TabsContent value="experience">
+              <Card>
+                <CardContent className="space-y-2">
+                  <AddExperienceForm previousData={previousData} />
                 </CardContent>
               </Card>
             </TabsContent>

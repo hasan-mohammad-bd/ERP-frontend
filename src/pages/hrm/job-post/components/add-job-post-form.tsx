@@ -32,7 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetOrganizationsQuery } from "@/store/services/erp-main/api/organization";
+
 import { useGetVacancyRequisitionsQuery } from "@/store/services/hrm/api/vacancy-requisition";
 import { useGetDepartmentsQuery } from "@/store/services/hrm/api/department";
 import { useGetDesignationQuery } from "@/store/services/hrm/api/designation";
@@ -45,6 +45,7 @@ import {
   useUpdateJobPostMutation,
 } from "@/store/services/hrm/api/job-post";
 import { Textarea } from "@/components/ui/textarea";
+import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
 
 interface AddJobPostFormProps {
   modalClose: () => void;
@@ -59,7 +60,7 @@ export function AddJobPostForm({
   const [updateJobPost, { isLoading: updateLoading }] =
     useUpdateJobPostMutation();
   const { data: organizations, isLoading: organizationLoading } =
-    useGetOrganizationsQuery();
+  useGetOrganizationForDropDownQuery();
   const { data: departments, isLoading: departmentLoading } =
     useGetDepartmentsQuery();
   const { data: designations, isLoading: designationLoading } =

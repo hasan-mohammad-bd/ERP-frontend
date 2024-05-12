@@ -17,7 +17,7 @@ const Schedule = () => {
   const { data, isLoading } = useGetSchedulesQuery();
 
   const schedules = data?.data || [];
-
+  console.log(schedules);
   // console.log(departments);
   if (isLoading) return <Loading />;
 

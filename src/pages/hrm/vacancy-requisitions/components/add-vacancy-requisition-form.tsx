@@ -28,13 +28,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetOrganizationsQuery } from "@/store/services/erp-main/api/organization";
+
 import {
   useCreateVacancyRequisitionMutation,
   useUpdateVacancyRequisitionMutation,
 } from "@/store/services/hrm/api/vacancy-requisition";
 import { useGetDepartmentsQuery } from "@/store/services/hrm/api/department";
 import { useGetDesignationQuery } from "@/store/services/hrm/api/designation";
+import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
 
 interface AddVacancyRequisitionFormProps {
   modalClose: () => void;
@@ -50,7 +51,7 @@ export function AddVacancyRequisitionForm({
   const [updateVacancyRequisition, { isLoading: updateLoading }] =
     useUpdateVacancyRequisitionMutation();
   const { data: organizations, isLoading: organizationLoading } =
-    useGetOrganizationsQuery();
+  useGetOrganizationForDropDownQuery();
   const { data: departments, isLoading: departmentLoading } =
     useGetDepartmentsQuery();
   const { data: designations, isLoading: designationLoading } =
@@ -159,11 +160,11 @@ export function AddVacancyRequisitionForm({
                   <FormLabel>Department name</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={String(previousData?.department?.id)}
+                    defaultValue={previousData?.department?.id ? String(previousData?.department?.id) : undefined} 
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a verified email to display" />
+                        <SelectValue placeholder="Select department" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -193,11 +194,11 @@ export function AddVacancyRequisitionForm({
                   <FormLabel>Organization name</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={String(previousData?.organization?.id)}
+                    defaultValue={previousData?.organization?.id ? String(previousData?.organization?.id) : undefined}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a verified email to display" />
+                        <SelectValue placeholder="Select Organization" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -229,11 +230,11 @@ export function AddVacancyRequisitionForm({
                   <FormLabel>Designation Name</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={String(previousData?.designation?.id) }
+                    defaultValue={previousData?.designation?.id ? String(previousData?.designation?.id) : undefined}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a verified email to display" />
+                        <SelectValue placeholder="Select Designation" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
