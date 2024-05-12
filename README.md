@@ -1,30 +1,71 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# akaar-erp-frontend
 
-Currently, two official plugins are available:
+This laravel project is a microservice for akaar-erp. this will provide service for User auth and run on [localhost:80](http://localhost:80)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+| Configarations    | Version |
+| ---      | ---       |
+| Node | v20.5.0        |
+| React js | ^18.2.0       |
+| Npm | 10.4.0       |
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### install
 
-- Configure the top-level `parserOptions` property like this:
+Clone Git Repo
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+    git clone https://github.com/Akaar-IT-Devs/akaar-erp-frontend
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+get into the Folder
+
+    cd akaar-erp-frontend
+
+get into the Folder
+
+    cp .env.local.example .env.local
+
+get into wsl
+
+    wsl
+
+install node modules
+
+    npm i
+
+build The app
+
+    npm run build
+
+
+To bring all containers up
+
+    docker-compose up -d
+
+To access your Laravel Application visit
+
+    localhost:80
+
+get into container
+
+    docker-compose exec web bash
+
+To exit a container
+
+    exit
+
+To list all running containers
+
+    docker ps
+
+To bring all containers down
+
+    docker-compose down
+
+
+To bring all containers down with volumes
+
+    docker-compose down -v --rmi all
+
+
+
+
