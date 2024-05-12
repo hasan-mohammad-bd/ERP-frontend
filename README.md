@@ -10,7 +10,7 @@ This laravel project is a microservice for akaar-erp. this will provide service 
 | Npm | 10.4.0       |
 
 
-### install
+### install Project
 
 Clone Git Repo
 
@@ -75,4 +75,4 @@ We'd like to thank the following individuals for their contributions to this pro
 
 - [Touhid Zaman](https://github.com/TouhidZaman) - initiated this project.
 - [Hasan Mohammad](https://github.com/hasan-mohammad-bd) -  Collaborate this project.
-- [Shakil Mohammad](https://github.com/Shakil147) -  Collaborate this project.
+- [Shakil Mohammad](https://github.com/Shakil147) -  Dockerized this project.
