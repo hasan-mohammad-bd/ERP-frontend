@@ -21,6 +21,7 @@ FROM nginx:alpine
 
 # Copy the built app to NGINX's HTML directory
 COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/ngnix /etc/nginx/conf.d
 
 # Expose port 80
 EXPOSE 80
