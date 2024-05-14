@@ -6,16 +6,15 @@ import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
 import { Modal } from "@/components/common/modal";
-import { AddJobCandidateForm } from "./components/add-job-candidate-form";
-import { jobCandidateColumns } from "./components/columns";
-import { useGetJobCandidatesQuery } from "@/store/services/hrm/api/job-candidate";
+import { AddJobApplyForm } from "./components/add-apply-post-form";
+import { useGetJobAppliesQuery } from "@/store/services/hrm/api/job-apply";
+import { jobApplyColumns } from "./components/columns";
 
-const JobCandidate = () => {
+const JobApply = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetJobCandidatesQuery();
+  const { data, isLoading } = useGetJobAppliesQuery();
 
-  const jobCandidate = data?.data || [];
-
+  const jobApply = data?.data || [];
 
   // console.log(departments);
   if (isLoading) return <Loading />;
@@ -26,31 +25,31 @@ const JobCandidate = () => {
         <div className="flex-1 space-y-4 md:p-8">
           <div className="flex items-center justify-between">
             <Heading
-              title="Job Candidates"
-              description="Manage job candidates for you business"
+              title="Job Apply"
+              description="Manage job apply for you business"
             />
             <Button onClick={() => setIsOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" /> Add Job Candidate
+              <Plus className="mr-2 h-4 w-4" /> Add Job Apply
             </Button>
           </div>
           <Separator />
-          {jobCandidate && (
+          {jobApply && (
             <div>
-              <DataTable columns={jobCandidateColumns} data={jobCandidate} />
+              <DataTable columns={jobApplyColumns} data={jobApply} />
             </div>
           )}
         </div>
       </div>
       <Modal
-        title="Add Job Candidate"
+        title="Add Job Apply"
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}
-        className="w-[90%] max-w-6xl"
+        className=""
       >
-        <AddJobCandidateForm modalClose={() => setIsOpen(false)} />
+        <AddJobApplyForm modalClose={() => setIsOpen(false)} />
       </Modal>
     </>
   );
 };
 
-export default JobCandidate;
+export default JobApply;

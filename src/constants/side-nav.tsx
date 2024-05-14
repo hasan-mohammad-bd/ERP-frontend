@@ -15,7 +15,8 @@ import {
 	Disc,
 	MapPin,
 	SquarePen,
-	UserRoundCog
+	UserRoundCog,
+	BriefcaseBusiness
 	
 	
 	
@@ -121,6 +122,12 @@ export const NavItems: NavItem[] = [
 				title: "Job Candidates",
 				icon: UserRoundCog ,
 				href: "/hrm/job-candidates",
+				color: "text-sky-500",
+			},
+			{
+				title: "Job Apply",
+				icon: BriefcaseBusiness ,
+				href: "/hrm/job-apply",
 				color: "text-sky-500",
 			},
 

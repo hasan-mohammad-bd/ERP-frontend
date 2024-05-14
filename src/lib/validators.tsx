@@ -794,6 +794,48 @@ export const jobCandidateColumn = z.object({
 
 export type JobCandidateColumn = z.infer<typeof jobCandidateColumn>;
 
+//job-apply-status 
+
+export const jobApplyStatusColumn = z.object({
+  job_apply_status: z.enum([
+    "Pending",
+    "Rejected",
+    "Shortlisted",
+    "Call For Interview",
+    "Interviewed",
+    "Selected"
+  ]).array(),
+  contract_type: z.enum([
+    "Email",
+    "Phone",
+    "Message"
+  ]).array()
+});
+
+export type JobApplyStatusColumn = z.infer<typeof jobApplyStatusColumn>;
+
+
+//job-apply
+
+export const JobApplyFormSchema = z.object({
+  job_post_id: z.coerce.number(),
+  job_candidate_id: z.coerce.number(),
+  status: z.string(),
+  expected_salary: z.coerce.number(),
+})
+
+export type JobApplyFormValues = z.infer<typeof JobApplyFormSchema>;
+
+export const jobApplyColumn = z.object({
+  id: z.coerce.number(),
+  status: z.string(),
+  expected_salary: z.coerce.number(),
+  job_post: jobPostColumn.optional().nullable(),
+  job_candidate: jobCandidateColumn.optional().nullable(),
+})
+
+export type JobApplyColumn = z.infer<typeof jobApplyColumn>;
+
 
 
 
