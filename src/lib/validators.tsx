@@ -1,4 +1,5 @@
 
+
 import { z } from "zod";
 
 // Department Form validation
@@ -835,6 +836,179 @@ export const jobApplyColumn = z.object({
 })
 
 export type JobApplyColumn = z.infer<typeof jobApplyColumn>;
+
+//role id
+
+export const roleIdColumn = z.object({
+  id: z.coerce.number(),
+  name: z.string(),
+})
+
+
+//employee nominee
+
+export const employeeNomineeColumn = z.object({
+  id: z.coerce.number(),
+  gender_id: z.coerce.number(),
+  name: z.string(),
+  fathers_name: z.string(),
+  mothers_name: z.string(),
+  relation: z.string(),
+  phone_number: z.string(),
+  nid_number: z.coerce.string(),
+  image: z.string(),
+  gender: genderColumn.optional().nullable(),
+  address: presentAddressColumn.optional().nullable(),
+})
+
+export type EmployeeNomineeColumn = z.infer<typeof employeeNomineeColumn>;
+
+//employee 
+
+export const EmployeeFormSchema = z.object({
+  employee_unique_id: z.string(),
+  card_id: z.string(),
+  machine_id: z.string(),
+  first_name: z.string(),
+  last_name: z.string(),
+  phone: z.string(),
+  corporate_phone: z.string(),
+  email: z.string().email({
+    message: "Invalid email address.",
+  }),
+/*   birth_date: z.string().refine((value) => {
+    const birthDate = new Date(value);
+    const now = new Date();
+    const diff = now.getTime() - birthDate.getTime();
+    const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); 
+    return age >= 10;
+  }, {
+    message: "Birth date must be at least 10 years old.",
+  }), */
+  password: z.string(),
+  role_id: z.coerce.number(),
+  joining_date: z.string(),
+  is_head_of_dept: z.number(),
+  status: z.enum(["Active", "Inactive"], {
+    message: "Status must be either 'Active' or 'Inactive'.",
+  }),
+  location_id: z.coerce.number(),
+  organization_id: z.coerce.number(),
+  department_id: z.coerce.number(),
+  designation_id: z.coerce.number(),
+  work_place_id: z.coerce.number(),
+  section_id: z.coerce.number(),
+  schedule_id: z.coerce.number(),
+  employee_class_id: z.coerce.number(),
+  employee_grade_id: z.coerce.number(),
+  employment_status_id: z.coerce.number(),
+  reporting_to_id: z.coerce.number().optional().nullable(),
+  sorting_index: z.coerce
+  .number()
+  .int()
+  .min(0, {
+    message: "Sorting index must be at least 0.",
+  })
+  .max(9999, {
+    message: "Sorting index must be at most 9999.",
+  }),
+  gender_id: z.coerce.number(),
+  religion_id: z.coerce.number(),
+  blood_group_id: z.coerce.number(),
+  fathers_name: z.string(),
+  mothers_name: z.string(),
+  payment_type: z.string(),
+  account_number: z.string(),
+  bank_name: z.string(),
+  bank_branch: z.string(),
+  nid_number: z.string(),
+  birth_date: z.string().refine((value) => {
+    const birthDate = new Date(value);
+    const now = new Date();
+    const diff = now.getTime() - birthDate.getTime();
+    const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); 
+    return age >= 10;
+  }, {
+    message: "Birth date must be at least 10 years old.",
+  }),
+  tin_number: z.string(),
+  martial_status: z.enum(["Married", "Unmarried"], {
+    message: "Marital status must be either married or unmarried.",
+  })
+
+})
+
+export type EmployeeFormValues = z.infer<typeof EmployeeFormSchema>;
+
+export const employeeColumn = z.object({
+  id: z.coerce.number(),
+  first_name: z.string(),
+  last_name: z.string(),
+  email: z.string(),
+  phone: z.string(),
+  corporate_phone: z.string(),
+  joining_date: z.string().date(),
+  is_head_of_dept: z.coerce.number(),
+  status: z.string(),
+  user_id: z.coerce.number().optional().nullable(),
+  gender_id: z.coerce.number(),
+  religion_id: z.coerce.number(),
+  blood_group_id: z.coerce.number(),
+  location_id: z.coerce.number(),
+  organization_id: z.coerce.number(),
+  work_place_id: z.coerce.number(),
+  department_id : z.coerce.number(),
+  designation_id: z.coerce.number(),
+  section_id: z.coerce.number(),
+  employee_class_id: z.coerce.number(),
+  employee_grade_id: z.coerce.number(),
+  employee_status_id: z.coerce.number(),
+  reporting_to_id: z.coerce.number().optional().nullable(),
+  employee_unique_id: z.string(),
+  card_id: z.string(),
+  machine_id: z.string(),
+  fathers_name: z.string(),
+  mothers_name: z.string(),
+  payment_type: z.string(),
+  account_number: z.string(),
+  bank_name: z.string(),
+  bank_branch: z.string(),
+  nid_number: z.string(),
+  birth_date: z.string(),
+  tin_number: z.string(),
+  martial_status: z.string(),
+  sorting_index: z.coerce.number(),
+  religion: z.string(),
+  gender: z.string(),
+  blood_group: z.string(),
+  educations: educationColumn.array().optional().nullable(),
+  present_address: presentAddressColumn.optional().nullable(),
+	permanent_address: permanentAddressColumn.optional().nullable(),
+  experiences: experienceColumn.array().optional().nullable(),
+	skills: skillColumn.array().optional().nullable(),
+  location: locationColumn.optional().nullable(),
+  organization: organizationColumn.optional().nullable(),
+  department: departmentColumn.optional().nullable(),
+  designation: designationColumn.optional().nullable(),
+  section: sectionColumn.optional().nullable(),
+  schedule: scheduleColumn.optional().nullable(),
+  employee_nominee: employeeNomineeColumn.optional().nullable(),
+  employee_class: employeeClassColumn.optional().nullable(),
+  employee_grade: employeeGradeColumn.optional().nullable(),
+  employment_status: employmentStatusColumn.optional().nullable(),
+  work_place: workPlaceColumn.optional().nullable(),
+
+})
+
+export type EmployeeColumn = z.infer<typeof employeeColumn>;
+
+
+
+
+
+
+
+
 
 
 

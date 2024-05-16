@@ -1,8 +1,9 @@
 import { Layout } from "@/layout";
 import ErrorPage from "@/pages/ErrorPage";
-import Employee from "@/pages/employee";
+
 import Department from "@/pages/hrm/department";
 import Designation from "@/pages/hrm/designation";
+import Employee from "@/pages/hrm/employee";
 import EmployeeClass from "@/pages/hrm/employee-class";
 import EmployeeGrade from "@/pages/hrm/employee-grade";
 import JobApply from "@/pages/hrm/job-apply";

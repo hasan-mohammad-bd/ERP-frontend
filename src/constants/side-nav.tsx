@@ -16,7 +16,8 @@ import {
 	MapPin,
 	SquarePen,
 	UserRoundCog,
-	BriefcaseBusiness
+	BriefcaseBusiness,
+	BookOpenCheck
 	
 	
 	
@@ -38,13 +39,13 @@ export const NavItems: NavItem[] = [
 		color: "text-sky-500",
 		isChildren: true,
 		children: [
-/* 			{
+			{
 				title: "Employee List",
 				icon: BookOpenCheck,
 				color: "text-sky-500",
 				href: "/hrm/employees-list",
 			},
-			{
+/* 			{
 				title: "Employee Salary",
 				icon: HandCoins,
 				color: "text-sky-500",
