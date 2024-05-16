@@ -7,16 +7,14 @@ import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
 import { designationColumns } from "./components/columns";
 import { Modal } from "@/components/common/modal";
-import {  AddDesignationForm } from "./components/add-designation-form";
+import { AddDesignationForm } from "./components/add-designation-form";
 import { useGetDesignationQuery } from "@/store/services/hrm/api/designation";
 
 const Designation = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const { data, isLoading } = useGetDesignationQuery();
-
 	const designations = data?.data || [];
 
-	// console.log(departments);
 	if (isLoading) return <Loading />;
 
 	return (
