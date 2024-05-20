@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import {
   DepartmentColumn,
   EmployeeColumn,
-  JobCandidateColumn,
+  EmployeeFormValues,
   JobCandidateFormSchema,
   JobCandidateFromValues,
   ReligionColumn,
@@ -39,10 +39,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import {
+/* import {
   useCreateJobCandidateMutation,
   useUpdateJobCandidateMutation,
-} from "@/store/services/hrm/api/job-candidate";
+} from "@/store/services/hrm/api/job-candidate"; */
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useGetReligionsQuery } from "@/store/services/hrm/api/religion";
@@ -52,8 +52,12 @@ import { useForm } from "react-hook-form";
 import { AddAddressForm } from "./add-address";
 import { AddEducationForm } from "./add-education";
 import { AddExperienceForm } from "./add-experience";
+import {
+  useCreateEmployeeMutation,
+  useUpdateEmployeeMutation,
+} from "@/store/services/hrm/api/employee-list";
 
-interface AddJobCandidateFormProps {
+interface AddEmployeeFormProps {
   modalClose: () => void;
   data?: EmployeeColumn;
 }
@@ -61,10 +65,10 @@ interface AddJobCandidateFormProps {
 export function AddEmployeeForm({
   modalClose,
   data: previousData,
-}: AddJobCandidateFormProps) {
-  const [createJobCandidate, { isLoading }] = useCreateJobCandidateMutation();
-  const [updateJobCandidate, { isLoading: updateLoading }] =
-    useUpdateJobCandidateMutation();
+}: AddEmployeeFormProps) {
+  const [createEmployee, { isLoading }] = useCreateEmployeeMutation();
+  const [updateEmployee, { isLoading: updateLoading }] =
+    useUpdateEmployeeMutation();
 
   const { data: religions, isLoading: religionLoading } =
     useGetReligionsQuery();
@@ -77,49 +81,72 @@ export function AddEmployeeForm({
   const genderData = genders?.data || [];
   // const countryData = countries?.data || [];
 
-  const form = useForm<JobCandidateFromValues>({
+  const form = useForm<EmployeeFormValues>({
     resolver: zodResolver(JobCandidateFormSchema),
     defaultValues: {
+      employee_unique_id: previousData?.employee_unique_id || "",
+      card_id: previousData?.card_id || "",
+      machine_id: previousData?.machine_id || "",
+
       first_name: previousData?.first_name || "",
       last_name: previousData?.last_name || "",
-      email: previousData?.email || "",
+    
       phone: previousData?.phone || "",
-/*       alt_phone: previousData?.alt_phone || "",
-      nid_type: previousData?.nid_type || "Nid",
-      nid_number: previousData?.nid_number || "",
-      marital_status: previousData?.marital_status || "Married",
-      birth_date: previousData?.birth_date || "", */
-      // expected_salary: previousData?.expected_salary || 0,
+      corporate_phone: previousData?.corporate_phone || "",
+      email: previousData?.email || "",
+
+      joining_date: previousData?.joining_date || "",
       religion_id: previousData?.religion_id || 1,
       gender_id: previousData?.gender_id || 1,
-      // present_address: previousData?.present_address || null,
-      // permanent_address: previousData?.permanent_address || null,
+      is_head_of_dept: previousData?.is_head_of_dept || 0,
+      status: previousData?.status || "Active",
+      location_id: previousData?.location_id || 1,
+      organization_id: previousData?.organization_id || 1,
+      work_place_id: previousData?.work_place_id || 1,
+      department_id: previousData?.department_id || 1,
+      section_id: previousData?.section_id || 1,
+      schedule_id: previousData?.schedule_id || 1,
+      employee_class_id: previousData?.employee_class_id || 1,
+      employee_grade_id: previousData?.employee_grade_id || 1,
+      employment_status_id: previousData?.employment_status_id || 1,
+      reporting_to_id: previousData?.reporting_to_id || null,
+
+      sorting_index: previousData?.sorting_index || 0,
+      password: "",
+      // gender_id: previousData?.gender_id || 2,
+      
+
+
+
+
+      
+
+
+
+
+
+      
+
+
+
+
+
     },
   });
 
-  /*   const AddressForm = useForm<PresentAddressFormValues>({
-    resolver: zodResolver(PresentAddressFormSchema),
-    defaultValues: {
-      city_id: previousData?.present_address?.city.id || 1,
-      post_code: previousData?.present_address?.post_code || 1200,
-      address: previousData?.present_address?.address || "",
-      country_id: previousData?.present_address?.country.id || 1,
-    },
-  });
- */
-  async function onSubmit(data: JobCandidateFromValues) {
+  async function onSubmit(data: EmployeeFormValues) {
     try {
       if (previousData) {
         console.log(previousData);
-        await updateJobCandidate({
-          jobCandidateId: previousData.id,
-          updatedJobCandidate: data,
+        await updateEmployee({
+          employeeId: previousData.id,
+          updatedEmployee: data,
         });
 
         toast.success("Job Post updated successfully");
         modalClose();
       } else {
-        await createJobCandidate(data);
+        await createEmployee(data);
         toast.success("Job Post created successfully");
         modalClose();
       }
@@ -161,10 +188,7 @@ export function AddEmployeeForm({
                 </CardHeader>
                 <CardContent className="space-y-2 ">
                   <Form {...form}>
-                    <form
-                      onSubmit={form.handleSubmit(onSubmit)}
-                      className=""
-                    >
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="">
                       <div className="space-y-2 grid grid-cols-3 gap-3">
                         <FormField
                           control={form.control}
