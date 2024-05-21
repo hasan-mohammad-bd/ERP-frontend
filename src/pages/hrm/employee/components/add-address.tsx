@@ -16,6 +16,7 @@ import {
   AddressFromValues,
   CityColumn,
   CountryColumn,
+  EmployeeColumn,
   JobCandidateColumn,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
@@ -39,7 +40,7 @@ import { useGetCitiesQuery } from "@/store/services/hrm/api/city";
 import { CardHeader, CardTitle } from "@/components/ui/card";
 
 interface AddAddressFormProps {
-  previousData?: JobCandidateColumn;
+  previousData?: EmployeeColumn;
 }
 
 export function AddAddressForm({ previousData }: AddAddressFormProps) {

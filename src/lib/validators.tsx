@@ -839,10 +839,13 @@ export type JobApplyColumn = z.infer<typeof jobApplyColumn>;
 
 //role id
 
-export const roleIdColumn = z.object({
+export const roleColumn = z.object({
   id: z.coerce.number(),
   name: z.string(),
+  permissions: z.string().array().optional().nullable(),
 })
+
+export type RoleColumn = z.infer<typeof roleColumn>;
 
 
 //employee nominee
@@ -863,68 +866,111 @@ export const employeeNomineeColumn = z.object({
 
 export type EmployeeNomineeColumn = z.infer<typeof employeeNomineeColumn>;
 
+//blood-group
+
+export const bloodGroupColumn = z.object({
+  id: z.coerce.number(),
+  name: z.string(),
+})
+
+export type BloodGroupColumn = z.infer<typeof bloodGroupColumn>;
+
 //employee 
 
 export const EmployeeFormSchema = z.object({
-  employee_unique_id: z.string(),
-  card_id: z.string(),
-  machine_id: z.string(),
-  first_name: z.string(),
-  last_name: z.string(),
-  phone: z.string(),
-  corporate_phone: z.string(),
+  employee_unique_id: z.string({
+    required_error: "Employee unique ID is required.",
+  }),
+  card_id: z.string({
+    required_error: "Card ID is required.",
+  }),
+  machine_id: z.string({
+    required_error: "Machine ID is required.",
+  }),
+  first_name: z.string({
+    required_error: "First name is required.",
+  }),
+  last_name: z.string({
+    required_error: "Last name is required.",
+  }),
+  phone: z.string({
+    required_error: "Phone number is required.",
+  }),
+  corporate_phone: z.string({
+    required_error: "Corporate phone number is required.",
+  }),
   email: z.string().email({
     message: "Invalid email address.",
   }),
-/*   birth_date: z.string().refine((value) => {
-    const birthDate = new Date(value);
-    const now = new Date();
-    const diff = now.getTime() - birthDate.getTime();
-    const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); 
-    return age >= 10;
-  }, {
-    message: "Birth date must be at least 10 years old.",
-  }), */
   password: z.string().regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$/, {
     message: "Password must contain at least one uppercase letter, one lowercase letter, and one digit.",
+  }).optional().nullable(),
+  role_id: z.coerce.number({
+    required_error: "Role ID is required.",
   }),
-  role_id: z.coerce.number(),
-  joining_date: z.string(),
-  is_head_of_dept: z.number(),
+  joining_date: z.string().refine(value => !isNaN(Date.parse(value)), {
+    message: "Invalid joining date.",
+  }),
+  is_head_of_dept: z.number().optional().nullable(),
   status: z.enum(["Active", "Inactive"], {
     message: "Status must be either 'Active' or 'Inactive'.",
+    required_error: "Status is required.",
   }),
-  location_id: z.coerce.number(),
-  organization_id: z.coerce.number(),
-  department_id: z.coerce.number(),
-  designation_id: z.coerce.number(),
-  work_place_id: z.coerce.number(),
-  section_id: z.coerce.number(),
-  schedule_id: z.coerce.number(),
-  employee_class_id: z.coerce.number(),
-  employee_grade_id: z.coerce.number(),
-  employment_status_id: z.coerce.number(),
+  location_id: z.coerce.number({
+    required_error: "Location ID is required.",
+  }),
+  organization_id: z.coerce.number({
+    required_error: "Organization ID is required.",
+  }),
+  department_id: z.coerce.number({
+    required_error: "Department ID is required.",
+  }),
+  designation_id: z.coerce.number({
+    required_error: "Designation ID is required.",
+  }),
+  work_place_id: z.coerce.number({
+    required_error: "Work place ID is required.",
+  }),
+  section_id: z.coerce.number({
+    required_error: "Section ID is required.",
+  }),
+  schedule_id: z.coerce.number({
+    required_error: "Schedule ID is required.",
+  }),
+  employee_class_id: z.coerce.number({
+    required_error: "Employee class ID is required.",
+  }),
+  employee_grade_id: z.coerce.number({
+    required_error: "Employee grade ID is required.",
+  }),
+  employment_status_id: z.coerce.number({
+    required_error: "Employment status ID is required.",
+  }),
   reporting_to_id: z.coerce.number().optional().nullable(),
-  sorting_index: z.coerce
-  .number()
-  .int()
-  .min(0, {
+  sorting_index: z.coerce.number().int().min(0, {
     message: "Sorting index must be at least 0.",
-  })
-  .max(9999, {
+  }).max(9999, {
     message: "Sorting index must be at most 9999.",
+  }).optional().nullable(),
+  gender_id: z.coerce.number({
+    required_error: "Gender ID is required.",
   }),
-  gender_id: z.coerce.number(),
-  religion_id: z.coerce.number(),
-  blood_group_id: z.coerce.number(),
-  fathers_name: z.string(),
-  mothers_name: z.string(),
-  payment_type: z.string(),
-  account_number: z.string(),
-  bank_name: z.string(),
-  bank_branch: z.string(),
-  nid_number: z.string(),
-  birth_date: z.string().refine((value) => {
+  religion_id: z.coerce.number({
+    required_error: "Religion ID is required.",
+  }),
+  blood_group_id: z.coerce.number({
+    required_error: "Blood group ID is required.",
+  }),
+  fathers_name: z.string().optional().nullable(),
+  mothers_name: z.string().optional().nullable(),
+  payment_type: z.enum(["Cash", "Bank"]).optional().nullable(),
+  account_number: z.string().optional().nullable(),
+  bank_name: z.string().optional().nullable(),
+  bank_branch: z.string().optional().nullable(),
+  nid_number: z.string({
+    required_error: "NID number is required.",
+  }),
+  birth_date: z.string().refine(value => {
     const birthDate = new Date(value);
     const now = new Date();
     const diff = now.getTime() - birthDate.getTime();
@@ -932,13 +978,12 @@ export const EmployeeFormSchema = z.object({
     return age >= 10;
   }, {
     message: "Birth date must be at least 10 years old.",
-  }),
-  tin_number: z.string(),
+  }).optional().nullable(),
+  tin_number: z.string().optional().nullable(),
   martial_status: z.enum(["Married", "Unmarried"], {
-    message: "Marital status must be either married or unmarried.",
-  })
-
-})
+    message: "Marital status must be either 'Married' or 'Unmarried'.",
+  }).optional().nullable(),
+});
 
 export type EmployeeFormValues = z.infer<typeof EmployeeFormSchema>;
 
@@ -970,20 +1015,22 @@ export const employeeColumn = z.object({
   employee_unique_id: z.string(),
   card_id: z.string(),
   machine_id: z.string(),
+  role_id: z.coerce.number(),
+  role: roleColumn,
   fathers_name: z.string(),
   mothers_name: z.string(),
-  payment_type: z.string(),
+  payment_type: z.enum(["Cash", "Bank"]),
   account_number: z.string(),
   bank_name: z.string(),
   bank_branch: z.string(),
   nid_number: z.string(),
   birth_date: z.string(),
   tin_number: z.string(),
-  martial_status: z.string(),
+  martial_status: z.enum(["Married", "Unmarried"]),
   sorting_index: z.coerce.number(),
-  religion: z.string(),
+  religion: religionColumn,
   gender: genderColumn.optional().nullable(),
-  blood_group: z.string(),
+  blood_group: bloodGroupColumn.optional().nullable(),
   educations: educationColumn.array().optional().nullable(),
   present_address: presentAddressColumn.optional().nullable(),
 	permanent_address: permanentAddressColumn.optional().nullable(),

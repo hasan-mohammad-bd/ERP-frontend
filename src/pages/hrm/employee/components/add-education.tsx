@@ -15,6 +15,7 @@ import {
   EducationColumn,
   EducationFormSchema,
   EducationFromValues,
+  EmployeeColumn,
   JobCandidateColumn,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
@@ -31,7 +32,7 @@ import { DataTable } from "@/components/ui/data-table/data-table";
 import { educationColumns } from "./education-columns";
 
 interface AddEducationFormProps {
-  previousData?: JobCandidateColumn;
+  previousData?: EmployeeColumn;
   data?: EducationColumn;
   jobData?: JobCandidateColumn;
   modelClose?: (() => void) | undefined

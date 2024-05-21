@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
+  EmployeeColumn,
   EmploymentStatusColumn,
   ExperienceColumn,
   ExperienceFormSchema,
@@ -44,7 +45,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 
 interface AddExperienceFormProps {
-  previousData?: JobCandidateColumn;
+  previousData?: EmployeeColumn;
   data?: ExperienceColumn;
   jobData?: JobCandidateColumn;
   modelClose?: (() => void) | undefined;
