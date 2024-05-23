@@ -878,33 +878,22 @@ export type BloodGroupColumn = z.infer<typeof bloodGroupColumn>;
 //employee 
 
 export const EmployeeFormSchema = z.object({
-  employee_unique_id: z.string({
-    required_error: "Employee unique ID is required.",
-  }),
-  card_id: z.string({
-    required_error: "Card ID is required.",
-  }),
-  machine_id: z.string({
-    required_error: "Machine ID is required.",
-  }),
-  first_name: z.string({
+  employee_unique_id: z.string(),
+  card_id: z.string().optional().nullable(),
+  machine_id: z.string().optional().nullable(),
+  first_name: z.string({ 
     required_error: "First name is required.",
   }),
-  last_name: z.string({
-    required_error: "Last name is required.",
-  }),
+  last_name: z.string().optional().nullable(),
   phone: z.string({
-    required_error: "Phone number is required.",
-  }),
-  corporate_phone: z.string({
-    required_error: "Corporate phone number is required.",
-  }),
+    required_error: "Phone number is required.",}),
+  corporate_phone: z.string().optional().nullable(),
   email: z.string().email({
     message: "Invalid email address.",
   }),
   password: z.string().regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$/, {
-    message: "Password must contain at least one uppercase letter, one lowercase letter, and one digit.",
-  }).optional().nullable(),
+    message: "Password must contain at least one uppercase letter, one lowercase letter, and one digit."
+  }).min(8, { message: "Password must be at least 8 characters long." }).optional().nullable(),
   role_id: z.coerce.number({
     required_error: "Role ID is required.",
   }),
@@ -967,9 +956,7 @@ export const EmployeeFormSchema = z.object({
   account_number: z.string().optional().nullable(),
   bank_name: z.string().optional().nullable(),
   bank_branch: z.string().optional().nullable(),
-  nid_number: z.string({
-    required_error: "NID number is required.",
-  }),
+  nid_number: z.string().optional().nullable(),
   birth_date: z.string().refine(value => {
     const birthDate = new Date(value);
     const now = new Date();
@@ -980,12 +967,47 @@ export const EmployeeFormSchema = z.object({
     message: "Birth date must be at least 10 years old.",
   }).optional().nullable(),
   tin_number: z.string().optional().nullable(),
-  martial_status: z.enum(["Married", "Unmarried"], {
-    message: "Marital status must be either 'Married' or 'Unmarried'.",
-  }).optional().nullable(),
+  marital_status: z.enum(["Married", "Unmarried"]).optional().nullable(),
 });
 
+
 export type EmployeeFormValues = z.infer<typeof EmployeeFormSchema>;
+
+//employee update schema
+
+export const employeeUpdateSchema = z.object({
+  card_id: z.string().optional().nullable(),
+  machine_id: z.string().optional().nullable(),
+  is_head_of_dept: z.number().optional().nullable(),
+  reporting_to_id: z.coerce.number().optional().nullable(),
+  sorting_index: z.coerce.number().int().min(0, {
+    message: "Sorting index must be at least 0.",
+  }).max(9999, {
+    message: "Sorting index must be at most 9999.",
+  }).optional().nullable(),
+  fathers_name: z.string().optional().nullable(),
+  mothers_name: z.string().optional().nullable(),
+  payment_type: z.enum(["Cash", "Bank"]).optional().nullable(),
+  account_number: z.string().optional().nullable(),
+  bank_name: z.string().optional().nullable(),
+  bank_branch: z.string().optional().nullable(),
+  nid_number: z.string().optional().nullable(),
+  birth_date: z.string().refine(value => {
+    const birthDate = new Date(value);
+    const now = new Date();
+    const diff = now.getTime() - birthDate.getTime();
+    const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); 
+    return age >= 10;
+  }, {
+    message: "Birth date must be at least 10 years old.",
+  }).optional().nullable(),
+  tin_number: z.string().optional().nullable(),
+  marital_status: z.enum(["Married", "Unmarried"]).optional().nullable(),
+
+
+})
+
+export type EmployeeUpdateFormValues = z.infer<typeof employeeUpdateSchema>;
 
 export const employeeColumn = z.object({
   id: z.coerce.number(),
@@ -1026,7 +1048,7 @@ export const employeeColumn = z.object({
   nid_number: z.string(),
   birth_date: z.string(),
   tin_number: z.string(),
-  martial_status: z.enum(["Married", "Unmarried"]),
+  marital_status: z.enum(["Married", "Unmarried"]),
   sorting_index: z.coerce.number(),
   religion: religionColumn,
   gender: genderColumn.optional().nullable(),

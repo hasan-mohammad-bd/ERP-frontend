@@ -17,7 +17,7 @@ import {
   CityColumn,
   CountryColumn,
   EmployeeColumn,
-  JobCandidateColumn,
+  
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
 

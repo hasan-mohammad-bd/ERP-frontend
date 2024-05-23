@@ -73,14 +73,12 @@ import { useGetEmployeeGradesQuery } from "@/store/services/hrm/api/employee-gra
 import { useGetEmploymentStatusesQuery } from "@/store/services/hrm/api/employment_status";
 import { useGetBloodGroupsQuery } from "@/store/services/hrm/api/blood-group";
 import { useGetRolesQuery } from "@/store/services/erp-main/api/role";
-
+import { AddAdditionalInfoForm } from "./add-additional-data";
 
 interface AddEmployeeFormProps {
   modalClose: () => void;
   data?: EmployeeColumn;
 }
-
-
 
 export function AddEmployeeForm({
   modalClose,
@@ -121,8 +119,6 @@ export function AddEmployeeForm({
     useGetBloodGroupsQuery();
   const { data: roles, isLoading: roleLoading } = useGetRolesQuery();
 
-
-
   const locationData = locations?.data || [];
   const religionData = religions?.data || [];
   const genderData = genders?.data || [];
@@ -140,50 +136,42 @@ export function AddEmployeeForm({
   // const countryData = countries?.data || [];
 
   const form = useForm<EmployeeFormValues>({
+
     resolver: zodResolver(EmployeeFormSchema),
     defaultValues: {
       employee_unique_id: previousData?.employee_unique_id || "",
-      card_id: previousData?.card_id || "",
-      machine_id: previousData?.machine_id || "",
       first_name: previousData?.first_name || "",
       last_name: previousData?.last_name || "",
       phone: previousData?.phone || "",
       corporate_phone: previousData?.corporate_phone || "",
       email: previousData?.email || "",
       joining_date: previousData?.joining_date || "",
-      is_head_of_dept: previousData?.is_head_of_dept || 0,
       status: previousData?.status || "Active",
       location_id: previousData?.location_id || 1,
       organization_id: previousData?.organization_id || 1,
       work_place_id: previousData?.work_place_id || 1,
       department_id: previousData?.department_id || 1,
       section_id: previousData?.section_id || 1,
+      designation_id: previousData?.designation_id || 1,
       schedule_id: previousData?.schedule_id || 1,
       employee_class_id: previousData?.employee_class_id || 1,
       employee_grade_id: previousData?.employee_grade_id || 1,
       employment_status_id: previousData?.employment_status_id || 1,
-      reporting_to_id: previousData?.reporting_to_id || null,
-      sorting_index: previousData?.sorting_index || 0,
-      password: "",
+      // sorting_index: previousData?.sorting_index || 0,
+      password: null,
       gender_id: previousData?.gender_id || 1,
       religion_id: previousData?.religion_id || 1,
       blood_group_id: previousData?.blood_group_id || 1,
-      fathers_name: previousData?.fathers_name || "",
-      mothers_name: previousData?.mothers_name || "",
-      payment_type: previousData?.payment_type || "Cash",
-      account_number: previousData?.account_number || "",
-      bank_name: previousData?.bank_name || "",
-      nid_number: previousData?.nid_number || "",
-      birth_date: previousData?.birth_date || "",
-      tin_number: previousData?.tin_number || "",
-      martial_status: previousData?.martial_status || "Married",
+      // fathers_name: previousData?.fathers_name || "",
+      // mothers_name: previousData?.mothers_name || "",
+      role_id: previousData?.role_id || 1,
     },
   });
+
 
   async function onSubmit(data: EmployeeFormValues) {
     try {
       if (previousData) {
-        console.log(previousData);
         await updateEmployee({
           employeeId: previousData.id,
           updatedEmployee: data,
@@ -204,14 +192,17 @@ export function AddEmployeeForm({
   return (
     <>
       {isLoading || updateLoading ? (
-        <div className="h-56">
+        <div className="">
           <Loading />
         </div>
       ) : (
         <div>
           <Tabs defaultValue="basic-info" className="">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="basic-info">Basic Info</TabsTrigger>
+              <TabsTrigger disabled={!previousData} value="additional-info">
+                Additional Info
+              </TabsTrigger>
               <TabsTrigger disabled={!previousData} value="address">
                 Address
               </TabsTrigger>
@@ -253,7 +244,7 @@ export function AddEmployeeForm({
                             </FormItem>
                           )}
                         />
-                        <FormField
+{/*                         <FormField
                           control={form.control}
                           name="card_id"
                           render={({ field }) => (
@@ -269,8 +260,8 @@ export function AddEmployeeForm({
                               <FormMessage />
                             </FormItem>
                           )}
-                        />
-                        <FormField
+                        /> */}
+{/*                         <FormField
                           control={form.control}
                           name="machine_id"
                           render={({ field }) => (
@@ -286,7 +277,7 @@ export function AddEmployeeForm({
                               <FormMessage />
                             </FormItem>
                           )}
-                        />
+                        /> */}
 
                         <FormField
                           control={form.control}
@@ -310,12 +301,13 @@ export function AddEmployeeForm({
                           name="last_name"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Last Name</FormLabel>
+                              <FormLabel>Last Name (optional)</FormLabel>
                               <FormControl>
                                 <Input
                                   type="text"
                                   placeholder="Enter Last Name"
                                   {...field}
+                                  value={field.value || ""}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -345,7 +337,7 @@ export function AddEmployeeForm({
                           name="corporate_phone"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Corporate Phone</FormLabel>
+                              <FormLabel>Corporate Phone (optional)</FormLabel>
                               <FormControl>
                                 <Input
                                   type="text"
@@ -413,7 +405,7 @@ export function AddEmployeeForm({
                           )}
                         /> */}
 
-                        <FormField
+{/*                         <FormField
                           control={form.control}
                           name="nid_number"
                           render={({ field }) => (
@@ -430,7 +422,28 @@ export function AddEmployeeForm({
                               <FormMessage />
                             </FormItem>
                           )}
-                        />
+                        /> */}
+                      {
+                        !previousData &&
+                        <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Password (optional)</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="text"
+                                placeholder="Enter Password"
+                                {...field}
+                                value={field.value || ""}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      }
                         <FormField
                           control={form.control}
                           name="status"
@@ -1071,6 +1084,15 @@ export function AddEmployeeForm({
                   </Form>
                 </CardContent>
                 <CardFooter>{/* <Button>Save changes</Button> */}</CardFooter>
+              </Card>
+            </TabsContent>
+
+            {/* additional info */}
+            <TabsContent value="additional-info">
+              <Card>
+                <CardContent className="space-y-2">
+                  <AddAdditionalInfoForm previousData={previousData} />
+                </CardContent>
               </Card>
             </TabsContent>
 
