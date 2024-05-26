@@ -16,7 +16,8 @@ import {
   AddressFromValues,
   CityColumn,
   CountryColumn,
-  JobCandidateColumn,
+  EmployeeColumn,
+  
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
 
@@ -39,7 +40,7 @@ import { useGetCitiesQuery } from "@/store/services/hrm/api/city";
 import { CardHeader, CardTitle } from "@/components/ui/card";
 
 interface AddAddressFormProps {
-  previousData?: JobCandidateColumn;
+  previousData?: EmployeeColumn;
 }
 
 export function AddAddressForm({ previousData }: AddAddressFormProps) {
@@ -58,7 +59,7 @@ export function AddAddressForm({ previousData }: AddAddressFormProps) {
   const presentAddressForm = useForm<AddressFromValues>({
     resolver: zodResolver(AddressFormSchema),
     defaultValues: {
-      model_type: "App\\Models\\Job\\JobCandidate",
+      model_type: "App\\Models\\Employee\\Employee",
       model_id: previousData?.id,
       country_id: previousData?.present_address?.country.id || 1,
       city_id: previousData?.present_address?.city.id || 1,
@@ -71,7 +72,7 @@ export function AddAddressForm({ previousData }: AddAddressFormProps) {
   const permanentAddressForm = useForm<AddressFromValues>({
     resolver: zodResolver(AddressFormSchema),
     defaultValues: {
-      model_type: "App\\Models\\Job\\JobCandidate",
+      model_type: "App\\Models\\Employee\\Employee",
       model_id: previousData?.id,
       country_id: previousData?.permanent_address?.country.id || 1,
       city_id: previousData?.permanent_address?.city.id || 1,

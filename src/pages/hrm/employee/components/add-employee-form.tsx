@@ -12,12 +12,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
+  BloodGroupColumn,
   DepartmentColumn,
+  DesignationColumn,
+  EmployeeClassColumn,
   EmployeeColumn,
-  JobCandidateColumn,
-  JobCandidateFormSchema,
-  JobCandidateFromValues,
+  EmployeeFormSchema,
+  EmployeeFormValues,
+  EmployeeGradeColumn,
+  EmploymentStatusColumn,
+  LocationColumn,
+  OrganizationColumn,
   ReligionColumn,
+  RoleColumn,
+  ScheduleColumn,
+  SectionColumn,
+  WorkPlaceColumn,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
 
@@ -39,12 +49,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import {
-  useCreateJobCandidateMutation,
-  useUpdateJobCandidateMutation,
-} from "@/store/services/hrm/api/job-candidate";
-
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useGetReligionsQuery } from "@/store/services/hrm/api/religion";
 import { useGetGendersQuery } from "@/store/services/hrm/api/gender";
 import { useForm } from "react-hook-form";
@@ -52,8 +56,27 @@ import { useForm } from "react-hook-form";
 import { AddAddressForm } from "./add-address";
 import { AddEducationForm } from "./add-education";
 import { AddExperienceForm } from "./add-experience";
+import {
+  useCreateEmployeeMutation,
+  useUpdateEmployeeMutation,
+} from "@/store/services/hrm/api/employee-list";
 
-interface AddJobCandidateFormProps {
+import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
+import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
+import { useGetWorkplacesQuery } from "@/store/services/hrm/api/workplace";
+import { useGetDepartmentsQuery } from "@/store/services/hrm/api/department";
+import { useGetDesignationQuery } from "@/store/services/hrm/api/designation";
+import { useGetSectionsQuery } from "@/store/services/hrm/api/section";
+import { useGetSchedulesQuery } from "@/store/services/hrm/api/schedule";
+import { useGetEmployeeClassesQuery } from "@/store/services/hrm/api/employee-class";
+import { useGetEmployeeGradesQuery } from "@/store/services/hrm/api/employee-grade";
+import { useGetEmploymentStatusesQuery } from "@/store/services/hrm/api/employment_status";
+import { useGetBloodGroupsQuery } from "@/store/services/hrm/api/blood-group";
+import { useGetRolesQuery } from "@/store/services/erp-main/api/role";
+import { AddAdditionalInfoForm } from "./add-additional-data";
+import { AddSkillForm } from "./add-skill";
+
+interface AddEmployeeFormProps {
   modalClose: () => void;
   data?: EmployeeColumn;
 }
@@ -61,65 +84,104 @@ interface AddJobCandidateFormProps {
 export function AddEmployeeForm({
   modalClose,
   data: previousData,
-}: AddJobCandidateFormProps) {
-  const [createJobCandidate, { isLoading }] = useCreateJobCandidateMutation();
-  const [updateJobCandidate, { isLoading: updateLoading }] =
-    useUpdateJobCandidateMutation();
+}: AddEmployeeFormProps) {
+  const [createEmployee, { isLoading }] = useCreateEmployeeMutation();
+  const [updateEmployee, { isLoading: updateLoading }] =
+    useUpdateEmployeeMutation();
 
   const { data: religions, isLoading: religionLoading } =
     useGetReligionsQuery();
+  const { data: organizations, isLoading: organizationLoading } =
+    useGetOrganizationForDropDownQuery();
+  const { data: workplaces, isLoading: workplaceLoading } =
+    useGetWorkplacesQuery();
+  const { data: departments, isLoading: departmentLoading } =
+    useGetDepartmentsQuery();
+  const { data: designations, isLoading: designationLoading } =
+    useGetDesignationQuery();
+  const { data: schedules, isLoading: scheduleLoading } =
+    useGetSchedulesQuery();
+
+  const { data: sections, isLoading: sectionLoading } = useGetSectionsQuery();
 
   const { data: genders, isLoading: genderLoading } = useGetGendersQuery();
-  // const { data: countries, isLoading: countriesLoading } =
-  //   useGetCountriesQuery();
+  const { data: locations, isLoading: locationLoading } =
+    useGetLocationsQuery();
 
+  const { data: employeeClasses, isLoading: employeeClassLoading } =
+    useGetEmployeeClassesQuery();
+
+  const { data: employeeGrades, isLoading: employeeGradeLoading } =
+    useGetEmployeeGradesQuery();
+
+  const { data: employmentStatus, isLoading: employmentStatusLoading } =
+    useGetEmploymentStatusesQuery();
+  const { data: bloodGroups, isLoading: bloodGroupLoading } =
+    useGetBloodGroupsQuery();
+  const { data: roles, isLoading: roleLoading } = useGetRolesQuery();
+
+  const locationData = locations?.data || [];
   const religionData = religions?.data || [];
   const genderData = genders?.data || [];
+  const organizationData = organizations?.data || [];
+  const workplaceData = workplaces?.data || [];
+  const departmentData = departments?.data || [];
+  const designationData = designations?.data || [];
+  const sectionData = sections?.data || [];
+  const scheduleData = schedules?.data || [];
+  const employeeClassData = employeeClasses?.data || [];
+  const employeeGradeData = employeeGrades?.data || [];
+  const employmentStatusData = employmentStatus?.data || [];
+  const bloodGroupData = bloodGroups?.data || [];
+  const roleData = roles?.data || [];
   // const countryData = countries?.data || [];
 
-  const form = useForm<JobCandidateFromValues>({
-    resolver: zodResolver(JobCandidateFormSchema),
+  const form = useForm<EmployeeFormValues>({
+
+    resolver: zodResolver(EmployeeFormSchema),
     defaultValues: {
+      employee_unique_id: previousData?.employee_unique_id || "",
       first_name: previousData?.first_name || "",
       last_name: previousData?.last_name || "",
-      email: previousData?.email || "",
       phone: previousData?.phone || "",
-/*       alt_phone: previousData?.alt_phone || "",
-      nid_type: previousData?.nid_type || "Nid",
-      nid_number: previousData?.nid_number || "",
-      marital_status: previousData?.marital_status || "Married",
-      birth_date: previousData?.birth_date || "", */
-      // expected_salary: previousData?.expected_salary || 0,
-      religion_id: previousData?.religion_id || 1,
+      corporate_phone: previousData?.corporate_phone || "",
+      email: previousData?.email || "",
+      joining_date: previousData?.joining_date || "",
+      status: previousData?.status || "Active",
+      location_id: previousData?.location_id || 1,
+      organization_id: previousData?.organization_id || 1,
+      work_place_id: previousData?.work_place_id || 1,
+      department_id: previousData?.department_id || 1,
+      section_id: previousData?.section_id || 1,
+      designation_id: previousData?.designation_id || 1,
+      schedule_id: previousData?.schedule_id || 1,
+      employee_class_id: previousData?.employee_class_id || 1,
+      employee_grade_id: previousData?.employee_grade_id || 1,
+      employment_status_id: previousData?.employment_status_id || 1,
+      // sorting_index: previousData?.sorting_index || 0,
+      password: null,
       gender_id: previousData?.gender_id || 1,
-      // present_address: previousData?.present_address || null,
-      // permanent_address: previousData?.permanent_address || null,
+      religion_id: previousData?.religion_id || 1,
+      blood_group_id: previousData?.blood_group_id || 1,
+      // fathers_name: previousData?.fathers_name || "",
+      // mothers_name: previousData?.mothers_name || "",
+      role_id: previousData?.role_id || 1,
     },
   });
 
-  /*   const AddressForm = useForm<PresentAddressFormValues>({
-    resolver: zodResolver(PresentAddressFormSchema),
-    defaultValues: {
-      city_id: previousData?.present_address?.city.id || 1,
-      post_code: previousData?.present_address?.post_code || 1200,
-      address: previousData?.present_address?.address || "",
-      country_id: previousData?.present_address?.country.id || 1,
-    },
-  });
- */
-  async function onSubmit(data: JobCandidateFromValues) {
+
+  async function onSubmit(data: EmployeeFormValues) {
     try {
       if (previousData) {
-        console.log(previousData);
-        await updateJobCandidate({
-          jobCandidateId: previousData.id,
-          updatedJobCandidate: data,
+        await updateEmployee({
+          employeeId: previousData.id,
+          updatedEmployee: data,
         });
 
         toast.success("Job Post updated successfully");
         modalClose();
       } else {
-        await createJobCandidate(data);
+        await createEmployee(data);
         toast.success("Job Post created successfully");
         modalClose();
       }
@@ -131,14 +193,17 @@ export function AddEmployeeForm({
   return (
     <>
       {isLoading || updateLoading ? (
-        <div className="h-56">
+        <div className="">
           <Loading />
         </div>
       ) : (
         <div>
           <Tabs defaultValue="basic-info" className="">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-6">
               <TabsTrigger value="basic-info">Basic Info</TabsTrigger>
+              <TabsTrigger disabled={!previousData} value="additional-info">
+                Additional Info
+              </TabsTrigger>
               <TabsTrigger disabled={!previousData} value="address">
                 Address
               </TabsTrigger>
@@ -148,6 +213,9 @@ export function AddEmployeeForm({
               <TabsTrigger disabled={!previousData} value="experience">
                 Experience
               </TabsTrigger>
+              <TabsTrigger disabled={!previousData} value="skill">
+                Skill
+              </TabsTrigger>
             </TabsList>
 
             {/* Basic Info */}
@@ -156,16 +224,65 @@ export function AddEmployeeForm({
                 <CardHeader>
                   <CardTitle>Basic information</CardTitle>
                   <CardDescription>
-                    Enter the basic information about job candidate.
+                    Enter the basic information about the employee.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-2 ">
                   <Form {...form}>
-                    <form
-                      onSubmit={form.handleSubmit(onSubmit)}
-                      className=""
-                    >
-                      <div className="space-y-2 grid grid-cols-3 gap-3">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="">
+                      <div className="space-y-2 grid grid-cols-5 gap-3">
+                        <FormField
+                          control={form.control}
+                          name="employee_unique_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Employee Unique Id</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  placeholder="Enter Employee Unique Id"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+{/*                         <FormField
+                          control={form.control}
+                          name="card_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Card Id</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  placeholder="Enter Card Id"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        /> */}
+{/*                         <FormField
+                          control={form.control}
+                          name="machine_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Machine Id</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  placeholder="Enter Machine Id"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        /> */}
+
                         <FormField
                           control={form.control}
                           name="first_name"
@@ -188,29 +305,13 @@ export function AddEmployeeForm({
                           name="last_name"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Last Name</FormLabel>
+                              <FormLabel>Last Name (optional)</FormLabel>
                               <FormControl>
                                 <Input
                                   type="text"
                                   placeholder="Enter Last Name"
                                   {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="email"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Email</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="email"
-                                  placeholder="Enter Email"
-                                  {...field}
+                                  value={field.value || ""}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -234,16 +335,17 @@ export function AddEmployeeForm({
                             </FormItem>
                           )}
                         />
+
                         <FormField
                           control={form.control}
-                          name="alt_phone"
+                          name="corporate_phone"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Alt Phone</FormLabel>
+                              <FormLabel>Corporate Phone (optional)</FormLabel>
                               <FormControl>
                                 <Input
                                   type="text"
-                                  placeholder="Enter Alt Phone"
+                                  placeholder="Enter Corporate Phone"
                                   {...field}
                                   value={field.value || ""}
                                 />
@@ -254,47 +356,60 @@ export function AddEmployeeForm({
                         />
                         <FormField
                           control={form.control}
-                          name="nid_type"
+                          name="email"
                           render={({ field }) => (
-                            <FormItem className="space-y-3">
-                              <FormLabel>NID Type</FormLabel>
+                            <FormItem>
+                              <FormLabel>Email</FormLabel>
                               <FormControl>
-                                <RadioGroup
-                                  onValueChange={field.onChange}
-                                  defaultValue={field.value}
-                                  className="flex items-center justify-between space-y-1"
-                                >
-                                  <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value="Nid" />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">
-                                      NID
-                                    </FormLabel>
-                                  </FormItem>
-                                  <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value="Passport" />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">
-                                      Passport
-                                    </FormLabel>
-                                  </FormItem>
-                                  <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value="BirthCertificate" />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">
-                                      Birth Certificate
-                                    </FormLabel>
-                                  </FormItem>
-                                </RadioGroup>
+                                <Input
+                                  type="email"
+                                  placeholder="Enter Email"
+                                  {...field}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
+
                         <FormField
+                          control={form.control}
+                          name="joining_date"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Joining Date</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="date"
+                                  placeholder="Enter joining date"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        {/*                         <FormField
+                          control={form.control}
+                          name="is_head_of_dept"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                              <div className="space-y-0.5">
+                                <FormLabel>Head Of Department</FormLabel>
+                              </div>
+                              <FormControl>
+                                <Switch
+                                  checked={field.value === 1}
+                                  onCheckedChange={(checked: boolean) =>
+                                    field.onChange(checked ? 1 : 0)
+                                  }
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        /> */}
+
+{/*                         <FormField
                           control={form.control}
                           name="nid_number"
                           render={({ field }) => (
@@ -311,43 +426,500 @@ export function AddEmployeeForm({
                               <FormMessage />
                             </FormItem>
                           )}
-                        />
-
+                        /> */}
+                      {
+                        !previousData &&
+                        <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Password (optional)</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="text"
+                                placeholder="Enter Password"
+                                {...field}
+                                value={field.value || ""}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      }
                         <FormField
                           control={form.control}
-                          name="marital_status"
+                          name="status"
                           render={({ field }) => (
-                            <FormItem className="space-y-3">
-                              <FormLabel>Marital Status</FormLabel>
-                              <FormControl>
-                                <RadioGroup
-                                  onValueChange={field.onChange}
-                                  defaultValue={field.value}
-                                  className="flex items-center space-y-1"
-                                >
-                                  <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value="Married" />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">
-                                      Married
-                                    </FormLabel>
-                                  </FormItem>
-                                  <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value="Unmarried" />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">
-                                      Unmarried
-                                    </FormLabel>
-                                  </FormItem>
-                                </RadioGroup>
-                              </FormControl>
+                            <FormItem>
+                              <FormLabel>Status</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={previousData?.status || "Active"}
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectItem value={"Active"}>
+                                    Active
+                                  </SelectItem>
+                                  <SelectItem value={"Inactive"}>
+                                    Inactive
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
                         <FormField
+                          control={form.control}
+                          name="location_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Location</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.location?.id
+                                    ? String(previousData?.location.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Location" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {locationLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    locationData?.map(
+                                      (location: LocationColumn) => (
+                                        <SelectItem
+                                          key={location.id}
+                                          value={String(location.id)}
+                                        >
+                                          {location.name}
+                                        </SelectItem>
+                                      )
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="organization_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Organization name</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.organization?.id
+                                    ? String(previousData.organization.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Organization" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {organizationLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    organizationData?.map(
+                                      (organization: OrganizationColumn) => (
+                                        <SelectItem
+                                          key={organization.id}
+                                          value={String(organization.id)}
+                                        >
+                                          {organization.name}
+                                        </SelectItem>
+                                      )
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="work_place_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Work Place</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.work_place?.id
+                                    ? String(previousData?.work_place?.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Work Place" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {workplaceLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    workplaceData?.map(
+                                      (workplace: WorkPlaceColumn) => (
+                                        <SelectItem
+                                          key={workplace.id}
+                                          value={String(workplace.id)}
+                                        >
+                                          {workplace.name}
+                                        </SelectItem>
+                                      )
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="department_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Department name</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.department?.id
+                                    ? String(previousData.department.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Department" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {departmentLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    departmentData?.map(
+                                      (department: DepartmentColumn) => (
+                                        <SelectItem
+                                          key={department.id}
+                                          value={String(department.id)}
+                                        >
+                                          {department.name}
+                                        </SelectItem>
+                                      )
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="designation_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Designation Name</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.designation?.id
+                                    ? String(previousData?.designation?.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Designation" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {designationLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    designationData?.map(
+                                      (designation: DesignationColumn) => (
+                                        <SelectItem
+                                          key={designation.id}
+                                          value={String(designation.id)}
+                                        >
+                                          {designation.name}
+                                        </SelectItem>
+                                      )
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="section_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Section</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.section?.id
+                                    ? String(previousData?.section?.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Section" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {sectionLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    sectionData?.map(
+                                      (section: SectionColumn) => (
+                                        <SelectItem
+                                          key={section.id}
+                                          value={String(section.id)}
+                                        >
+                                          {section.name}
+                                        </SelectItem>
+                                      )
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="schedule_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Schedule</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.schedule?.id
+                                    ? String(previousData?.schedule?.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Schedule" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {scheduleLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    scheduleData?.map(
+                                      (schedule: ScheduleColumn) => (
+                                        <SelectItem
+                                          key={schedule.id}
+                                          value={String(schedule.id)}
+                                        >
+                                          {schedule.name}
+                                        </SelectItem>
+                                      )
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="employee_class_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Employee Class</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.employee_class?.id
+                                    ? String(previousData?.employee_class?.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Employee Class" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {employeeClassLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    employeeClassData?.map(
+                                      (employeeClass: EmployeeClassColumn) => (
+                                        <SelectItem
+                                          key={employeeClass.id}
+                                          value={String(employeeClass.id)}
+                                        >
+                                          {employeeClass.name}
+                                        </SelectItem>
+                                      )
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="employee_grade_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Employee Grade</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.employee_grade?.id
+                                    ? String(previousData?.employee_grade?.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Employee Class" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {employeeGradeLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    employeeGradeData?.map(
+                                      (employeeGrade: EmployeeGradeColumn) => (
+                                        <SelectItem
+                                          key={employeeGrade.id}
+                                          value={String(employeeGrade.id)}
+                                        >
+                                          {employeeGrade.name}
+                                        </SelectItem>
+                                      )
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="employment_status_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Employment Status</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.employment_status?.id
+                                    ? String(previousData?.employment_status.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Employment Status" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {employmentStatusLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    employmentStatusData?.map(
+                                      (employment: EmploymentStatusColumn) => (
+                                        <SelectItem
+                                          key={employment.id}
+                                          value={String(employment.id)}
+                                        >
+                                          {employment.name}
+                                        </SelectItem>
+                                      )
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="blood_group_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Blood Group</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.blood_group?.id
+                                    ? String(previousData?.blood_group.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Blood Group" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {bloodGroupLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    bloodGroupData?.map(
+                                      (bloodGroup: BloodGroupColumn) => (
+                                        <SelectItem
+                                          key={bloodGroup.id}
+                                          value={String(bloodGroup.id)}
+                                        >
+                                          {bloodGroup.name}
+                                        </SelectItem>
+                                      )
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        {/*                         <FormField
                           control={form.control}
                           name="birth_date"
                           render={({ field }) => (
@@ -363,7 +935,7 @@ export function AddEmployeeForm({
                               <FormMessage />
                             </FormItem>
                           )}
-                        />
+                        /> */}
 
                         {/*                       <FormField
                         control={form.control}
@@ -463,6 +1035,45 @@ export function AddEmployeeForm({
                             </FormItem>
                           )}
                         />
+                        <FormField
+                          control={form.control}
+                          name="role_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Role</FormLabel>
+
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.role?.id
+                                    ? String(previousData.role.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Role" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {roleLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    roleData?.map((role: RoleColumn) => (
+                                      <SelectItem
+                                        key={role.id}
+                                        value={String(role.id)}
+                                      >
+                                        {role.name}
+                                      </SelectItem>
+                                    ))
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                       </div>
                       <div>
                         <Button
@@ -477,6 +1088,15 @@ export function AddEmployeeForm({
                   </Form>
                 </CardContent>
                 <CardFooter>{/* <Button>Save changes</Button> */}</CardFooter>
+              </Card>
+            </TabsContent>
+
+            {/* additional info */}
+            <TabsContent value="additional-info">
+              <Card>
+                <CardContent className="space-y-2">
+                  <AddAdditionalInfoForm previousData={previousData} />
+                </CardContent>
               </Card>
             </TabsContent>
 
@@ -506,6 +1126,13 @@ export function AddEmployeeForm({
               <Card>
                 <CardContent className="space-y-2">
                   <AddExperienceForm previousData={previousData} />
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="skill">
+              <Card>
+                <CardContent className="space-y-2">
+                  <AddSkillForm previousData={previousData} />
                 </CardContent>
               </Card>
             </TabsContent>

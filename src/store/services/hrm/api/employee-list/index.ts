@@ -2,6 +2,7 @@ import {
   EmployeeFormValues,
   EmployeeColumn,
 
+
 } from "@/lib/validators";
 import { hrmApi } from "../..";
 import { DeleteResponse } from "@/types";
@@ -14,7 +15,7 @@ const employeeApi = hrmApi.injectEndpoints({
     }),
     createEmployee: build.mutation<
       { data: EmployeeColumn },
-      EmployeeFormValues
+      EmployeeFormValues 
     >({
       query: (newEmployee) => ({
         url: `employees`,
