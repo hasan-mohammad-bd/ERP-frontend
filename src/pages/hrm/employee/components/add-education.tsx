@@ -51,7 +51,7 @@ export function AddEducationForm({
   const form = useForm<EducationFromValues>({
     resolver: zodResolver(EducationFormSchema),
     defaultValues: {
-      model_type: "App\\Models\\Job\\JobCandidate",
+      model_type: "App\\Models\\Employee\\Employee",
       model_id: previousData?.id,
       type: educationData?.type || "",
       academy: educationData?.academy || "",

@@ -20,7 +20,7 @@ const educationApi = hrmApi.injectEndpoints({
         method: "POST",
         body: newEducation,
       }),
-      invalidatesTags: ["education", "job-candidates"], 
+      invalidatesTags: ["education", "job-candidates", "employees"], 
     }),
     removeEducation: build.mutation<DeleteResponse, number>({
       query: (educationId) => ({
@@ -35,7 +35,7 @@ const educationApi = hrmApi.injectEndpoints({
         method: "PUT", 
         body: updatedEducation,
       }),
-      invalidatesTags: ["education", "job-candidates"], 
+      invalidatesTags: ["education", "job-candidates", "employees"], 
     }),
   }),
   overrideExisting: false,

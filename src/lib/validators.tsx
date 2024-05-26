@@ -975,7 +975,7 @@ export type EmployeeFormValues = z.infer<typeof EmployeeFormSchema>;
 
 //employee update schema
 
-export const employeeUpdateSchema = z.object({
+export const EmployeeUpdateSchema = z.object({
   card_id: z.string().optional().nullable(),
   machine_id: z.string().optional().nullable(),
   is_head_of_dept: z.number().optional().nullable(),
@@ -1007,7 +1007,7 @@ export const employeeUpdateSchema = z.object({
 
 })
 
-export type EmployeeUpdateFormValues = z.infer<typeof employeeUpdateSchema>;
+export type EmployeeUpdateFormValues = z.infer<typeof EmployeeUpdateSchema>;
 
 export const employeeColumn = z.object({
   id: z.coerce.number(),

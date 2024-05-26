@@ -20,7 +20,7 @@ const addressApi = hrmApi.injectEndpoints({
         method: "POST",
         body: newAddress,
       }),
-      invalidatesTags: ["addresses", "job-candidates"], 
+      invalidatesTags: ["addresses", "job-candidates", "employees"], 
     }),
     removeAddress: build.mutation<DeleteResponse, number>({
       query: (addressId) => ({
@@ -35,7 +35,7 @@ const addressApi = hrmApi.injectEndpoints({
         method: "PUT", 
         body: updatedAddress,
       }),
-      invalidatesTags: ["addresses", "job-candidates"], 
+      invalidatesTags: ["addresses", "job-candidates", "employees"], 
     }),
   }),
   overrideExisting: false,

@@ -76,13 +76,10 @@ export function AddAdditionalInfoForm({
       employee_class_id: previousData?.employee_class_id || 1,
       employee_grade_id: previousData?.employee_grade_id || 1,
       employment_status_id: previousData?.employment_status_id || 1,
-      // sorting_index: previousData?.sorting_index || 0,
       password: null,
       gender_id: previousData?.gender_id || 1,
       religion_id: previousData?.religion_id || 1,
       blood_group_id: previousData?.blood_group_id || 1,
-      // fathers_name: previousData?.fathers_name || "",
-      // mothers_name: previousData?.mothers_name || "",
       role_id: previousData?.role_id || 1,
     },
   });
