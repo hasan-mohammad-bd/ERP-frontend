@@ -68,7 +68,7 @@ export function AddExperienceForm({
   const form = useForm<ExperienceFormValues>({
     resolver: zodResolver(ExperienceFormSchema),
     defaultValues: {
-      model_type: "App\\Models\\Job\\JobCandidate",
+      model_type: "App\\Models\\Employee\\Employee",
       model_id: previousData?.id,
       institution: experienceData?.institution || "",
       employment_status_id: experienceData?.employment_status?.id || 2,

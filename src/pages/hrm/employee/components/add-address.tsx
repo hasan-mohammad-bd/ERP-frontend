@@ -72,7 +72,7 @@ export function AddAddressForm({ previousData }: AddAddressFormProps) {
   const permanentAddressForm = useForm<AddressFromValues>({
     resolver: zodResolver(AddressFormSchema),
     defaultValues: {
-      model_type: "App\\Models\\Job\\JobCandidate",
+      model_type: "App\\Models\\Employee\\Employee",
       model_id: previousData?.id,
       country_id: previousData?.permanent_address?.country.id || 1,
       city_id: previousData?.permanent_address?.city.id || 1,

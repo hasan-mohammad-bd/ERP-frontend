@@ -20,7 +20,7 @@ const experiencesApi = hrmApi.injectEndpoints({
         method: "POST",
         body: newExperience,
       }),
-      invalidatesTags: ["experiences", "job-candidates"],
+      invalidatesTags: ["experiences", "job-candidates", "employees"],
     }),
     removeExperience: build.mutation<DeleteResponse, number>({
       query: (experienceId) => ({
@@ -35,7 +35,7 @@ const experiencesApi = hrmApi.injectEndpoints({
         method: "PUT",
         body: updatedExperience,
       }),
-      invalidatesTags: ["experiences", "job-candidates"],
+      invalidatesTags: ["experiences", "job-candidates", "employees"],
     }),
   }),
   overrideExisting: false,
