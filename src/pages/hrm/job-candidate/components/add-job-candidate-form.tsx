@@ -51,6 +51,8 @@ import { useForm } from "react-hook-form";
 import { AddAddressForm } from "./add-address";
 import { AddEducationForm } from "./add-education";
 import { AddExperienceForm } from "./add-experience";
+import { AddSkillForm } from "./add-skill";
+
 
 interface AddJobCandidateFormProps {
   modalClose: () => void;
@@ -136,7 +138,7 @@ export function AddJobCandidateForm({
       ) : (
         <div>
           <Tabs defaultValue="basic-info" className="">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="basic-info">Basic Info</TabsTrigger>
               <TabsTrigger disabled={!previousData} value="address">
                 Address
@@ -146,6 +148,9 @@ export function AddJobCandidateForm({
               </TabsTrigger>
               <TabsTrigger disabled={!previousData} value="experience">
                 Experience
+              </TabsTrigger>
+              <TabsTrigger disabled={!previousData} value="skill">
+                Skill
               </TabsTrigger>
             </TabsList>
 
@@ -505,6 +510,13 @@ export function AddJobCandidateForm({
               <Card>
                 <CardContent className="space-y-2">
                   <AddExperienceForm previousData={previousData} />
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="skill">
+              <Card>
+                <CardContent className="space-y-2">
+                  <AddSkillForm previousData={previousData} />
                 </CardContent>
               </Card>
             </TabsContent>

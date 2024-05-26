@@ -528,6 +528,8 @@ export type ExperienceColumn = z.infer<typeof experienceColumn>;
 //skills
 
 export const SkillFormSchema = z.object({
+  model_type: z.string(),
+  model_id: z.coerce.number().optional().nullable(),
 	name: z.string().min(2, {
 		message: "Skill must be at least 2 characters.",
 	}),
