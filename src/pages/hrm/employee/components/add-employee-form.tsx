@@ -75,6 +75,7 @@ import { useGetBloodGroupsQuery } from "@/store/services/hrm/api/blood-group";
 import { useGetRolesQuery } from "@/store/services/erp-main/api/role";
 import { AddAdditionalInfoForm } from "./add-additional-data";
 import { AddSkillForm } from "./add-skill";
+import { AddNomineeForm } from "./add-nominee";
 
 interface AddEmployeeFormProps {
   modalClose: () => void;
@@ -199,7 +200,7 @@ export function AddEmployeeForm({
       ) : (
         <div>
           <Tabs defaultValue="basic-info" className="">
-            <TabsList className="grid w-full grid-cols-6">
+            <TabsList className="grid w-full grid-cols-7">
               <TabsTrigger value="basic-info">Basic Info</TabsTrigger>
               <TabsTrigger disabled={!previousData} value="additional-info">
                 Additional Info
@@ -215,6 +216,9 @@ export function AddEmployeeForm({
               </TabsTrigger>
               <TabsTrigger disabled={!previousData} value="skill">
                 Skill
+              </TabsTrigger>
+              <TabsTrigger disabled={!previousData} value="nominee">
+                Nominee
               </TabsTrigger>
             </TabsList>
 
@@ -1133,6 +1137,13 @@ export function AddEmployeeForm({
               <Card>
                 <CardContent className="space-y-2">
                   <AddSkillForm previousData={previousData} />
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="nominee">
+              <Card>
+                <CardContent className="space-y-2">
+                  <AddNomineeForm previousData={previousData} />
                 </CardContent>
               </Card>
             </TabsContent>

@@ -13,11 +13,11 @@ import { SkillColumn } from "@/lib/validators";
 // import { toast } from "sonner";
 
 import { Modal } from "@/components/common/modal";
+import { AddSkillForm } from "./add-skill";
 
 // import { useRemoveJobCandidateMutation } from "@/store/services/hrm/api/job-candidate";
 
 
-import { AddSkillForm } from "./add-skill";
 
 interface CellActionProps {
   data: SkillColumn;

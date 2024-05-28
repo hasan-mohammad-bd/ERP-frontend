@@ -1,5 +1,6 @@
 
 
+
 import { z } from "zod";
 
 // Department Form validation
@@ -622,13 +623,13 @@ export type CountryColumn = z.infer<typeof countryColumn>;
 //address
 
 export const AddressFormSchema = z.object({
-  model_type: z.string(),
-  model_id: z.coerce.number(),
+  model_type: z.string().optional().nullable(),
+  model_id: z.coerce.number().optional().nullable(),
   country_id: z.coerce.number(),
   city_id: z.coerce.number(),
   post_code: z.string(),
   address: z.string(),
-  type: z.string()
+  type: z.string().optional().nullable(),
 })
 
 export type AddressFromValues = z.infer<typeof AddressFormSchema>;
@@ -863,7 +864,7 @@ export const employeeNomineeColumn = z.object({
   nid_number: z.coerce.string(),
   image: z.string(),
   gender: genderColumn.optional().nullable(),
-  address: presentAddressColumn.optional().nullable(),
+  present_address: presentAddressColumn.optional().nullable(),
 })
 
 export type EmployeeNomineeColumn = z.infer<typeof employeeNomineeColumn>;
@@ -876,6 +877,44 @@ export const bloodGroupColumn = z.object({
 })
 
 export type BloodGroupColumn = z.infer<typeof bloodGroupColumn>;
+
+
+//nominee
+
+export const NomineeFormSchema = z.object({
+  employee_id: z.coerce.number(),
+  gender_id: z.coerce.number(),
+  name: z.string(),
+  fathers_name: z.string(),
+  mothers_name: z.string(),
+  relation: z.string(),
+  phone_number: z.string(),
+  nid_number: z.coerce.string(),
+  image: z.string().optional().nullable(),
+  present_address: AddressFormSchema.optional().nullable(),
+})
+
+export type NomineeFormValues = z.infer<typeof NomineeFormSchema>;
+
+export const nomineeColumn = z.object({
+  id: z.coerce.number(),
+  gender_id: z.coerce.number(),
+  name: z.string(),
+  fathers_name: z.string(),
+  mothers_name: z.string(),
+  relation: z.string(),
+  phone_number: z.string(),
+  nid_number: z.coerce.string(),
+  image: z.string(),
+  gender: genderColumn.optional().nullable(),
+  present_address: addressColumn.optional().nullable(),
+
+})
+
+export type NomineeColumn = z.infer<typeof nomineeColumn>;
+
+
+
 
 //employee 
 
