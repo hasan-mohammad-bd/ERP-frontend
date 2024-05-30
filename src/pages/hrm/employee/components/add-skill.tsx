@@ -54,7 +54,6 @@ export function AddSkillForm({
 
 
 
- console.log(previousData)
 
   const form = useForm<SkillFormValues>({
     resolver: zodResolver(SkillFormSchema),

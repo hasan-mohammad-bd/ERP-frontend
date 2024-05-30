@@ -84,6 +84,8 @@ export function AddAdditionalInfoForm({
     },
   });
 
+  console.log(previousData)
+
   async function onSubmit(data: EmployeeFormValues) {
     try {
       if (previousData) {

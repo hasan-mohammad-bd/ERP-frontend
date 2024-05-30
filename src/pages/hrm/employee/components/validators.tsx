@@ -1072,6 +1072,8 @@ export const employeeColumn = z.object({
   employment_status: employmentStatusColumn.optional().nullable(),
   work_place: workPlaceColumn.optional().nullable(),
 
+  
+
 })
 
 export type EmployeeColumn = z.infer<typeof employeeColumn>;
