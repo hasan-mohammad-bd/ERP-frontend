@@ -81,7 +81,7 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
     try {
       if (previousData?.employee_nominee?.id) {
         await updateNominee({
-          nomineeId: previousData?.id,
+          nomineeId: previousData?.employee_nominee?.id,
           updatedNominee: data,
         });
 
@@ -336,7 +336,7 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
 
               <div>
                 <Button variant="default" type="submit" className="w-full mt-4">
-                  {previousData?.present_address?.id ? "Update" : "Add"}
+                  {previousData?.employee_nominee?.id ? "Update" : "Add"}
                 </Button>
               </div>
             </form>
