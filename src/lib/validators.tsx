@@ -838,6 +838,28 @@ export const jobApplyColumn = z.object({
   job_candidate: jobCandidateColumn.optional().nullable(),
 })
 
+// job-apply status change
+
+export const ChangeStatusFormSchema = z.object({
+  status: z.string(),
+  ids: z.array(z.coerce.number()),
+  interview_date: z.string().optional().nullable(),
+});
+
+export type ChangeStatusFormValues = z.infer<typeof ChangeStatusFormSchema>;
+
+export const changeStatusColumn = z.object({
+  id: z.coerce.number(),
+  status: z.string(),
+  expected_salary: z.coerce.number(),
+  job_post: jobPostColumn.optional().nullable(),
+  job_candidate: jobCandidateColumn.optional().nullable(),
+})
+
+export type ChangeStatusColumn = z.infer<typeof changeStatusColumn>;
+
+
+
 export type JobApplyColumn = z.infer<typeof jobApplyColumn>;
 
 //role id

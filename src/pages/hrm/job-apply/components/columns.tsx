@@ -35,7 +35,7 @@ export const jobApplyColumns: ColumnDef<JobApplyColumn>[] = [
 
   {
     accessorKey: "expected_salary",
-    header: "Expected day",
+    header: "Expected salary",
   },
   {
     accessorKey: "",

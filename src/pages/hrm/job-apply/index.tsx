@@ -11,6 +11,7 @@ import { useGetJobAppliesQuery } from "@/store/services/hrm/api/job-apply";
 import { jobApplyColumns } from "./components/columns";
 import { BulkAction } from "@/components/ui/data-table/data-table-bulk-actions";
 import { JobApplyColumn } from "@/lib/validators";
+import { UpdateStatusForm } from "./components/update-status-form";
 
 const BULK_ACTIONS = [
 	{
@@ -84,9 +85,10 @@ const JobApply = () => {
 					className=""
 				>
 					{/* Do whatever you want to do with selected items  */}
-					{selectedBulkAction.payload.map((job) => (
-						<div key={job.id}>{job.job_candidate?.email}</div>
-					))}
+	
+						
+						<UpdateStatusForm modalClose={() => setIsOpen(false)} data={selectedBulkAction.payload}  />
+
 				</Modal>
 			)}
 		</>
