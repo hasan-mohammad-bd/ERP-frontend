@@ -8,15 +8,16 @@ import { DataTable } from "@/components/ui/data-table/data-table";
 
 import { Modal } from "@/components/common/modal";
 
-import { AddScheduleForm } from "./components/add-schedule-form";
-import { useGetSchedulesQuery } from "@/store/services/hrm/api/schedule";
-import { scheduleColumns } from "./components/columns";
+import { AddRosterForm } from "./components/add-holiday-form";
 
-const Schedule = () => {
+import { useGetHolidaysQuery } from "@/store/services/hrm/api/holiday";
+import { holidayColumns } from "./components/columns";
+
+const Holiday = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetSchedulesQuery();
+  const { data, isLoading } = useGetHolidaysQuery();
 
-  const schedules = data?.data || [];
+  const roster = data?.data || [];
 
   // console.log(departments);
   if (isLoading) return <Loading />;
@@ -27,30 +28,30 @@ const Schedule = () => {
         <div className="flex-1 space-y-4 md:p-8">
           <div className="flex items-center justify-between">
             <Heading
-              title="Schedule"
-              description="Manage schedule for you business"
+              title="Holiday"
+              description="Manage your holidays for you organization"
             />
             <Button onClick={() => setIsOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" /> Add Schedule
+              <Plus className="mr-2 h-4 w-4" /> Add Holiday
             </Button>
           </div>
           <Separator />
-          {schedules && (
+          {roster && (
             <div>
-              <DataTable columns={scheduleColumns} data={schedules} />
+              <DataTable columns={holidayColumns} data={roster} />
             </div>
           )}
         </div>
       </div>
       <Modal
-        title="Add Schedule"
+        title="Add Holiday"
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}
       >
-        <AddScheduleForm modalClose={() => setIsOpen(false)} />
+        <AddRosterForm modalClose={() => setIsOpen(false)} />
       </Modal>
     </>
   );
 };
 
-export default Schedule;
+export default Holiday;

@@ -261,6 +261,58 @@ export const scheduleColumn = z.object({
 
 export type ScheduleColumn = z.infer<typeof scheduleColumn>;
 
+// Roster
+
+export const RosterFormSchema = z.object({
+
+  schedule_id: z.coerce.number(),
+  date: z.string().refine((date) => {
+    const day = new Date(date).getUTCDay();
+  return day !== 5 && day !== 6;
+  }, {
+    message: "Friday and Saturday are weekend days.",
+  }),
+
+});
+
+export type RosterFromValues = z.infer<typeof RosterFormSchema>;
+
+export const rosterColumn = z.object({
+  id: z.number(),
+  schedule: scheduleColumn,
+  date: z.object({
+    date: z.string().date(),
+  }),
+});
+
+export type RosterColumn = z.infer<typeof rosterColumn>;
+
+
+// holiday
+
+export const HolidayFormSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  date: z.string().date(),
+  type: z.enum(["Mandatory", "Optional"]),
+
+})
+
+export type HolidayFromValues = z.infer<typeof HolidayFormSchema>;
+
+export const holidayColumn = z.object({
+  id: z.number(),
+  name: z.string(),
+  date: z.object({
+    date: z.string().date(),
+  }),
+  type: z.enum(["Mandatory", "Optional"]),
+})
+
+export type HolidayColumn = z.infer<typeof holidayColumn>;
+
+
 // Vacancy Requisition
 
 export const VacancyRequisitionFormSchema = z.object({

@@ -17,7 +17,9 @@ import {
 	SquarePen,
 	UserRoundCog,
 	BriefcaseBusiness,
-	BookOpenCheck
+	BookOpenCheck,
+	ScrollText,
+	Soup
 	
 	
 	
@@ -92,9 +94,21 @@ export const NavItems: NavItem[] = [
 				color: "text-sky-500",
 			},
 			{
-				title: "schedules",
+				title: "Schedules",
 				icon: Clock,
 				href: "/hrm/schedules",
+				color: "text-sky-500",
+			},
+			{
+				title: "Roster",
+				icon: ScrollText,
+				href: "/hrm/rosters",
+				color: "text-sky-500",
+			},
+			{
+				title: "Holiday",
+				icon: Soup,
+				href: "/hrm/holidays",
 				color: "text-sky-500",
 			},
 		]

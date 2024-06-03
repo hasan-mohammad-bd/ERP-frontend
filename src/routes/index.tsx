@@ -6,9 +6,11 @@ import Designation from "@/pages/hrm/designation";
 import Employee from "@/pages/hrm/employee";
 import EmployeeClass from "@/pages/hrm/employee-class";
 import EmployeeGrade from "@/pages/hrm/employee-grade";
+import Holiday from "@/pages/hrm/holiday";
 import JobApply from "@/pages/hrm/job-apply";
 import JobCandidate from "@/pages/hrm/job-candidate";
 import JobPost from "@/pages/hrm/job-post";
+import Roster from "@/pages/hrm/roster";
 import Schedule from "@/pages/hrm/schedule";
 import Section from "@/pages/hrm/section";
 import VacancyRequisition from "@/pages/hrm/vacancy-requisitions";
@@ -72,6 +74,16 @@ const router = createBrowserRouter([
 					{
 						path: "schedules",
 						element: <Schedule />,
+						errorElement: <ErrorPage />,
+					},
+					{
+						path: "rosters",
+						element: <Roster />,
+						errorElement: <ErrorPage />,
+					},
+					{
+						path: "holidays",
+						element: <Holiday />,
 						errorElement: <ErrorPage />,
 					},
 					{
