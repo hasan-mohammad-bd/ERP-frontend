@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
@@ -9,11 +9,20 @@ import { designationColumns } from "./components/columns";
 import { Modal } from "@/components/common/modal";
 import { AddDesignationForm } from "./components/add-designation-form";
 import { useGetDesignationQuery } from "@/store/services/hrm/api/designation";
+import { PaginationInfo } from "@/types";
+import { PaginationState } from "@tanstack/react-table";
 
 const Designation = () => {
 	const [isOpen, setIsOpen] = useState(false);
-	const { data, isLoading } = useGetDesignationQuery();
+	const [pagination, setPagination] = React.useState<PaginationState>({
+		pageIndex: 0,
+		pageSize: 10,
+	});
+	const { data, isLoading } = useGetDesignationQuery(
+		`per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+	);
 	const designations = data?.data || [];
+	const paginationInfo: PaginationInfo | undefined = data?.meta;
 
 	if (isLoading) return <Loading />;
 
@@ -33,7 +42,13 @@ const Designation = () => {
 					<Separator />
 					{designations && (
 						<div>
-							<DataTable columns={designationColumns} data={designations} />
+							<DataTable
+								columns={designationColumns}
+								data={designations}
+								paginationInfo={paginationInfo}
+								pagination={pagination}
+								setPagination={setPagination}
+							/>
 						</div>
 					)}
 				</div>

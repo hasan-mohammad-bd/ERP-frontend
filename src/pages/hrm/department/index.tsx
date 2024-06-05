@@ -34,7 +34,11 @@ const Department = () => {
 					<Separator />
 					{departments && (
 						<div>
-							<DataTable columns={departmentColumns} data={departments} />
+							<DataTable
+								columns={departmentColumns}
+								data={departments}
+								noPagination
+							/>
 						</div>
 					)}
 				</div>
