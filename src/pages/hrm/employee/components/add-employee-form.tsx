@@ -137,57 +137,79 @@ export function AddEmployeeForm({
 	const roleData = roles?.data || [];
 	// const countryData = countries?.data || [];
 
-	const form = useForm<EmployeeFormValues>({
-		resolver: zodResolver(EmployeeFormSchema),
-		defaultValues: {
-			employee_unique_id: previousData?.employee_unique_id || "",
-			first_name: previousData?.first_name || "",
-			last_name: previousData?.last_name || "",
-			phone: previousData?.phone || "",
-			corporate_phone: previousData?.corporate_phone || "",
-			email: previousData?.email || "",
-			joining_date: previousData?.joining_date || "",
-			status: previousData?.status || "Active",
-			location_id: previousData?.location_id || 1,
-			organization_id: previousData?.organization_id || 1,
-			work_place_id: previousData?.work_place_id || 1,
-			department_id: previousData?.department_id || 1,
-			section_id: previousData?.section_id || 1,
-			designation_id: previousData?.designation_id || 1,
-			schedule_id: previousData?.schedule_id || 1,
-			employee_class_id: previousData?.employee_class_id || 1,
-			employee_grade_id: previousData?.employee_grade_id || 1,
-			employment_status_id: previousData?.employment_status_id || 1,
-			// sorting_index: previousData?.sorting_index || 0,
-			password: null,
-			gender_id: previousData?.gender_id || 1,
-			religion_id: previousData?.religion_id || 1,
-			blood_group_id: previousData?.blood_group_id || 1,
-			// fathers_name: previousData?.fathers_name || "",
-			// mothers_name: previousData?.mothers_name || "",
-			role_id: previousData?.role_id || 1,
-		},
-	});
+  const form = useForm<EmployeeFormValues>({
 
-	async function onSubmit(data: EmployeeFormValues) {
-		try {
-			if (previousData) {
-				await updateEmployee({
-					employeeId: previousData.id,
-					updatedEmployee: data,
-				});
+    resolver: zodResolver(EmployeeFormSchema),
+    defaultValues: {
+      employee_unique_id: previousData?.employee_unique_id || "",
+      first_name: previousData?.first_name || "",
+      last_name: previousData?.last_name || "",
+      phone: previousData?.phone || "",
+      corporate_phone: previousData?.corporate_phone || "",
+      email: previousData?.email || "",
+      joining_date: previousData?.joining_date || "",
+      status: previousData?.status || "Active",
+      location_id: previousData?.location_id || 1,
+      organization_id: previousData?.organization_id || 1,
+      work_place_id: previousData?.work_place_id || 1,
+      department_id: previousData?.department_id || 1,
+      section_id: previousData?.section_id || 1,
+      designation_id: previousData?.designation_id || 1,
+      schedule_id: previousData?.schedule_id || 1,
+      employee_class_id: previousData?.employee_class_id || 1,
+      employee_grade_id: previousData?.employee_grade_id || 1,
+      employment_status_id: previousData?.employment_status_id || 1,
+      password: null,
+      gender_id: previousData?.gender_id || 1,
+      religion_id: previousData?.religion_id || 1,
+      blood_group_id: previousData?.blood_group_id || 1,
+      role_id: previousData?.role_id || 1,
 
-				toast.success("Job Post updated successfully");
-				modalClose();
-			} else {
-				await createEmployee(data);
-				toast.success("Job Post created successfully");
-				modalClose();
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	}
+      //additional info
+
+      card_id: previousData?.card_id || null,
+      machine_id: previousData?.machine_id || null,
+      is_head_of_dept: previousData?.is_head_of_dept || 0,
+      // reporting_to_id: previousData?.reporting_to_id || null,
+      sorting_index: previousData?.sorting_index || 0,
+      nid_number: previousData?.nid_number || null,
+      fathers_name: previousData?.fathers_name || null,
+      mothers_name: previousData?.mothers_name || null,
+      payment_type: previousData?.payment_type || "Cash",
+      account_number: previousData?.account_number || null,
+      bank_name: previousData?.bank_name || null,
+      bank_branch: previousData?.bank_branch || null,
+      marital_status: previousData?.marital_status || "Married",
+      birth_date: previousData?.birth_date || null,
+      tin_number: previousData?.tin_number || null,
+
+    },
+  });
+
+ 
+
+  async function onSubmit(data: EmployeeFormValues) {
+    
+    try {
+      if (previousData) {
+        await updateEmployee({
+          employeeId: previousData.id,
+          updatedEmployee: data,
+        });
+
+        toast.success("Job Post updated successfully");
+        modalClose();
+      } else {
+        await createEmployee(data);
+        toast.success("Job Post created successfully");
+        modalClose();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
 
 	return (
 		<>
