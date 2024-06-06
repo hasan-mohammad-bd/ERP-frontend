@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
@@ -9,12 +9,23 @@ import { Modal } from "@/components/common/modal";
 import { AddJobPostForm } from "./components/add-job-post-form";
 import { jobPostColumns } from "./components/columns";
 import { useGetJobPostsQuery } from "@/store/services/hrm/api/job-post";
+import { PaginationState } from "@tanstack/react-table";
+import { PaginationInfo } from "@/types";
 
 const JobPost = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetJobPostsQuery();
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const { data, isLoading } = useGetJobPostsQuery(
+    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+  );
 
   const jobPost = data?.data || [];
+
+  const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   // console.log(departments);
   if (isLoading) return <Loading />;
@@ -35,7 +46,13 @@ const JobPost = () => {
           <Separator />
           {jobPost && (
             <div>
-              <DataTable columns={jobPostColumns} data={jobPost} />
+              <DataTable
+                columns={jobPostColumns}
+                data={jobPost}
+                paginationInfo={paginationInfo}
+                pagination={pagination}
+                setPagination={setPagination}
+              />
             </div>
           )}
         </div>

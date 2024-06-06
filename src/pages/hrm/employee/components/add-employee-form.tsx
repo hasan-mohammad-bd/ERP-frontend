@@ -97,23 +97,23 @@ export function AddEmployeeForm({
 	const { data: workplaces, isLoading: workplaceLoading } =
 		useGetWorkplacesQuery();
 	const { data: departments, isLoading: departmentLoading } =
-		useGetDepartmentsQuery();
+		useGetDepartmentsQuery("page=1&per_page=1000");
 	const { data: designations, isLoading: designationLoading } =
 		useGetDesignationQuery("page=1&per_page=1000");
 	const { data: schedules, isLoading: scheduleLoading } =
-		useGetSchedulesQuery();
+		useGetSchedulesQuery("page=1&per_page=1000");
 
-	const { data: sections, isLoading: sectionLoading } = useGetSectionsQuery();
+	const { data: sections, isLoading: sectionLoading } = useGetSectionsQuery("page=1&per_page=1000");
 
 	const { data: genders, isLoading: genderLoading } = useGetGendersQuery();
 	const { data: locations, isLoading: locationLoading } =
-		useGetLocationsQuery();
+		useGetLocationsQuery("page=1&per_page=1000");
 
 	const { data: employeeClasses, isLoading: employeeClassLoading } =
-		useGetEmployeeClassesQuery();
+		useGetEmployeeClassesQuery("page=1&per_page=1000");
 
 	const { data: employeeGrades, isLoading: employeeGradeLoading } =
-		useGetEmployeeGradesQuery();
+		useGetEmployeeGradesQuery("page=1&per_page=1000");
 
 	const { data: employmentStatus, isLoading: employmentStatusLoading } =
 		useGetEmploymentStatusesQuery();

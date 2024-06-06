@@ -47,11 +47,11 @@ export function AddRosterForm({
   const [updateRoster, { isLoading: updateLoading }] =
     useUpdateRosterMutation();
 
-  const { data: holidays} = useGetHolidaysQuery();
+  const { data: holidays} = useGetHolidaysQuery("page=1&per_page=1000");
 
   const holidaysData = holidays?.data || [];
   const { data: schedules, isLoading: schedulesLoading } =
-    useGetSchedulesQuery();
+    useGetSchedulesQuery("page=1&per_page=1000");
 
   const schedulesData = schedules?.data || [];
 

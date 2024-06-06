@@ -3,12 +3,15 @@ import {
   type EmployeeClassColumn,
 } from "@/lib/validators"; 
 import { hrmApi } from "../..";
-import { DeleteResponse } from "@/types";
+import { DeleteResponse, PaginationInfo } from "@/types";
 
 const employeeClassApi = hrmApi.injectEndpoints({
   endpoints: (build) => ({
-    getEmployeeClasses: build.query<{ data: EmployeeClassColumn[] }, void>({ 
-      query: () => "employee-classes", 
+    getEmployeeClasses: build.query<
+    { data: EmployeeClassColumn[]; meta: PaginationInfo },
+    string
+  >({ 
+      query: (params) => `employee-classes?${params}`, 
       providesTags: ["employee-classes"], 
     }),
     createEmployeeClass: build.mutation<

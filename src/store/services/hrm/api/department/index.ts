@@ -3,12 +3,15 @@ import {
   type DepartmentColumn,
 } from "@/lib/validators"; 
 import { hrmApi } from "../..";
-import { DeleteResponse } from "@/types";
+import { DeleteResponse, PaginationInfo } from "@/types";
 
 const departmentApi = hrmApi.injectEndpoints({
   endpoints: (build) => ({
-    getDepartments: build.query<{ data: DepartmentColumn[] }, void>({ 
-      query: () => "departments", 
+    getDepartments: build.query<
+    { data: DepartmentColumn[]; meta: PaginationInfo },
+    string
+  >({ 
+      query: (params) => `departments?${params}`, 
       providesTags: ["departments"], 
     }),
     createDepartment: build.mutation<

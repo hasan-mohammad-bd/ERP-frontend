@@ -3,12 +3,15 @@ import {
   type JobCandidateColumn,
 } from "@/lib/validators";
 import { hrmApi } from "../..";
-import { DeleteResponse } from "@/types";
+import { DeleteResponse, PaginationInfo } from "@/types";
 
 const jobCandidateApi = hrmApi.injectEndpoints({
   endpoints: (build) => ({
-    getJobCandidates: build.query<{ data: JobCandidateColumn[] }, void>({
-      query: () => "job-candidates",
+    getJobCandidates: build.query<
+    { data: JobCandidateColumn[]; meta: PaginationInfo },
+    string
+  >({
+      query: (params) => `job-candidates?${params}`,
       providesTags: ["job-candidates"],
     }),
     createJobCandidate: build.mutation<

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,8 @@ import { jobApplyColumns } from "./components/columns";
 import { BulkAction } from "@/components/ui/data-table/data-table-bulk-actions";
 import { JobApplyColumn } from "@/lib/validators";
 import { UpdateStatusForm } from "./components/update-status-form";
+import { PaginationState } from "@tanstack/react-table";
+import { PaginationInfo } from "@/types";
 
 const BULK_ACTIONS = [
 	{
@@ -26,7 +28,15 @@ const BULK_ACTIONS = [
 
 const JobApply = () => {
 	const [isOpen, setIsOpen] = useState(false);
-	const { data, isLoading } = useGetJobAppliesQuery();
+	const [pagination, setPagination] = React.useState<PaginationState>({
+		pageIndex: 0,
+		pageSize: 10,
+	});
+
+	const { data, isLoading } = useGetJobAppliesQuery(`per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`);
+
+
+
 
 	// Set appropriate bulk action type here
 	const [selectedBulkAction, setSelectedBulkAction] = useState<
@@ -34,6 +44,7 @@ const JobApply = () => {
 	>({ action: "", payload: [] });
 
 	const jobApply = data?.data || [];
+	const paginationInfo: PaginationInfo | undefined = data?.meta;
 
 	// console.log(departments);
 	if (isLoading) return <Loading />;
@@ -62,6 +73,9 @@ const JobApply = () => {
 								bulkActions={BULK_ACTIONS} // optional - pass it if you want to show bulk actions
 								selectedBulkAction={selectedBulkAction} // optional - pass it if you want to show active bulk action
 								setSelectedBulkAction={setSelectedBulkAction} // ((fun) optional - pass it if you want to get selected bulk action
+								paginationInfo={paginationInfo}
+								pagination={pagination}
+								setPagination={setPagination}
 							/>
 						</div>
 					)}

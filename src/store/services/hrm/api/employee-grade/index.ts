@@ -1,14 +1,18 @@
+
 import {
   EmployeeGradeFromValues,
   type EmployeeGradeColumn,
 } from "@/lib/validators"; 
 import { hrmApi } from "../..";
-import { DeleteResponse } from "@/types";
+import { DeleteResponse, PaginationInfo } from "@/types";
 
 const employeeGradeApi = hrmApi.injectEndpoints({
   endpoints: (build) => ({
-    getEmployeeGrades: build.query<{ data: EmployeeGradeColumn[] }, void>({ 
-      query: () => "employee-grades", 
+    getEmployeeGrades: build.query<
+    { data: EmployeeGradeColumn[]; meta: PaginationInfo },
+    string
+  >({ 
+      query: (params) => `employee-grades?${params}`, 
       providesTags: ["employee-grades"], 
     }),
     createEmployeeGrade: build.mutation<

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
@@ -9,13 +9,23 @@ import { Modal } from "@/components/common/modal";
 import { AddJobCandidateForm } from "./components/add-job-candidate-form";
 import { jobCandidateColumns } from "./components/columns";
 import { useGetJobCandidatesQuery } from "@/store/services/hrm/api/job-candidate";
+import { PaginationState } from "@tanstack/react-table";
+import { PaginationInfo } from "@/types";
 
 const JobCandidate = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetJobCandidatesQuery();
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const { data, isLoading } = useGetJobCandidatesQuery(
+    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+  );
 
   const jobCandidate = data?.data || [];
 
+  const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   // console.log(departments);
   if (isLoading) return <Loading />;
@@ -36,7 +46,13 @@ const JobCandidate = () => {
           <Separator />
           {jobCandidate && (
             <div>
-              <DataTable columns={jobCandidateColumns} data={jobCandidate} />
+              <DataTable
+                columns={jobCandidateColumns}
+                data={jobCandidate}
+                paginationInfo={paginationInfo}
+                pagination={pagination}
+                setPagination={setPagination}
+              />
             </div>
           )}
         </div>

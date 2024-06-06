@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
@@ -9,11 +9,19 @@ import { departmentColumns } from "./components/columns";
 import { useGetDepartmentsQuery } from "@/store/services/hrm/api/department";
 import { Modal } from "@/components/common/modal";
 import { AddDepartmentForm } from "./components/add-department-form";
+import { PaginationState } from "@tanstack/react-table";
+import { PaginationInfo } from "@/types";
 
 const Department = () => {
 	const [isOpen, setIsOpen] = useState(false);
-	const { data, isLoading } = useGetDepartmentsQuery();
+	const [pagination, setPagination] = React.useState<PaginationState>({
+		pageIndex: 0,
+		pageSize: 10,
+	});
+
+	const { data, isLoading } = useGetDepartmentsQuery(`per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`);
 	const departments = data?.data || [];
+	const paginationInfo: PaginationInfo | undefined = data?.meta;
 
 	// console.log(departments);
 	if (isLoading) return <Loading />;
@@ -37,7 +45,9 @@ const Department = () => {
 							<DataTable
 								columns={departmentColumns}
 								data={departments}
-								noPagination
+								paginationInfo={paginationInfo}
+								pagination={pagination}
+								setPagination={setPagination}
 							/>
 						</div>
 					)}

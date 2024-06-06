@@ -3,12 +3,15 @@ import {
   type OrganizationColumn,
 } from "@/lib/validators"; 
 import { authApi } from "../..";
-import { DeleteResponse } from "@/types";
+import { DeleteResponse, PaginationInfo } from "@/types";
 
 const organizationApi = authApi.injectEndpoints({
   endpoints: (build) => ({
-    getOrganizations: build.query<{ data: OrganizationColumn[] }, void>({ 
-      query: () => "organizations", 
+    getOrganizations: build.query<
+    { data: OrganizationColumn[]; meta: PaginationInfo },
+    string
+  >({ 
+      query: (params) => `organizations?${params}`, 
       providesTags: ["organizations"], 
     }),
     createOrganization: build.mutation<

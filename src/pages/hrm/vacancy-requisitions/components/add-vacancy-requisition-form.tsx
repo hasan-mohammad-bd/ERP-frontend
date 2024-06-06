@@ -53,7 +53,7 @@ export function AddVacancyRequisitionForm({
 	const { data: organizations, isLoading: organizationLoading } =
 		useGetOrganizationForDropDownQuery();
 	const { data: departments, isLoading: departmentLoading } =
-		useGetDepartmentsQuery();
+		useGetDepartmentsQuery("page=1&per_page=1000");
 	const { data: designations, isLoading: designationLoading } =
 		useGetDesignationQuery("page=1&per_page=1000");
 

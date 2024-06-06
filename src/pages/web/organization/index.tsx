@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
@@ -9,12 +9,22 @@ import { organizationColumns } from "./components/columns";
 import { Modal } from "@/components/common/modal";
 import { AddOrganizationForm } from "./components/add-organization-form";
 import { useGetOrganizationsQuery } from "@/store/services/erp-main/api/organization";
+import { PaginationState } from "@tanstack/react-table";
+import { PaginationInfo } from "@/types";
 
 const Organization = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetOrganizationsQuery();
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const { data, isLoading } = useGetOrganizationsQuery(
+    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+  );
 
   const organizations = data?.data || [];
+
+  const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   // console.log(departments);
   if (isLoading) return <Loading />;
@@ -35,7 +45,13 @@ const Organization = () => {
           <Separator />
           {organizations && (
             <div>
-              <DataTable columns={organizationColumns} data={organizations} />
+              <DataTable
+                columns={organizationColumns}
+                data={organizations}
+                paginationInfo={paginationInfo}
+                pagination={pagination}
+                setPagination={setPagination}
+              />
             </div>
           )}
         </div>

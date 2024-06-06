@@ -3,12 +3,15 @@ import {
   type SectionColumn,
 } from "@/lib/validators"; 
 import { hrmApi } from "../..";
-import { DeleteResponse } from "@/types";
+import { DeleteResponse, PaginationInfo } from "@/types";
 
 const sectionApi = hrmApi.injectEndpoints({
   endpoints: (build) => ({
-    getSections: build.query<{ data: SectionColumn[] }, void>({ 
-      query: () => "sections", 
+    getSections: build.query<
+    { data: SectionColumn[]; meta: PaginationInfo },
+    string
+  >({ 
+      query: (params) => `sections?${params}`, 
       providesTags: ["sections"], 
     }),
     createSection: build.mutation<

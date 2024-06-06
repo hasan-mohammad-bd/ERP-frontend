@@ -51,9 +51,9 @@ export function AddJobApplyForm({
     useUpdateJobApplyMutation();
 
 
-  const { data: jobPosts, isLoading: jobPostLoading } = useGetJobPostsQuery();
+  const { data: jobPosts, isLoading: jobPostLoading } = useGetJobPostsQuery("page=1&per_page=1000");
   const { data: jobCandidates, isLoading: jobCandidateLoading } =
-    useGetJobCandidatesQuery();
+    useGetJobCandidatesQuery("page=1&per_page=1000");
   const { data: jobApplyStatus, isLoading: jobApplyStatusLoading } =
   useGetJobApplyStatusDataQuery();
 

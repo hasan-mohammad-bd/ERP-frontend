@@ -3,12 +3,15 @@ import {
   type VacancyRequisitionColumn,
 } from "@/lib/validators";
 import { hrmApi } from "../..";
-import { DeleteResponse } from "@/types";
+import { DeleteResponse, PaginationInfo } from "@/types";
 
 const vacancyRequisitionApi = hrmApi.injectEndpoints({
   endpoints: (build) => ({
-    getVacancyRequisitions: build.query<{ data: VacancyRequisitionColumn[] }, void>({
-      query: () => "vacancy-requisitions",
+    getVacancyRequisitions: build.query<
+    { data: VacancyRequisitionColumn[]; meta: PaginationInfo },
+    string
+  >({
+      query: (params) => `vacancy-requisitions?${params}`,
       providesTags: ["vacancy-requisitions"],
     }),
     createVacancyRequisition: build.mutation<

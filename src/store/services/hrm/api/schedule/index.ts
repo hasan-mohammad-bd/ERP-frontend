@@ -3,12 +3,15 @@ import {
   type ScheduleColumn,
 } from "@/lib/validators";
 import { hrmApi } from "../..";
-import { DeleteResponse } from "@/types";
+import { DeleteResponse, PaginationInfo } from "@/types";
 
 const schedulesApi = hrmApi.injectEndpoints({
   endpoints: (build) => ({
-    getSchedules: build.query<{ data: ScheduleColumn[] }, void>({
-      query: () => "schedules",
+    getSchedules: build.query<
+    { data: ScheduleColumn[]; meta: PaginationInfo },
+    string
+  >({
+      query: (params) => `schedules?${params}`,
       providesTags: ["schedules"],
     }),
     createSchedule: build.mutation<

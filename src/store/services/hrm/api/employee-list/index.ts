@@ -5,12 +5,15 @@ import {
 
 } from "@/lib/validators";
 import { hrmApi } from "../..";
-import { DeleteResponse } from "@/types";
+import { DeleteResponse, PaginationInfo } from "@/types";
 
 const employeeApi = hrmApi.injectEndpoints({
   endpoints: (build) => ({
-    getEmployees: build.query<{ data: EmployeeColumn[] }, void>({
-      query: () => "employees",
+    getEmployees: build.query<
+    { data: EmployeeColumn[]; meta: PaginationInfo },
+    string
+  >({
+      query: (params) => `employees?${params}`,
       providesTags: ["employees"],
     }),
     createEmployee: build.mutation<

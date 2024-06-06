@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
@@ -8,16 +8,24 @@ import { DataTable } from "@/components/ui/data-table/data-table";
 import { sectionColumns } from "./components/columns";
 import { Modal } from "@/components/common/modal";
 
-
 import { useGetSectionsQuery } from "@/store/services/hrm/api/section";
 import { AddSectionForm } from "./components/add-section-form";
+import { PaginationState } from "@tanstack/react-table";
+import { PaginationInfo } from "@/types";
 
 const Section = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetSectionsQuery();
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
+  const { data, isLoading } = useGetSectionsQuery(
+    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+  );
 
   const sections = data?.data || [];
+  const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   // console.log(departments);
   if (isLoading) return <Loading />;
@@ -38,7 +46,13 @@ const Section = () => {
           <Separator />
           {sections && (
             <div>
-              <DataTable columns={sectionColumns} data={sections} />
+              <DataTable
+                columns={sectionColumns}
+                data={sections}
+                paginationInfo={paginationInfo}
+                pagination={pagination}
+                setPagination={setPagination}
+              />
             </div>
           )}
         </div>

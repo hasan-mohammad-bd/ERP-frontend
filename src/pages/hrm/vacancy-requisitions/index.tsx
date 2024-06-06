@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
@@ -9,12 +9,24 @@ import { Modal } from "@/components/common/modal";
 import { AddVacancyRequisitionForm } from "./components/add-vacancy-requisition-form";
 import { useGetVacancyRequisitionsQuery } from "@/store/services/hrm/api/vacancy-requisition";
 import { vacancyRequisitionColumns } from "./components/columns";
+import { PaginationState } from "@tanstack/react-table";
+import { PaginationInfo } from "@/types";
 
 const VacancyRequisition = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetVacancyRequisitionsQuery();
+
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const { data, isLoading } = useGetVacancyRequisitionsQuery(
+    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+  );
 
   const vacancyRequisitions = data?.data || [];
+
+  const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   // console.log(departments);
   if (isLoading) return <Loading />;
@@ -29,7 +41,7 @@ const VacancyRequisition = () => {
               description="Manage requisitions for you business"
             />
             <Button onClick={() => setIsOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" /> Add vacancy 
+              <Plus className="mr-2 h-4 w-4" /> Add vacancy
             </Button>
           </div>
           <Separator />
@@ -38,6 +50,9 @@ const VacancyRequisition = () => {
               <DataTable
                 columns={vacancyRequisitionColumns}
                 data={vacancyRequisitions}
+                paginationInfo={paginationInfo}
+                pagination={pagination}
+                setPagination={setPagination}
               />
             </div>
           )}

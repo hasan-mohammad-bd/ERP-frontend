@@ -4,12 +4,15 @@ import {
   type JobApplyColumn,
 } from "@/lib/validators";
 import { hrmApi } from "../..";
-import { DeleteResponse } from "@/types";
+import { DeleteResponse, PaginationInfo } from "@/types";
 
 const jobApplyApi = hrmApi.injectEndpoints({
   endpoints: (build) => ({
-    getJobApplies: build.query<{ data: JobApplyColumn[] }, void>({
-      query: () => "job-applies", 
+    getJobApplies: build.query<
+    { data: JobApplyColumn[]; meta: PaginationInfo },
+    string
+  >({
+      query: (params) => `job-applies?${params}`, 
       providesTags: ["job-applies"], 
     }),
     getJobApplyStatusData: build.query<{ job_apply_status: JobApplyStatusColumn[] }, void>({

@@ -1,14 +1,18 @@
+
 import {
   RosterFromValues,
   type RosterColumn,
 } from "@/lib/validators";
 import { hrmApi } from "../..";
-import { DeleteResponse } from "@/types";
+import { DeleteResponse, PaginationInfo } from "@/types";
 
 const rostersApi = hrmApi.injectEndpoints({
   endpoints: (build) => ({
-    getRosters: build.query<{ data: RosterColumn[] }, void>({
-      query: () => "rosters",
+    getRosters: build.query<
+    { data: RosterColumn[]; meta: PaginationInfo },
+    string
+  >({
+      query: (params) => `rosters?${params}`,
       providesTags: ["rosters"],
     }),
     createRoster: build.mutation<

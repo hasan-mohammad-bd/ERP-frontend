@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
@@ -12,12 +12,23 @@ import { AddRosterForm } from "./components/add-holiday-form";
 
 import { useGetHolidaysQuery } from "@/store/services/hrm/api/holiday";
 import { holidayColumns } from "./components/columns";
+import { PaginationState } from "@tanstack/react-table";
+import { PaginationInfo } from "@/types";
 
 const Holiday = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetHolidaysQuery();
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const { data, isLoading } = useGetHolidaysQuery(
+    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+  );
 
   const roster = data?.data || [];
+
+  const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   // console.log(departments);
   if (isLoading) return <Loading />;
@@ -38,7 +49,13 @@ const Holiday = () => {
           <Separator />
           {roster && (
             <div>
-              <DataTable columns={holidayColumns} data={roster} />
+              <DataTable
+                columns={holidayColumns}
+                data={roster}
+                paginationInfo={paginationInfo}
+                pagination={pagination}
+                setPagination={setPagination}
+              />
             </div>
           )}
         </div>

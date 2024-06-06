@@ -39,7 +39,7 @@ export function AddLocationForm({
   const [updatedLocation, { isLoading: updateLoading }] =
     useUpdateLocationMutation();
 
-    const { data, isLoading: organizationLoading } = useGetOrganizationsQuery();
+    const { data, isLoading: organizationLoading } = useGetOrganizationsQuery("page=1&per_page=1000");
 
   const organizationData = data?.data || [];
 

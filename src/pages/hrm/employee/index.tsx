@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
@@ -9,12 +9,23 @@ import { Modal } from "@/components/common/modal";
 import { AddEmployeeForm } from "./components/add-employee-form";
 import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
 import { employeeColumns } from "./components/columns";
+import { PaginationState } from "@tanstack/react-table";
+import { PaginationInfo } from "@/types";
 
 const Employee = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetEmployeesQuery();
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const { data, isLoading } = useGetEmployeesQuery(
+    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+  );
 
   const employee = data?.data || [];
+
+  const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   // console.log(departments);
   if (isLoading) return <Loading />;
@@ -35,7 +46,13 @@ const Employee = () => {
           <Separator />
           {employee && (
             <div>
-              <DataTable columns={employeeColumns} data={employee} />
+              <DataTable
+                columns={employeeColumns}
+                data={employee}
+                paginationInfo={paginationInfo}
+                pagination={pagination}
+                setPagination={setPagination}
+              />
             </div>
           )}
         </div>

@@ -3,12 +3,15 @@ import {
   type LocationColumn,
 } from "@/lib/validators"; 
 import { authApi } from "../..";
-import { DeleteResponse } from "@/types";
+import { DeleteResponse, PaginationInfo } from "@/types";
 
 const locationApi = authApi.injectEndpoints({
   endpoints: (build) => ({
-    getLocations: build.query<{ data: LocationColumn[] }, void>({ 
-      query: () => "locations", 
+    getLocations: build.query<
+    { data: LocationColumn[]; meta: PaginationInfo },
+    string
+  >({ 
+      query: (params) => `locations?${params}`, 
       providesTags: ["locations"], 
     }),
     createLocation: build.mutation<
