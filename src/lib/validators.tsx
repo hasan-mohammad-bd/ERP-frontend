@@ -1191,7 +1191,31 @@ export type EmployeeColumn = z.infer<typeof employeeColumn>;
 
 
 
+//Account
 
+//Financial year
+
+export const FinancialYearSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  start_date: z.string().date(),
+  end_date: z.string().date(),
+  // is_active: z.coerce.number()
+})
+
+export type FinancialYearFromValues = z.infer<typeof FinancialYearSchema>;
+
+export const financialYearColumn = z.object({
+  id: z.coerce.number(),
+  name: z.string(),
+  start_date: z.string().date(),
+  end_date: z.string().date(),
+  is_active: z.coerce.number().optional().nullable(),
+  is_closed: z.coerce.number().optional().nullable(),
+})
+
+export type FinancialYearColumn = z.infer<typeof financialYearColumn>;
 
 
 
