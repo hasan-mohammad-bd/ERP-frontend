@@ -10,7 +10,6 @@ import { Modal } from "@/components/common/modal";
 import { AddFinancialYearForm } from "./components/add-ficancial-year-form";
 import { PaginationInfo } from "@/types";
 import { PaginationState } from "@tanstack/react-table";
-import { useGetFinancialYearsQuery } from "@/store/services/account/api/financial-year";
 import {
   chartOfAccountColumns,
  
@@ -18,6 +17,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import DataTableComponent from "./components/data-table-component";
+import { useGetLedgerGroupsQuery } from "@/store/services/account/api/chart-of-account";
 
 const ChartOfAccount = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,10 +25,11 @@ const ChartOfAccount = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const { data, isLoading } = useGetFinancialYearsQuery(
+  const { data, isLoading } = useGetLedgerGroupsQuery(
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
-  const financialYear = data?.data || [];
+  const chartOfAccount = data?.data || [];
+  console.log(chartOfAccount)
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
@@ -60,7 +61,7 @@ const ChartOfAccount = () => {
             title="Assets"
             description="Make changes to your assets here."
             columns={chartOfAccountColumns}
-            data={financialYear}
+            data={chartOfAccount}
             paginationInfo={paginationInfo}
             pagination={pagination}
             setPagination={setPagination}
@@ -86,7 +87,7 @@ const ChartOfAccount = () => {
       </Tabs>
 
       <Modal
-        title="Add Financial Year"
+        title=""
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}
       >

@@ -1262,9 +1262,9 @@ export type LedgerColumn = z.infer<typeof ledgerColumn>;
 
 
 
-//ledger Group Child 
+//ledger Group 
 
-export const LedgerGroupChildSchema = z.object({
+export const LedgerGroupSchema = z.object({
   code: z.string().optional().nullable(),
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
@@ -1273,10 +1273,10 @@ export const LedgerGroupChildSchema = z.object({
 
 })
 
-export type LedgerGroupChildFromValues = z.infer<typeof LedgerGroupChildSchema>;
+export type LedgerGroupFromValues = z.infer<typeof LedgerGroupSchema>;
 
 
-const ledgerGroupChildColumn = z.lazy(() => z.object({
+const ledgerGroupColumn = z.lazy(() => z.object({
   id: z.coerce.number(),
   code: z.string(),
   name: z.string(),
@@ -1285,15 +1285,17 @@ const ledgerGroupChildColumn = z.lazy(() => z.object({
   is_active: z.coerce.number().optional().nullable(),
   is_default: z.coerce.number().optional().nullable(),
   sorting_index: z.coerce.number().optional().nullable(),
-  childGroup: z.array(ledgerGroupChildColumn).optional().nullable(),
+  childGroup: z.array(ledgerGroupColumn).optional().nullable(),
   ledgers: z.array(ledgerColumn).optional().nullable(),
 }));
 
 
-export type LedgerGroupChildColumn = z.infer<typeof ledgerGroupChildColumn>;
-//ledger Group
+export type LedgerGroupColumn = z.infer<typeof ledgerGroupColumn>;
 
-export const LedgerGroupSchema = z.object({
+
+//ledger Account
+
+export const LedgerAccountSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
