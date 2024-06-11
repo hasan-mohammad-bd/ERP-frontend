@@ -1,6 +1,7 @@
 
 
 
+import { Description } from "@radix-ui/react-dialog";
 import { z } from "zod";
 
 // Department Form validation
@@ -1216,6 +1217,90 @@ export const financialYearColumn = z.object({
 })
 
 export type FinancialYearColumn = z.infer<typeof financialYearColumn>;
+
+
+
+// export type ChildGroupColumn = z.infer<typeof ChildGroupColumn>;
+
+//Leger 
+export const LedgerSchema = z.object({
+  code: z.string().optional().nullable(),
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  parent_id: z.coerce.number(),
+  is_fixed_asset: z.coerce.number(),
+  is_stock: z.coerce.number(),
+  is_cash_nature: z.coerce.number(),
+  is_bank_nature: z.coerce.number(),
+  is_sub_type: z.coerce.number(),
+  sub_type: z.string()
+})
+
+export type LedgerFromValues = z.infer<typeof LedgerSchema>;
+
+
+export const ledgerColumn = z.object({
+  id: z.coerce.number(),
+  code: z.string(),
+  name: z.string(),
+  parent_id: z.coerce.number(),
+  is_active: z.coerce.number().optional().nullable(),
+  is_ledger: z.coerce.number().optional().nullable(),
+  is_fixed_asset: z.coerce.number().optional().nullable(),
+  is_stock: z.coerce.number().optional().nullable(),
+  is_cash_nature: z.coerce.number().optional().nullable(),
+  is_bank_nature: z.coerce.number().optional().nullable(),
+  is_sub_type: z.coerce.number().optional().nullable(),
+  sub_type: z.string().optional().nullable(),
+  sorting_index: z.coerce.number().optional().nullable(),
+  description: z.string().optional().nullable(),
+
+})
+
+export type LedgerColumn = z.infer<typeof ledgerColumn>;
+
+
+
+//ledger Group Child 
+
+export const LedgerGroupChildSchema = z.object({
+  code: z.string().optional().nullable(),
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  parent_id: z.coerce.number(),
+
+})
+
+export type LedgerGroupChildFromValues = z.infer<typeof LedgerGroupChildSchema>;
+
+
+const ledgerGroupChildColumn = z.lazy(() => z.object({
+  id: z.coerce.number(),
+  code: z.string(),
+  name: z.string(),
+  parent_id: z.coerce.number(),
+  description: z.string().optional().nullable(),
+  is_active: z.coerce.number().optional().nullable(),
+  is_default: z.coerce.number().optional().nullable(),
+  sorting_index: z.coerce.number().optional().nullable(),
+  childGroup: z.array(ledgerGroupChildColumn).optional().nullable(),
+  ledgers: z.array(ledgerColumn).optional().nullable(),
+}));
+
+
+export type LedgerGroupChildColumn = z.infer<typeof ledgerGroupChildColumn>;
+//ledger Group
+
+export const LedgerGroupSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+})
+
+
+
 
 
 

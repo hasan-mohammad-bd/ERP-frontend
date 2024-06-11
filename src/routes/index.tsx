@@ -1,5 +1,6 @@
 import { Layout } from "@/layout";
 import ErrorPage from "@/pages/ErrorPage";
+import ChartOfAccount from "@/pages/account/chart-of-account";
 import FinancialYears from "@/pages/account/financial-year";
 
 
@@ -117,6 +118,11 @@ const router = createBrowserRouter([
           {
             path: "financial-year",
             element: <FinancialYears />,
+            errorElement: <ErrorPage />,
+          },
+          {
+            path: "chart-of-account",
+            element: <ChartOfAccount />,
             errorElement: <ErrorPage />,
           },
         ],

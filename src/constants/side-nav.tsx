@@ -158,6 +158,12 @@ export const NavItems: NavItem[] = [
         href: "/account/financial-year",
         color: "text-sky-500",
       },
+      {
+        title: "Chart Of Account",
+        icon: MapPin,
+        href: "/account/chart-of-account",
+        color: "text-sky-500",
+      },
     ],
   },
 
