@@ -1239,8 +1239,8 @@ export const LedgerSchema = z.object({
 	is_stock: z.coerce.number(),
 	is_cash_nature: z.coerce.number(),
 	is_bank_nature: z.coerce.number(),
-	is_sub_type: z.coerce.number(),
-	sub_type: z.string(),
+	is_sub_type: z.coerce.number().optional().nullable(),
+	sub_type: z.enum(["None", "Employee", "Customer", "Supplier", "Agent"]).optional().nullable(),
 });
 
 export type LedgerFromValues = z.infer<typeof LedgerSchema>;
@@ -1253,9 +1253,9 @@ export const ledgerColumn = z.object({
 	is_active: z.coerce.number().optional().nullable(),
 	is_ledger: z.coerce.number().optional().nullable(),
 	is_fixed_asset: z.coerce.number().optional().nullable(),
-	is_stock: z.coerce.number().optional().nullable(),
-	is_cash_nature: z.coerce.number().optional().nullable(),
-	is_bank_nature: z.coerce.number().optional().nullable(),
+	is_stock: z.coerce.number(),
+	is_cash_nature: z.coerce.number(),
+	is_bank_nature: z.coerce.number(),
 	is_sub_type: z.coerce.number().optional().nullable(),
 	sub_type: z.string().optional().nullable(),
 	sorting_index: z.coerce.number().optional().nullable(),

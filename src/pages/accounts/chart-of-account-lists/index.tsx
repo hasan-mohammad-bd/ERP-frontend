@@ -5,7 +5,7 @@ import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useGetLedgerGroupsQuery } from "@/store/services/account/api/chart-of-account";
+import { useGetLedgerGroupsQuery } from "@/store/services/accounts/api/chart-of-account";
 import ChartOfAccountItem from "./components/chart-of-account-item";
 
 const ChartOfAccountsLists = () => {

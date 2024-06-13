@@ -5,7 +5,7 @@ import { authApi } from "./services/erp-main";
 import authReducer from "./services/erp-main/slices/authSlice";
 import commonReducer from "./services/erp-main/slices/commonSlice";
 import { hrmApi } from "./services/hrm";
-import { accountApi } from "./services/account";
+import { accountApi } from "./services/accounts";
 // import { setupListeners } from "@reduxjs/toolkit/query";
 
 export const store = configureStore({

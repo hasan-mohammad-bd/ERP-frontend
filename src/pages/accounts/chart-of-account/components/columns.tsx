@@ -1,8 +1,12 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
+import { LedgerGroupColumn } from "@/lib/validators";
 
-export const chartOfAccountColumns: ColumnDef<any>[] = [
+// Recursive component to render nested items
+
+
+export const chartOfAccountColumns: ColumnDef<LedgerGroupColumn>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -29,60 +33,46 @@ export const chartOfAccountColumns: ColumnDef<any>[] = [
   },
   {
     accessorKey: "name",
-    header: "Financial Year Name",
+    header: "Name",
   },
-  {
-    accessorKey: "start_date",
-    header: "Start Date",
-  },
-  {
-    accessorKey: "end_date",
-    header: "End Date",
-  },
+/*   {
+    accessorKey: "childs_group",
+    header: "Items",
+    cell: ({ row }) => {
+      const items = row.getValue("childs_group");
+      return <NestedChild items={items} />;
+    },
+  }, */
+
   {
     accessorKey: "is_active",
     header: "Active",
     cell: ({ row }) => {
       const active = row.getValue("is_active");
-      if (active === 1) {
-        return (
-          <Checkbox
-            aria-readonly
-            checked
-            aria-label="Active"
-            className="translate-y-[2px]"
-          />
-        );
-      }
       return (
         <Checkbox
-					disabled
+          aria-readonly
+          checked={active === 1}
           aria-label="Active"
           className="translate-y-[2px]"
+          disabled={active !== 1}
         />
       );
     },
   },
+
   {
-    accessorKey: "is_closed",
-    header: "Closed",
+    accessorKey: "is_default",
+    header: "Default",
     cell: ({ row }) => {
-      const closed = row.getValue("is_closed");
-      if (closed === 1) {
-        return (
-          <Checkbox
-            aria-readonly
-            checked
-            aria-label="Closed"
-            className="translate-y-[2px]"
-          />
-        );
-      }
+      const isDefault = row.getValue("is_default");
       return (
         <Checkbox
-          disabled
-          aria-label="Closed"
+          aria-readonly
+          checked={isDefault === 1}
+          aria-label="Default"
           className="translate-y-[2px]"
+          disabled={isDefault !== 1}
         />
       );
     },

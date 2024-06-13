@@ -1,8 +1,8 @@
 import { Layout } from "@/layout";
 import ErrorPage from "@/pages/ErrorPage";
-import ChartOfAccount from "@/pages/account/chart-of-account";
-import ChartOfAccountsLists from "@/pages/account/chart-of-account-lists";
-import FinancialYears from "@/pages/account/financial-year";
+import ChartOfAccount from "@/pages/accounts/chart-of-account";
+import ChartOfAccountsLists from "@/pages/accounts/chart-of-account-lists";
+import FinancialYears from "@/pages/accounts/financial-year";
 
 import Department from "@/pages/hrm/department";
 import Designation from "@/pages/hrm/designation";
@@ -112,7 +112,7 @@ const router = createBrowserRouter([
 				],
 			},
 			{
-				path: "account/",
+				path: "accounts/",
 				element: <Layout />,
 				children: [
 					{

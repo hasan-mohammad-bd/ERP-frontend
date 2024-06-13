@@ -10,7 +10,7 @@ import { Modal } from "@/components/common/modal";
 import { AddFinancialYearForm } from "./components/add-ficancial-year-form";
 import { PaginationInfo } from "@/types";
 import { PaginationState } from "@tanstack/react-table";
-import { useGetFinancialYearsQuery } from "@/store/services/account/api/financial-year";
+import { useGetFinancialYearsQuery } from "@/store/services/accounts/api/financial-year";
 import { financialYearColumns } from "./components/columns";
 
 const FinancialYears = () => {

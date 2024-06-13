@@ -148,26 +148,26 @@ export const NavItems: NavItem[] = [
 	{
 		title: "Accounts",
 		icon: Fan,
-		href: "/account",
+		href: "/accounts",
 		color: "text-sky-500",
 		isChildren: true,
 		children: [
 			{
 				title: "Financial Year",
 				icon: Clock,
-				href: "/account/financial-year",
+				href: "/accounts/financial-year",
 				color: "text-sky-500",
 			},
 			{
 				title: "Chart Of Account",
 				icon: MapPin,
-				href: "/account/chart-of-account",
+				href: "/accounts/chart-of-account",
 				color: "text-sky-500",
 			},
 			{
 				title: "COA Lists",
 				icon: MapPin,
-				href: "/account/chart-of-accounts",
+				href: "/accounts/chart-of-accounts",
 				color: "text-sky-500",
 			},
 		],

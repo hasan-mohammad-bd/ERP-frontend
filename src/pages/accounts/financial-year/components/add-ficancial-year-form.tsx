@@ -20,7 +20,7 @@ import { Loading } from "@/components/common/loading";
 import {
   useCreateFinancialYearMutation,
   useUpdateFinancialYearMutation,
-} from "@/store/services/account/api/financial-year";
+} from "@/store/services/accounts/api/financial-year";
 // import { Switch } from "@/components/ui/switch";
 
 interface AddFinancialYearFormProps {

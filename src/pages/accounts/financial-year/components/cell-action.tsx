@@ -12,7 +12,7 @@ import { FinancialYearColumn } from "@/lib/validators";
 import { toast } from "sonner";
 import { AddFinancialYearForm } from "./add-ficancial-year-form";
 import { Modal } from "@/components/common/modal";
-import { useRemoveFinancialYearMutation } from "@/store/services/account/api/financial-year";
+import { useRemoveFinancialYearMutation } from "@/store/services/accounts/api/financial-year";
 
 interface CellActionProps {
   data: FinancialYearColumn;

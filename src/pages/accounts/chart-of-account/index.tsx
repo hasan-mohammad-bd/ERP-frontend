@@ -1,37 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 
-
 import { Modal } from "@/components/common/modal";
-import { AddFinancialYearForm } from "./components/add-ficancial-year-form";
-import { PaginationInfo } from "@/types";
-import { PaginationState } from "@tanstack/react-table";
-import {
-  chartOfAccountColumns,
- 
-} from "./components/columns";
+import { AddLedgerGroupForm } from "./components/add-ledger-group-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import DataTableComponent from "./components/data-table-component";
-import { useGetLedgerGroupsQuery } from "@/store/services/account/api/chart-of-account";
+import { useGetLedgerGroupsQuery } from "@/store/services/accounts/api/chart-of-account";
+import ChartOfAccountItem from "./components/chart-of-account-item";
 
 const ChartOfAccount = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [pagination, setPagination] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-  const { data, isLoading } = useGetLedgerGroupsQuery(
-    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
-  );
+  const { data, isLoading } = useGetLedgerGroupsQuery();
   const chartOfAccount = data?.data || [];
-  console.log(chartOfAccount)
-
-  const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   if (isLoading) return <Loading />;
 
@@ -57,14 +40,10 @@ const ChartOfAccount = () => {
           <TabsTrigger value="expenses">Expenses</TabsTrigger>
         </TabsList>
         <TabsContent value="assets">
-          <DataTableComponent
+          <ChartOfAccountItem
             title="Assets"
             description="Make changes to your assets here."
-            columns={chartOfAccountColumns}
             data={chartOfAccount}
-            paginationInfo={paginationInfo}
-            pagination={pagination}
-            setPagination={setPagination}
           />
           {/*           <CardHeader>
             <CardTitle>Assets</CardTitle>
@@ -86,12 +65,8 @@ const ChartOfAccount = () => {
         </TabsContent>
       </Tabs>
 
-      <Modal
-        title=""
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-      >
-        <AddFinancialYearForm modalClose={() => setIsOpen(false)} />
+      <Modal title="" isOpen={isOpen} toggleModal={() => setIsOpen(false)}>
+        <AddLedgerGroupForm modalClose={() => setIsOpen(false)} />
       </Modal>
     </>
   );
