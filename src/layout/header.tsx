@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { cn } from "@/utils";
 import { UserNav } from "./user-nav";
 import { MainNav } from "./main-nav";
-import { Search } from "./search";
 import { ModuleSelector } from "./module-selector";
 import { useAuth } from "@/store/hooks";
 
@@ -28,7 +27,6 @@ export default function Header() {
 				</div>
 
 				<div className="ml-auto flex items-center space-x-4">
-					<Search />
 					{user && <UserNav user={user} />}
 				</div>
 			</div>

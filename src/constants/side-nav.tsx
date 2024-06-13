@@ -161,12 +161,6 @@ export const NavItems: NavItem[] = [
 			{
 				title: "Chart Of Account",
 				icon: MapPin,
-				href: "/accounts/chart-of-account",
-				color: "text-sky-500",
-			},
-			{
-				title: "COA Lists",
-				icon: MapPin,
 				href: "/accounts/chart-of-accounts",
 				color: "text-sky-500",
 			},

@@ -9,7 +9,7 @@ import { useGetLedgerGroupsQuery } from "@/store/services/accounts/api/ledger-gr
 import ChartOfAccountItem from "./components/chart-of-account-item";
 import COA_TYPES from "./coa-types";
 
-const ChartOfAccountsLists = () => {
+const ChartOfAccounts = () => {
 	const { data, isLoading } = useGetLedgerGroupsQuery();
 	const chartOfAccount = data?.data || [];
 	// console.log(chartOfAccount);
@@ -53,4 +53,4 @@ const ChartOfAccountsLists = () => {
 	);
 };
 
-export default ChartOfAccountsLists;
+export default ChartOfAccounts;

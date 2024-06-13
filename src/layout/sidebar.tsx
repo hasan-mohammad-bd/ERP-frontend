@@ -5,6 +5,8 @@ import { ArrowLeft } from "lucide-react";
 import { NavItems } from "@/constants/side-nav";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleSideBar } from "@/store/services/erp-main/slices/commonSlice";
+import { Input } from "@/components/ui/input";
+import { NavItem } from "@/types";
 
 interface SidebarProps {
 	className?: string;
@@ -14,18 +16,45 @@ export default function Sidebar({ className }: SidebarProps) {
 	const dispatch = useAppDispatch();
 	const { isOpen } = useAppSelector((state) => state.common);
 	const [status, setStatus] = useState(false);
+	const [searchTerm, setSearchTerm] = useState("");
 
 	const handleToggle = () => {
 		setStatus(true);
 		dispatch(toggleSideBar());
 		setTimeout(() => setStatus(false), 500);
 	};
+
+	// Deep copy function to avoid mutating original array
+	const deepCopy = (items: NavItem[]): NavItem[] => {
+		return items.map((item) => ({
+			...item,
+			children: item.children ? deepCopy(item.children) : [],
+		}));
+	};
+
+	// Menu Search Logic
+	const filterItems = (items: NavItem[]) => {
+		const copiedItems = deepCopy(items);
+		return copiedItems.filter((item) => {
+			if (item.isChildren) {
+				item.children =
+					item.children?.filter((child) =>
+						child.title.toLowerCase().includes(searchTerm.toLowerCase())
+					) || []; // Provide a default empty array if children is undefined
+				return item.children.length > 0;
+			}
+			return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+		});
+	};
+
+	const filteredNavItems = searchTerm ? filterItems(NavItems) : NavItems;
+
 	return (
 		<nav
 			className={cn(
-				`relative hidden h-screen border-r pt-20 md:block`,
+				`relative hidden h-screen border-r pt-14 md:block`,
 				status && "duration-500",
-				isOpen ? "w-72" : "w-[78px]",
+				isOpen ? "w-64" : "w-[70px]",
 				className
 			)}
 		>
@@ -37,12 +66,23 @@ export default function Sidebar({ className }: SidebarProps) {
 				)}
 				onClick={handleToggle}
 			/>
-			<div className="space-y-4 py-4">
-				<div className="px-3 py-2">
-					<div className="mt-3 space-y-1">
+			<div className="py-4 w-full">
+				<div className="px-2 py-2 w-full">
+					{isOpen && (
+						<div className="pl-2 pr-5">
+							<Input
+								type="search"
+								placeholder="Menu Search..."
+								className="w-full max-w-[300px]"
+								value={searchTerm}
+								onChange={(e) => setSearchTerm(e.target.value)}
+							/>
+						</div>
+					)}
+					<div className={`${isOpen ? "mt-3" : "mt-8"} space-y-1`}>
 						<SideNav
 							className="text-background opacity-0 transition-all duration-300 group-hover:z-50 group-hover:ml-4 group-hover:rounded group-hover:bg-foreground group-hover:p-2 group-hover:opacity-100"
-							items={NavItems}
+							items={filteredNavItems}
 						/>
 					</div>
 				</div>

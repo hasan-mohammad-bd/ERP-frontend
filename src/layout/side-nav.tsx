@@ -51,7 +51,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 							<AccordionTrigger
 								className={cn(
 									buttonVariants({ variant: "ghost" }),
-									"group relative flex h-10 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
+									"group relative flex h-9 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
 								)}
 							>
 								<div>
@@ -71,7 +71,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 									<ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
 								)}
 							</AccordionTrigger>
-							<AccordionContent className="ml-3 mt-2 space-y-2 pb-1">
+							<AccordionContent className="mt-2 space-y-2 pb-1">
 								{item.children?.map((child) => (
 									<Link
 										key={child.title}
@@ -81,11 +81,14 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 										}}
 										className={cn(
 											buttonVariants({ variant: "ghost" }),
-											"group relative flex h-10 justify-start gap-x-3",
-											path === child.href && "bg-muted font-bold hover:bg-muted"
+											"group relative flex h-9 justify-start gap-x-3",
+											path === child.href &&
+												"bg-muted font-semibold hover:bg-muted"
 										)}
 									>
-										<child.icon className={cn("h-5 w-5", child.color)} />
+										{!isOpen && (
+											<child.icon className={cn("h-5 w-5", child.color)} />
+										)}
 										<div
 											className={cn(
 												"absolute left-12 text-base duration-200",
@@ -109,7 +112,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 						className={cn(
 							buttonVariants({ variant: "ghost" }),
 							"group relative flex h-10 justify-start",
-							path === item.href && "bg-muted font-bold hover:bg-muted"
+							path === item.href && "bg-muted font-semibold hover:bg-muted"
 						)}
 					>
 						<item.icon className={cn("h-5 w-5", item.color)} />
