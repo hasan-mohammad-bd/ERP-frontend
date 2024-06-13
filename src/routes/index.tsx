@@ -2,6 +2,7 @@ import { Layout } from "@/layout";
 import ErrorPage from "@/pages/ErrorPage";
 import ChartOfAccounts from "@/pages/accounts/chart-of-account";
 import FinancialYears from "@/pages/accounts/financial-year";
+import SubAccounts from "@/pages/accounts/sub-accounts";
 
 import Department from "@/pages/hrm/department";
 import Designation from "@/pages/hrm/designation";
@@ -122,6 +123,11 @@ const router = createBrowserRouter([
 					{
 						path: "chart-of-accounts",
 						element: <ChartOfAccounts />,
+						errorElement: <ErrorPage />,
+					},
+					{
+						path: "sub-accounts",
+						element: <SubAccounts />,
 						errorElement: <ErrorPage />,
 					},
 				],

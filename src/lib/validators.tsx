@@ -1307,10 +1307,29 @@ const ledgerGroupColumn: z.ZodType<LedgerGroupColumnType> = z.lazy(() =>
 
 export type LedgerGroupColumn = z.infer<typeof ledgerGroupColumn>;
 
-//ledger Account
 
-export const LedgerAccountSchema = z.object({
+
+
+// sub account
+
+export const SubAccountSchema = z.object({
+
 	name: z.string().min(2, {
 		message: "Name must be at least 2 characters.",
 	}),
+	type: z.enum(["None", "Employee", "Customer", "Supplier", "Agent"]),
+	phone: z.string().min(10, {
+		message: "Phone number must be at least 10 characters.",
+	}),
 });
+
+export type SubAccountFromValues = z.infer<typeof SubAccountSchema>;
+
+export const subAccountColumn = z.object({
+	id: z.coerce.number(),
+	name: z.string(),
+	type: z.enum(["None", "Employee", "Customer", "Supplier", "Agent"]),
+	phone: z.string(),
+});
+
+export type SubAccountColumn = z.infer<typeof subAccountColumn>

@@ -14,6 +14,6 @@ export const accountApi = createApi({
 			return headers;
 		},
 	}),
-	tagTypes: ["financial-years", "ledger-groups", "ledger-accounts"],
+	tagTypes: ["financial-years", "ledger-groups", "ledger-accounts", "sub-accounts"],
 	endpoints: () => ({}),
 });

@@ -164,6 +164,12 @@ export const NavItems: NavItem[] = [
 				href: "/accounts/chart-of-accounts",
 				color: "text-sky-500",
 			},
+			{
+				title: "Sub Accounts",
+				icon: MapPin,
+				href: "/accounts/sub-accounts",
+				color: "text-sky-500",
+			},
 		],
 	},
 
