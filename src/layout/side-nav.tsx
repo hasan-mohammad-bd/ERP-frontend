@@ -51,15 +51,16 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 							<AccordionTrigger
 								className={cn(
 									buttonVariants({ variant: "ghost" }),
-									"group relative flex h-9 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
+									"group relative flex h-9 justify-between px-4 py-2 text-base font-medium text-[#435966] duration-200 hover:bg-muted hover:no-underline"
 								)}
 							>
-								<div>
-									<item.icon className={cn("h-5 w-5", item.color)} />
+								<div className="p-1 bg-[#EAEAEA] rounded-full">
+									<item.icon className={cn("text-[#435966] h-5 w-5")} />
 								</div>
+
 								<div
 									className={cn(
-										"absolute left-12 text-base duration-200 ",
+										"absolute left-16 text-base font-medium text-[#435966] duration-200 ",
 										!isOpen && className
 									)}
 								>
@@ -83,15 +84,17 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 											buttonVariants({ variant: "ghost" }),
 											"group relative flex h-9 justify-start gap-x-3",
 											path === child.href &&
-												"bg-muted font-semibold hover:bg-muted"
+												"bg-muted font-normal hover:bg-muted"
 										)}
 									>
 										{!isOpen && (
-											<child.icon className={cn("h-5 w-5", child.color)} />
+											<div className="p-1 bg-[#EAEAEA] rounded-full">
+												<child.icon className={cn("text-[#435966] h-5 w-5")} />
+											</div>
 										)}
 										<div
 											className={cn(
-												"absolute left-12 text-base duration-200",
+												"absolute left-12 text-base font-medium text-[#435966] duration-200",
 												!isOpen && className
 											)}
 										>
@@ -115,10 +118,12 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 							path === item.href && "bg-muted font-semibold hover:bg-muted"
 						)}
 					>
-						<item.icon className={cn("h-5 w-5", item.color)} />
+						<div className="p-1 bg-[#EAEAEA] rounded-full">
+							<item.icon className={cn("text-[#435966] h-5 w-5")} />
+						</div>
 						<span
 							className={cn(
-								"absolute left-12 text-base duration-200",
+								"absolute left-16 text-base font-medium text-[#435966] duration-200",
 								!isOpen && className
 							)}
 						>
