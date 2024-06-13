@@ -1,19 +1,15 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import { LedgerGroupColumn } from "@/lib/validators";
-import {
-	File,
-	FilePenLine,
-	FilePlus2,
-	Folder,
-	FolderPlus,
-	ScanEye,
-} from "lucide-react";
+import { File, Folder } from "lucide-react";
+import { GroupCellAction } from "./group-cell-action";
+import { LedgerCellAction } from "./ledger-cell-action";
 
 interface ChartOfAccountItemProps {
 	group: LedgerGroupColumn;
+	coaType: string;
 }
 
-const ChartOfAccountChild = ({ group }: ChartOfAccountItemProps) => {
+const ChartOfAccountChild = ({ group, coaType }: ChartOfAccountItemProps) => {
 	return group.childs_group.map((item) => (
 		<>
 			<TableRow key={item.id}>
@@ -24,13 +20,12 @@ const ChartOfAccountChild = ({ group }: ChartOfAccountItemProps) => {
 					{item.name}
 				</TableCell>
 				<TableCell className="text-right">
-					<div className="inline-flex items-center justify-end gap-2">
-						<FolderPlus className="cursor-pointer" />
-						<FilePlus2 className="cursor-pointer" />
-					</div>
+					<GroupCellAction rowData={item} coaType={coaType} />
 				</TableCell>
 			</TableRow>
-			{item.childs_group.length > 0 && <ChartOfAccountChild group={item} />}
+			{item.childs_group.length > 0 && (
+				<ChartOfAccountChild group={item} coaType={coaType} />
+			)}
 			{item.ledgers.map((ledger) => (
 				<TableRow key={ledger.id}>
 					<TableCell>{ledger.code}</TableCell>
@@ -40,10 +35,7 @@ const ChartOfAccountChild = ({ group }: ChartOfAccountItemProps) => {
 						{ledger.name}
 					</TableCell>
 					<TableCell className="text-right">
-						<div className="inline-flex items-center justify-end gap-2">
-							<ScanEye className="cursor-pointer" />
-							<FilePenLine className="cursor-pointer" />
-						</div>
+						<LedgerCellAction rowData={ledger} />
 					</TableCell>
 				</TableRow>
 			))}

@@ -1,24 +1,24 @@
-const COA_OPTIONS = [
+const COA_TYPES = [
 	{
-		key: "Assets",
+		type: "Assets",
 		title: "Assets",
 		description: "Manage assets for your business",
 	},
 	{
-		key: "Liabilities",
+		type: "Liabilities",
 		title: "Liabilities",
 		description: "Manage liabilities for your business",
 	},
 	{
-		key: "Income",
+		type: "Income",
 		title: "Incomes",
 		description: "Manage incomes for your business",
 	},
 	{
-		key: "Expenses",
+		type: "Expenses",
 		title: "Expenses",
 		description: "Manage expenses for your business",
 	},
 ];
 
-export default COA_OPTIONS;
+export default COA_TYPES;

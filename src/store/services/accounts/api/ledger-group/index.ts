@@ -12,7 +12,7 @@ const ledgerGroupApi = accountApi.injectEndpoints({
 			string | void
 		>({
 			query: () => `ledger-groups`,
-			providesTags: ["ledgerGroups"],
+			providesTags: ["ledger-groups"],
 		}),
 		createLedgerGroup: build.mutation<
 			{ data: LedgerGroupColumn },
@@ -23,14 +23,14 @@ const ledgerGroupApi = accountApi.injectEndpoints({
 				method: "POST",
 				body: newLedgerGroup,
 			}),
-			invalidatesTags: ["ledgerGroups"],
+			invalidatesTags: ["ledger-groups"],
 		}),
 		removeLedgerGroup: build.mutation<DeleteResponse, number>({
 			query: (ledgerGroupId) => ({
 				url: `ledger-groups/${ledgerGroupId}`,
 				method: "DELETE",
 			}),
-			invalidatesTags: ["ledgerGroups"],
+			invalidatesTags: ["ledger-groups"],
 		}),
 		updateLedgerGroup: build.mutation<
 			{ data: LedgerGroupColumn },
@@ -41,7 +41,7 @@ const ledgerGroupApi = accountApi.injectEndpoints({
 				method: "PUT",
 				body: updatedLedgerGroup,
 			}),
-			invalidatesTags: ["ledgerGroups"],
+			invalidatesTags: ["ledger-groups"],
 		}),
 	}),
 	overrideExisting: false,

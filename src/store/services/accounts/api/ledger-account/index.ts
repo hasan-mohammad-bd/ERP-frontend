@@ -1,7 +1,4 @@
-import {
-	LedgerFromValues,
-	type LedgerColumn,
-} from "@/lib/validators";
+import { LedgerFromValues, type LedgerColumn } from "@/lib/validators";
 import { accountApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
 
@@ -23,14 +20,14 @@ const ledgerAccountApi = accountApi.injectEndpoints({
 				method: "POST",
 				body: newLedgerAccount,
 			}),
-			invalidatesTags: ["ledger-accounts"],
+			invalidatesTags: ["ledger-accounts", "ledger-groups"],
 		}),
 		removeLedgerAccount: build.mutation<DeleteResponse, number>({
 			query: (ledgerAccountId) => ({
 				url: `ledger-accounts/${ledgerAccountId}`,
 				method: "DELETE",
 			}),
-			invalidatesTags: ["ledger-accounts"],
+			invalidatesTags: ["ledger-accounts", "ledger-groups"],
 		}),
 		updateLedgerAccount: build.mutation<
 			{ data: LedgerColumn },
@@ -41,7 +38,7 @@ const ledgerAccountApi = accountApi.injectEndpoints({
 				method: "PUT",
 				body: updatedLedgerAccount,
 			}),
-			invalidatesTags: ["ledger-accounts"],
+			invalidatesTags: ["ledger-accounts", "ledger-groups"],
 		}),
 	}),
 	overrideExisting: false,

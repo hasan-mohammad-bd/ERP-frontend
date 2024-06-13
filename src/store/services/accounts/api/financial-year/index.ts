@@ -12,7 +12,7 @@ const financialYearApi = accountApi.injectEndpoints({
 			string
 		>({
 			query: (params) => `financial-years?${params}`,
-			providesTags: ["financialYears"],
+			providesTags: ["financial-years"],
 		}),
 		createFinancialYear: build.mutation<
 			{ data: FinancialYearColumn },
@@ -23,14 +23,14 @@ const financialYearApi = accountApi.injectEndpoints({
 				method: "POST",
 				body: newFinancialYear,
 			}),
-			invalidatesTags: ["financialYears"],
+			invalidatesTags: ["financial-years"],
 		}),
 		removeFinancialYear: build.mutation<DeleteResponse, number>({
 			query: (financialYearId) => ({
 				url: `financial-years/${financialYearId}`,
 				method: "DELETE",
 			}),
-			invalidatesTags: ["financialYears"],
+			invalidatesTags: ["financial-years"],
 		}),
 		updateFinancialYear: build.mutation<
 			{ data: FinancialYearColumn },
@@ -41,7 +41,7 @@ const financialYearApi = accountApi.injectEndpoints({
 				method: "PUT",
 				body: updatedFinancialYear,
 			}),
-			invalidatesTags: ["financialYears"],
+			invalidatesTags: ["financial-years"],
 		}),
 	}),
 	overrideExisting: false,

@@ -1,75 +1,56 @@
-import { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 
-import { Modal } from "@/components/common/modal";
-import { AddLedgerGroupForm } from "./components/add-ledger-group-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useGetLedgerGroupsQuery } from "@/store/services/accounts/api/chart-of-account";
+import { useGetLedgerGroupsQuery } from "@/store/services/accounts/api/ledger-group";
 import ChartOfAccountItem from "./components/chart-of-account-item";
+import COA_TYPES from "./coa-types";
 
-const ChartOfAccount = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetLedgerGroupsQuery();
-  const chartOfAccount = data?.data || [];
+const ChartOfAccountsLists = () => {
+	const { data, isLoading } = useGetLedgerGroupsQuery();
+	const chartOfAccount = data?.data || [];
+	// console.log(chartOfAccount);
 
-  if (isLoading) return <Loading />;
+	if (isLoading) return <Loading />;
 
-  return (
-    <>
-      <div className="flex items-center justify-between md:p-8">
-        <Heading
-          title="Chart Of Account"
-          description="Manage Chart of account for you business"
-        />
-        <Button onClick={() => setIsOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" /> Add Chart of Account
-        </Button>
-      </div>
-      <Separator />
-      <Tabs defaultValue="assets" className="w-full mt-3 px-3">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="assets"> Assets</TabsTrigger>
-          <TabsTrigger value="liabilities-and-owners-equity">
-            Liabilities and Owners Equity
-          </TabsTrigger>
-          <TabsTrigger value="incomes">Incomes</TabsTrigger>
-          <TabsTrigger value="expenses">Expenses</TabsTrigger>
-        </TabsList>
-        <TabsContent value="assets">
-          <ChartOfAccountItem
-            title="Assets"
-            description="Make changes to your assets here."
-            data={chartOfAccount}
-          />
-          {/*           <CardHeader>
-            <CardTitle>Assets</CardTitle>
-            <CardDescription>Make changes to your assets here.</CardDescription>
-            <CardDescription>
-              {financialYear && (
-                <div>
-                  <DataTable
-                    columns={financialYearColumns}
-                    data={financialYear}
-                    paginationInfo={paginationInfo}
-                    pagination={pagination}
-                    setPagination={setPagination}
-                  />
-                </div>
-              )}
-            </CardDescription>
-          </CardHeader> */}
-        </TabsContent>
-      </Tabs>
-
-      <Modal title="" isOpen={isOpen} toggleModal={() => setIsOpen(false)}>
-        <AddLedgerGroupForm modalClose={() => setIsOpen(false)} />
-      </Modal>
-    </>
-  );
+	return (
+		<>
+			<div className="flex items-center justify-between md:p-8">
+				<Heading
+					title="Chart Of Account"
+					description="Manage Chart of account for you business"
+				/>
+				<Button
+				// onClick={() => setIsOpen(true)}
+				>
+					<Plus className="mr-2 h-4 w-4" /> Add Chart of Account
+				</Button>
+			</div>
+			<Separator />
+			<Tabs defaultValue={COA_TYPES[0].type} className="w-full mt-3 px-3">
+				<TabsList className="w-fit mx-4">
+					{COA_TYPES.map((item) => (
+						<TabsTrigger key={item.type} value={item.type}>
+							{item.title}
+						</TabsTrigger>
+					))}
+				</TabsList>
+				{COA_TYPES.map((item) => (
+					<TabsContent key={item.type} value={item.type}>
+						<ChartOfAccountItem
+							title={item.title}
+							coaType={item.type}
+							description={item.description}
+							data={chartOfAccount}
+						/>
+					</TabsContent>
+				))}
+			</Tabs>
+		</>
+	);
 };
 
-export default ChartOfAccount;
+export default ChartOfAccountsLists;

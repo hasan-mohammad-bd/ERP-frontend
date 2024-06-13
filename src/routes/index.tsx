@@ -1,7 +1,7 @@
 import { Layout } from "@/layout";
 import ErrorPage from "@/pages/ErrorPage";
 import ChartOfAccount from "@/pages/accounts/chart-of-account";
-import ChartOfAccountsLists from "@/pages/accounts/chart-of-account-lists";
+import ChartOfAccountsLists from "@/pages/accounts/chart-of-account";
 import FinancialYears from "@/pages/accounts/financial-year";
 
 import Department from "@/pages/hrm/department";
