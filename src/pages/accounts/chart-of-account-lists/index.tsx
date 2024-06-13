@@ -7,6 +7,7 @@ import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGetLedgerGroupsQuery } from "@/store/services/accounts/api/chart-of-account";
 import ChartOfAccountItem from "./components/chart-of-account-item";
+import COA_OPTIONS from "./coa-options";
 
 const ChartOfAccountsLists = () => {
 	const { data, isLoading } = useGetLedgerGroupsQuery();
@@ -29,22 +30,24 @@ const ChartOfAccountsLists = () => {
 				</Button>
 			</div>
 			<Separator />
-			<Tabs defaultValue="assets" className="w-full mt-3 px-3">
-				<TabsList className="grid w-full grid-cols-4">
-					<TabsTrigger value="assets"> Assets</TabsTrigger>
-					<TabsTrigger value="liabilities-and-owners-equity">
-						Liabilities and Owners Equity
-					</TabsTrigger>
-					<TabsTrigger value="incomes">Incomes</TabsTrigger>
-					<TabsTrigger value="expenses">Expenses</TabsTrigger>
+			<Tabs defaultValue={COA_OPTIONS[0].key} className="w-full mt-3 px-3">
+				<TabsList className="w-fit mx-4">
+					{COA_OPTIONS.map((item) => (
+						<TabsTrigger key={item.key} value={item.key}>
+							{item.title}
+						</TabsTrigger>
+					))}
 				</TabsList>
-				<TabsContent value="assets">
-					<ChartOfAccountItem
-						title="Assets"
-						description="Make changes to your assets here."
-						data={chartOfAccount}
-					/>
-				</TabsContent>
+				{COA_OPTIONS.map((item) => (
+					<TabsContent key={item.key} value={item.key}>
+						<ChartOfAccountItem
+							title={item.title}
+							coaKey={item.key}
+							description={item.description}
+							data={chartOfAccount}
+						/>
+					</TabsContent>
+				))}
 			</Tabs>
 		</>
 	);

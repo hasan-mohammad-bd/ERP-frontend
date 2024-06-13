@@ -1286,8 +1286,8 @@ type LedgerGroupColumnType = {
 	is_active?: number | null;
 	is_default?: number | null;
 	sorting_index?: number | null;
-	childGroup?: LedgerGroupColumnType[] | null;
-	ledgers?: LedgerColumn[] | null;
+	childs_group: LedgerGroupColumnType[];
+	ledgers: LedgerColumn[];
 };
 
 const ledgerGroupColumn: z.ZodType<LedgerGroupColumnType> = z.lazy(() =>
@@ -1300,8 +1300,8 @@ const ledgerGroupColumn: z.ZodType<LedgerGroupColumnType> = z.lazy(() =>
 		is_active: z.coerce.number().optional().nullable(),
 		is_default: z.coerce.number().optional().nullable(),
 		sorting_index: z.coerce.number().optional().nullable(),
-		childGroup: z.array(ledgerGroupColumn).optional().nullable(),
-		ledgers: z.array(ledgerColumn).optional().nullable(),
+		childs_group: z.array(ledgerGroupColumn),
+		ledgers: z.array(ledgerColumn),
 	})
 );
 
