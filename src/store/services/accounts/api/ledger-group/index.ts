@@ -1,4 +1,5 @@
 import {
+  LedgerGroupArrayColumn,
   LedgerGroupFromValues,
   type LedgerGroupColumn,
 } from "@/lib/validators";
@@ -11,8 +12,15 @@ const ledgerGroupApi = accountApi.injectEndpoints({
       { data: LedgerGroupColumn[]; meta: PaginationInfo },
       string | void
     >({
+      query: () => `ledger-groups?tree=1`,
+      providesTags: ["ledger-groups-tree"],
+    }),
+    getLedgerGroupsArray: build.query<
+      { data: LedgerGroupArrayColumn[]; meta: PaginationInfo },
+      string | void
+    >({
       query: () => `ledger-groups`,
-      providesTags: ["ledger-groups"],
+      providesTags: ["ledger-groups-array"],
     }),
     createLedgerGroup: build.mutation<
       { data: LedgerGroupColumn },
@@ -23,7 +31,7 @@ const ledgerGroupApi = accountApi.injectEndpoints({
         method: "POST",
         body: newLedgerGroup,
       }),
-      invalidatesTags: ["ledger-groups"],
+      invalidatesTags: ["ledger-groups", "ledger-groups-tree", "ledger-groups-array"],
     }),
     removeLedgerGroup: build.mutation<DeleteResponse, number>({
       query: (ledgerGroupId) => ({
@@ -49,6 +57,7 @@ const ledgerGroupApi = accountApi.injectEndpoints({
 
 export const {
   useGetLedgerGroupsQuery,
+  useGetLedgerGroupsArrayQuery,
   useCreateLedgerGroupMutation,
   useRemoveLedgerGroupMutation,
   useUpdateLedgerGroupMutation,

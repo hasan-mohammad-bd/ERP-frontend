@@ -20,14 +20,14 @@ const ledgerAccountApi = accountApi.injectEndpoints({
 				method: "POST",
 				body: newLedgerAccount,
 			}),
-			invalidatesTags: ["ledger-accounts", "ledger-groups"],
+			invalidatesTags: ["ledger-accounts", "ledger-groups-tree", "ledger-groups-array"],
 		}),
 		removeLedgerAccount: build.mutation<DeleteResponse, number>({
 			query: (ledgerAccountId) => ({
 				url: `ledger-accounts/${ledgerAccountId}`,
 				method: "DELETE",
 			}),
-			invalidatesTags: ["ledger-accounts", "ledger-groups"],
+			invalidatesTags: ["ledger-accounts", "ledger-groups-tree", "ledger-groups-array"],
 		}),
 		updateLedgerAccount: build.mutation<
 			{ data: LedgerColumn },
