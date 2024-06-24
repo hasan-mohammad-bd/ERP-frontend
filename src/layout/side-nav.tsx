@@ -55,12 +55,12 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 								)}
 							>
 								<div className="p-1 bg-[#EAEAEA] rounded-full">
-									<item.icon className={cn("text-[#435966] h-5 w-5")} />
+									<item.icon className={cn("text-[#435966] h-5 w-5 font-thin")} />
 								</div>
 
 								<div
 									className={cn(
-										"absolute left-16 text-base font-medium text-[#435966] duration-200 ",
+										"absolute left-16 text-sm font-medium text-[#435966] duration-200 ",
 										!isOpen && className
 									)}
 								>
@@ -94,7 +94,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 										)}
 										<div
 											className={cn(
-												"absolute left-12 text-base font-medium text-[#435966] duration-200",
+												"absolute left-16 text-sm font-normal text-[#435966] duration-200",
 												!isOpen && className
 											)}
 										>
@@ -123,7 +123,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 						</div>
 						<span
 							className={cn(
-								"absolute left-16 text-base font-medium text-[#435966] duration-200",
+								"absolute left-16 text-sm font-medium text-[#435966] duration-200",
 								!isOpen && className
 							)}
 						>
