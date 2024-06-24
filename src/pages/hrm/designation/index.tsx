@@ -35,7 +35,7 @@ const Designation = () => {
 							title="Designation"
 							description="Manage departments for you business"
 						/>
-						<Button onClick={() => setIsOpen(true)}>
+						<Button onClick={() => setIsOpen(true)} size={"sm"}>
 							<Plus className="mr-2 h-4 w-4" /> Add Designation
 						</Button>
 					</div>

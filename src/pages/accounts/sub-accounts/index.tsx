@@ -14,56 +14,56 @@ import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accoun
 import { subAccountColumns } from "./components/columns";
 
 const SubAccounts = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [pagination, setPagination] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-  const { data, isLoading } = useGetSubAccountsQuery(
-    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
-  );
-  const financialYear = data?.data || [];
+	const [isOpen, setIsOpen] = useState(false);
+	const [pagination, setPagination] = React.useState<PaginationState>({
+		pageIndex: 0,
+		pageSize: 10,
+	});
+	const { data, isLoading } = useGetSubAccountsQuery(
+		`per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+	);
+	const financialYear = data?.data || [];
 
-  const paginationInfo: PaginationInfo | undefined = data?.meta;
+	const paginationInfo: PaginationInfo | undefined = data?.meta;
 
-  if (isLoading) return <Loading />;
+	if (isLoading) return <Loading />;
 
-  return (
-    <>
-      <div className="flex flex-col">
-        <div className="flex-1 space-y-4 md:p-8">
-          <div className="flex items-center justify-between">
-            <Heading
-              title="Sub Accounts"
-              description="Manage your sub accounts for you business"
-            />
-            <Button onClick={() => setIsOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" /> Add Sub Account
-            </Button>
-          </div>
-          <Separator />
-          {financialYear && (
-            <div>
-              <DataTable
-                columns={subAccountColumns}
-                data={financialYear}
-                paginationInfo={paginationInfo}
-                pagination={pagination}
-                setPagination={setPagination}
-              />
-            </div>
-          )}
-        </div>
-      </div>
-      <Modal
-        title="Add Sub Account"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-      >
-        <AddSubAccountForm modalClose={() => setIsOpen(false)} />
-      </Modal>
-    </>
-  );
+	return (
+		<>
+			<div className="flex flex-col">
+				<div className="flex-1 space-y-4 md:p-8">
+					<div className="flex items-center justify-between">
+						<Heading
+							title="Sub Accounts"
+							description="Manage your sub accounts for you business"
+						/>
+						<Button onClick={() => setIsOpen(true)} size={"sm"}>
+							<Plus className="mr-2 h-4 w-4" /> Add Sub Account
+						</Button>
+					</div>
+					<Separator />
+					{financialYear && (
+						<div>
+							<DataTable
+								columns={subAccountColumns}
+								data={financialYear}
+								paginationInfo={paginationInfo}
+								pagination={pagination}
+								setPagination={setPagination}
+							/>
+						</div>
+					)}
+				</div>
+			</div>
+			<Modal
+				title="Add Sub Account"
+				isOpen={isOpen}
+				toggleModal={() => setIsOpen(false)}
+			>
+				<AddSubAccountForm modalClose={() => setIsOpen(false)} />
+			</Modal>
+		</>
+	);
 };
 
 export default SubAccounts;

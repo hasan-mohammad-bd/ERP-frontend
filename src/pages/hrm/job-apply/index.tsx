@@ -33,10 +33,9 @@ const JobApply = () => {
 		pageSize: 10,
 	});
 
-	const { data, isLoading } = useGetJobAppliesQuery(`per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`);
-
-
-
+	const { data, isLoading } = useGetJobAppliesQuery(
+		`per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+	);
 
 	// Set appropriate bulk action type here
 	const [selectedBulkAction, setSelectedBulkAction] = useState<
@@ -60,7 +59,7 @@ const JobApply = () => {
 							title="Job Apply"
 							description="Manage job apply for you business"
 						/>
-						<Button onClick={() => setIsOpen(true)}>
+						<Button onClick={() => setIsOpen(true)} size={"sm"}>
 							<Plus className="mr-2 h-4 w-4" /> Add Job Apply
 						</Button>
 					</div>
@@ -99,10 +98,11 @@ const JobApply = () => {
 					className=""
 				>
 					{/* Do whatever you want to do with selected items  */}
-	
-						
-						<UpdateStatusForm modalClose={() => setIsOpen(false)} data={selectedBulkAction.payload}  />
 
+					<UpdateStatusForm
+						modalClose={() => setIsOpen(false)}
+						data={selectedBulkAction.payload}
+					/>
 				</Modal>
 			)}
 		</>

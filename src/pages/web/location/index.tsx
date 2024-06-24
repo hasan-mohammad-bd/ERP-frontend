@@ -13,49 +13,57 @@ import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
 
 const Location = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [pagination, setPagination] = React.useState<PaginationState>({
+	const [isOpen, setIsOpen] = useState(false);
+	const [pagination, setPagination] = React.useState<PaginationState>({
 		pageIndex: 0,
 		pageSize: 10,
 	});
-  const { data, isLoading } = useGetLocationsQuery(`per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`);
+	const { data, isLoading } = useGetLocationsQuery(
+		`per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+	);
 
-  const locations = data?.data || [];
-  const paginationInfo: PaginationInfo | undefined = data?.meta;
+	const locations = data?.data || [];
+	const paginationInfo: PaginationInfo | undefined = data?.meta;
 
-  // console.log(departments);
-  if (isLoading) return <Loading />;
+	// console.log(departments);
+	if (isLoading) return <Loading />;
 
-  return (
-    <>
-      <div className="flex flex-col">
-        <div className="flex-1 space-y-4 md:p-8">
-          <div className="flex items-center justify-between">
-            <Heading
-              title="Location"
-              description="Manage organization for you business"
-            />
-            <Button onClick={() => setIsOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" /> Add Location
-            </Button>
-          </div>
-          <Separator />
-          {locations && (
-            <div>
-              <DataTable columns={locationColumns} data={locations} paginationInfo={paginationInfo} pagination={pagination} setPagination={setPagination} />
-            </div>
-          )}
-        </div>
-      </div>
-      <Modal
-        title="Add Location"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-      >
-        <AddLocationForm modalClose={() => setIsOpen(false)} />
-      </Modal>
-    </>
-  );
+	return (
+		<>
+			<div className="flex flex-col">
+				<div className="flex-1 space-y-4 md:p-8">
+					<div className="flex items-center justify-between">
+						<Heading
+							title="Location"
+							description="Manage organization for you business"
+						/>
+						<Button onClick={() => setIsOpen(true)} size={"sm"}>
+							<Plus className="mr-2 h-4 w-4" /> Add Location
+						</Button>
+					</div>
+					<Separator />
+					{locations && (
+						<div>
+							<DataTable
+								columns={locationColumns}
+								data={locations}
+								paginationInfo={paginationInfo}
+								pagination={pagination}
+								setPagination={setPagination}
+							/>
+						</div>
+					)}
+				</div>
+			</div>
+			<Modal
+				title="Add Location"
+				isOpen={isOpen}
+				toggleModal={() => setIsOpen(false)}
+			>
+				<AddLocationForm modalClose={() => setIsOpen(false)} />
+			</Modal>
+		</>
+	);
 };
 
 export default Location;

@@ -19,7 +19,9 @@ const Department = () => {
 		pageSize: 10,
 	});
 
-	const { data, isLoading } = useGetDepartmentsQuery(`per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`);
+	const { data, isLoading } = useGetDepartmentsQuery(
+		`per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+	);
 	const departments = data?.data || [];
 	const paginationInfo: PaginationInfo | undefined = data?.meta;
 
@@ -35,7 +37,7 @@ const Department = () => {
 							title="Departments"
 							description="Manage department for you business"
 						/>
-						<Button onClick={() => setIsOpen(true)}>
+						<Button onClick={() => setIsOpen(true)} size={"sm"}>
 							<Plus className="mr-2 h-4 w-4" /> Add Department
 						</Button>
 					</div>

@@ -40,20 +40,13 @@ import {
 } from "@/components/ui/select";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 import { useGetReligionsQuery } from "@/store/services/hrm/api/religion";
 import { useGetGendersQuery } from "@/store/services/hrm/api/gender";
 import { useForm } from "react-hook-form";
 // import { useGetCountriesQuery } from "@/store/services/hrm/api/country";
-import { AddAddressForm } from "./add-address";
+import { AddressForm } from "./address-form";
 import { AddEducationForm } from "./add-education";
 import { AddExperienceForm } from "./add-experience";
 import {
@@ -77,15 +70,15 @@ import { AddAdditionalInfoForm } from "./add-additional-data";
 import { AddSkillForm } from "./add-skill";
 import { AddNomineeForm } from "./add-nominee";
 
-interface AddEmployeeFormProps {
+interface EmployeeFormProps {
 	modalClose: () => void;
 	data?: EmployeeColumn;
 }
 
-export function AddEmployeeForm({
+export function EmployeeForm({
 	modalClose,
 	data: previousData,
-}: AddEmployeeFormProps) {
+}: EmployeeFormProps) {
 	const [createEmployee, { isLoading }] = useCreateEmployeeMutation();
 	const [updateEmployee, { isLoading: updateLoading }] =
 		useUpdateEmployeeMutation();
@@ -100,14 +93,18 @@ export function AddEmployeeForm({
 		useGetDepartmentsQuery("page=1&per_page=1000");
 	const { data: designations, isLoading: designationLoading } =
 		useGetDesignationQuery("page=1&per_page=1000");
-	const { data: schedules, isLoading: scheduleLoading } =
-		useGetSchedulesQuery("page=1&per_page=1000");
+	const { data: schedules, isLoading: scheduleLoading } = useGetSchedulesQuery(
+		"page=1&per_page=1000"
+	);
 
-	const { data: sections, isLoading: sectionLoading } = useGetSectionsQuery("page=1&per_page=1000");
+	const { data: sections, isLoading: sectionLoading } = useGetSectionsQuery(
+		"page=1&per_page=1000"
+	);
 
 	const { data: genders, isLoading: genderLoading } = useGetGendersQuery();
-	const { data: locations, isLoading: locationLoading } =
-		useGetLocationsQuery("page=1&per_page=1000");
+	const { data: locations, isLoading: locationLoading } = useGetLocationsQuery(
+		"page=1&per_page=1000"
+	);
 
 	const { data: employeeClasses, isLoading: employeeClassLoading } =
 		useGetEmployeeClassesQuery("page=1&per_page=1000");
@@ -137,79 +134,72 @@ export function AddEmployeeForm({
 	const roleData = roles?.data || [];
 	// const countryData = countries?.data || [];
 
-  const form = useForm<EmployeeFormValues>({
+	const form = useForm<EmployeeFormValues>({
+		resolver: zodResolver(EmployeeFormSchema),
+		defaultValues: {
+			employee_unique_id: previousData?.employee_unique_id || "",
+			first_name: previousData?.first_name || "",
+			last_name: previousData?.last_name || "",
+			phone: previousData?.phone || "",
+			corporate_phone: previousData?.corporate_phone || "",
+			email: previousData?.email || "",
+			joining_date: previousData?.joining_date || "",
+			status: previousData?.status || "Active",
+			location_id: previousData?.location_id || 1,
+			organization_id: previousData?.organization_id || 1,
+			work_place_id: previousData?.work_place_id || 1,
+			department_id: previousData?.department_id || 1,
+			section_id: previousData?.section_id || 1,
+			designation_id: previousData?.designation_id || 1,
+			schedule_id: previousData?.schedule_id || 1,
+			employee_class_id: previousData?.employee_class_id || 1,
+			employee_grade_id: previousData?.employee_grade_id || 1,
+			employment_status_id: previousData?.employment_status_id || 1,
+			password: null,
+			gender_id: previousData?.gender_id || 1,
+			religion_id: previousData?.religion_id || 1,
+			blood_group_id: previousData?.blood_group_id || 1,
+			role_id: previousData?.role_id || 1,
 
-    resolver: zodResolver(EmployeeFormSchema),
-    defaultValues: {
-      employee_unique_id: previousData?.employee_unique_id || "",
-      first_name: previousData?.first_name || "",
-      last_name: previousData?.last_name || "",
-      phone: previousData?.phone || "",
-      corporate_phone: previousData?.corporate_phone || "",
-      email: previousData?.email || "",
-      joining_date: previousData?.joining_date || "",
-      status: previousData?.status || "Active",
-      location_id: previousData?.location_id || 1,
-      organization_id: previousData?.organization_id || 1,
-      work_place_id: previousData?.work_place_id || 1,
-      department_id: previousData?.department_id || 1,
-      section_id: previousData?.section_id || 1,
-      designation_id: previousData?.designation_id || 1,
-      schedule_id: previousData?.schedule_id || 1,
-      employee_class_id: previousData?.employee_class_id || 1,
-      employee_grade_id: previousData?.employee_grade_id || 1,
-      employment_status_id: previousData?.employment_status_id || 1,
-      password: null,
-      gender_id: previousData?.gender_id || 1,
-      religion_id: previousData?.religion_id || 1,
-      blood_group_id: previousData?.blood_group_id || 1,
-      role_id: previousData?.role_id || 1,
+			//additional info
 
-      //additional info
+			card_id: previousData?.card_id || null,
+			machine_id: previousData?.machine_id || null,
+			is_head_of_dept: previousData?.is_head_of_dept || 0,
+			// reporting_to_id: previousData?.reporting_to_id || null,
+			sorting_index: previousData?.sorting_index || 0,
+			nid_number: previousData?.nid_number || null,
+			fathers_name: previousData?.fathers_name || null,
+			mothers_name: previousData?.mothers_name || null,
+			payment_type: previousData?.payment_type || "Cash",
+			account_number: previousData?.account_number || null,
+			bank_name: previousData?.bank_name || null,
+			bank_branch: previousData?.bank_branch || null,
+			marital_status: previousData?.marital_status || "Married",
+			birth_date: previousData?.birth_date || null,
+			tin_number: previousData?.tin_number || null,
+		},
+	});
 
-      card_id: previousData?.card_id || null,
-      machine_id: previousData?.machine_id || null,
-      is_head_of_dept: previousData?.is_head_of_dept || 0,
-      // reporting_to_id: previousData?.reporting_to_id || null,
-      sorting_index: previousData?.sorting_index || 0,
-      nid_number: previousData?.nid_number || null,
-      fathers_name: previousData?.fathers_name || null,
-      mothers_name: previousData?.mothers_name || null,
-      payment_type: previousData?.payment_type || "Cash",
-      account_number: previousData?.account_number || null,
-      bank_name: previousData?.bank_name || null,
-      bank_branch: previousData?.bank_branch || null,
-      marital_status: previousData?.marital_status || "Married",
-      birth_date: previousData?.birth_date || null,
-      tin_number: previousData?.tin_number || null,
+	async function onSubmit(data: EmployeeFormValues) {
+		try {
+			if (previousData) {
+				await updateEmployee({
+					employeeId: previousData.id,
+					updatedEmployee: data,
+				});
 
-    },
-  });
-
- 
-
-  async function onSubmit(data: EmployeeFormValues) {
-    
-    try {
-      if (previousData) {
-        await updateEmployee({
-          employeeId: previousData.id,
-          updatedEmployee: data,
-        });
-
-        toast.success("Job Post updated successfully");
-        modalClose();
-      } else {
-        await createEmployee(data);
-        toast.success("Job Post created successfully");
-        modalClose();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-
+				toast.success("Job Post updated successfully");
+				modalClose();
+			} else {
+				await createEmployee(data);
+				toast.success("Job Post created successfully");
+				modalClose();
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	}
 
 	return (
 		<>
@@ -245,16 +235,10 @@ export function AddEmployeeForm({
 						{/* Basic Info */}
 						<TabsContent value="basic-info">
 							<Card>
-								<CardHeader>
-									<CardTitle>Basic information</CardTitle>
-									<CardDescription>
-										Enter the basic information about the employee.
-									</CardDescription>
-								</CardHeader>
-								<CardContent className="space-y-2 ">
+								<CardContent className="space-y-2 pt-3">
 									<Form {...form}>
 										<form onSubmit={form.handleSubmit(onSubmit)} className="">
-											<div className="space-y-2 grid grid-cols-5 gap-3">
+											<div className="space-y-2 grid grid-cols-5 gap-3 items-end">
 												<FormField
 													control={form.control}
 													name="employee_unique_id"
@@ -272,41 +256,6 @@ export function AddEmployeeForm({
 														</FormItem>
 													)}
 												/>
-												{/*                         <FormField
-                          control={form.control}
-                          name="card_id"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Card Id</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="text"
-                                  placeholder="Enter Card Id"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        /> */}
-												{/*                         <FormField
-                          control={form.control}
-                          name="machine_id"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Machine Id</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="text"
-                                  placeholder="Enter Machine Id"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        /> */}
-
 												<FormField
 													control={form.control}
 													name="first_name"
@@ -413,44 +362,6 @@ export function AddEmployeeForm({
 														</FormItem>
 													)}
 												/>
-												{/*                         <FormField
-                          control={form.control}
-                          name="is_head_of_dept"
-                          render={({ field }) => (
-                            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                              <div className="space-y-0.5">
-                                <FormLabel>Head Of Department</FormLabel>
-                              </div>
-                              <FormControl>
-                                <Switch
-                                  checked={field.value === 1}
-                                  onCheckedChange={(checked: boolean) =>
-                                    field.onChange(checked ? 1 : 0)
-                                  }
-                                />
-                              </FormControl>
-                            </FormItem>
-                          )}
-                        /> */}
-
-												{/*                         <FormField
-                          control={form.control}
-                          name="nid_number"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>NID Number</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="text"
-                                  placeholder="Enter NID Number"
-                                  {...field}
-                                  value={field.value || ""}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        /> */}
 												{!previousData && (
 													<FormField
 														control={form.control}
@@ -941,42 +852,6 @@ export function AddEmployeeForm({
 														</FormItem>
 													)}
 												/>
-
-												{/*                         <FormField
-                          control={form.control}
-                          name="birth_date"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Birth Date</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="date"
-                                  placeholder="Enter Birth Date"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        /> */}
-
-												{/*                       <FormField
-                        control={form.control}
-                        name="expected_salary"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Expected Salary</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="Number"
-                                placeholder="Enter Expected Salary"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      /> */}
 												<FormField
 													control={form.control}
 													name="religion_id"
@@ -1098,26 +973,26 @@ export function AddEmployeeForm({
 													)}
 												/>
 											</div>
-											<div>
+											<div className="mt-6 flex justify-end gap-4">
 												<Button
 													variant="default"
 													type="submit"
-													className="w-full mt-4"
+													className="mt-4"
+													size={"sm"}
 												>
-													{previousData ? "Update" : "Add"}
+													{previousData ? "Update" : "Save"}
 												</Button>
 											</div>
 										</form>
 									</Form>
 								</CardContent>
-								<CardFooter>{/* <Button>Save changes</Button> */}</CardFooter>
 							</Card>
 						</TabsContent>
 
 						{/* additional info */}
 						<TabsContent value="additional-info">
 							<Card>
-								<CardContent className="space-y-2">
+								<CardContent className="">
 									<AddAdditionalInfoForm previousData={previousData} />
 								</CardContent>
 							</Card>
@@ -1128,7 +1003,24 @@ export function AddEmployeeForm({
 						<TabsContent value="address">
 							<Card>
 								<CardContent className="space-y-2">
-									<AddAddressForm previousData={previousData} />
+									<div className="flex items-center gap-x-6">
+										<div className="w-1/2">
+											<AddressForm
+												previousData={previousData?.present_address}
+												modelId={previousData?.id}
+												addressType="Present"
+												title="Present Address"
+											/>
+										</div>
+										<div className="w-1/2">
+											<AddressForm
+												previousData={previousData?.permanent_address}
+												modelId={previousData?.id}
+												addressType="Permanent"
+												title="Permanent Address"
+											/>
+										</div>
+									</div>
 								</CardContent>
 							</Card>
 						</TabsContent>

@@ -1,5 +1,5 @@
 // import { ThemeToggle } from "@/components/layout/theme-toggle";
-import { Boxes } from "lucide-react";
+import { Boxes, Settings } from "lucide-react";
 import { MobileSidebar } from "./mobile-sidebar";
 import { Link } from "react-router-dom";
 import { cn } from "@/utils";
@@ -25,8 +25,8 @@ export default function Header() {
 				<div className={cn("block md:!hidden")}>
 					<MobileSidebar />
 				</div>
-
 				<div className="ml-auto flex items-center space-x-4">
+					<Settings />
 					{user && <UserNav user={user} />}
 				</div>
 			</div>
