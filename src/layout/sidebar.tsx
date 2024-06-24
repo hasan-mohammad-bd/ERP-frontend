@@ -67,7 +67,7 @@ export default function Sidebar({ className }: SidebarProps) {
 				onClick={handleToggle}
 			/>
 			<div className="py-4 w-full">
-				<div className="px-2 py-2 w-full">
+				<div className={` ${isOpen ? "px-2" : "px-0"}  py-2 w-full`}>
 					{isOpen && (
 						<div className="pl-2 pr-5">
 							<Input
