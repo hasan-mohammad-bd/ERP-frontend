@@ -4,17 +4,17 @@ import { Outlet } from "react-router";
 import { Toaster } from "@/components/ui/sonner";
 // { children }: { children: React.ReactNode }
 export const Layout = () => {
-	return (
-		<>
-			<Header />
-			<div className="flex h-screen border-collapse overflow-hidden">
-				<Sidebar />
-				<main className="flex-1 overflow-y-auto overflow-x-hidden pt-16 bg-secondary/10 pb-1">
-					{/* {children} */}
-					<Outlet />
-				</main>
-				<Toaster />
-			</div>
-		</>
-	);
+  return (
+    <>
+      <Header />
+      <div className="flex h-screen border-collapse overflow-hidden">
+        <Sidebar />
+        <main className="flex-1 overflow-y-auto overflow-x-hidden bg-mainBackground pt-16 px-5 pb-1">
+          {/* {children} */}
+          <Outlet />
+        </main>
+        <Toaster />
+      </div>
+    </>
+  );
 };

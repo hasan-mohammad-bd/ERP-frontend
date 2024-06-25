@@ -28,6 +28,18 @@ export function MainNav({
 			>
 				CRM
 			</Link>
+			<Link
+				to="/examples/crm"
+				className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+			>
+				MFG
+			</Link>
+			<Link
+				to="/examples/crm"
+				className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+			>
+				E-Commerce 
+			</Link>
 		</nav>
 	);
 }

@@ -13,6 +13,8 @@ body {
 		--background: 0 0% 100%;
 		--foreground: 0 0% 22%; /* Updated to use #383838 equivalent */
 
+		--main-background: 0 0% 98%;
+
 		--card: 0 0% 100%;
 		--card-foreground: 222.2 84% 4.9%;
 

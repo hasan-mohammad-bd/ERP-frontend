@@ -47,7 +47,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 						value={openItem}
 						onValueChange={setOpenItem}
 					>
-						<AccordionItem value={item.title} className="border-none w-[90%] mx-auto">
+						<AccordionItem value={item.title} className="border-none ">
 							<AccordionTrigger
 								className={cn(
 									buttonVariants({ variant: "ghost" }),
@@ -114,7 +114,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 						}}
 						className={cn(
 							buttonVariants({ variant: "ghost" }),
-							"group relative flex h-10 justify-start w-[90%] mx-auto",
+							"group relative flex h-10 justify-start",
 							path === item.href && "bg-muted font-semibold hover:bg-muted"
 						)}
 					>
