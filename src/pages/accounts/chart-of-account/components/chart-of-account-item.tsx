@@ -8,14 +8,14 @@ import {
 } from "@/components/ui/table";
 
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LedgerGroupColumn } from "@/lib/validators";
+import { LedgerGroupRow } from "@/lib/validators/accounts";
 import ChartOfAccountChild from "./chart-of-account-child";
 import { File, Folder } from "lucide-react";
 import { LedgerCellAction } from "./ledger-cell-action";
 import { GroupCellAction } from "./group-cell-action";
 
 interface ChartOfAccountItemProps {
-	data: LedgerGroupColumn[];
+	data: LedgerGroupRow[];
 	title: string;
 	description: string;
 	coaType: string;

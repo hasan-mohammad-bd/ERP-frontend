@@ -7,13 +7,13 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { FilePlus2, FolderPlus } from "lucide-react";
-import { LedgerGroupColumn } from "@/lib/validators";
 import { AddLedgerGroupForm } from "./add-ledger-group-form";
 import { Modal } from "@/components/common/modal";
 import { AddLedgerForm } from "./add-ledger-form";
+import { LedgerGroupRow } from "@/lib/validators/accounts";
 
 interface CellActionProps {
-	rowData: LedgerGroupColumn;
+	rowData: LedgerGroupRow;
 	coaType: string;
 }
 

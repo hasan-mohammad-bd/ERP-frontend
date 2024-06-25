@@ -1,21 +1,21 @@
 import {
 	SubAccountFromValues,
-	type SubAccountColumn,
-} from "@/lib/validators";
+	type SubAccountRow,
+} from "@/lib/validators/accounts";
 import { accountApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
 
 const subAccountApi = accountApi.injectEndpoints({
 	endpoints: (build) => ({
 		getSubAccounts: build.query<
-			{ data: SubAccountColumn[]; meta: PaginationInfo },
+			{ data: SubAccountRow[]; meta: PaginationInfo },
 			string
 		>({
 			query: (params) => `sub-accounts?${params}`,
 			providesTags: ["sub-accounts"],
 		}),
 		createSubAccount: build.mutation<
-			{ data: SubAccountColumn },
+			{ data: SubAccountRow },
 			SubAccountFromValues
 		>({
 			query: (newSubAccount) => ({
@@ -33,7 +33,7 @@ const subAccountApi = accountApi.injectEndpoints({
 			invalidatesTags: ["sub-accounts"],
 		}),
 		updateSubAccount: build.mutation<
-			{ data: SubAccountColumn },
+			{ data: SubAccountRow },
 			{ subAccountId: number; updatedSubAccount: SubAccountFromValues }
 		>({
 			query: ({ subAccountId, updatedSubAccount }) => ({

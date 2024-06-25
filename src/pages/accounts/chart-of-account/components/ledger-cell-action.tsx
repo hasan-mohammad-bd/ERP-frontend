@@ -6,10 +6,10 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { FilePenLine, ScanEye } from "lucide-react";
-import { LedgerColumn } from "@/lib/validators";
+import { LedgerRow } from "@/lib/validators/accounts";
 
 interface CellActionProps {
-	rowData: LedgerColumn;
+	rowData: LedgerRow;
 }
 
 export function LedgerCellAction({ rowData }: CellActionProps) {

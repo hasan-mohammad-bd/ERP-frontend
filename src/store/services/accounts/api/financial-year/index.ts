@@ -1,21 +1,21 @@
 import {
 	FinancialYearFromValues,
-	type FinancialYearColumn,
-} from "@/lib/validators";
+	type FinancialYearRow,
+} from "@/lib/validators/accounts";
 import { accountApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
 
 const financialYearApi = accountApi.injectEndpoints({
 	endpoints: (build) => ({
 		getFinancialYears: build.query<
-			{ data: FinancialYearColumn[]; meta: PaginationInfo },
+			{ data: FinancialYearRow[]; meta: PaginationInfo },
 			string
 		>({
 			query: (params) => `financial-years?${params}`,
 			providesTags: ["financial-years"],
 		}),
 		createFinancialYear: build.mutation<
-			{ data: FinancialYearColumn },
+			{ data: FinancialYearRow },
 			FinancialYearFromValues
 		>({
 			query: (newFinancialYear) => ({
@@ -33,7 +33,7 @@ const financialYearApi = accountApi.injectEndpoints({
 			invalidatesTags: ["financial-years"],
 		}),
 		updateFinancialYear: build.mutation<
-			{ data: FinancialYearColumn },
+			{ data: FinancialYearRow },
 			{ financialYearId: number; updatedFinancialYear: FinancialYearFromValues }
 		>({
 			query: ({ financialYearId, updatedFinancialYear }) => ({

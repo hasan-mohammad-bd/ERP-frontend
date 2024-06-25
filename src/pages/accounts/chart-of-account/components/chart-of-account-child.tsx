@@ -1,11 +1,11 @@
 import { TableCell, TableRow } from "@/components/ui/table";
-import { LedgerGroupColumn } from "@/lib/validators";
+import { LedgerGroupRow } from "@/lib/validators/accounts";
 import { File, Folder } from "lucide-react";
 import { GroupCellAction } from "./group-cell-action";
 import { LedgerCellAction } from "./ledger-cell-action";
 
 interface ChartOfAccountItemProps {
-	group: LedgerGroupColumn;
+	group: LedgerGroupRow;
 	coaType: string;
 }
 
