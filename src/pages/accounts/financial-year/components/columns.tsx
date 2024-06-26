@@ -61,27 +61,8 @@ export const financialYearColumns: ColumnDef<FinancialYearRow>[] = [
 		},
 	},
 	{
-		accessorKey: "is_closed",
-		header: "Closed",
-		cell: ({ row }) => {
-			const closed = row.getValue("is_closed");
-			if (closed === 1) {
-				return (
-					<Checkbox
-						aria-readonly
-						checked
-						aria-label="Closed"
-						className="translate-y-[2px]"
-					/>
-				);
-			}
-			return (
-				<Checkbox disabled aria-label="Closed" className="translate-y-[2px]" />
-			);
-		},
-	},
-	{
 		id: "actions",
+		header: () => <div className="text-center">Actions</div>,
 		enableSorting: false,
 		cell: ({ row }) => <CellAction rowData={row.original} />,
 	},

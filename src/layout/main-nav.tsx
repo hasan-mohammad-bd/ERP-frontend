@@ -7,7 +7,10 @@ export function MainNav({
 }: React.HTMLAttributes<HTMLElement>) {
 	return (
 		<nav
-			className={cn("flex items-center space-x-4 lg:space-x-6", className)}
+			className={cn(
+				"flex items-center h-full space-x-4 lg:space-x-6",
+				className
+			)}
 			{...props}
 		>
 			<Link
@@ -18,9 +21,10 @@ export function MainNav({
 			</Link>
 			<Link
 				to="/examples/hrm"
-				className="text-sm font-medium transition-colors hover:text-primary"
+				className="text-sm font-bold transition-colors hover:text-primary h-full relative flex items-center"
 			>
 				HRM
+				<div className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"></div>
 			</Link>
 			<Link
 				to="/examples/crm"
@@ -38,7 +42,7 @@ export function MainNav({
 				to="/examples/crm"
 				className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
 			>
-				E-Commerce 
+				E-Commerce
 			</Link>
 		</nav>
 	);

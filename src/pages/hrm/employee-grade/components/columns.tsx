@@ -1,6 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
-import { type EmployeeGradeColumn,  } from "@/lib/validators";
+import { type EmployeeGradeColumn } from "@/lib/validators";
 import { CellAction } from "./cell-action";
 
 export const employeeGradeColumns: ColumnDef<EmployeeGradeColumn>[] = [
@@ -42,6 +42,7 @@ export const employeeGradeColumns: ColumnDef<EmployeeGradeColumn>[] = [
 	},
 	{
 		id: "actions",
+		header: () => <div className="text-center">Actions</div>,
 		enableSorting: false,
 		cell: ({ row }) => <CellAction data={row.original} />,
 	},

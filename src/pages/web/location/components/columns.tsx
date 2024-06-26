@@ -35,8 +35,7 @@ export const locationColumns: ColumnDef<LocationColumn>[] = [
 	{
 		accessorKey: "sorting_index",
 		header: "Sorting Index",
-	}
-,
+	},
 	{
 		accessorKey: "organization",
 		accessorFn: ({ organization }) => organization?.name,
@@ -44,6 +43,7 @@ export const locationColumns: ColumnDef<LocationColumn>[] = [
 	},
 	{
 		id: "actions",
+		header: () => <div className="text-center">Actions</div>,
 		enableSorting: false,
 		cell: ({ row }) => <CellAction data={row.original} />,
 	},

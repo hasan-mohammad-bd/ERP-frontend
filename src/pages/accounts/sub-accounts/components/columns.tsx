@@ -82,6 +82,7 @@ export const subAccountColumns: ColumnDef<SubAccountRow>[] = [
 	},
 	{
 		id: "actions",
+		header: () => <div className="text-center">Actions</div>,
 		enableSorting: false,
 		cell: ({ row }) => <CellAction rowData={row.original} />,
 	},

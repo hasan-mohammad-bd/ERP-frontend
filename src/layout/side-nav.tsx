@@ -51,16 +51,18 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 							<AccordionTrigger
 								className={cn(
 									buttonVariants({ variant: "ghost" }),
-									"group relative flex h-9 justify-between px-4 py-2 text-base font-medium  duration-200 hover:bg-muted hover:no-underline"
+									"group relative flex h-9 justify-between px-2 py-2 text-base font-medium  duration-200 hover:bg-muted hover:no-underline"
 								)}
 							>
-								<div className="p-2 bg-[#EAEAEA] rounded-full ">
-									<item.icon strokeWidth={0.75} size={16} className={cn(" ")} />
+								<div className="p-2 bg-muted rounded-full ">
+									<item.icon strokeWidth={2} size={16} className={cn(" ")} />
 								</div>
+
+								{/* EAEAEA - Ashiq sir*/}
 
 								<div
 									className={cn(
-										"absolute left-16 text-sm font-medium  duration-200 ",
+										"absolute left-14 text-sm font-medium  duration-200 ",
 										!isOpen && className
 									)}
 								>
@@ -82,19 +84,23 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 										}}
 										className={cn(
 											buttonVariants({ variant: "ghost" }),
-											"group relative flex h-9 justify-start gap-x-3 !mt-1 mx-auto",
+											"group relative flex h-9 justify-start gap-x-3 !mt-1 mx-auto px-2",
 											path === child.href &&
-												"bg-muted font-normal hover:bg-muted "
+												"bg-muted font-normal hover:bg-muted"
 										)}
 									>
 										{!isOpen && (
-											<div className="p-2 bg-[#EAEAEA] rounded-full">
-												<child.icon strokeWidth={0.75} size={16} className={cn("")} />
+											<div className="p-2 bg-muted rounded-full">
+												<child.icon
+													strokeWidth={2}
+													size={16}
+													className={cn("")}
+												/>
 											</div>
 										)}
 										<div
 											className={cn(
-												"absolute left-16 text-sm font-normal  duration-200",
+												"absolute left-14 text-sm font-normal  duration-200",
 												!isOpen && className
 											)}
 										>
@@ -114,16 +120,16 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 						}}
 						className={cn(
 							buttonVariants({ variant: "ghost" }),
-							"group relative flex h-10 justify-start",
+							"group relative flex h-10 justify-start px-2",
 							path === item.href && "bg-muted font-semibold hover:bg-muted"
 						)}
 					>
-						<div className="p-2 bg-[#EAEAEA] rounded-full">
-							<item.icon  strokeWidth={0.75} size={16} className={cn("")} />
+						<div className="p-2 bg-muted rounded-full">
+							<item.icon strokeWidth={2} size={16} className={cn("")} />
 						</div>
 						<span
 							className={cn(
-								"absolute left-16 text-sm font-medium  duration-200",
+								"absolute left-14 text-sm font-medium  duration-200",
 								!isOpen && className
 							)}
 						>

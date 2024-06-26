@@ -34,6 +34,7 @@ export const departmentColumns: ColumnDef<DepartmentColumn>[] = [
 	},
 	{
 		id: "actions",
+		header: () => <div className="text-center">Actions</div>,
 		enableSorting: false,
 		cell: ({ row }) => <CellAction data={row.original} />,
 	},

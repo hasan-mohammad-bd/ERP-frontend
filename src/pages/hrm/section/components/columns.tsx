@@ -1,6 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
-import {type SectionColumn} from "@/lib/validators";
+import { type SectionColumn } from "@/lib/validators";
 import { CellAction } from "./cell-action";
 
 export const sectionColumns: ColumnDef<SectionColumn>[] = [
@@ -34,6 +34,7 @@ export const sectionColumns: ColumnDef<SectionColumn>[] = [
 	},
 	{
 		id: "actions",
+		header: () => <div className="text-center">Actions</div>,
 		enableSorting: false,
 		cell: ({ row }) => <CellAction data={row.original} />,
 	},

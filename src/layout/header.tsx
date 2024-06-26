@@ -1,11 +1,12 @@
 // import { ThemeToggle } from "@/components/layout/theme-toggle";
-import { Boxes, Settings } from "lucide-react";
+import { Bell, Boxes, Plus, Settings } from "lucide-react";
 import { MobileSidebar } from "./mobile-sidebar";
 import { Link } from "react-router-dom";
 import { cn } from "@/utils";
 import { UserNav } from "./user-nav";
 import { MainNav } from "./main-nav";
 import { useAuth } from "@/store/hooks";
+import { ThemeToggle } from "./theme-toggle";
 
 export default function Header() {
 	const { user } = useAuth();
@@ -25,8 +26,11 @@ export default function Header() {
 					<MobileSidebar />
 				</div>
 				<div className="ml-auto flex items-center space-x-4">
-					<Settings />
+					<Plus strokeWidth={2} size={16} />
+					<Bell strokeWidth={2} size={16} />
+					<Settings strokeWidth={2} size={16} />
 					{user && <UserNav user={user} />}
+					<ThemeToggle />
 				</div>
 			</div>
 		</div>

@@ -52,22 +52,22 @@ export default function Sidebar({ className }: SidebarProps) {
 	return (
 		<nav
 			className={cn(
-				`relative hidden h-screen border-r pt-14 md:block`,
+				`relative hidden h-screen border-r pt-10 md:block`,
 				status && "duration-500",
-				isOpen ? "w-60" : "w-[70px]",
+				isOpen ? "w-60" : "w-[60px]",
 				className
 			)}
 		>
 			<ArrowLeft
 				size={28}
 				className={cn(
-					"absolute -right-3 top-20 cursor-pointer rounded-full border p-1 bg-background text-3xl text-foreground",
+					"absolute -right-3 top-16 cursor-pointer rounded-full border p-1 bg-background text-3xl text-foreground",
 					!isOpen && "rotate-180"
 				)}
 				onClick={handleToggle}
 			/>
 			<div className="py-4 w-full">
-				<div className={` ${isOpen ? "px-2" : "px-0"}  py-2 w-full`}>
+				<div className={` ${isOpen ? "px-2" : "px-1"}  py-2 w-full`}>
 					{isOpen && (
 						<div className="pl-2 pr-5">
 							<Input
