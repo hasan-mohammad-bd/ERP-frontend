@@ -28,7 +28,7 @@ export default function LoginScreen() {
 	const auth = useAuth();
 	React.useEffect(() => {
 		if (auth.user) {
-			navigate("/dashboard");
+			navigate("/");
 		}
 	}, [auth, navigate]);
 

@@ -1,10 +1,12 @@
 import { cn } from "@/utils";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { mainNavItems } from "@/constants/main-nav";
 
 export function MainNav({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLElement>) {
+	const modulePath = useLocation().pathname.split("/")[1];
 	return (
 		<nav
 			className={cn(
@@ -13,37 +15,23 @@ export function MainNav({
 			)}
 			{...props}
 		>
-			<Link
-				to="/examples/finance"
-				className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-			>
-				Finance
-			</Link>
-			<Link
-				to="/examples/hrm"
-				className="text-sm font-bold transition-colors hover:text-primary h-full relative flex items-center"
-			>
-				HRM
-				<div className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"></div>
-			</Link>
-			<Link
-				to="/examples/crm"
-				className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-			>
-				CRM
-			</Link>
-			<Link
-				to="/examples/crm"
-				className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-			>
-				MFG
-			</Link>
-			<Link
-				to="/examples/crm"
-				className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-			>
-				E-Commerce
-			</Link>
+			{mainNavItems.map((item) => (
+				<Link
+					key={item.title}
+					to={item.href}
+					className={cn(
+						"text-sm  text-muted-foreground transition-colors hover:text-primary",
+						item.href === `/${modulePath}`
+							? "font-bold text-foreground h-full relative flex items-center"
+							: "font-medium"
+					)}
+				>
+					{item.title}
+					{item.href === `/${modulePath}` && (
+						<div className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"></div>
+					)}
+				</Link>
+			))}
 		</nav>
 	);
 }

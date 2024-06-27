@@ -7,6 +7,7 @@ import { UserNav } from "./user-nav";
 import { MainNav } from "./main-nav";
 import { useAuth } from "@/store/hooks";
 import { ThemeToggle } from "./theme-toggle";
+import { siteConfig } from "@/coonfig/site";
 
 export default function Header() {
 	const { user } = useAuth();
@@ -18,7 +19,7 @@ export default function Header() {
 					className="hidden items-center justify-between gap-2 md:flex"
 				>
 					<Boxes className="h-6 w-6" />
-					<h1 className="text-lg font-semibold">Akaar ERP</h1>
+					<h1 className="text-lg font-semibold">{siteConfig.name}</h1>
 				</Link>
 				<MainNav className="mx-6" />
 				{/* <ModuleSelector /> */}

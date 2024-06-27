@@ -1,6 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./services/json-placeholder/slices/counterSlice";
-import { jsonPlaceholderApi } from "./services/json-placeholder";
 import { authApi } from "./services/erp-main";
 import authReducer from "./services/erp-main/slices/authSlice";
 import commonReducer from "./services/erp-main/slices/commonSlice";
@@ -10,10 +8,8 @@ import { accountApi } from "./services/accounts";
 
 export const store = configureStore({
 	reducer: {
-		counter: counterReducer,
 		auth: authReducer,
 		common: commonReducer,
-		[jsonPlaceholderApi.reducerPath]: jsonPlaceholderApi.reducer,
 		[authApi.reducerPath]: authApi.reducer,
 		[hrmApi.reducerPath]: hrmApi.reducer,
 		[accountApi.reducerPath]: accountApi.reducer,
@@ -22,7 +18,6 @@ export const store = configureStore({
 	// and other useful features of `rtk-query`.
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware().concat(
-			jsonPlaceholderApi.middleware,
 			authApi.middleware, // Add authApi middleware
 			hrmApi.middleware, // Add authApi middleware
 			accountApi.middleware

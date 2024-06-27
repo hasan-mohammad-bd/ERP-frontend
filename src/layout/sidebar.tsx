@@ -2,11 +2,12 @@ import { useState } from "react";
 import { SideNav } from "./side-nav";
 import { cn } from "@/utils";
 import { ArrowLeft } from "lucide-react";
-import { NavItems } from "@/constants/side-nav";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleSideBar } from "@/store/services/erp-main/slices/commonSlice";
 import { Input } from "@/components/ui/input";
 import { NavItem } from "@/types";
+import { useLocation } from "react-router-dom";
+import sideNavItems from "@/constants/side-nav";
 
 interface SidebarProps {
 	className?: string;
@@ -17,6 +18,11 @@ export default function Sidebar({ className }: SidebarProps) {
 	const { isOpen } = useAppSelector((state) => state.common);
 	const [status, setStatus] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
+
+	// Getting module based nav items
+	const modulePath = useLocation().pathname.split("/")[1];
+	const moduleBaseNavItems =
+		sideNavItems[modulePath as keyof typeof sideNavItems] || [];
 
 	const handleToggle = () => {
 		setStatus(true);
@@ -47,7 +53,9 @@ export default function Sidebar({ className }: SidebarProps) {
 		});
 	};
 
-	const filteredNavItems = searchTerm ? filterItems(NavItems) : NavItems;
+	const filteredNavItems = searchTerm
+		? filterItems(moduleBaseNavItems)
+		: moduleBaseNavItems;
 
 	return (
 		<nav

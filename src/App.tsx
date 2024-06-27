@@ -1,12 +1,15 @@
 import router from "./routes";
 import { RouterProvider } from "react-router-dom";
-import PersistUser from "./utils/PersitUser";
+import PersistUser from "./utils/persist-user";
+import { ThemeProvider } from "next-themes";
 
 function App() {
 	return (
 		<>
-			<RouterProvider router={router} />
-			<PersistUser />
+			<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+				<RouterProvider router={router} />
+				<PersistUser />
+			</ThemeProvider>
 		</>
 	);
 }

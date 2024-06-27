@@ -1,4 +1,5 @@
 export const siteConfig = {
+	name: "Akaar ERP",
 	currency: {
 		locale: "টাকা",
 		sign: "৳",
