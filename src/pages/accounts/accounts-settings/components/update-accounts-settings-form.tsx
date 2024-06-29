@@ -167,7 +167,8 @@ export function UpdateAccountsSettingForm({
                         .filter((currency: CurrencyRow) => currency.id !== watchCurrency)
                         .map((currency: CurrencyRow) => ({
                           value: currency.id,
-                          label: currency.name,
+                          label: currency.name, 
+                          
                         }))}
                       value={selectedCurrencies}
                       onChange={setSelectedCurrencies}
