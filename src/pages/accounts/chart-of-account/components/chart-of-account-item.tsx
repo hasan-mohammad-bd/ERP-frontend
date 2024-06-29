@@ -7,12 +7,13 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 
-import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { LedgerGroupRow } from "@/lib/validators/accounts";
 import ChartOfAccountChild from "./chart-of-account-child";
-import { File, Folder } from "lucide-react";
-import { LedgerCellAction } from "./ledger-cell-action";
-import { GroupCellAction } from "./group-cell-action";
+import { Badge } from "@/components/ui/badge";
+// import { File, Folder } from "lucide-react";
+// import { LedgerCellAction } from "./ledger-cell-action";
+// import { GroupCellAction } from "./group-cell-action";
 
 interface ChartOfAccountItemProps {
 	data: LedgerGroupRow[];
@@ -23,8 +24,8 @@ interface ChartOfAccountItemProps {
 
 const ChartOfAccountItem = ({
 	data,
-	title,
-	description,
+	// title,
+	// description,
 	coaType,
 }: ChartOfAccountItemProps) => {
 	const coaItemData = data.find((item) => item.name === coaType);
@@ -32,49 +33,50 @@ const ChartOfAccountItem = ({
 	if (!coaItemData) return null;
 
 	return (
-		<div>
-			<CardHeader>
-				<CardTitle>{title}</CardTitle>
-				<CardDescription>{description}</CardDescription>
-				<CardDescription>
-					<Table className="mt-6">
-						{/* <TableCaption>A list of your recent invoices.</TableCaption> */}
-						<TableHeader>
-							<TableRow>
-								<TableHead className="w-[100px]">Code</TableHead>
-								<TableHead>Name</TableHead>
-								<TableHead className="text-right">Actions</TableHead>
-							</TableRow>
-						</TableHeader>
-						<TableBody>
-							<TableRow>
-								<TableCell>{coaItemData.code}</TableCell>
-								<TableCell className="inline-flex items-center gap-2">
-									<Folder />
-									{coaItemData.name}
-								</TableCell>
-								<TableCell className="text-right">
-									<GroupCellAction rowData={coaItemData} coaType={coaType} />
-								</TableCell>
-							</TableRow>
-							<ChartOfAccountChild group={coaItemData} coaType={coaType} />
-							{coaItemData.ledgers.map((ledger) => (
-								<TableRow key={ledger.id}>
-									<TableCell>{ledger.code}</TableCell>
-									<TableCell className="inline-flex items-center gap-2">
-										<File />
-										{ledger.name}
-									</TableCell>
-									<TableCell className="text-right">
-										<LedgerCellAction rowData={ledger} />
-									</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				</CardDescription>
-			</CardHeader>
-		</div>
+		<Card className="mt-4">
+			<Table>
+				{/* <TableCaption>A list of your recent invoices.</TableCaption> */}
+				<TableHeader>
+					<TableRow>
+						<TableHead className="py-2.5 h-8 col-span-2 w-2/3">Name</TableHead>
+						<TableHead className="py-2.5 h-8 w-[100px]">Code</TableHead>
+						<TableHead className="py-2.5 h-8">Type</TableHead>
+						<TableHead className="py-2.5 h-8">Status</TableHead>
+						<TableHead className="py-2.5 h-8">Debit</TableHead>
+						<TableHead className="py-2.5 h-8">Credit</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					<TableRow>
+						<TableCell className="py-2.5 col-span-2 w-2/3 font-medium">
+							{coaItemData.name}
+						</TableCell>
+						<TableCell className="py-2.5">{coaItemData.code}</TableCell>
+						<TableCell className="py-2.5">Group</TableCell>
+						<TableCell className="py-2.5">
+							{/* <Badge variant="outline">Active</Badge>  */}
+						</TableCell>
+						<TableCell className="py-2.5"></TableCell>
+						<TableCell className="py-2.5"></TableCell>
+					</TableRow>
+					<ChartOfAccountChild group={coaItemData} coaType={coaType} />
+					{coaItemData.ledgers.map((ledger) => (
+						<TableRow key={ledger.id}>
+							<TableCell className="py-2.5 col-span-2 w-2/3">
+								{ledger.name}
+							</TableCell>
+							<TableCell className="py-2.5">{ledger.code}</TableCell>
+							<TableCell className="py-2.5">Account</TableCell>
+							<TableCell className="py-2.5">
+								<Badge variant="secondary">Inactive</Badge>
+							</TableCell>
+							<TableCell className="py-2.5">700</TableCell>
+							<TableCell className="py-2.5">500</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
+		</Card>
 	);
 };
 

@@ -25,7 +25,7 @@ const ChartOfAccounts = () => {
 
 	return (
 		<>
-			<div className="flex items-center justify-between md:p-8">
+			<div className="flex items-center justify-between">
 				<Heading
 					title="Chart Of Account"
 					description="Manage Chart of account for you business"
@@ -40,8 +40,8 @@ const ChartOfAccounts = () => {
 				</div>
 			</div>
 			<Separator />
-			<Tabs defaultValue={COA_TYPES[0].type} className="w-full mt-3 px-3">
-				<TabsList className="w-fit mx-4">
+			<Tabs defaultValue={COA_TYPES[0].type} className="w-full mt-3">
+				<TabsList className="w-fit">
 					{COA_TYPES.map((item) => (
 						<TabsTrigger key={item.type} value={item.type}>
 							{item.title}
