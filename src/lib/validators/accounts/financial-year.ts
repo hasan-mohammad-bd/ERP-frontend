@@ -10,7 +10,7 @@ export const financialYearSchema = z.object({
 
 export type FinancialYearFromValues = z.infer<typeof financialYearSchema>;
 
-const financialYearRow = financialYearSchema.extend({
+export const financialYearRow = financialYearSchema.extend({
 	id: z.coerce.number(),
 	is_active: z.coerce.number(),
 	is_closed: z.coerce.number(),
