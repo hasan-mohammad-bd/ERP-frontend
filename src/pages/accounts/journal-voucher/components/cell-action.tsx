@@ -8,14 +8,14 @@ import {
 } from "@/components/ui/tooltip";
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
-import { SubAccountRow } from "@/lib/validators/accounts";
+import { EntryRow } from "@/lib/validators/accounts";
 import { toast } from "sonner";
 import { AddSubAccountForm } from "./add-sub-account-form";
 import { Modal } from "@/components/common/modal";
 import { useRemoveSubAccountMutation } from "@/store/services/accounts/api/sub-accounts";
 
 interface CellActionProps {
-	rowData: SubAccountRow;
+	rowData: EntryRow;
 }
 
 export function CellAction({ rowData }: CellActionProps) {
@@ -79,7 +79,7 @@ export function CellAction({ rowData }: CellActionProps) {
 			<AlertModal
 				title="Are you sure?"
 				description="This action cannot be undone."
-				name={rowData.name}
+				name={rowData.entry_number}
 				isOpen={alertModalOpen}
 				onClose={() => setAlertModalOpen(false)}
 				onConfirm={() => handleDepartmentDelete(rowData.id)}

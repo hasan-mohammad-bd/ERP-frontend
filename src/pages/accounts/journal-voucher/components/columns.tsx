@@ -1,9 +1,9 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
-import { SubAccountRow } from "@/lib/validators/accounts";
+import { EntryRow } from "@/lib/validators/accounts";
 import { CellAction } from "./cell-action";
 
-export const subAccountColumns: ColumnDef<SubAccountRow>[] = [
+export const subAccountColumns: ColumnDef<EntryRow>[] = [
 	{
 		id: "select",
 		header: ({ table }) => (
@@ -29,18 +29,38 @@ export const subAccountColumns: ColumnDef<SubAccountRow>[] = [
 		enableHiding: false,
 	},
 	{
-		accessorKey: "name",
-		header: "Financial Year Name",
-	},
-	{
-		accessorKey: "phone",
-		header: "Phone",
+		accessorKey: "entry_number",
+		header: "Entry Number",
 	},
 	{
 		accessorKey: "type",
 		header: "Type",
 	},
 	{
+		accessorKey: "date",
+		header: "date",
+	},
+	{
+		accessorKey: "total",
+		header: "Total",
+	},
+
+	{
+		header: "Location",
+		accessorFn: (row) => row.location.name,
+	},
+
+	{
+		header: "User",
+		accessorFn: (row) => row.user.name,
+	},
+
+	{
+		header: "financial-year",
+		accessorFn: (row) => row.financial_year.name,
+	},
+
+/* 	{
 		accessorKey: "is_active",
 		header: "Active",
 		cell: ({ row }) => {
@@ -79,7 +99,7 @@ export const subAccountColumns: ColumnDef<SubAccountRow>[] = [
 				<Checkbox disabled aria-label="Closed" className="translate-y-[2px]" />
 			);
 		},
-	},
+	}, */
 	{
 		id: "actions",
 		header: () => <div className="text-center">Actions</div>,
