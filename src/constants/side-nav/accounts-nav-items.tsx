@@ -32,6 +32,22 @@ const accountsNavItems: NavItem[] = [
 		href: "/accounts/accounts-settings",
 		color: "text-sky-500",
 	},
+	{
+		title: "Entry",
+		icon: Clock,
+		href: "/accounts/entry",
+		color: "text-sky-500",
+		isChildren: true,
+		children: [
+			{
+				title: "Journal Voucher",
+				icon: Clock,
+				href: "/accounts/journal-voucher",
+				color: "text-sky-500",
+			},
+		],
+
+	}
 ];
 
 export default accountsNavItems;

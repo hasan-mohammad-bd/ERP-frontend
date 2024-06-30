@@ -8,6 +8,7 @@ import {
 	SubAccounts,
 	AccountSettings,
 } from "./components";
+import JournalVoucher from "@/pages/accounts/journal-voucher";
 
 const accountsRoutes = {
 	path: "accounts/",
@@ -36,6 +37,11 @@ const accountsRoutes = {
 		{
 			path: "accounts-settings",
 			element: withFallback(<AccountSettings />),
+			errorElement: <ErrorPage />,
+		},
+		{
+			path: "journal-voucher",
+			element: withFallback(<JournalVoucher />),
 			errorElement: <ErrorPage />,
 		},
 	],
