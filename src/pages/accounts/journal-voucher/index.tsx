@@ -7,7 +7,7 @@ import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
 
 import { Modal } from "@/components/common/modal";
-import { AddSubAccountForm } from "./components/add-sub-account-form";
+import { AddJournalForm } from "./components/add-journal-form";
 import { PaginationInfo } from "@/types";
 import { PaginationState } from "@tanstack/react-table";
 
@@ -21,9 +21,10 @@ const JournalVoucher = () => {
     pageSize: 10,
   });
   const { data, isLoading } = useGetEntriesQuery(
-    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}&type=journal voucher`,
+    `per_page=${pagination.pageSize}&page=${
+      pagination.pageIndex + 1
+    }&type=journal voucher`
   );
-
 
   const financialYear = data?.data || [];
 
@@ -37,11 +38,11 @@ const JournalVoucher = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="Voucher"
+              title="Journal Voucher"
               description="Manage your sub accounts for you business"
             />
             <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Voucher
+              <Plus className="mr-2 h-4 w-4" /> Add Journal Entry
             </Button>
           </div>
           <Separator />
@@ -59,11 +60,12 @@ const JournalVoucher = () => {
         </div>
       </div>
       <Modal
-        title="Add Voucher"
+        title="Add Journal Entry"
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}
+        className="max-w-5xl h-[87vh] "
       >
-        <AddSubAccountForm modalClose={() => setIsOpen(false)} />
+        <AddJournalForm modalClose={() => setIsOpen(false)} />
       </Modal>
     </>
   );

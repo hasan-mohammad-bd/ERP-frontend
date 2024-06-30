@@ -18,10 +18,10 @@ export const userRow = z.object({
 
 
 const entryTypeSchema = z.object({
-  ledger_account_id: z.number(),
-  dr_amount: z.number(),
-  cr_amount: z.number(),
-  sub_account_id: z.number().nullable(),
+  ledger_account_id: z.coerce.number(),
+  dr_amount: z.coerce.number(),
+  cr_amount: z.coerce.number(),
+  sub_account_id: z.coerce.number().optional().nullable(),
 });
 
 export const entrySchema = z.object({
