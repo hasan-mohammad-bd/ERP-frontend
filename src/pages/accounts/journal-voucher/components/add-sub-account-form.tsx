@@ -150,7 +150,7 @@ export function AddSubAccountForm({
                 </FormItem>
               )}
             />
-            <FormField
+{/*             <FormField
               control={form.control}
               name="type"
               render={({ field }) => (
@@ -176,7 +176,7 @@ export function AddSubAccountForm({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             {fields.map((field, index) => (
               <div key={field.id} className="flex space-x-2">
@@ -231,13 +231,31 @@ export function AddSubAccountForm({
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name={`details.${index}.sub_account_id`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Credit Amount</FormLabel>
+                      <FormControl>
+                        <Input
+                          
+                          placeholder="Credit amount"
+                          {...field}
+                          value={field.value || previousData?.details[index]?.sub_account_id || 0}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             ))}
 
             <Button
               variant="outline"
               type="button"
-              onClick={() => append({ dr_amount: 0, cr_amount: 0, ledger_account_id: 0 })}
+              onClick={() => append({ dr_amount: 0, cr_amount: 0, ledger_account_id: 0, sub_account_id: 0 })}
             >
               Add Detail
             </Button>
