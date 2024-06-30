@@ -1,8 +1,11 @@
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { LedgerGroupRow } from "@/lib/validators/accounts";
-import { File, Folder } from "lucide-react";
-import { GroupCellAction } from "./group-cell-action";
-import { LedgerCellAction } from "./ledger-cell-action";
+// import { File, Folder } from "lucide-react";
+import { Link } from "react-router-dom";
+// import { GroupCellAction } from "./group-cell-action";
+// import { LedgerCellAction } from "./ledger-cell-action";
 
 interface ChartOfAccountItemProps {
 	group: LedgerGroupRow;
@@ -13,30 +16,43 @@ const ChartOfAccountChild = ({ group, coaType }: ChartOfAccountItemProps) => {
 	return group.childs_group.map((item) => (
 		<>
 			<TableRow key={item.id}>
-				<TableCell>{item.code}</TableCell>
-				<TableCell className="inline-flex items-center gap-2">
+				<TableCell className="py-2.5 col-span-2 w-2/3 font-medium">
 					&nbsp;&nbsp;&nbsp;&nbsp;
-					<Folder />
 					{item.name}
 				</TableCell>
-				<TableCell className="text-right">
-					<GroupCellAction rowData={item} coaType={coaType} />
+				<TableCell className="py-2.5">{item.code}</TableCell>
+				<TableCell className="py-2.5">Group</TableCell>
+				<TableCell className="py-2.5">
+					{/* <Badge variant="outline">Active</Badge> */}
 				</TableCell>
+				<TableCell className="py-2.5"></TableCell>
+				<TableCell className="py-2.5"></TableCell>
 			</TableRow>
 			{item.childs_group.length > 0 && (
 				<ChartOfAccountChild group={item} coaType={coaType} />
 			)}
 			{item.ledgers.map((ledger) => (
 				<TableRow key={ledger.id}>
-					<TableCell>{ledger.code}</TableCell>
-					<TableCell className="inline-flex items-center gap-2">
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<File />
-						{ledger.name}
+					<TableCell className="py-0 col-span-2 w-2/3">
+						<Link
+							className={buttonVariants({
+								variant: "link",
+								size: "sm",
+								className: "text-blue-400 hover:no-underline",
+							})}
+							to={`/accounts/${coaType}/${ledger.id}`}
+						>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							{ledger.name}
+						</Link>
 					</TableCell>
-					<TableCell className="text-right">
-						<LedgerCellAction rowData={ledger} />
+					<TableCell className="py-2.5">{ledger.code}</TableCell>
+					<TableCell className="py-2.5">Account</TableCell>
+					<TableCell className="py-2.5">
+						<Badge variant="outline">active</Badge>
 					</TableCell>
+					<TableCell className="py-2.5">700</TableCell>
+					<TableCell className="py-2.5">500</TableCell>
 				</TableRow>
 			))}
 		</>
