@@ -22,6 +22,7 @@ const entryTypeSchema = z.object({
   dr_amount: z.coerce.number(),
   cr_amount: z.coerce.number(),
   sub_account_id: z.coerce.number().optional().nullable(),
+  note: z.string().optional().nullable(),
 });
 
 export const entrySchema = z.object({

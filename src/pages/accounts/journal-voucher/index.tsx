@@ -28,8 +28,9 @@ const JournalVoucher = () => {
 
   const financialYear = data?.data || [];
 
-  const paginationInfo: PaginationInfo | undefined = data?.meta;
+  console.log(data);
 
+  const paginationInfo: PaginationInfo | undefined = data?.meta 
   if (isLoading) return <Loading />;
 
   return (
@@ -52,8 +53,8 @@ const JournalVoucher = () => {
                 columns={subAccountColumns}
                 data={financialYear}
                 paginationInfo={paginationInfo}
-                pagination={pagination}
-                setPagination={setPagination}
+                pagination={paginationInfo && pagination}
+                setPagination={paginationInfo && setPagination}
               />
             </div>
           )}

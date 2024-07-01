@@ -55,9 +55,9 @@ export function AddJournalForm({
   const ledgerAccountData = ledgerAccount?.data || [];
   const subAccountData = subAccounts?.data || [];
 
-  console.log(ledgerAccountData);
-  console.log(previousData);
-
+  const [selectedLedgerAccounts, setSelectedLedgerAccounts] = useState<
+    number[]
+  >([]);
   const form = useForm<EntryFromValues>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
@@ -99,6 +99,13 @@ export function AddJournalForm({
     setTotalCrAmount(totalCr);
   }, [details]);
 
+  useEffect(() => {
+    const selectedAccounts = details.map((detail) =>
+      Number(detail.ledger_account_id)
+    );
+    setSelectedLedgerAccounts(selectedAccounts);
+  }, [details]);
+
   async function onSubmit(data: EntryFromValues) {
     try {
       if (previousData) {
@@ -128,7 +135,7 @@ export function AddJournalForm({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-3 h-[78vh]  px-2 overflow-y-scroll no-scrollbar"
+            className="space-y-3 h-[68vh]  px-2 overflow-y-scroll no-scrollbar"
           >
             <div className="w-fit">
               <FormField
@@ -191,15 +198,13 @@ export function AddJournalForm({
                       <FormItem>
                         <FormLabel>{index === 0 && "Ledger Account"}</FormLabel>
                         <Select
-                          onValueChange={field.onChange}
-                          defaultValue={
-                            previousData?.details[index]?.ledger_account_id
-                              ? String(
-                                  previousData?.details[index]
-                                    ?.ledger_account_id
-                                )
-                              : undefined
-                          }
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            const updatedAccounts = [...selectedLedgerAccounts];
+                            updatedAccounts[index] = Number(value);
+                            setSelectedLedgerAccounts(updatedAccounts);
+                          }}
+                          value={(field.value || "").toString()}
                         >
                           <FormControl>
                             <SelectTrigger>
@@ -210,16 +215,22 @@ export function AddJournalForm({
                             {ledgerAccountLoading ? (
                               <Loading />
                             ) : (
-                              ledgerAccountData?.map(
-                                (ledgerAccount: LedgerRow) => (
+                              ledgerAccountData
+                                .filter(
+                                  (ledgerAccount: LedgerRow) =>
+                                    !selectedLedgerAccounts.includes(
+                                      ledgerAccount.id
+                                    ) ||
+                                    ledgerAccount.id === Number(field.value)
+                                )
+                                .map((ledgerAccount: LedgerRow) => (
                                   <SelectItem
                                     key={ledgerAccount.id}
                                     value={String(ledgerAccount.id)}
                                   >
                                     {ledgerAccount.name}
                                   </SelectItem>
-                                )
-                              )
+                                ))
                             )}
                           </SelectContent>
                         </Select>
@@ -237,13 +248,7 @@ export function AddJournalForm({
                         <FormLabel>{index === 0 && "Sub Account"}</FormLabel>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={
-                            previousData?.details[index]?.sub_account_id
-                              ? String(
-                                  previousData?.details[index]?.sub_account_id
-                                )
-                              : undefined
-                          }
+                          value={(field.value || "").toString()}
                         >
                           <FormControl>
                             <SelectTrigger>
@@ -273,55 +278,95 @@ export function AddJournalForm({
                   />
                 </div>
 
-                <FormField
-                  control={form.control}
-                  name={`details.${index}.dr_amount`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{index === 0 && "Debit Amount"}</FormLabel>
-                      <FormControl>
-                        <Input
-                        disabled={form.watch(`details.${index}.cr_amount`) >= 0 ? false : true}
-                          type="number"
-                          placeholder="Debit amount"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`details.${index}.cr_amount`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{index === 0 && "Credit Amount"}</FormLabel>
-                      <FormControl>
-                        <Input
-                        // disabled={form.watch(`details.${index}.dr_amount`) <= 0 ? false : true}
-                          type="number"
-                          placeholder="Credit amount"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="max-w-[120px]">
+                  <FormField
+                    control={form.control}
+                    name={`details.${index}.dr_amount`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{index === 0 && "Debit Amount"}</FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={
+                              form.watch(`details.${index}.cr_amount`) > 0
+                            }
+                            min={0}
+                            type="number"
+                            placeholder="Debit amount"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="max-w-[120px]">
+                  <FormField
+                    control={form.control}
+                    name={`details.${index}.cr_amount`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{index === 0 && "Credit Amount"}</FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={
+                              form.watch(`details.${index}.dr_amount`) > 0
+                            }
+                            type="number"
+                            min={0}
+                            placeholder="Credit amount"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="w-24">
+                  <FormField
+                    control={form.control}
+                    name={`details.${index}.note`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{index === 0 && "Note"}</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Take Note"
+                            {...field}
+                            value={field.value || ""}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
                 <FormItem className="mt-auto">
-                  <Button variant={"destructive"} onClick={() => remove(index)}>
+                  <Button
+                    variant={"destructive"}
+                    onClick={() => {
+                      remove(index);
+                      const updatedAccounts = [...selectedLedgerAccounts];
+                      updatedAccounts.splice(index, 1);
+                      setSelectedLedgerAccounts(updatedAccounts);
+                    }}
+                  >
                     <Delete />
                   </Button>
                 </FormItem>
               </div>
             ))}
-            <div className="flex justify-end mt-4 relative right-16">
+            <div className="text-end mt-4">
               <div>
-                <p className=" font-semibold">Total Debit: {totalDrAmount}</p>
+                <p className="text-sm ">Total Debit: {totalDrAmount}</p>
               </div>
-              <div className="ml-28">
-                <p className=" font-semibold">Total Credit: {totalCrAmount}</p>
+              <div className="">
+                <p className="text-sm ">Total Credit: {totalCrAmount}</p>
               </div>
             </div>
 
@@ -335,15 +380,24 @@ export function AddJournalForm({
                   cr_amount: 0,
                   ledger_account_id: 0,
                   sub_account_id: 0,
+                  note: "",
                 })
               }
             >
               <Plus size={16} /> <span className="ml-2">Add Line</span>
             </Button>
 
-            <div className="mx-auto absolute right-3 bottom-3">
-              <Button disabled={totalDrAmount !== totalCrAmount} variant="default" type="submit" className="w-fit mt-4 ">
-                {previousData ? "Update" : "Add"}
+            <div className="mx-auto absolute right-3 bottom-3 flex items-center">
+              {totalCrAmount !== totalDrAmount && (
+                <p className="text-red-500 mr-3 text-sm">Debit and Credit amount must be same</p>
+              )}
+              <Button
+                disabled={totalDrAmount !== totalCrAmount}
+                variant="default"
+                type="submit"
+                className="w-fit "
+              >
+                {previousData ? "Update" : "Save"}
               </Button>
             </div>
           </form>
