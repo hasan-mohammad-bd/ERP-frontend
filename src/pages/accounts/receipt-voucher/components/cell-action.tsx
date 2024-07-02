@@ -10,7 +10,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { EntryRow } from "@/lib/validators/accounts";
 import { toast } from "sonner";
-import { AddJournalForm } from "./add-journal-form";
+import { AddReceiptForm } from "./add-receipt-form";
 import { Modal } from "@/components/common/modal";
 import { useRemoveEntryMutation } from "@/store/services/accounts/api/entries";
 
@@ -26,7 +26,7 @@ export function CellAction({ rowData }: CellActionProps) {
   const handleDepartmentDelete = async (id: number) => {
     try {
       await removeEntry(id);
-      toast.success("Journal deleted successfully");
+      toast.success("Receipt deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
@@ -85,12 +85,12 @@ export function CellAction({ rowData }: CellActionProps) {
         loading={deleteLoading}
       />
       <Modal
-        title="Update Journal"
+        title="Update Receipt"
         isOpen={updateModalOpen}
         toggleModal={() => setUpdateModalOpen(false)}
         className="max-w-5xl h-[87vh] "
       >
-        <AddJournalForm
+        <AddReceiptForm
           rowData={rowData}
           modalClose={() => setUpdateModalOpen(false)}
         />

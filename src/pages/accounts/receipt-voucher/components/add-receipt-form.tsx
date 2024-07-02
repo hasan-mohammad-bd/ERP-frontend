@@ -36,15 +36,15 @@ import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accoun
 import { Textarea } from "@/components/ui/textarea";
 import { Delete, Plus } from "lucide-react";
 
-interface AddJournalFormProps {
+interface AddReceiptFormProps {
   modalClose: () => void;
   rowData?: EntryRow;
 }
 
-export function AddJournalForm({
+export function AddReceiptForm({
   modalClose,
   rowData: previousData,
-}: AddJournalFormProps) {
+}: AddReceiptFormProps) {
   const [createEntry, { isLoading }] = useCreateEntryMutation();
   const [updateEntry, { isLoading: updateLoading }] = useUpdateEntryMutation();
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
@@ -55,17 +55,22 @@ export function AddJournalForm({
   const ledgerAccountData = ledgerAccount?.data || [];
   const subAccountData = subAccounts?.data || [];
 
+  const [totalDrAmount, setTotalDrAmount] = useState(0);
+  const [totalCrAmount, setTotalCrAmount] = useState(0);
+
+  console.log(totalDrAmount)
+
   const [selectedLedgerAccounts, setSelectedLedgerAccounts] = useState<
     number[]
   >([]);
   const form = useForm<EntryFromValues>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
-      type: previousData?.type || "Journal voucher",
+      type: previousData?.type || "Receipt voucher",
       date: previousData?.date || "",
       entry_number: previousData?.entry_number || "",
       details: previousData?.details || [
-        { dr_amount: 0, cr_amount: 0 },
+        { dr_amount: totalCrAmount, cr_amount: 0 },
         { dr_amount: 0, cr_amount: 0 },
       ],
       note: previousData?.note || "",
@@ -77,9 +82,6 @@ export function AddJournalForm({
     control: form.control,
     name: "details",
   });
-
-  const [totalDrAmount, setTotalDrAmount] = useState(0);
-  const [totalCrAmount, setTotalCrAmount] = useState(0);
 
   const details = useWatch({
     control: form.control,
@@ -107,16 +109,23 @@ export function AddJournalForm({
   }, [details]);
 
   async function onSubmit(data: EntryFromValues) {
+    const updateData = {
+      ...data,
+      details: data.details.map((detail, index) =>
+        index === 0 ? { ...detail, dr_amount: totalCrAmount } : detail
+      ),
+    };
+
     try {
       if (previousData) {
         await updateEntry({
           entryId: previousData.id,
-          updatedEntry: data,
+          updatedEntry: updateData,
         });
         toast.success("Voucher updated successfully");
         modalClose();
       } else {
-        await createEntry(data);
+        await createEntry(updateData);
         toast.success("Voucher created successfully");
         modalClose();
       }
@@ -152,7 +161,7 @@ export function AddJournalForm({
                 )}
               />
             </div>
-            <div className="w-fit">
+            <div className="w-fit flex space-x-3">
               <FormField
                 control={form.control}
                 name="entry_number"
@@ -170,6 +179,55 @@ export function AddJournalForm({
                   </FormItem>
                 )}
               />
+
+              <div className="w-[200px]">
+                <FormField
+                  control={form.control}
+                  name={`details.0.ledger_account_id`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{"Ledger Account"}</FormLabel>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          const updatedAccounts = [...selectedLedgerAccounts];
+                          updatedAccounts[0] = Number(value);
+                          setSelectedLedgerAccounts(updatedAccounts);
+                        }}
+                        value={(field.value || "").toString()}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Ledger Account" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {ledgerAccountLoading ? (
+                            <Loading />
+                          ) : (
+                            ledgerAccountData
+                              .filter(
+                                (ledgerAccount: LedgerRow) =>
+                                  !selectedLedgerAccounts.includes(
+                                    ledgerAccount.id
+                                  ) || ledgerAccount.id === Number(field.value)
+                              )
+                              .map((ledgerAccount: LedgerRow) => (
+                                <SelectItem
+                                  key={ledgerAccount.id}
+                                  value={String(ledgerAccount.id)}
+                                >
+                                  {ledgerAccount.name}
+                                </SelectItem>
+                              ))
+                          )}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
             <FormField
               control={form.control}
@@ -189,14 +247,17 @@ export function AddJournalForm({
             />
 
             {fields.map((field, index) => (
-              <div key={field.id} className="flex w-full gap-x-3">
-                <div className="w-[200px]">
+              <div
+                key={field.id}
+                className={`flex w-full gap-x-3 ${index === 0 && "hidden"}`}
+              >
+                <div className={`w-[200px]`}>
                   <FormField
                     control={form.control}
                     name={`details.${index}.ledger_account_id`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{index === 0 && "Ledger Account"}</FormLabel>
+                        <FormLabel>{index === 1 && "Ledger Account"}</FormLabel>
                         <Select
                           onValueChange={(value) => {
                             field.onChange(value);
@@ -245,7 +306,7 @@ export function AddJournalForm({
                     name={`details.${index}.sub_account_id`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{index === 0 && "Sub Account"}</FormLabel>
+                        <FormLabel>{index === 1 && "Sub Account"}</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           value={(field.value || "").toString()}
@@ -278,10 +339,10 @@ export function AddJournalForm({
                   />
                 </div>
 
-                <div className="max-w-[120px]">
+                {/*                 <div className="max-w-[120px]">
                   <FormField
                     control={form.control}
-                    name={`details.${index}.dr_amount`}
+                    name={`details.0.dr_amount`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>{index === 0 && "Debit Amount"}</FormLabel>
@@ -294,20 +355,21 @@ export function AddJournalForm({
                             type="number"
                             placeholder="Debit amount"
                             {...field}
+                            value={totalCrAmount}
                           />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                </div>
+                </div> */}
                 <div className="max-w-[120px]">
                   <FormField
                     control={form.control}
                     name={`details.${index}.cr_amount`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{index === 0 && "Credit Amount"}</FormLabel>
+                        <FormLabel>{index === 1 && "Amount"}</FormLabel>
                         <FormControl>
                           <Input
                             disabled={
@@ -331,7 +393,7 @@ export function AddJournalForm({
                     name={`details.${index}.note`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{index === 0 && "Note"}</FormLabel>
+                        <FormLabel>{index === 1 && "Note"}</FormLabel>
                         <FormControl>
                           <Input
                             type="text"
@@ -361,14 +423,14 @@ export function AddJournalForm({
                 </FormItem>
               </div>
             ))}
-            <div className="text-end mt-4">
+            {/*             <div className="text-end mt-4">
               <div>
                 <p className="text-sm ">Total Debit: {totalDrAmount}</p>
               </div>
               <div className="">
                 <p className="text-sm ">Total Credit: {totalCrAmount}</p>
               </div>
-            </div>
+            </div> */}
 
             <Button
               variant="outline"
@@ -388,15 +450,7 @@ export function AddJournalForm({
             </Button>
 
             <div className="mx-auto absolute right-3 bottom-3 flex items-center">
-              {totalCrAmount !== totalDrAmount && (
-                <p className="text-red-500 mr-3 text-sm">Debit and Credit amount must be same</p>
-              )}
-              <Button
-                disabled={totalDrAmount !== totalCrAmount}
-                variant="default"
-                type="submit"
-                className="w-fit "
-              >
+              <Button variant="default" type="submit" className="w-fit ">
                 {previousData ? "Update" : "Save"}
               </Button>
             </div>
