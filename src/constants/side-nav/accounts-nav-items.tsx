@@ -45,6 +45,12 @@ const accountsNavItems: NavItem[] = [
 				href: "/accounts/journal-voucher",
 				color: "text-sky-500",
 			},
+			{
+				title: "Receipt Voucher",
+				icon: Clock,
+				href: "/accounts/receipt-voucher",
+				color: "text-sky-500",
+			},
 		],
 
 	}
