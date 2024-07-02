@@ -190,7 +190,7 @@ export function AddJournalForm({
 
             {fields.map((field, index) => (
               <div key={field.id} className="flex w-full gap-x-3">
-                <div className="flex-1">
+                <div className="w-[200px]">
                   <FormField
                     control={form.control}
                     name={`details.${index}.ledger_account_id`}
@@ -239,7 +239,7 @@ export function AddJournalForm({
                     )}
                   />
                 </div>
-                <div className="flex-1">
+                <div className="w-[200px]">
                   <FormField
                     control={form.control}
                     name={`details.${index}.sub_account_id`}
@@ -325,7 +325,7 @@ export function AddJournalForm({
                   />
                 </div>
 
-                <div className="w-24">
+                <div className="flex-1">
                   <FormField
                     control={form.control}
                     name={`details.${index}.note`}
@@ -346,9 +346,9 @@ export function AddJournalForm({
                   />
                 </div>
 
-                <FormItem className="mt-auto">
-                  <Button
-                    variant={"destructive"}
+                <FormItem className="mt-auto mb-2">
+                  <span
+                    className=""
                     onClick={() => {
                       remove(index);
                       const updatedAccounts = [...selectedLedgerAccounts];
@@ -356,8 +356,8 @@ export function AddJournalForm({
                       setSelectedLedgerAccounts(updatedAccounts);
                     }}
                   >
-                    <Delete />
-                  </Button>
+                    <Delete color="red" className="" />
+                  </span>
                 </FormItem>
               </div>
             ))}
