@@ -10,7 +10,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { EntryRow } from "@/lib/validators/accounts";
 import { toast } from "sonner";
-import { AddReceiptForm } from "./add-receipt-form";
+import { AddPaymentForm } from "./add-payment-form";
 import { Modal } from "@/components/common/modal";
 import { useRemoveEntryMutation } from "@/store/services/accounts/api/entries";
 
@@ -26,7 +26,7 @@ export function CellAction({ rowData }: CellActionProps) {
   const handleDepartmentDelete = async (id: number) => {
     try {
       await removeEntry(id);
-      toast.success("Receipt deleted successfully");
+      toast.success("Payment voucher deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
@@ -50,7 +50,7 @@ export function CellAction({ rowData }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Update Receipt Voucher</p>
+            <p>Update Payment Voucher</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -70,7 +70,7 @@ export function CellAction({ rowData }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Delete Receipt Voucher</p>
+            <p>Delete payment voucher</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -85,12 +85,12 @@ export function CellAction({ rowData }: CellActionProps) {
         loading={deleteLoading}
       />
       <Modal
-        title="Update Receipt Voucher"
+        title="Update Payment Voucher"
         isOpen={updateModalOpen}
         toggleModal={() => setUpdateModalOpen(false)}
         className="max-w-5xl h-[87vh] "
       >
-        <AddReceiptForm
+        <AddPaymentForm
           rowData={rowData}
           modalClose={() => setUpdateModalOpen(false)}
         />

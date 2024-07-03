@@ -28,7 +28,7 @@ const JournalVoucher = () => {
 
   const financialYear = data?.data || [];
 
-  console.log(data);
+
 
   const paginationInfo: PaginationInfo | undefined = data?.meta 
   if (isLoading) return <Loading />;

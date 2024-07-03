@@ -36,15 +36,15 @@ import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accoun
 import { Textarea } from "@/components/ui/textarea";
 import { Delete, Plus } from "lucide-react";
 
-interface AddReceiptFormProps {
+interface AddPaymentFormProps {
   modalClose: () => void;
   rowData?: EntryRow;
 }
 
-export function AddReceiptForm({
+export function AddPaymentForm({
   modalClose,
   rowData: previousData,
-}: AddReceiptFormProps) {
+}: AddPaymentFormProps) {
   const [createEntry, { isLoading }] = useCreateEntryMutation();
   const [updateEntry, { isLoading: updateLoading }] = useUpdateEntryMutation();
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
@@ -55,7 +55,7 @@ export function AddReceiptForm({
   const ledgerAccountData = ledgerAccount?.data || [];
   const subAccountData = subAccounts?.data || [];
 
-  // const [totalDrAmount, setTotalDrAmount] = useState(0);
+  const [totalDrAmount, setTotalDrAmount] = useState(0);
   const [totalCrAmount, setTotalCrAmount] = useState(0);
 
   const [selectedLedgerAccounts, setSelectedLedgerAccounts] = useState<
@@ -64,7 +64,7 @@ export function AddReceiptForm({
   const form = useForm<EntryFromValues>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
-      type: previousData?.type || "Receipt voucher",
+      type: previousData?.type || "Payment voucher",
       date: previousData?.date || "",
       entry_number: previousData?.entry_number || "",
       details: previousData?.details || [
@@ -87,15 +87,15 @@ export function AddReceiptForm({
   });
 
   useEffect(() => {
-    /* const totalDr = details.reduce(
+    const totalDr = details.reduce(
       (sum, detail) => sum + Number(detail.dr_amount || 0),
       0
-    ); */
+    );
     const totalCr = details.reduce(
       (sum, detail) => sum + Number(detail.cr_amount || 0),
       0
     );
-    // setTotalDrAmount(totalDr);
+    setTotalDrAmount(totalDr);
     setTotalCrAmount(totalCr);
   }, [details]);
 
@@ -110,7 +110,7 @@ export function AddReceiptForm({
     const updateData = {
       ...data,
       details: data.details.map((detail, index) =>
-        index === 0 ? { ...detail, dr_amount: totalCrAmount } : detail
+        index === 0 ? { ...detail, cr_amount: totalDrAmount } : detail
       ),
     };
 
@@ -186,7 +186,7 @@ export function AddReceiptForm({
                   name={`details.0.ledger_account_id`}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{"Debit Account Head"}</FormLabel>
+                      <FormLabel>{"Credit Account Head"}</FormLabel>
                       <Select
                         onValueChange={(value) => {
                           field.onChange(value);
@@ -366,15 +366,15 @@ export function AddReceiptForm({
                 <div className="max-w-[140px]">
                   <FormField
                     control={form.control}
-                    name={`details.${index}.cr_amount`}
+                    name={`details.${index}.dr_amount`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>{index === 1 && "Amount"}</FormLabel>
                         <FormControl>
                           <Input
-                            disabled={
+/*                             disabled={
                               form.watch(`details.${index}.dr_amount`) > 0
-                            }
+                            } */
                             type="number"
                             min={0}
                             placeholder="Credit amount"
@@ -390,7 +390,7 @@ export function AddReceiptForm({
                     <>
                       <p className="text-sm mt-2 whitespace-nowrap">
                         Total Amount:{" "}
-                        <span className="font-semibold"> {totalCrAmount}</span>
+                        <span className="font-semibold"> {totalDrAmount}</span>
                       </p>
                     </>
                   )}

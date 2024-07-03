@@ -27,7 +27,7 @@ export function CellAction({ rowData }: CellActionProps) {
 	const handleDepartmentDelete = async (id: number) => {
 		try {
 			await deleteSubAccount(id);
-			toast.success("Sub account deleted successfully");
+			toast.success("Contact deleted successfully");
 			setAlertModalOpen(false);
 		} catch (error) {
 			console.log(error);
@@ -51,7 +51,7 @@ export function CellAction({ rowData }: CellActionProps) {
 						</Button>
 					</TooltipTrigger>
 					<TooltipContent>
-						<p>Update Sub Account</p>
+						<p>Update Contact</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
@@ -71,7 +71,7 @@ export function CellAction({ rowData }: CellActionProps) {
 						</Button>
 					</TooltipTrigger>
 					<TooltipContent>
-						<p>Delete Sub Account</p>
+						<p>Delete Contact</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
@@ -86,7 +86,7 @@ export function CellAction({ rowData }: CellActionProps) {
 				loading={deleteLoading}
 			/>
 			<Modal
-				title="Update Sub Account"
+				title="Update Contact"
 				isOpen={updateModalOpen}
 				toggleModal={() => setUpdateModalOpen(false)}
 			>

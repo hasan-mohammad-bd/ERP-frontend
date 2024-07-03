@@ -59,11 +59,11 @@ export function AddSubAccountForm({
 					subAccountId: previousData.id,
 					updatedSubAccount: data,
 				});
-				toast.success("Sub account updated successfully");
+				toast.success("Contact updated successfully");
 				modalClose();
 			} else {
 				await createSubAccount(data);
-				toast.success("Sub account created successfully");
+				toast.success("Contact created successfully");
 				modalClose();
 			}
 		} catch (error) {

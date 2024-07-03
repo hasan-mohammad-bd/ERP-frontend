@@ -75,7 +75,7 @@ export function UpdateAccountsSettingForm({
       if (previousData) {
         await createAccountSetting(latestData);
 
-        toast.success("Sub account updated successfully");
+        toast.success("Contact updated successfully");
         modalClose();
       }
     } catch (error) {

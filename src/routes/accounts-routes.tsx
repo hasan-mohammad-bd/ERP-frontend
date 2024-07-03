@@ -10,6 +10,7 @@ import {
 } from "./components";
 import JournalVoucher from "@/pages/accounts/journal-voucher";
 import ReceptVoucher from "@/pages/accounts/receipt-voucher";
+import PaymentVoucher from "@/pages/accounts/payment-voucher";
 
 const accountsRoutes = {
 	path: "accounts/",
@@ -31,7 +32,7 @@ const accountsRoutes = {
 			errorElement: withFallback(<ErrorPage />),
 		},
 		{
-			path: "sub-accounts",
+			path: "contact",
 			element: withFallback(<SubAccounts />),
 			errorElement: withFallback(<ErrorPage />),
 		},
@@ -48,6 +49,11 @@ const accountsRoutes = {
 		{
 			path: "receipt-voucher",
 			element: withFallback(<ReceptVoucher />),
+			errorElement: <ErrorPage />,
+		},
+		{
+			path: "payment-voucher",
+			element: withFallback(<PaymentVoucher />),
 			errorElement: <ErrorPage />,
 		},
 	],

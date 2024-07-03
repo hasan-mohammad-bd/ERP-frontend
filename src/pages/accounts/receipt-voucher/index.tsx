@@ -12,7 +12,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { subAccountColumns } from "./components/columns";
 import { useGetEntriesQuery } from "@/store/services/accounts/api/entries";
 
-const ReceptVoucher = () => {
+const ReceiptVoucher = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
@@ -24,7 +24,7 @@ const ReceptVoucher = () => {
     }&type=receipt voucher`
   );
 
-  const financialYear = data?.data || [];
+  const receiptVoucher = data?.data || [];
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
   if (isLoading) return <Loading />;
@@ -43,11 +43,11 @@ const ReceptVoucher = () => {
             </Button>
           </div>
           <Separator />
-          {financialYear && (
+          {receiptVoucher && (
             <div>
               <DataTable
                 columns={subAccountColumns}
-                data={financialYear}
+                data={receiptVoucher}
                 paginationInfo={paginationInfo}
                 pagination={paginationInfo && pagination}
                 setPagination={paginationInfo && setPagination}
@@ -68,4 +68,4 @@ const ReceptVoucher = () => {
   );
 };
 
-export default ReceptVoucher;
+export default ReceiptVoucher;

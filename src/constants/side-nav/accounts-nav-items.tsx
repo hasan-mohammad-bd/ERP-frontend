@@ -21,9 +21,9 @@ const accountsNavItems: NavItem[] = [
 		color: "text-sky-500",
 	},
 	{
-		title: "Sub Accounts",
+		title: "Contact",
 		icon: MapPin,
-		href: "/accounts/sub-accounts",
+		href: "/accounts/contact",
 		color: "text-sky-500",
 	},
 	{
@@ -49,6 +49,12 @@ const accountsNavItems: NavItem[] = [
 				title: "Receipt Voucher",
 				icon: Clock,
 				href: "/accounts/receipt-voucher",
+				color: "text-sky-500",
+			},
+			{
+				title: "Payment Voucher",
+				icon: Clock,
+				href: "/accounts/payment-voucher",
 				color: "text-sky-500",
 			},
 		],

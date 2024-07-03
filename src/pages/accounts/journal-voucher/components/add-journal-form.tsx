@@ -125,6 +125,8 @@ export function AddJournalForm({
     }
   }
 
+  const lastIndex = fields.length - 1;
+
   return (
     <>
       {isLoading || updateLoading ? (
@@ -135,7 +137,7 @@ export function AddJournalForm({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-3 h-[68vh]  px-2 overflow-y-scroll no-scrollbar"
+            className="space-y-3 h-[70vh] mb-auto  px-2 overflow-y-scroll no-scrollbar"
           >
             <div className="w-fit">
               <FormField
@@ -245,14 +247,14 @@ export function AddJournalForm({
                     name={`details.${index}.sub_account_id`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{index === 0 && "Sub Account"}</FormLabel>
+                        <FormLabel>{index === 0 && "Contact"}</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           value={(field.value || "").toString()}
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select Sub Account" />
+                              <SelectValue placeholder="Select Contact" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -278,7 +280,7 @@ export function AddJournalForm({
                   />
                 </div>
 
-                <div className="max-w-[120px]">
+                <div className="max-w-[140px]">
                   <FormField
                     control={form.control}
                     name={`details.${index}.dr_amount`}
@@ -300,8 +302,16 @@ export function AddJournalForm({
                       </FormItem>
                     )}
                   />
+                  {index === lastIndex && (
+                    <>
+                      <p className="text-sm mt-2 whitespace-nowrap">
+                        Total Debit:{" "}
+                        <span className="font-semibold"> {totalDrAmount}</span>
+                      </p>
+                    </>
+                  )}
                 </div>
-                <div className="max-w-[120px]">
+                <div className="max-w-[140px]">
                   <FormField
                     control={form.control}
                     name={`details.${index}.cr_amount`}
@@ -323,6 +333,14 @@ export function AddJournalForm({
                       </FormItem>
                     )}
                   />
+                  {index === lastIndex && (
+                    <>
+                      <p className="text-sm mt-2 whitespace-nowrap">
+                        Total Credit:{" "}
+                        <span className="font-semibold"> {totalCrAmount}</span>
+                      </p>
+                    </>
+                  )}
                 </div>
 
                 <div className="flex-1">
@@ -346,7 +364,11 @@ export function AddJournalForm({
                   />
                 </div>
 
-                <FormItem className="mt-auto mb-2">
+                <FormItem
+                  className={`mt-auto ${
+                    index === lastIndex ? "mb-9" : "mb-2"
+                  } `}
+                >
                   <span
                     className=""
                     onClick={() => {
@@ -361,14 +383,14 @@ export function AddJournalForm({
                 </FormItem>
               </div>
             ))}
-            <div className="text-end mt-4">
+            {/*             <div className="text-end mt-4">
               <div>
                 <p className="text-sm ">Total Debit: {totalDrAmount}</p>
               </div>
               <div className="">
                 <p className="text-sm ">Total Credit: {totalCrAmount}</p>
               </div>
-            </div>
+            </div> */}
 
             <Button
               variant="outline"
@@ -389,7 +411,9 @@ export function AddJournalForm({
 
             <div className="mx-auto absolute right-3 bottom-3 flex items-center">
               {totalCrAmount !== totalDrAmount && (
-                <p className="text-red-500 mr-3 text-sm">Debit and Credit amount must be same</p>
+                <p className="text-red-500 mr-3 text-sm">
+                  Debit and Credit amount must be same
+                </p>
               )}
               <Button
                 disabled={totalDrAmount !== totalCrAmount}
