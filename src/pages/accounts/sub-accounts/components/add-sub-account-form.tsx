@@ -105,7 +105,7 @@ export function AddSubAccountForm({
 									<FormControl>
 										<Input
 											type="text"
-											placeholder="Enter Financial Start Date"
+											placeholder="Enter phone number"
 											{...field}
 										/>
 									</FormControl>

@@ -12,6 +12,15 @@ const entryApi = accountApi.injectEndpoints({
 					string
 			>({
 					query: (params) => `entries?${params}`,
+					
+					providesTags: ["entries"],
+			}),
+			getEntryById: build.query<
+					{ data: EntryRow; meta: PaginationInfo },
+					string
+			>({
+					query: (params) => `entries/${params}`,
+					
 					providesTags: ["entries"],
 			}),
 			createEntry: build.mutation<
@@ -49,6 +58,7 @@ const entryApi = accountApi.injectEndpoints({
 
 export const {
 	useGetEntriesQuery,
+	useGetEntryByIdQuery,
 	useCreateEntryMutation,
 	useRemoveEntryMutation,
 	useUpdateEntryMutation,

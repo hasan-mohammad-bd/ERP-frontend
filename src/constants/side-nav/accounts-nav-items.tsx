@@ -57,6 +57,12 @@ const accountsNavItems: NavItem[] = [
 				href: "/accounts/payment-voucher",
 				color: "text-sky-500",
 			},
+			{
+				title: "Contra Voucher",
+				icon: Clock,
+				href: "/accounts/contra-voucher",
+				color: "text-sky-500",
+			},
 		],
 
 	}

@@ -30,7 +30,7 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
 	},
 	{
 		accessorKey: "entry_number",
-		header: "Journal Voucher Number",
+		header: "JV Number",
 	},
 	{
 		accessorKey: "type",

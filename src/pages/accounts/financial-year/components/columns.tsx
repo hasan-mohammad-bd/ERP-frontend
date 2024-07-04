@@ -2,6 +2,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { FinancialYearRow } from "@/lib/validators/accounts";
 import { CellAction } from "./cell-action";
+import { Badge } from "@/components/ui/badge";
+
 
 export const financialYearColumns: ColumnDef<FinancialYearRow>[] = [
 	{
@@ -42,21 +44,16 @@ export const financialYearColumns: ColumnDef<FinancialYearRow>[] = [
 	},
 	{
 		accessorKey: "is_active",
-		header: "Active",
+		header: "Status",
 		cell: ({ row }) => {
 			const active = row.getValue("is_active");
 			if (active === 1) {
 				return (
-					<Checkbox
-						aria-readonly
-						checked
-						aria-label="Active"
-						className="translate-y-[2px]"
-					/>
+					<Badge>Active</Badge>
 				);
 			}
 			return (
-				<Checkbox disabled aria-label="Active" className="translate-y-[2px]" />
+				<Badge variant="destructive">Inactive</Badge>
 			);
 		},
 	},

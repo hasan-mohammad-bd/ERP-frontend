@@ -1,21 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
-
+import { Modal } from "@/components/common/modal";
+import { AddContraForm } from "./components/add-contra-form";
 import { PaginationInfo } from "@/types";
 import { PaginationState } from "@tanstack/react-table";
-
 import { subAccountColumns } from "./components/columns";
 import { useGetEntriesQuery } from "@/store/services/accounts/api/entries";
-import { useNavigate } from "react-router-dom";
 
-const JournalVoucher = () => {
-  // const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
+const ContraVoucher = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -23,10 +21,10 @@ const JournalVoucher = () => {
   const { data, isLoading } = useGetEntriesQuery(
     `per_page=${pagination.pageSize}&page=${
       pagination.pageIndex + 1
-    }&type=journal voucher`
+    }&type=contra voucher`
   );
 
-  const financialYear = data?.data || [];
+  const contraVoucher = data?.data || [];
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
   if (isLoading) return <Loading />;
@@ -37,22 +35,19 @@ const JournalVoucher = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="Journal Voucher"
+              title="Contra Voucher"
               description="Manage your sub accounts for you business"
             />
-            <Button
-              onClick={() => navigate("/accounts/journal-voucher/add")}
-              size={"sm"}
-            >
-              <Plus className="mr-2 h-4 w-4" /> Add Journal Entry
+            <Button onClick={() => setIsOpen(true)} size={"sm"}>
+              <Plus className="mr-2 h-4 w-4" /> Add Contra Entry
             </Button>
           </div>
           <Separator />
-          {financialYear && (
+          {contraVoucher && (
             <div>
               <DataTable
                 columns={subAccountColumns}
-                data={financialYear}
+                data={contraVoucher}
                 paginationInfo={paginationInfo}
                 pagination={paginationInfo && pagination}
                 setPagination={paginationInfo && setPagination}
@@ -61,16 +56,16 @@ const JournalVoucher = () => {
           )}
         </div>
       </div>
-{/*       <Modal
-        title="Add Journal Entry"
+      <Modal
+        title="Add Contra Entry"
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}
         className="max-w-5xl h-[87vh] "
       >
-        <AddJournalForm modalClose={() => setIsOpen(false)} />
-      </Modal> */}
+        <AddContraForm modalClose={() => setIsOpen(false)} />
+      </Modal>
     </>
   );
 };
 
-export default JournalVoucher;
+export default ContraVoucher;
