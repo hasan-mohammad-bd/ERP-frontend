@@ -1,3 +1,5 @@
+
+
 import { lazy } from "react";
 
 export const Layout = lazy(() => import("@/layout"));
@@ -32,5 +34,14 @@ export const AccountSettings = lazy(
 	() => import("@/pages/accounts/accounts-settings")
 );
 
+export const JournalVoucher = lazy(() => import("@/pages/accounts/journal-voucher"));
+export const ReceptVoucher = lazy(() => import("@/pages/accounts/receipt-voucher"));
+export const PaymentVoucher = lazy(() => import("@/pages/accounts/payment-voucher"));
+export const ContraVoucher = lazy(() => import("@/pages/accounts/contra-voucher"));
+
+
 export const Organization = lazy(() => import("@/pages/web/organization"));
 export const Location = lazy(() => import("@/pages/web/location"));
+
+
+

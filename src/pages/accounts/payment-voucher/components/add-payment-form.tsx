@@ -14,7 +14,6 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
   EntryFromValues,
-  EntryRow,
   LedgerRow,
   SubAccountRow,
   entrySchema,
@@ -29,22 +28,20 @@ import {
 } from "@/components/ui/select";
 import {
   useCreateEntryMutation,
+  useGetEntryByIdQuery,
   useUpdateEntryMutation,
 } from "@/store/services/accounts/api/entries";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
 import { Textarea } from "@/components/ui/textarea";
-import { Delete, Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Card } from "@/components/ui/card";
+import { Heading } from "@/components/common/heading";
 
-interface AddPaymentFormProps {
-  modalClose: () => void;
-  rowData?: EntryRow;
-}
-
-export function AddPaymentForm({
-  modalClose,
-  rowData: previousData,
-}: AddPaymentFormProps) {
+export function AddPaymentForm() {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [createEntry, { isLoading }] = useCreateEntryMutation();
   const [updateEntry, { isLoading: updateLoading }] = useUpdateEntryMutation();
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
@@ -58,23 +55,43 @@ export function AddPaymentForm({
   const [totalDrAmount, setTotalDrAmount] = useState(0);
   const [totalCrAmount, setTotalCrAmount] = useState(0);
 
+  const { data: paymentById } = useGetEntryByIdQuery(`${id}`);
+
+  const previousData = paymentById?.data;
+
   const [selectedLedgerAccounts, setSelectedLedgerAccounts] = useState<
     number[]
   >([]);
   const form = useForm<EntryFromValues>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
-      type: previousData?.type || "Payment voucher",
-      date: previousData?.date || "",
-      entry_number: previousData?.entry_number || "",
-      details: previousData?.details || [
+      type: "Payment voucher",
+      date: new Date().toISOString().split('T')[0],
+      entry_number: "",
+      details: [
         { dr_amount: totalCrAmount, cr_amount: 0 },
         { dr_amount: 0, cr_amount: 0 },
       ],
-      note: previousData?.note || "",
-      file: previousData?.file || "",
+      note: "",
+      file: "",
     },
   });
+
+  useEffect(() => {
+    if (previousData) {
+      form.reset({
+        type: previousData?.type || "Payment voucher",
+        date: previousData?.date || new Date().toDateString(),
+        entry_number: previousData?.entry_number || "",
+        details: previousData?.details || [
+          { dr_amount: totalCrAmount, cr_amount: 0 },
+          { dr_amount: 0, cr_amount: 0 },
+        ],
+        note: previousData?.note || "",
+        file: previousData?.file || "",
+      });
+    }
+  }, [previousData, form, totalCrAmount]);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -121,11 +138,13 @@ export function AddPaymentForm({
           updatedEntry: updateData,
         });
         toast.success("Voucher updated successfully");
-        modalClose();
+        // modalClose();
+        navigate("/accounts/payment-voucher");
       } else {
         await createEntry(updateData);
         toast.success("Voucher created successfully");
-        modalClose();
+        // modalClose();
+        navigate("/accounts/payment-voucher");
       }
     } catch (error) {
       console.log(error);
@@ -141,205 +160,252 @@ export function AddPaymentForm({
           <Loading />
         </div>
       ) : (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-3 h-[68vh]  px-2 overflow-y-scroll no-scrollbar"
-          >
-            <div className="w-fit">
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" placeholder="Enter date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-fit flex space-x-3">
-              <FormField
-                control={form.control}
-                name="entry_number"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Entry Number</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="Enter entry number"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <Heading
+              title={previousData ? "Edit Payment Entry" : "Add Payment Entry"}
+              description="Manage your sub accounts for you business"
+            />
+            <Button
+              onClick={() => navigate("/accounts/payment-voucher")}
+              size={"sm"}
+            >
+              Payment Voucher List
+            </Button>
+          </div>
+          <Card className="p-3">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-3 px-2 no-scrollbar"
+              >
+                <div className="flex gap-x-4">
+                  <div className="w-fit">
+                    <FormField
+                      control={form.control}
+                      name="date"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Date</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="date"
+                              placeholder="Enter date"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-fit flex space-x-4">
+                    <FormField
+                      control={form.control}
+                      name="entry_number"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Entry Number</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              placeholder="Enter entry number"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-              <div className="w-[200px]">
+                    <div className="w-[200px]">
+                      <FormField
+                        control={form.control}
+                        name={`details.0.ledger_account_id`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{"Credit Account Head"}</FormLabel>
+                            <Select
+                              onValueChange={(value) => {
+                                field.onChange(value);
+                                const updatedAccounts = [
+                                  ...selectedLedgerAccounts,
+                                ];
+                                updatedAccounts[0] = Number(value);
+                                setSelectedLedgerAccounts(updatedAccounts);
+                              }}
+                              value={(field.value || "").toString()}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select Ledger Account" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {ledgerAccountLoading ? (
+                                  <Loading />
+                                ) : (
+                                  ledgerAccountData
+                                    .filter(
+                                      (ledgerAccount: LedgerRow) =>
+                                        !selectedLedgerAccounts.includes(
+                                          ledgerAccount.id
+                                        ) ||
+                                        ledgerAccount.id === Number(field.value)
+                                    )
+                                    .map((ledgerAccount: LedgerRow) => (
+                                      <SelectItem
+                                        key={ledgerAccount.id}
+                                        value={String(ledgerAccount.id)}
+                                      >
+                                        {ledgerAccount.name}
+                                      </SelectItem>
+                                    ))
+                                )}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <FormField
                   control={form.control}
-                  name={`details.0.ledger_account_id`}
+                  name="note"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{"Credit Account Head"}</FormLabel>
-                      <Select
-                        onValueChange={(value) => {
-                          field.onChange(value);
-                          const updatedAccounts = [...selectedLedgerAccounts];
-                          updatedAccounts[0] = Number(value);
-                          setSelectedLedgerAccounts(updatedAccounts);
-                        }}
-                        value={(field.value || "").toString()}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Ledger Account" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {ledgerAccountLoading ? (
-                            <Loading />
-                          ) : (
-                            ledgerAccountData
-                              .filter(
-                                (ledgerAccount: LedgerRow) =>
-                                  !selectedLedgerAccounts.includes(
-                                    ledgerAccount.id
-                                  ) || ledgerAccount.id === Number(field.value)
-                              )
-                              .map((ledgerAccount: LedgerRow) => (
-                                <SelectItem
-                                  key={ledgerAccount.id}
-                                  value={String(ledgerAccount.id)}
-                                >
-                                  {ledgerAccount.name}
-                                </SelectItem>
-                              ))
-                          )}
-                        </SelectContent>
-                      </Select>
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Type your message here."
+                          {...field}
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
-            </div>
-            <FormField
-              control={form.control}
-              name="note"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Type your message here."
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
-            {fields.map((field, index) => (
-              <div
-                key={field.id}
-                className={`flex w-full gap-x-3 ${index === 0 && "hidden"}`}
-              >
-                <div className={`w-[200px]`}>
-                  <FormField
-                    control={form.control}
-                    name={`details.${index}.ledger_account_id`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{index === 1 && "Ledger Account"}</FormLabel>
-                        <Select
-                          onValueChange={(value) => {
-                            field.onChange(value);
-                            const updatedAccounts = [...selectedLedgerAccounts];
-                            updatedAccounts[index] = Number(value);
-                            setSelectedLedgerAccounts(updatedAccounts);
-                          }}
-                          value={(field.value || "").toString()}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Ledger Account" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {ledgerAccountLoading ? (
-                              <Loading />
-                            ) : (
-                              ledgerAccountData
-                                .filter(
-                                  (ledgerAccount: LedgerRow) =>
-                                    !selectedLedgerAccounts.includes(
-                                      ledgerAccount.id
-                                    ) ||
-                                    ledgerAccount.id === Number(field.value)
-                                )
-                                .map((ledgerAccount: LedgerRow) => (
-                                  <SelectItem
-                                    key={ledgerAccount.id}
-                                    value={String(ledgerAccount.id)}
-                                  >
-                                    {ledgerAccount.name}
-                                  </SelectItem>
-                                ))
-                            )}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-[200px]">
-                  <FormField
-                    control={form.control}
-                    name={`details.${index}.sub_account_id`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{index === 1 && "Contact"}</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          value={(field.value || "").toString()}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Contact" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {subAccountLoading ? (
-                              <Loading />
-                            ) : (
-                              subAccountData?.map(
-                                (subAccount: SubAccountRow) => (
-                                  <SelectItem
-                                    key={subAccount.id}
-                                    value={String(subAccount.id)}
-                                  >
-                                    {subAccount.name}
-                                  </SelectItem>
-                                )
-                              )
-                            )}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                {fields.map((field, index) => (
+                  <div
+                    key={field.id}
+                    className={`flex w-full gap-x-3 ${index === 0 && "hidden"}`}
+                  >
+                    <div className={`w-[250px]`}>
+                      <FormField
+                        control={form.control}
+                        name={`details.${index}.ledger_account_id`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>
+                              {index === 1 && "Ledger Account"}
+                            </FormLabel>
+                            <Select
+                              onValueChange={(value) => {
+                                field.onChange(value);
+                                const updatedAccounts = [
+                                  ...selectedLedgerAccounts,
+                                ];
+                                updatedAccounts[index] = Number(value);
+                                setSelectedLedgerAccounts(updatedAccounts);
+                              }}
+                              value={(field.value || "").toString()}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select Ledger Account" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {ledgerAccountLoading ? (
+                                  <Loading />
+                                ) : (
+                                  ledgerAccountData
+                                    .filter(
+                                      (ledgerAccount: LedgerRow) =>
+                                        !selectedLedgerAccounts.includes(
+                                          ledgerAccount.id
+                                        ) ||
+                                        ledgerAccount.id === Number(field.value)
+                                    )
+                                    .map((ledgerAccount: LedgerRow) => (
+                                      <SelectItem
+                                        key={ledgerAccount.id}
+                                        value={String(ledgerAccount.id)}
+                                      >
+                                        {ledgerAccount.name}
+                                      </SelectItem>
+                                    ))
+                                )}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="w-[250px]">
+                      <FormField
+                        control={form.control}
+                        name={`details.${index}.sub_account_id`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{index === 1 && "Contact"}</FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={(field.value || "").toString()}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select Contact" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {subAccountLoading ? (
+                                  <Loading />
+                                ) : (
+                                  subAccountData?.map(
+                                    (subAccount: SubAccountRow) => (
+                                      <SelectItem
+                                        key={subAccount.id}
+                                        value={String(subAccount.id)}
+                                      >
+                                        {subAccount.name}
+                                      </SelectItem>
+                                    )
+                                  )
+                                )}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <FormField
+                        control={form.control}
+                        name={`details.${index}.note`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{index === 1 && "Note"}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="text"
+                                placeholder="Take Note"
+                                {...field}
+                                value={field.value || ""}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
-                {/*                 <div className="max-w-[120px]">
+                    {/*                 <div className="max-w-[120px]">
                   <FormField
                     control={form.control}
                     name={`details.0.dr_amount`}
@@ -363,80 +429,64 @@ export function AddPaymentForm({
                     )}
                   />
                 </div> */}
-                <div className="max-w-[140px]">
-                  <FormField
-                    control={form.control}
-                    name={`details.${index}.dr_amount`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{index === 1 && "Amount"}</FormLabel>
-                        <FormControl>
-                          <Input
-/*                             disabled={
+                    <div className="max-w-[140px]">
+                      <FormField
+                        control={form.control}
+                        name={`details.${index}.dr_amount`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{index === 1 && "Amount"}</FormLabel>
+                            <FormControl>
+                              <Input
+                                /*                             disabled={
                               form.watch(`details.${index}.dr_amount`) > 0
                             } */
-                            type="number"
-                            min={0}
-                            placeholder="Credit amount"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                                type="number"
+                                min={0}
+                                placeholder="Credit amount"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                  {index === lastIndex && (
-                    <>
-                      <p className="text-sm mt-2 whitespace-nowrap">
-                        Total Amount:{" "}
-                        <span className="font-semibold"> {totalDrAmount}</span>
-                      </p>
-                    </>
-                  )}
-                </div>
+                      {index === lastIndex && (
+                        <>
+                          <p className="text-sm mt-2 whitespace-nowrap">
+                            Total Amount:{" "}
+                            <span className="font-semibold">
+                              {" "}
+                              {totalDrAmount}
+                            </span>
+                          </p>
+                        </>
+                      )}
+                    </div>
 
-                <div className="flex-1">
-                  <FormField
-                    control={form.control}
-                    name={`details.${index}.note`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{index === 1 && "Note"}</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="Take Note"
-                            {...field}
-                            value={field.value || ""}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
 
-                <FormItem
-                  className={`mt-auto ${
-                    index === lastIndex ? "mb-9" : "mb-2"
-                  } `}
-                >
-                  <span
-                    className=""
-                    onClick={() => {
-                      remove(index);
-                      const updatedAccounts = [...selectedLedgerAccounts];
-                      updatedAccounts.splice(index, 1);
-                      setSelectedLedgerAccounts(updatedAccounts);
-                    }}
-                  >
-                    <Delete color="red" className="" />
-                  </span>
-                </FormItem>
-              </div>
-            ))}
-            {/*                         <div className="text-end mt-4">
+
+                    <FormItem
+                      className={`mt-auto ${
+                        index === lastIndex ? "mb-10" : "mb-3"
+                      } `}
+                    >
+                      <span
+                        className=""
+                        onClick={() => {
+                          remove(index);
+                          const updatedAccounts = [...selectedLedgerAccounts];
+                          updatedAccounts.splice(index, 1);
+                          setSelectedLedgerAccounts(updatedAccounts);
+                        }}
+                      >
+                        <Trash2 size={16} color="red" className="" />
+                      </span>
+                    </FormItem>
+                  </div>
+                ))}
+                {/*                         <div className="text-end mt-4">
               <div>
                 <p className="text-sm ">Total Debit: {totalDrAmount}</p>
               </div>
@@ -445,30 +495,44 @@ export function AddPaymentForm({
               </div>
             </div> */}
 
-            <Button
-              variant="outline"
-              className="border border-dashed border-gray-700 w-full"
-              type="button"
-              onClick={() =>
-                append({
-                  dr_amount: 0,
-                  cr_amount: 0,
-                  ledger_account_id: 0,
-                  sub_account_id: 0,
-                  note: "",
-                })
-              }
-            >
-              <Plus size={16} /> <span className="ml-2">Add Line</span>
-            </Button>
+                <Button
+                  variant="outline"
+                  className="border border-dashed border-gray-700 w-full"
+                  type="button"
+                  onClick={() =>
+                    append({
+                      dr_amount: 0,
+                      cr_amount: 0,
+                      ledger_account_id: 0,
+                      sub_account_id: 0,
+                      note: "",
+                    })
+                  }
+                >
+                  <Plus size={16} /> <span className="ml-2">Add Line</span>
+                </Button>
 
-            <div className="mx-auto absolute right-3 bottom-3 flex items-center">
-              <Button variant="default" type="submit" className="w-fit ">
-                {previousData ? "Update" : "Save"}
-              </Button>
-            </div>
-          </form>
-        </Form>
+                <div className=" flex flex-row-reverse items-center !mb-2">
+                  <Button
+                    // disabled={totalDrAmount !== totalCrAmount}
+                    variant="default"
+                    type="submit"
+                    className="w-fit ml-2"
+                  >
+                    {previousData ? "Update" : "Save"}
+                  </Button>
+                  <Button
+                    variant="default"
+                    onClick={() => navigate("/accounts/payment-voucher")}
+                    className="w-fit "
+                  >
+                    Back
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </Card>
+        </div>
       )}
     </>
   );

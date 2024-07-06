@@ -7,12 +7,18 @@ import {
   Layout,
   SubAccounts,
   AccountSettings,
+  JournalVoucher,
+  ReceptVoucher,
+  PaymentVoucher,
+  ContraVoucher
+
 } from "./components";
-import JournalVoucher from "@/pages/accounts/journal-voucher";
-import ReceptVoucher from "@/pages/accounts/receipt-voucher";
-import PaymentVoucher from "@/pages/accounts/payment-voucher";
-import ContraVoucher from "@/pages/accounts/contra-voucher";
+
+
 import { AddJournalForm } from "@/pages/accounts/journal-voucher/components/add-journal-form";
+import { AddReceiptForm } from "@/pages/accounts/receipt-voucher/components/add-receipt-form";
+import { AddPaymentForm } from "@/pages/accounts/payment-voucher/components/add-payment-form";
+import { AddContraForm } from "@/pages/accounts/contra-voucher/components/add-contra-form";
 
 const accountsRoutes = {
   path: "accounts/",
@@ -67,18 +73,71 @@ const accountsRoutes = {
     },
     {
       path: "receipt-voucher",
-      element: withFallback(<ReceptVoucher />),
+      // element: withFallback(<ReceptVoucher />),
       errorElement: <ErrorPage />,
+      children: [
+        {
+          index: true,
+          element: withFallback(<ReceptVoucher />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "add",
+          element: withFallback(<AddReceiptForm />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<AddReceiptForm />),
+          errorElement: <ErrorPage />,
+        }
+
+      ]
+
     },
     {
       path: "payment-voucher",
-      element: withFallback(<PaymentVoucher />),
+      // element: withFallback(<PaymentVoucher />),
       errorElement: <ErrorPage />,
+      children: [
+        {
+          index: true,
+          element: withFallback(<PaymentVoucher />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "add",
+          element: withFallback(<AddPaymentForm />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<AddPaymentForm />),
+          errorElement: <ErrorPage />,
+        }
+      ],
     },
     {
       path: "contra-voucher",
-      element: withFallback(<ContraVoucher />),
+      // element: withFallback(<ContraVoucher />),
       errorElement: <ErrorPage />,
+      children: [
+        {
+          index: true,
+          element: withFallback(<ContraVoucher />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "add",
+          element: withFallback(<AddContraForm />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<AddContraForm />),
+          errorElement: <ErrorPage />,
+        }
+      ],
     },
   ],
 };

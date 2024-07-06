@@ -3,6 +3,8 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { SubAccountRow } from "@/lib/validators/accounts";
 import { CellAction } from "./cell-action";
 
+
+
 export const subAccountColumns: ColumnDef<SubAccountRow>[] = [
 	{
 		id: "select",
@@ -30,7 +32,7 @@ export const subAccountColumns: ColumnDef<SubAccountRow>[] = [
 	},
 	{
 		accessorKey: "name",
-		header: "Financial Year Name",
+		header: "Contact Name",
 	},
 	{
 		accessorKey: "phone",
@@ -40,23 +42,27 @@ export const subAccountColumns: ColumnDef<SubAccountRow>[] = [
 		accessorKey: "type",
 		header: "Type",
 	},
-	{
+
+/* 	{
+		accessorKey: "",
+		header: "Currency",
+	accessorFn: ({currency}) => {
+		currency.name
+	},
+		
+	}, */
+/* 	{
 		accessorKey: "is_active",
-		header: "Active",
+		header: "Status",
 		cell: ({ row }) => {
 			const active = row.getValue("is_active");
 			if (active === 1) {
 				return (
-					<Checkbox
-						aria-readonly
-						checked
-						aria-label="Active"
-						className="translate-y-[2px]"
-					/>
+					<Badge>Active</Badge>
 				);
 			}
 			return (
-				<Checkbox disabled aria-label="Active" className="translate-y-[2px]" />
+				<Badge variant="destructive">Inactive</Badge>
 			);
 		},
 	},
@@ -79,7 +85,7 @@ export const subAccountColumns: ColumnDef<SubAccountRow>[] = [
 				<Checkbox disabled aria-label="Closed" className="translate-y-[2px]" />
 			);
 		},
-	},
+	}, */
 	{
 		id: "actions",
 		header: () => <div className="text-center">Actions</div>,

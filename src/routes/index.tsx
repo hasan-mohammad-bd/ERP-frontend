@@ -24,6 +24,8 @@ const router = createBrowserRouter([
 			hrmRoutes,
 			accountsRoutes,
 			webRoutes,
+			
+
 		],
 	},
 ]);

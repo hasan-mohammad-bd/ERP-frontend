@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
-import { Modal } from "@/components/common/modal";
-import { AddReceiptForm } from "./components/add-receipt-form";
+
 import { PaginationInfo } from "@/types";
 import { PaginationState } from "@tanstack/react-table";
 import { subAccountColumns } from "./components/columns";
 import { useGetEntriesQuery } from "@/store/services/accounts/api/entries";
+import { useNavigate } from "react-router-dom";
 
 const ReceiptVoucher = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const navigation = useNavigate();
+
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -38,7 +39,7 @@ const ReceiptVoucher = () => {
               title="Receipt Voucher"
               description="Manage your sub accounts for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
+            <Button onClick={() => navigation("/accounts/receipt-voucher/add")} size={"sm"}>
               <Plus className="mr-2 h-4 w-4" /> Add Receipt Entry
             </Button>
           </div>
@@ -56,14 +57,14 @@ const ReceiptVoucher = () => {
           )}
         </div>
       </div>
-      <Modal
+{/*       <Modal
         title="Add Receipt Entry"
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}
         className="max-w-5xl h-[87vh] "
       >
         <AddReceiptForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      </Modal> */}
     </>
   );
 };

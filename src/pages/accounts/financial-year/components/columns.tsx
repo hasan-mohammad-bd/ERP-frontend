@@ -2,7 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { FinancialYearRow } from "@/lib/validators/accounts";
 import { CellAction } from "./cell-action";
-import { Badge } from "@/components/ui/badge";
+
 
 
 export const financialYearColumns: ColumnDef<FinancialYearRow>[] = [
@@ -49,11 +49,11 @@ export const financialYearColumns: ColumnDef<FinancialYearRow>[] = [
 			const active = row.getValue("is_active");
 			if (active === 1) {
 				return (
-					<Badge>Active</Badge>
+					<span className="text-green-600 font-semibold text-xm py-1 px-2 bg-green-100 rounded-xl">Active</span>
 				);
 			}
 			return (
-				<Badge variant="destructive">Inactive</Badge>
+				<span className="text-red-600 font-semibold text-xm py-1 px-2 bg-red-100 rounded-xl">Inactive</span>
 			);
 		},
 	},

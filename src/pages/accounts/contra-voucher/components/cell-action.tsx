@@ -10,17 +10,18 @@ import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { EntryRow } from "@/lib/validators/accounts";
 import { toast } from "sonner";
-import { AddContraForm } from "./add-contra-form";
-import { Modal } from "@/components/common/modal";
+
 import { useRemoveEntryMutation } from "@/store/services/accounts/api/entries";
+import { useNavigate } from "react-router-dom";
 
 interface CellActionProps {
   rowData: EntryRow;
 }
 
 export function CellAction({ rowData }: CellActionProps) {
+  const navigate = useNavigate();
   const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+
   const [removeEntry, { isLoading: deleteLoading }] = useRemoveEntryMutation();
 
   const handleDepartmentDelete = async (id: number) => {
@@ -42,7 +43,7 @@ export function CellAction({ rowData }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-              onClick={() => setUpdateModalOpen(true)}
+              onClick={() => navigate(`/accounts/contra-voucher/edit/${rowData.id}`)}
 
               // onClick={() => toggleModal()}
             >
@@ -84,17 +85,7 @@ export function CellAction({ rowData }: CellActionProps) {
         onConfirm={() => handleDepartmentDelete(rowData.id)}
         loading={deleteLoading}
       />
-      <Modal
-        title="Update Receipt Voucher"
-        isOpen={updateModalOpen}
-        toggleModal={() => setUpdateModalOpen(false)}
-        className="max-w-5xl h-[87vh] "
-      >
-        <AddContraForm
-          rowData={rowData}
-          modalClose={() => setUpdateModalOpen(false)}
-        />
-      </Modal>
+
     </div>
   );
 }

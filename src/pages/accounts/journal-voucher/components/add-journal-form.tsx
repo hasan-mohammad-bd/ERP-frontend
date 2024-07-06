@@ -34,15 +34,10 @@ import {
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
 import { Textarea } from "@/components/ui/textarea";
-import { Delete, Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/common/heading";
-
-/* interface AddJournalFormProps {
-  // modalClose?: () => void;
-  // rowData?: EntryRow;
-} */
 
 export function AddJournalForm() {
   const { id } = useParams();
@@ -54,8 +49,7 @@ export function AddJournalForm() {
   const { data: subAccounts, isLoading: subAccountLoading } =
     useGetSubAccountsQuery(`page=1&per_page=1000`);
 
-  const { data: journalById, isLoading: journalByIdLoading } =
-    useGetEntryByIdQuery(`${id}`);
+  const { data: journalById } = useGetEntryByIdQuery(`${id}`);
 
   const previousData = journalById?.data;
 
@@ -70,7 +64,7 @@ export function AddJournalForm() {
     resolver: zodResolver(entrySchema),
     defaultValues: {
       type: "Journal voucher",
-      date: new Date().toISOString(),
+      date: new Date().toISOString().split("T")[0],
       entry_number: "",
       details: [
         { dr_amount: 0, cr_amount: 0 },
@@ -155,19 +149,23 @@ export function AddJournalForm() {
 
   return (
     <>
-      {isLoading || updateLoading || journalByIdLoading ? (
+      {isLoading || updateLoading ? (
         <div className="h-56">
           <Loading />
         </div>
       ) : (
         <div>
-          <div className="mb-4">
+          <div className="flex items-center justify-between mb-4">
             <Heading
-              title={
-                previousData ? "Edit Journal Voucher" : "Add Journal Voucher"
-              }
+              title={previousData ? "Edit Journal Entry" : "Add Journal Entry"}
               description="Manage your sub accounts for you business"
             />
+            <Button
+              onClick={() => navigate("/accounts/journal-voucher")}
+              size={"sm"}
+            >
+              Journal Voucher List
+            </Button>
           </div>
           <Card className="p-3">
             <Form {...form}>
@@ -175,43 +173,45 @@ export function AddJournalForm() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-3 mb-auto  px-2 overflow-y-scroll no-scrollbar"
               >
-                <div className="w-fit">
-                  <FormField
-                    control={form.control}
-                    name="date"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Date</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="date"
-                            placeholder="Enter date"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-fit">
-                  <FormField
-                    control={form.control}
-                    name="entry_number"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Entry Number</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="Enter entry number"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                <div className="flex gap-x-4">
+                  <div className="w-fit">
+                    <FormField
+                      control={form.control}
+                      name="date"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Date</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="date"
+                              placeholder="Enter date"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-fit">
+                    <FormField
+                      control={form.control}
+                      name="entry_number"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Entry Number</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              placeholder="Enter entry number"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
                 <FormField
                   control={form.control}
@@ -232,7 +232,7 @@ export function AddJournalForm() {
 
                 {fields.map((field, index) => (
                   <div key={field.id} className="flex w-full gap-x-3">
-                    <div className="w-[200px]">
+                    <div className="w-[250px]">
                       <FormField
                         control={form.control}
                         name={`details.${index}.ledger_account_id`}
@@ -285,7 +285,7 @@ export function AddJournalForm() {
                         )}
                       />
                     </div>
-                    <div className="w-[200px]">
+                    <div className="w-[250px]">
                       <FormField
                         control={form.control}
                         name={`details.${index}.sub_account_id`}
@@ -318,6 +318,26 @@ export function AddJournalForm() {
                                 )}
                               </SelectContent>
                             </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <FormField
+                        control={form.control}
+                        name={`details.${index}.note`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{index === 0 && "Note"}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="text"
+                                placeholder="Take Note"
+                                {...field}
+                                value={field.value || ""}
+                              />
+                            </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -397,30 +417,11 @@ export function AddJournalForm() {
                       )}
                     </div>
 
-                    <div className="flex-1">
-                      <FormField
-                        control={form.control}
-                        name={`details.${index}.note`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{index === 0 && "Note"}</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                placeholder="Take Note"
-                                {...field}
-                                value={field.value || ""}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+
 
                     <FormItem
                       className={`mt-auto ${
-                        index === lastIndex ? "mb-9" : "mb-2"
+                        index === lastIndex ? "mb-10" : "mb-3"
                       } `}
                     >
                       <span
@@ -432,7 +433,7 @@ export function AddJournalForm() {
                           setSelectedLedgerAccounts(updatedAccounts);
                         }}
                       >
-                        <Delete color="red" className="" />
+                        <Trash2 size={16} color="red" className="" />
                       </span>
                     </FormItem>
                   </div>

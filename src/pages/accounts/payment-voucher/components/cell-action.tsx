@@ -10,9 +10,9 @@ import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { EntryRow } from "@/lib/validators/accounts";
 import { toast } from "sonner";
-import { AddPaymentForm } from "./add-payment-form";
-import { Modal } from "@/components/common/modal";
+
 import { useRemoveEntryMutation } from "@/store/services/accounts/api/entries";
+import { useNavigate } from "react-router-dom";
 
 interface CellActionProps {
   rowData: EntryRow;
@@ -20,8 +20,8 @@ interface CellActionProps {
 
 export function CellAction({ rowData }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [removeEntry, { isLoading: deleteLoading }] = useRemoveEntryMutation();
+  const navigation = useNavigate();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
@@ -42,7 +42,8 @@ export function CellAction({ rowData }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-              onClick={() => setUpdateModalOpen(true)}
+              // onClick={() => setUpdateModalOpen(true)}
+              onClick={()=> navigation(`/accounts/payment-voucher/edit/${rowData.id}`)}
 
               // onClick={() => toggleModal()}
             >
@@ -84,7 +85,7 @@ export function CellAction({ rowData }: CellActionProps) {
         onConfirm={() => handleDepartmentDelete(rowData.id)}
         loading={deleteLoading}
       />
-      <Modal
+{/*       <Modal
         title="Update Payment Voucher"
         isOpen={updateModalOpen}
         toggleModal={() => setUpdateModalOpen(false)}
@@ -94,7 +95,7 @@ export function CellAction({ rowData }: CellActionProps) {
           rowData={rowData}
           modalClose={() => setUpdateModalOpen(false)}
         />
-      </Modal>
+      </Modal> */}
     </div>
   );
 }

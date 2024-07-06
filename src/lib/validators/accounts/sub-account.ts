@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { currencyRow } from "./currency";
 
 export const subAccountSchema = z.object({
 	name: z.string().min(2, {
@@ -14,6 +15,7 @@ export type SubAccountFromValues = z.infer<typeof subAccountSchema>;
 
 const subAccountRow = subAccountSchema.extend({
 	id: z.coerce.number(),
+	currency: currencyRow
 });
 
 export type SubAccountRow = z.infer<typeof subAccountRow>;
