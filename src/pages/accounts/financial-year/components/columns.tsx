@@ -49,11 +49,11 @@ export const financialYearColumns: ColumnDef<FinancialYearRow>[] = [
 			const active = row.getValue("is_active");
 			if (active === 1) {
 				return (
-					<span className="text-green-600 font-semibold text-xm py-1 px-2 bg-green-100 rounded-xl">Active</span>
+					<span className="text-green-600  text-[12px] py-1 px-2 bg-green-100 rounded-xl">Active</span>
 				);
 			}
 			return (
-				<span className="text-red-600 font-semibold text-xm py-1 px-2 bg-red-100 rounded-xl">Inactive</span>
+				<span className="text-red-600 text-[12px] py-1 px-2 bg-red-100 rounded-xl">Inactive</span>
 			);
 		},
 	},
