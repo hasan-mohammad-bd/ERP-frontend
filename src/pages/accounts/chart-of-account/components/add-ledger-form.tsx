@@ -14,7 +14,6 @@ import { toast } from "sonner";
 import {
   LedgerFromValues,
   LedgerGroupArrayRow,
-  LedgerGroupRow,
   LedgerRow,
   LedgerSchema,
 } from "@/lib/validators/accounts";
@@ -58,8 +57,6 @@ export function AddLedgerForm({
 
   const ledgerGroupData = ledgerGroupsArray?.data || [];
 
-  /*   const [updateLedgerGroup, { isLoading: updateLoading }] =
-    useUpdateLedgerGroupMutation(); */
 
   const filterLedgerGroupData = ledgerGroupData?.filter(
     (ledger_group: LedgerGroupArrayRow) => {
@@ -75,22 +72,12 @@ export function AddLedgerForm({
       is_sub_type: 0,
       nature: previousData?.nature || "",
 
-      // code: previousData?.code || "",
-
-      // is_active: previousData?.is_active || 1,
     },
   });
 
   async function onSubmit(data: LedgerFromValues) {
     try {
-      /*       if (previousData) {
-        await updateLedgerGroup({
-          ledgerGroupId: previousData.id,
-          updatedLedgerGroup: data,
-        });
-        toast.success("Financial year updated successfully");
-        modalClose();
-      } else { */
+
       await createLedgerAccount(data);
       toast.success("Add ledger account successfully");
       modalClose();
@@ -100,29 +87,7 @@ export function AddLedgerForm({
     }
   }
 
-  /*   const handleRadioChange = (selectedField: string) => {
-    if (coaType === "Assets" || parentType === "Assets") {
-      form.setValue(
-        "is_fixed_asset",
-        selectedField === "is_fixed_asset" ? 1 : 0
-      );
-      form.setValue("is_stock", selectedField === "is_stock" ? 1 : 0);
-      form.setValue(
-        "is_cash_nature",
-        selectedField === "is_cash_nature" ? 1 : 0
-      );
-      form.setValue(
-        "is_bank_nature",
-        selectedField === "is_bank_nature" ? 1 : 0
-      );
-    } else {
-      // Set these values to 0 if previousData.name is "Asset"
-      form.setValue("is_fixed_asset", 0);
-      form.setValue("is_stock", 0);
-      form.setValue("is_cash_nature", 0);
-      form.setValue("is_bank_nature", 0);
-    }
-  }; */
+
   return (
     <>
       {isLoading ? (
