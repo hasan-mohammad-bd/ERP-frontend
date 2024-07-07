@@ -26,7 +26,6 @@ const OpeningBalance = () => {
     }`
   );
 
-  console.log(data)
 
   const financialYear = data?.data || [];
 
@@ -43,7 +42,7 @@ const OpeningBalance = () => {
               description="Manage your sub accounts for you business"
             />
             <Button
-              onClick={() => navigate("/accounts/journal-voucher/add")}
+              onClick={() => navigate("/accounts/opening-balance/add")}
               size={"sm"}
             >
               <Plus className="mr-2 h-4 w-4" /> Add Journal Entry

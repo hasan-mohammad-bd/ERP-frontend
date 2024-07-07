@@ -42,7 +42,7 @@ export function CellAction({ rowData }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-              onClick = {() => navigation(`/accounts/journal-voucher/edit/${rowData.id}`)}
+              onClick = {() => navigation(`/accounts/opening-balance/edit/${rowData.id}`)}
 
               // onClick={() => toggleModal()}
             >

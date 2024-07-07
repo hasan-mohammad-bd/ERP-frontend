@@ -13,10 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
-  EntryFromValues,
+ 
   LedgerRow,
   SubAccountRow,
-  entrySchema,
+ 
 } from "@/lib/validators/accounts";
 import { Loading } from "@/components/common/loading";
 import {
@@ -26,11 +26,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  useCreateEntryMutation,
-  useGetEntryByIdQuery,
-  useUpdateEntryMutation,
-} from "@/store/services/accounts/api/entries";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
 import { Textarea } from "@/components/ui/textarea";
@@ -38,20 +33,27 @@ import { Plus, Trash2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/common/heading";
+import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
+import { LocationColumn } from "@/lib/validators";
+import { useCreateOpeningBalanceMutation, useGetOpeningBalanceByIdQuery, useUpdateOpeningBalanceMutation } from "@/store/services/accounts/api/opening-balance";
+import { OpeningBalanceFromValues, openingBalanceSchema } from "@/lib/validators/accounts/opening-balance";
 
 export function AddOpeningBalanceForm() {
   const { id } = useParams();
 
-  const [createEntry, { isLoading }] = useCreateEntryMutation();
-  const [updateEntry, { isLoading: updateLoading }] = useUpdateEntryMutation();
+  const [createOpeningBalance, { isLoading }] = useCreateOpeningBalanceMutation();
+  const [updateOpeningBalance, { isLoading: updateLoading }] = useUpdateOpeningBalanceMutation();
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
     useGetLedgerAccountsQuery("page=1&per_page=1000");
   const { data: subAccounts, isLoading: subAccountLoading } =
     useGetSubAccountsQuery(`page=1&per_page=1000`);
 
-  const { data: journalById } = useGetEntryByIdQuery(`${id}`);
+  const { data: openingBalanceById } = useGetOpeningBalanceByIdQuery(`${id}`);
 
-  const previousData = journalById?.data;
+  const {data: location, isLoading: locationLoading} =useGetLocationsQuery("page=1&per_page=1000")
+
+  const previousData = openingBalanceById?.data;
+  const locationData = location?.data || [];
 
   const ledgerAccountData = ledgerAccount?.data || [];
   const subAccountData = subAccounts?.data || [];
@@ -60,12 +62,12 @@ export function AddOpeningBalanceForm() {
   const [selectedLedgerAccounts, setSelectedLedgerAccounts] = useState<
     number[]
   >([]);
-  const form = useForm<EntryFromValues>({
-    resolver: zodResolver(entrySchema),
+  const form = useForm<OpeningBalanceFromValues>({
+    resolver: zodResolver(openingBalanceSchema),
     defaultValues: {
-      type: "Journal voucher",
+      // type: "Journal voucher",
       date: new Date().toISOString().split("T")[0],
-      entry_number: "",
+      // entry_number: "",
       details: [
         { dr_amount: 0, cr_amount: 0 },
         { dr_amount: 0, cr_amount: 0 },
@@ -78,9 +80,9 @@ export function AddOpeningBalanceForm() {
   useEffect(() => {
     if (previousData) {
       form.reset({
-        type: previousData.type || "Journal voucher",
+        // type: previousData.type || "Journal voucher",
         date: previousData.date || new Date().toISOString(),
-        entry_number: previousData.entry_number || "",
+        // entry_number: previousData.entry_number || "",
         details: previousData.details || [
           { dr_amount: 0, cr_amount: 0 },
           { dr_amount: 0, cr_amount: 0 },
@@ -124,21 +126,21 @@ export function AddOpeningBalanceForm() {
     setSelectedLedgerAccounts(selectedAccounts);
   }, [details]);
 
-  async function onSubmit(data: EntryFromValues) {
+  async function onSubmit(data: OpeningBalanceFromValues) {
     try {
       if (previousData) {
-        await updateEntry({
-          entryId: previousData.id,
-          updatedEntry: data,
+        await updateOpeningBalance({
+          openingBalanceId: previousData.id,
+          updatedOpeningBalance: data,
         });
         toast.success("Voucher updated successfully");
         // modalClose();
-        navigate("/accounts/journal-voucher");
+        navigate("/accounts/opening-balance");
       } else {
-        await createEntry(data);
+        await createOpeningBalance(data);
         toast.success("Voucher created successfully");
         // modalClose();
-        navigate("/accounts/journal-voucher");
+        navigate("/accounts/opening-balance");
       }
     } catch (error) {
       console.log(error);
@@ -161,7 +163,7 @@ export function AddOpeningBalanceForm() {
               description="Manage your sub accounts for you business"
             />
             <Button
-              onClick={() => navigate("/accounts/journal-voucher")}
+              onClick={() => navigate("/accounts/opening-balance")}
               size={"sm"}
             >
               Journal Voucher List
@@ -193,24 +195,47 @@ export function AddOpeningBalanceForm() {
                       )}
                     />
                   </div>
-                  <div className="w-fit">
-                    <FormField
-                      control={form.control}
-                      name="entry_number"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Entry Number</FormLabel>
+                  <div className="w-[250px]">
+                  <FormField
+                    control={form.control}
+                    name="location_id"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Branch</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={
+												previousData?.location?.id
+													? String(previousData.location.id)
+													: undefined
+											}
+                        >
                           <FormControl>
-                            <Input
-                              type="text"
-                              placeholder="Enter entry number"
-                              {...field}
-                            />
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select Parent" />
+                            </SelectTrigger>
                           </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                          <SelectContent>
+                            {locationLoading ? (
+                              <Loading />
+                            ) : (
+                              locationData?.map(
+                                (location: LocationColumn) => (
+                                  <SelectItem
+                                    key={location.id}
+                                    value={String(location.id)}
+                                  >
+                                    {location.name}
+                                  </SelectItem>
+                                )
+                              )
+                            )}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   </div>
                 </div>
                 <FormField
@@ -475,7 +500,7 @@ export function AddOpeningBalanceForm() {
                   </Button>
                   <Button
                     variant="default"
-                    onClick={() => navigate("/accounts/journal-voucher")}
+                    onClick={() => navigate("/accounts/opening-balance")}
                     className="w-fit "
                   >
                     Back
