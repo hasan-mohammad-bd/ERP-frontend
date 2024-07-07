@@ -40,6 +40,14 @@ const accountsNavItems: NavItem[] = [
 		isChildren: true,
 		children: [
 			{
+				
+					title: "Opening Balance",
+					icon: Clock,
+					href: "/accounts/opening-balance",
+					color: "text-sky-500",
+
+			},
+			{
 				title: "Journal Voucher",
 				icon: Clock,
 				href: "/accounts/journal-voucher",

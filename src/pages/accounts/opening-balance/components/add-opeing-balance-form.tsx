@@ -35,13 +35,13 @@ import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-
 import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, Trash2 } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/common/heading";
-import { useNavigate, useParams } from "react-router-dom";
 
-export function AddReceiptForm() {
+export function AddOpeningBalanceForm() {
   const { id } = useParams();
-  const navigate = useNavigate();
+
   const [createEntry, { isLoading }] = useCreateEntryMutation();
   const [updateEntry, { isLoading: updateLoading }] = useUpdateEntryMutation();
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
@@ -49,15 +49,13 @@ export function AddReceiptForm() {
   const { data: subAccounts, isLoading: subAccountLoading } =
     useGetSubAccountsQuery(`page=1&per_page=1000`);
 
+  const { data: journalById } = useGetEntryByIdQuery(`${id}`);
+
+  const previousData = journalById?.data;
+
   const ledgerAccountData = ledgerAccount?.data || [];
   const subAccountData = subAccounts?.data || [];
-
-  const { data: paymentById } = useGetEntryByIdQuery(`${id}`);
-
-  const previousData = paymentById?.data;
-
-  // const [totalDrAmount, setTotalDrAmount] = useState(0);
-  const [totalCrAmount, setTotalCrAmount] = useState(0);
+  const navigate = useNavigate();
 
   const [selectedLedgerAccounts, setSelectedLedgerAccounts] = useState<
     number[]
@@ -65,11 +63,11 @@ export function AddReceiptForm() {
   const form = useForm<EntryFromValues>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
-      type: "Receipt Voucher",
+      type: "Journal voucher",
       date: new Date().toISOString().split("T")[0],
       entry_number: "",
       details: [
-        { dr_amount: totalCrAmount, cr_amount: 0 },
+        { dr_amount: 0, cr_amount: 0 },
         { dr_amount: 0, cr_amount: 0 },
       ],
       note: "",
@@ -80,23 +78,26 @@ export function AddReceiptForm() {
   useEffect(() => {
     if (previousData) {
       form.reset({
-        type: previousData?.type || "Receipt Voucher",
-        date: previousData?.date,
-        entry_number: previousData?.entry_number || "",
-        details: previousData?.details || [
-          { dr_amount: totalCrAmount, cr_amount: 0 },
+        type: previousData.type || "Journal voucher",
+        date: previousData.date || new Date().toISOString(),
+        entry_number: previousData.entry_number || "",
+        details: previousData.details || [
+          { dr_amount: 0, cr_amount: 0 },
           { dr_amount: 0, cr_amount: 0 },
         ],
-        note: previousData?.note || "",
-        file: previousData?.file || "",
+        note: previousData.note || "",
+        file: previousData.file || "",
       });
     }
-  }, [previousData, form, totalCrAmount]);
+  }, [previousData, form]);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "details",
   });
+
+  const [totalDrAmount, setTotalDrAmount] = useState(0);
+  const [totalCrAmount, setTotalCrAmount] = useState(0);
 
   const details = useWatch({
     control: form.control,
@@ -104,15 +105,15 @@ export function AddReceiptForm() {
   });
 
   useEffect(() => {
-    /* const totalDr = details.reduce(
+    const totalDr = details.reduce(
       (sum, detail) => sum + Number(detail.dr_amount || 0),
       0
-    ); */
+    );
     const totalCr = details.reduce(
       (sum, detail) => sum + Number(detail.cr_amount || 0),
       0
     );
-    // setTotalDrAmount(totalDr);
+    setTotalDrAmount(totalDr);
     setTotalCrAmount(totalCr);
   }, [details]);
 
@@ -124,27 +125,20 @@ export function AddReceiptForm() {
   }, [details]);
 
   async function onSubmit(data: EntryFromValues) {
-    const updateData = {
-      ...data,
-      details: data.details.map((detail, index) =>
-        index === 0 ? { ...detail, dr_amount: totalCrAmount } : detail
-      ),
-    };
-
     try {
       if (previousData) {
         await updateEntry({
           entryId: previousData.id,
-          updatedEntry: updateData,
+          updatedEntry: data,
         });
         toast.success("Voucher updated successfully");
         // modalClose();
-        navigate("/accounts/receipt-voucher");
+        navigate("/accounts/journal-voucher");
       } else {
-        await createEntry(updateData);
+        await createEntry(data);
         toast.success("Voucher created successfully");
         // modalClose();
-        navigate("/accounts/receipt-voucher");
+        navigate("/accounts/journal-voucher");
       }
     } catch (error) {
       console.log(error);
@@ -163,23 +157,23 @@ export function AddReceiptForm() {
         <div>
           <div className="flex items-center justify-between mb-4">
             <Heading
-              title={previousData ? "Edit Receipt Entry" : "Add Receipt Entry"}
+              title={previousData ? "Edit Journal Entry" : "Add Journal Entry"}
               description="Manage your sub accounts for you business"
             />
             <Button
-              onClick={() => navigate("/accounts/receipt-voucher")}
+              onClick={() => navigate("/accounts/journal-voucher")}
               size={"sm"}
             >
-              Receipt Voucher List
+              Journal Voucher List
             </Button>
           </div>
           <Card className="p-3">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-3  px-2 no-scrollbar"
+                className="space-y-3 mb-auto  px-2 overflow-y-scroll no-scrollbar"
               >
-                <div className="flex space-x-4">
+                <div className="flex gap-x-4">
                   <div className="w-fit">
                     <FormField
                       control={form.control}
@@ -199,7 +193,7 @@ export function AddReceiptForm() {
                       )}
                     />
                   </div>
-                  <div className="w-fit flex space-x-4">
+                  <div className="w-fit">
                     <FormField
                       control={form.control}
                       name="entry_number"
@@ -217,58 +211,6 @@ export function AddReceiptForm() {
                         </FormItem>
                       )}
                     />
-
-                    <div className="w-[200px]">
-                      <FormField
-                        control={form.control}
-                        name={`details.0.ledger_account_id`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{"Debit Account Head"}</FormLabel>
-                            <Select
-                              onValueChange={(value) => {
-                                field.onChange(value);
-                                const updatedAccounts = [
-                                  ...selectedLedgerAccounts,
-                                ];
-                                updatedAccounts[0] = Number(value);
-                                setSelectedLedgerAccounts(updatedAccounts);
-                              }}
-                              value={(field.value || "").toString()}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select Ledger Account" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {ledgerAccountLoading ? (
-                                  <Loading />
-                                ) : (
-                                  ledgerAccountData
-                                    .filter(
-                                      (ledgerAccount: LedgerRow) =>
-                                        !selectedLedgerAccounts.includes(
-                                          ledgerAccount.id
-                                        ) ||
-                                        ledgerAccount.id === Number(field.value)
-                                    )
-                                    .map((ledgerAccount: LedgerRow) => (
-                                      <SelectItem
-                                        key={ledgerAccount.id}
-                                        value={String(ledgerAccount.id)}
-                                      >
-                                        {ledgerAccount.name}
-                                      </SelectItem>
-                                    ))
-                                )}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
                   </div>
                 </div>
                 <FormField
@@ -289,18 +231,15 @@ export function AddReceiptForm() {
                 />
 
                 {fields.map((field, index) => (
-                  <div
-                    key={field.id}
-                    className={`flex w-full gap-x-3 ${index === 0 && "hidden"}`}
-                  >
-                    <div className={`w-[250px]`}>
+                  <div key={field.id} className="flex w-full gap-x-3">
+                    <div className="w-[250px]">
                       <FormField
                         control={form.control}
                         name={`details.${index}.ledger_account_id`}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              {index === 1 && "Ledger Account"}
+                              {index === 0 && "Ledger Account"}
                             </FormLabel>
                             <Select
                               onValueChange={(value) => {
@@ -352,7 +291,7 @@ export function AddReceiptForm() {
                         name={`details.${index}.sub_account_id`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{index === 1 && "Contact"}</FormLabel>
+                            <FormLabel>{index === 0 && "Contact"}</FormLabel>
                             <Select
                               onValueChange={field.onChange}
                               value={(field.value || "").toString()}
@@ -390,7 +329,7 @@ export function AddReceiptForm() {
                         name={`details.${index}.note`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{index === 1 && "Note"}</FormLabel>
+                            <FormLabel>{index === 0 && "Note"}</FormLabel>
                             <FormControl>
                               <Input
                                 type="text"
@@ -405,37 +344,51 @@ export function AddReceiptForm() {
                       />
                     </div>
 
-                    {/*                 <div className="max-w-[120px]">
-                  <FormField
-                    control={form.control}
-                    name={`details.0.dr_amount`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{index === 0 && "Debit Amount"}</FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled={
-                              form.watch(`details.${index}.cr_amount`) > 0
-                            }
-                            min={0}
-                            type="number"
-                            placeholder="Debit amount"
-                            {...field}
-                            value={totalCrAmount}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div> */}
+                    <div className="max-w-[140px]">
+                      <FormField
+                        control={form.control}
+                        name={`details.${index}.dr_amount`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>
+                              {index === 0 && "Debit Amount"}
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                disabled={
+                                  form.watch(`details.${index}.cr_amount`) > 0
+                                }
+                                min={0}
+                                type="number"
+                                placeholder="Debit amount"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {index === lastIndex && (
+                        <>
+                          <p className="text-sm mt-2 whitespace-nowrap">
+                            Total Debit:{" "}
+                            <span className="font-semibold">
+                              {" "}
+                              {totalDrAmount}
+                            </span>
+                          </p>
+                        </>
+                      )}
+                    </div>
                     <div className="max-w-[140px]">
                       <FormField
                         control={form.control}
                         name={`details.${index}.cr_amount`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{index === 1 && "Amount"}</FormLabel>
+                            <FormLabel>
+                              {index === 0 && "Credit Amount"}
+                            </FormLabel>
                             <FormControl>
                               <Input
                                 disabled={
@@ -451,11 +404,10 @@ export function AddReceiptForm() {
                           </FormItem>
                         )}
                       />
-
                       {index === lastIndex && (
                         <>
                           <p className="text-sm mt-2 whitespace-nowrap">
-                            Total Amount:{" "}
+                            Total Credit:{" "}
                             <span className="font-semibold">
                               {" "}
                               {totalCrAmount}
@@ -464,6 +416,8 @@ export function AddReceiptForm() {
                         </>
                       )}
                     </div>
+
+
 
                     <FormItem
                       className={`mt-auto ${
@@ -484,7 +438,7 @@ export function AddReceiptForm() {
                     </FormItem>
                   </div>
                 ))}
-                {/*                         <div className="text-end mt-4">
+                {/*             <div className="text-end mt-4">
               <div>
                 <p className="text-sm ">Total Debit: {totalDrAmount}</p>
               </div>
@@ -512,7 +466,7 @@ export function AddReceiptForm() {
 
                 <div className=" flex flex-row-reverse items-center !mb-2">
                   <Button
-                    // disabled={totalDrAmount !== totalCrAmount}
+                    disabled={totalDrAmount !== totalCrAmount}
                     variant="default"
                     type="submit"
                     className="w-fit ml-2"
@@ -521,11 +475,16 @@ export function AddReceiptForm() {
                   </Button>
                   <Button
                     variant="default"
-                    onClick={() => navigate("/accounts/receipt-voucher")}
+                    onClick={() => navigate("/accounts/journal-voucher")}
                     className="w-fit "
                   >
                     Back
                   </Button>
+                  {totalCrAmount !== totalDrAmount && (
+                    <p className="text-red-500 mr-3 text-sm">
+                      Debit and Credit amount must be same
+                    </p>
+                  )}
                 </div>
               </form>
             </Form>

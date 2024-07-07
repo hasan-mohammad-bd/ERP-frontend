@@ -25,8 +25,11 @@ const entryTypeSchema = z.object({
   note: z.string().optional().nullable(),
 });
 
+
+
 export const entrySchema = z.object({
   type: z.string(),
+  location_id: z.coerce.number().optional().nullable(),
   date: z.string().date(),
   entry_number: z.string(),
   details: entryTypeSchema.array(),
@@ -35,10 +38,14 @@ export const entrySchema = z.object({
 
 });
 
+
+
 export type EntryFromValues = z.infer<typeof entrySchema>
 
 
-const entryRow = entrySchema.extend({
+
+
+export const entryRow = entrySchema.extend({
   id: z.coerce.number(),
   organization: organizationColumn,
   financial_year: financialYearRow,

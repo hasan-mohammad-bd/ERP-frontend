@@ -19,6 +19,8 @@ import { AddJournalForm } from "@/pages/accounts/journal-voucher/components/add-
 import { AddReceiptForm } from "@/pages/accounts/receipt-voucher/components/add-receipt-form";
 import { AddPaymentForm } from "@/pages/accounts/payment-voucher/components/add-payment-form";
 import { AddContraForm } from "@/pages/accounts/contra-voucher/components/add-contra-form";
+import OpeningBalance from "@/pages/accounts/opening-balance";
+import { AddOpeningBalanceForm } from "@/pages/accounts/opening-balance/components/add-opeing-balance-form";
 
 const accountsRoutes = {
   path: "accounts/",
@@ -48,6 +50,28 @@ const accountsRoutes = {
       path: "accounts-settings",
       element: withFallback(<AccountSettings />),
       errorElement: <ErrorPage />,
+    },
+    {
+      path: "opening-balance/",
+      // element: withFallback(<JournalVoucher />),
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          index: true,
+          element: withFallback(<OpeningBalance />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "add",
+          element: withFallback(<AddOpeningBalanceForm />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<AddOpeningBalanceForm />),
+          errorElement: <ErrorPage />,
+        },
+      ],
     },
     {
       path: "journal-voucher/",
