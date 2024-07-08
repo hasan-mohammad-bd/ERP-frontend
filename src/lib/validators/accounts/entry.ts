@@ -17,7 +17,7 @@ export const userRow = z.object({
 });
 
 
-const entryTypeSchema = z.object({
+export const entryTypeSchema = z.object({
   ledger_account_id: z.coerce.number(),
   dr_amount: z.coerce.number(),
   cr_amount: z.coerce.number(),
@@ -38,12 +38,7 @@ export const entrySchema = z.object({
 
 });
 
-
-
 export type EntryFromValues = z.infer<typeof entrySchema>
-
-
-
 
 export const entryRow = entrySchema.extend({
   id: z.coerce.number(),
@@ -53,5 +48,6 @@ export const entryRow = entrySchema.extend({
   location: locationColumn.omit({organization: true}),
 
 })
+
 
 export type EntryRow = z.infer<typeof entryRow>

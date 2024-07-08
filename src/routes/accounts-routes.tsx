@@ -163,6 +163,18 @@ const accountsRoutes = {
         }
       ],
     },
+    {
+      path: "report/",
+      // element: withFallback(<Reports />),
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: "general-ledger",
+          element: withFallback(<Reports />),
+          errorElement: <ErrorPage />,
+        },
+      ]
+    }
   ],
 };
 

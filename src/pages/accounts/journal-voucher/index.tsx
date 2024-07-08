@@ -26,7 +26,7 @@ const JournalVoucher = () => {
     }&type=journal voucher`
   );
 
-  const financialYear = data?.data || [];
+  const journalVoucher = data?.data || [];
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
   if (isLoading) return <Loading />;
@@ -48,11 +48,11 @@ const JournalVoucher = () => {
             </Button>
           </div>
           <Separator />
-          {financialYear && (
+          {journalVoucher && (
             <div>
               <DataTable
                 columns={subAccountColumns}
-                data={financialYear}
+                data={journalVoucher}
                 paginationInfo={paginationInfo}
                 pagination={paginationInfo && pagination}
                 setPagination={paginationInfo && setPagination}
