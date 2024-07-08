@@ -17,6 +17,9 @@ import { AddJournalForm } from "@/pages/accounts/journal-voucher/components/add-
 import { AddReceiptForm } from "@/pages/accounts/receipt-voucher/components/add-receipt-form";
 import { AddPaymentForm } from "@/pages/accounts/payment-voucher/components/add-payment-form";
 import { AddContraForm } from "@/pages/accounts/contra-voucher/components/add-contra-form";
+import OpeningBalance from "@/pages/accounts/opening-balance";
+import { AddOpeningBalanceForm } from "@/pages/accounts/opening-balance/components/add-opeing-balance-form";
+import GeneralLedger from "@/pages/accounts/general-ledger";
 import LedgerView from "@/pages/accounts/ledger-view";
 
 const accountsRoutes = {
@@ -38,6 +41,7 @@ const accountsRoutes = {
       element: withFallback(<ChartOfAccounts />),
       errorElement: withFallback(<ErrorPage />),
     },
+    
 
     {
       path: "ledger-view/:id",
@@ -54,6 +58,28 @@ const accountsRoutes = {
       path: "accounts-settings",
       element: withFallback(<AccountSettings />),
       errorElement: <ErrorPage />,
+    },
+    {
+      path: "opening-balance/",
+      // element: withFallback(<JournalVoucher />),
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          index: true,
+          element: withFallback(<OpeningBalance />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "add",
+          element: withFallback(<AddOpeningBalanceForm />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<AddOpeningBalanceForm />),
+          errorElement: <ErrorPage />,
+        },
+      ],
     },
     {
       path: "journal-voucher/",
@@ -143,6 +169,18 @@ const accountsRoutes = {
         },
       ],
     },
+    {
+      path: "reports/",
+      // element: withFallback(<Reports />),
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: "general-ledger",
+          element: withFallback(<GeneralLedger />),
+          errorElement: <ErrorPage />,
+        },
+      ]
+    }
   ],
 };
 

@@ -65,7 +65,7 @@ export function AddPaymentForm() {
   const form = useForm<EntryFromValues>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
-      type: "Payment voucher",
+      type: "Payment Voucher",
       date: new Date().toISOString().split('T')[0],
       entry_number: "",
       details: [
@@ -80,7 +80,7 @@ export function AddPaymentForm() {
   useEffect(() => {
     if (previousData) {
       form.reset({
-        type: previousData?.type || "Payment voucher",
+        type: previousData?.type || "Payment Voucher",
         date: previousData?.date || new Date().toDateString(),
         entry_number: previousData?.entry_number || "",
         details: previousData?.details || [

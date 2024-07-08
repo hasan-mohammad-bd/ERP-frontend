@@ -65,7 +65,7 @@ export function AddReceiptForm() {
   const form = useForm<EntryFromValues>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
-      type: "Receipt voucher",
+      type: "Receipt Voucher",
       date: new Date().toISOString().split("T")[0],
       entry_number: "",
       details: [
@@ -80,7 +80,7 @@ export function AddReceiptForm() {
   useEffect(() => {
     if (previousData) {
       form.reset({
-        type: previousData?.type || "Receipt voucher",
+        type: previousData?.type || "Receipt Voucher",
         date: previousData?.date,
         entry_number: previousData?.entry_number || "",
         details: previousData?.details || [

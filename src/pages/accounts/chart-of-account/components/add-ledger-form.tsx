@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import {
   LedgerFromValues,
   LedgerGroupArrayRow,
-  LedgerGroupRow,
+  LedgerRow,
   LedgerSchema,
 } from "@/lib/validators/accounts";
 import { Loading } from "@/components/common/loading";
@@ -29,10 +29,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetLedgerGroupsArrayQuery } from "@/store/services/accounts/api/ledger-group";
+import { useGetEnumQuery } from "@/store/services/accounts/api/enum";
 
 interface AddLedgerFormProps {
   modalClose: () => void;
-  rowData?: LedgerGroupRow;
+  rowData?: LedgerRow;
   coaType?: string;
 }
 
@@ -48,13 +49,14 @@ export function AddLedgerForm({
 
   const { data: ledgerGroupsArray, isLoading: ledgerGroupsArrayLoading } =
     useGetLedgerGroupsArrayQuery();
+  const { data, isLoading: enumLoading } = useGetEnumQuery();
+
+  const account_nature = data?.account_nature || [];
 
   const [parentType, setParentType] = useState("Assets");
 
   const ledgerGroupData = ledgerGroupsArray?.data || [];
 
-  /*   const [updateLedgerGroup, { isLoading: updateLoading }] =
-    useUpdateLedgerGroupMutation(); */
 
   const filterLedgerGroupData = ledgerGroupData?.filter(
     (ledger_group: LedgerGroupArrayRow) => {
@@ -65,30 +67,17 @@ export function AddLedgerForm({
   const form = useForm<LedgerFromValues>({
     resolver: zodResolver(LedgerSchema),
     defaultValues: {
-      // name: previousData?.name || "",
+      name: previousData?.name || "",
       parent_id: previousData?.id || 0,
-      is_fixed_asset: 0,
-      is_stock: 0,
-      is_cash_nature: 0,
-      is_bank_nature: 0,
       is_sub_type: 0,
+      nature: previousData?.nature || "",
 
-      // code: previousData?.code || "",
-
-      // is_active: previousData?.is_active || 1,
     },
   });
 
   async function onSubmit(data: LedgerFromValues) {
     try {
-      /*       if (previousData) {
-        await updateLedgerGroup({
-          ledgerGroupId: previousData.id,
-          updatedLedgerGroup: data,
-        });
-        toast.success("Financial year updated successfully");
-        modalClose();
-      } else { */
+
       await createLedgerAccount(data);
       toast.success("Add ledger account successfully");
       modalClose();
@@ -98,29 +87,7 @@ export function AddLedgerForm({
     }
   }
 
-  const handleRadioChange = (selectedField: string) => {
-    if (coaType === "Assets" || parentType === "Assets") {
-      form.setValue(
-        "is_fixed_asset",
-        selectedField === "is_fixed_asset" ? 1 : 0
-      );
-      form.setValue("is_stock", selectedField === "is_stock" ? 1 : 0);
-      form.setValue(
-        "is_cash_nature",
-        selectedField === "is_cash_nature" ? 1 : 0
-      );
-      form.setValue(
-        "is_bank_nature",
-        selectedField === "is_bank_nature" ? 1 : 0
-      );
-    } else {
-      // Set these values to 0 if previousData.name is "Asset"
-      form.setValue("is_fixed_asset", 0);
-      form.setValue("is_stock", 0);
-      form.setValue("is_cash_nature", 0);
-      form.setValue("is_bank_nature", 0);
-    }
-  };
+
   return (
     <>
       {isLoading ? (
@@ -254,47 +221,39 @@ export function AddLedgerForm({
             )}
 
             {coaType === "Assets" || parentType === "Assets" ? (
-              <div className="space-y-2">
-                <FormLabel>Default Account Type</FormLabel>
-                <div className="flex items-center text-sm space-x-4">
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="nature"
-                      checked={!!form.watch("is_fixed_asset")}
-                      onChange={() => handleRadioChange("is_fixed_asset")}
-                    />
-                    <span>Fixed Asset</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="nature"
-                      checked={!!form.watch("is_stock")}
-                      onChange={() => handleRadioChange("is_stock")}
-                    />
-                    <span>Stock</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="nature"
-                      checked={!!form.watch("is_cash_nature")}
-                      onChange={() => handleRadioChange("is_cash_nature")}
-                    />
-                    <span>Cash Nature</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="nature"
-                      checked={!!form.watch("is_bank_nature")}
-                      onChange={() => handleRadioChange("is_bank_nature")}
-                    />
-                    <span>Bank Nature</span>
-                  </label>
-                </div>
-              </div>
+              <FormField
+                control={form.control}
+                name="nature"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Default Account Type</FormLabel>
+                    <Select onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Parent" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {enumLoading ? (
+                          <Loading />
+                        ) : (
+                          account_nature.map(
+                            (enumValue: string, index: number) => (
+                              <SelectItem
+                                key={index}
+                                value={enumValue.toString()}
+                              >
+                                {enumValue.toString()}
+                              </SelectItem>
+                            )
+                          )
+                        )}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             ) : null}
 
             <FormField

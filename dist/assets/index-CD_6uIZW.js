@@ -1,1 +1,0 @@
-import{at as e}from"./index-Df36uixq.js";const s=e.injectEndpoints({endpoints:t=>({getEmploymentStatuses:t.query({query:()=>"employment-status",providesTags:["employment-status"]})}),overrideExisting:!1}),{useGetEmploymentStatusesQuery:m}=s;export{m as u};

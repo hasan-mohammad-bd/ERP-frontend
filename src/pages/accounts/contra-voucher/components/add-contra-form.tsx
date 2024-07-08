@@ -64,7 +64,7 @@ export function AddContraForm() {
   const form = useForm<EntryFromValues>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
-      type: previousData?.type || "Contra voucher",
+      type: previousData?.type || "Contra Voucher",
       date: previousData?.date || new Date().toISOString().split('T')[0],
       entry_number: previousData?.entry_number || "",
       details: previousData?.details || [
@@ -79,7 +79,7 @@ export function AddContraForm() {
   useEffect(() => {
     if (previousData) {
       form.reset({
-        type: previousData?.type || "Contra voucher",
+        type: previousData?.type || "Contra Voucher",
         date: previousData?.date || new Date().toISOString(),
         entry_number: previousData?.entry_number || "",
         details: previousData?.details || [

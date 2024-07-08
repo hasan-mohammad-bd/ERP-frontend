@@ -63,7 +63,7 @@ export function AddJournalForm() {
   const form = useForm<EntryFromValues>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
-      type: "Journal voucher",
+      type: "Journal Voucher",
       date: new Date().toISOString().split("T")[0],
       entry_number: "",
       details: [
@@ -78,7 +78,7 @@ export function AddJournalForm() {
   useEffect(() => {
     if (previousData) {
       form.reset({
-        type: previousData.type || "Journal voucher",
+        type: previousData.type || "Journal Voucher",
         date: previousData.date || new Date().toISOString(),
         entry_number: previousData.entry_number || "",
         details: previousData.details || [

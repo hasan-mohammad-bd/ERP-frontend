@@ -17,7 +17,7 @@ export const userRow = z.object({
 });
 
 
-const entryTypeSchema = z.object({
+export const entryTypeSchema = z.object({
   ledger_account_id: z.coerce.number(),
   dr_amount: z.coerce.number(),
   cr_amount: z.coerce.number(),
@@ -25,8 +25,11 @@ const entryTypeSchema = z.object({
   note: z.string().optional().nullable(),
 });
 
+
+
 export const entrySchema = z.object({
   type: z.string(),
+  location_id: z.coerce.number().optional().nullable(),
   date: z.string().date(),
   entry_number: z.string(),
   details: entryTypeSchema.array(),
@@ -37,8 +40,7 @@ export const entrySchema = z.object({
 
 export type EntryFromValues = z.infer<typeof entrySchema>
 
-
-const entryRow = entrySchema.extend({
+export const entryRow = entrySchema.extend({
   id: z.coerce.number(),
   organization: organizationColumn,
   financial_year: financialYearRow,
@@ -46,5 +48,6 @@ const entryRow = entrySchema.extend({
   location: locationColumn.omit({organization: true}),
 
 })
+
 
 export type EntryRow = z.infer<typeof entryRow>

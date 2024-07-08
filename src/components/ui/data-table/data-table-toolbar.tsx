@@ -9,17 +9,24 @@ import DataTableBulkActions, {
 } from "./data-table-bulk-actions";
 import { Button } from "../button";
 import { File, Sheet } from "lucide-react";
+import { DatePickerWithRange } from "@/components/common/date-range-picker";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   bulkActions?: BulkActionItem[];
   selectedBulkAction?: BulkAction<TData>;
   setSelectedBulkAction?: (value: BulkAction<TData>) => void;
+  setStartDate?: (value: string | null) => void;
+	setEndDate?: (value: string | null) => void;
+  datePicker?: boolean;
 }
 
 export function DataTableToolbar<TData>({
   table,
   bulkActions,
+  setStartDate,
+  setEndDate,
+  datePicker,
   selectedBulkAction = { action: "", payload: [] },
   setSelectedBulkAction = () => {},
 }: DataTableToolbarProps<TData>) {
@@ -32,6 +39,12 @@ export function DataTableToolbar<TData>({
           onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="h-8 w-[150px] lg:w-[250px]"
         />
+        {
+
+        }
+        {datePicker ? <DatePickerWithRange setStartDate={setStartDate} setEndDate={setEndDate}/> : null}
+
+        
         {bulkActions && (
           <DataTableBulkActions
             table={table}

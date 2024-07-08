@@ -6,10 +6,11 @@ export const LedgerSchema = z.object({
 		message: "Name must be at least 2 characters.",
 	}),
 	parent_id: z.coerce.number(),
-	is_fixed_asset: z.coerce.number(),
+/* 	is_fixed_asset: z.coerce.number(),
 	is_stock: z.coerce.number(),
 	is_cash_nature: z.coerce.number(),
-	is_bank_nature: z.coerce.number(),
+	is_bank_nature: z.coerce.number(), */
+	nature: z.string().optional().nullable(),
 	is_sub_type: z.coerce.number().optional().nullable(),
 	sub_type: z
 		.enum(["None", "Employee", "Customer", "Supplier", "Agent"])
@@ -26,10 +27,12 @@ export const ledgerRow = z.object({
 	parent_id: z.coerce.number(),
 	is_active: z.coerce.number().optional().nullable(),
 	is_ledger: z.coerce.number().optional().nullable(),
-	is_fixed_asset: z.coerce.number().optional().nullable(),
+	type: z.string().optional().nullable(),
+/* 	is_fixed_asset: z.coerce.number().optional().nullable(),
 	is_stock: z.coerce.number(),
 	is_cash_nature: z.coerce.number(),
-	is_bank_nature: z.coerce.number(),
+	is_bank_nature: z.coerce.number(), */
+	nature: z.string().optional().nullable(),
 	is_sub_type: z.coerce.number().optional().nullable(),
 	sub_type: z.string().optional().nullable(),
 	sorting_index: z.coerce.number().optional().nullable(),
