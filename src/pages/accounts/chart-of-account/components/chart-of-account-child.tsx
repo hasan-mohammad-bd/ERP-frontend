@@ -2,23 +2,23 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { LedgerGroupRow } from "@/lib/validators/accounts";
-// import { File, Folder } from "lucide-react";
+import React from "react";
 import { Link } from "react-router-dom";
-// import { GroupCellAction } from "./group-cell-action";
-// import { LedgerCellAction } from "./ledger-cell-action";
 
 interface ChartOfAccountItemProps {
 	group: LedgerGroupRow;
 	coaType: string;
+	depth?: number;
 }
 
-const ChartOfAccountChild = ({ group, coaType }: ChartOfAccountItemProps) => {
+const ChartOfAccountChild = ({ group, coaType, depth = 0 }: ChartOfAccountItemProps) => {
+	const indent = Array(depth).fill("\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0").join(""); // Non-breaking spaces
+
 	return group.childs_group.map((item) => (
-		<>
-			<TableRow key={item.id}>
+		<React.Fragment key={item.id}>
+			<TableRow>
 				<TableCell className="py-2.5 col-span-2 w-2/3 font-medium">
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					{item.name}
+					{indent}{item.name}
 				</TableCell>
 				<TableCell className="py-2.5">{item.code}</TableCell>
 				<TableCell className="py-2.5">Group</TableCell>
@@ -29,7 +29,7 @@ const ChartOfAccountChild = ({ group, coaType }: ChartOfAccountItemProps) => {
 				<TableCell className="py-2.5"></TableCell>
 			</TableRow>
 			{item.childs_group.length > 0 && (
-				<ChartOfAccountChild group={item} coaType={coaType} />
+				<ChartOfAccountChild group={item} coaType={coaType} depth={depth + 1} />
 			)}
 			{item.ledgers.map((ledger) => (
 				<TableRow key={ledger.id}>
@@ -40,10 +40,10 @@ const ChartOfAccountChild = ({ group, coaType }: ChartOfAccountItemProps) => {
 								size: "sm",
 								className: "text-blue-400 hover:no-underline",
 							})}
-							to={`/accounts/${coaType}/${ledger.id}`}
+							// to={`/accounts/${coaType}/${ledger.id}`}
+							to={`/accounts/ledger-view/${ledger.id}`}
 						>
-							&nbsp;&nbsp;&nbsp;&nbsp;
-							{ledger.name}
+							{indent}{ledger.name}
 						</Link>
 					</TableCell>
 					<TableCell className="py-2.5">{ledger.code}</TableCell>
@@ -55,7 +55,7 @@ const ChartOfAccountChild = ({ group, coaType }: ChartOfAccountItemProps) => {
 					<TableCell className="py-2.5">500</TableCell>
 				</TableRow>
 			))}
-		</>
+		</React.Fragment>
 	));
 };
 

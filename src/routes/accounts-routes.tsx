@@ -10,10 +10,8 @@ import {
   JournalVoucher,
   ReceptVoucher,
   PaymentVoucher,
-  ContraVoucher
-
+  ContraVoucher,
 } from "./components";
-
 
 import { AddJournalForm } from "@/pages/accounts/journal-voucher/components/add-journal-form";
 import { AddReceiptForm } from "@/pages/accounts/receipt-voucher/components/add-receipt-form";
@@ -22,6 +20,7 @@ import { AddContraForm } from "@/pages/accounts/contra-voucher/components/add-co
 import OpeningBalance from "@/pages/accounts/opening-balance";
 import { AddOpeningBalanceForm } from "@/pages/accounts/opening-balance/components/add-opeing-balance-form";
 import GeneralLedger from "@/pages/accounts/general-ledger";
+import LedgerView from "@/pages/accounts/ledger-view";
 
 const accountsRoutes = {
   path: "accounts/",
@@ -42,6 +41,14 @@ const accountsRoutes = {
       element: withFallback(<ChartOfAccounts />),
       errorElement: withFallback(<ErrorPage />),
     },
+    
+
+    {
+      path: "ledger-view/:id",
+      element: withFallback(<LedgerView />),
+      errorElement: <ErrorPage />,
+    },
+
     {
       path: "contact",
       element: withFallback(<SubAccounts />),
@@ -115,10 +122,8 @@ const accountsRoutes = {
           path: "edit/:id",
           element: withFallback(<AddReceiptForm />),
           errorElement: <ErrorPage />,
-        }
-
-      ]
-
+        },
+      ],
     },
     {
       path: "payment-voucher",
@@ -139,7 +144,7 @@ const accountsRoutes = {
           path: "edit/:id",
           element: withFallback(<AddPaymentForm />),
           errorElement: <ErrorPage />,
-        }
+        },
       ],
     },
     {
@@ -161,7 +166,7 @@ const accountsRoutes = {
           path: "edit/:id",
           element: withFallback(<AddContraForm />),
           errorElement: <ErrorPage />,
-        }
+        },
       ],
     },
     {
