@@ -1,5 +1,5 @@
 import { NavItem } from "@/types";
-import { Clock, LayoutDashboard, MapPin, Settings } from "lucide-react";
+import { Clock, LayoutDashboard, MapPin, ReceiptPoundSterlingIcon, Settings } from "lucide-react";
 
 const accountsNavItems: NavItem[] = [
 	{
@@ -73,6 +73,34 @@ const accountsNavItems: NavItem[] = [
 			},
 		],
 
+	},
+	{
+		title: "Reports",
+		icon: ReceiptPoundSterlingIcon,
+		href: "/accounts/reports",
+		color: "text-sky-500",
+		isChildren: true,
+		children: [
+			{
+				title: "General Ledger",
+				icon: Clock,
+				href: "/accounts/reports/general-ledger",
+				color: "text-sky-500",
+			},
+/* 			{
+				title: "Trial Balance",
+				icon: Clock,
+				href: "/accounts/trial-balance",
+				color: "text-sky-500",
+			},
+			{
+				title: "Balance Sheet",
+				icon: Clock,
+				href: "/accounts/balance-sheet",
+				color: "text-sky-500",
+			}, */
+
+		]
 	}
 ];
 

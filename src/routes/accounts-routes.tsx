@@ -21,6 +21,7 @@ import { AddPaymentForm } from "@/pages/accounts/payment-voucher/components/add-
 import { AddContraForm } from "@/pages/accounts/contra-voucher/components/add-contra-form";
 import OpeningBalance from "@/pages/accounts/opening-balance";
 import { AddOpeningBalanceForm } from "@/pages/accounts/opening-balance/components/add-opeing-balance-form";
+import GeneralLedger from "@/pages/accounts/general-ledger";
 
 const accountsRoutes = {
   path: "accounts/",
@@ -164,13 +165,13 @@ const accountsRoutes = {
       ],
     },
     {
-      path: "report/",
+      path: "reports/",
       // element: withFallback(<Reports />),
       errorElement: <ErrorPage />,
       children: [
         {
           path: "general-ledger",
-          element: withFallback(<Reports />),
+          element: withFallback(<GeneralLedger />),
           errorElement: <ErrorPage />,
         },
       ]

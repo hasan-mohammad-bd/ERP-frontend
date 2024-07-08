@@ -43,6 +43,10 @@ interface DataTableProps<TData, TValue> {
 	bulkActions?: BulkActionItem[];
 	selectedBulkAction?: BulkAction<TData>;
 	setSelectedBulkAction?: (value: BulkAction<TData>) => void;
+	setStartDate?: (value: string | null) => void;
+	setEndDate?: (value: string | null) => void;
+	datePicker?: boolean;
+
 }
 
 export function DataTable<TData, TValue>({
@@ -54,7 +58,10 @@ export function DataTable<TData, TValue>({
 	noPagination,
 	bulkActions,
 	selectedBulkAction,
+	setStartDate,
+	setEndDate,
 	setSelectedBulkAction,
+	datePicker,
 }: DataTableProps<TData, TValue>) {
 	const [rowSelection, setRowSelection] = React.useState({});
 	const [columnVisibility, setColumnVisibility] =
@@ -114,6 +121,9 @@ export function DataTable<TData, TValue>({
 				bulkActions={bulkActions}
 				selectedBulkAction={selectedBulkAction}
 				setSelectedBulkAction={setSelectedBulkAction}
+				setStartDate={setStartDate}
+				setEndDate={setEndDate}
+				datePicker={datePicker}
 			/>
 			<div className="rounded-md border">
 				<Table>
@@ -134,9 +144,11 @@ export function DataTable<TData, TValue>({
 														header.getContext()
 														// eslint-disable-next-line no-mixed-spaces-and-tabs
 												  )}
+													
 										</TableHead>
 									);
 								})}
+	
 							</TableRow>
 						))}
 					</TableHeader>

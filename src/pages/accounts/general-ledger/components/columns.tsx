@@ -1,9 +1,10 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import { OpeningBalanceRow } from "@/lib/validators/accounts/opening-balance";
 
-export const subAccountColumns: ColumnDef<OpeningBalanceRow>[] = [
+import { GeneralLedgerRow } from "@/lib/validators/accounts/general-ledger";
+
+export const subAccountColumns: ColumnDef<GeneralLedgerRow>[] = [
 	{
 		id: "select",
 		header: ({ table }) => (
@@ -28,17 +29,51 @@ export const subAccountColumns: ColumnDef<OpeningBalanceRow>[] = [
 		enableSorting: false,
 		enableHiding: false,
 	},
-
 	{
-		accessorKey: "date",
-		header: "Date",
+		accessorKey: "name",
+		header: "Name",
+	}
+	,
+	{
+		accessorKey: "type",
+		header: "Type",
+	},
+
+/* 	{
+		accessorKey: "nature",
+		header: "Default Account Type",
 	},
 	{
-		accessorKey: "total",
-		header: "Total",
-	},
-
+		accessorKey: "sub_type",
+		header: "Contact",
+	}, */
 	{
+		accessorKey: "cr_amount",
+		header: "Credit",
+	},
+	{
+		accessorKey: "dr_amount",
+		header: "Debit",
+	},
+	{
+		accessorKey: "balance",
+		header: "Balance",
+	},
+	{
+		accessorKey: "cr_balance",
+		header: "Credit Balance",
+	},
+	{
+		accessorKey: "dr_balance",
+		header: "Debit Balance",
+	}
+	,
+
+
+
+
+
+/* 	{
 		header: "Location",
 		accessorFn: (row) => row.location.name,
 	},
@@ -51,7 +86,7 @@ export const subAccountColumns: ColumnDef<OpeningBalanceRow>[] = [
 	{
 		header: "Financial Year",
 		accessorFn: (row) => row.financial_year.name,
-	},
+	}, */
 
 /* 	{
 		accessorKey: "is_active",

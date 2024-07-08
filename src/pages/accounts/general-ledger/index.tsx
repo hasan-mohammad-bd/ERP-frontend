@@ -11,23 +11,24 @@ import { PaginationState } from "@tanstack/react-table";
 
 import { subAccountColumns } from "./components/columns";
 import { useNavigate } from "react-router-dom";
-import { useGetOpeningBalancesQuery } from "@/store/services/accounts/api/opening-balance";
 
-const OpeningBalance = () => {
+import { useGetGeneralLedgersQuery } from "@/store/services/accounts/api/general-ledger";
+
+const GeneralLedger = () => {
   // const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const [startDate , setStartDate] = React.useState<string | null>(new Date().toString())
+  const [endDate , setEndDate] = React.useState<string | null>(new Date().toString())
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
-  const { data, isLoading } = useGetOpeningBalancesQuery(
-    `per_page=${pagination.pageSize}&page=${
-      pagination.pageIndex + 1
-    }`
-  );
+  const { data, isLoading } = useGetGeneralLedgersQuery(`start_date=${startDate}&end_date=${endDate}`);
 
 
-  const openingBalance = data?.data || [];
+  const generalLedger = data?.data || [];
+
+console.log(startDate, endDate)
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
   if (isLoading) return <Loading />;
@@ -49,29 +50,25 @@ const OpeningBalance = () => {
             </Button>
           </div>
           <Separator />
-          {openingBalance && (
+          {generalLedger && (
             <div>
               <DataTable
                 columns={subAccountColumns}
-                data={openingBalance}
+                data={generalLedger}
                 paginationInfo={paginationInfo}
                 pagination={paginationInfo && pagination}
                 setPagination={paginationInfo && setPagination}
+                setStartDate={setStartDate}
+                setEndDate={setEndDate}
+                datePicker={true}
               />
             </div>
           )}
         </div>
       </div>
-{/*       <Modal
-        title="Add Journal Entry"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-        className="max-w-5xl h-[87vh] "
-      >
-        <AddJournalForm modalClose={() => setIsOpen(false)} />
-      </Modal> */}
+
     </>
   );
 };
 
-export default OpeningBalance;
+export default GeneralLedger;

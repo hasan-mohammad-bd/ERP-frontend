@@ -8,13 +8,13 @@ import {
 } from "@/components/ui/tooltip";
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
-import { EntryRow } from "@/lib/validators/accounts";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useRemoveOpeningBalanceMutation } from "@/store/services/accounts/api/opening-balance";
+import { GeneralLedgerRow } from "@/lib/validators/accounts/general-ledger";
 
 interface CellActionProps {
-  rowData: EntryRow;
+  rowData: GeneralLedgerRow;
 }
 
 export function CellAction({ rowData }: CellActionProps) {

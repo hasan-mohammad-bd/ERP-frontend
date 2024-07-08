@@ -27,6 +27,7 @@ export const ledgerRow = z.object({
 	parent_id: z.coerce.number(),
 	is_active: z.coerce.number().optional().nullable(),
 	is_ledger: z.coerce.number().optional().nullable(),
+	type: z.string().optional().nullable(),
 /* 	is_fixed_asset: z.coerce.number().optional().nullable(),
 	is_stock: z.coerce.number(),
 	is_cash_nature: z.coerce.number(),
