@@ -21,6 +21,7 @@ import OpeningBalance from "@/pages/accounts/opening-balance";
 import { AddOpeningBalanceForm } from "@/pages/accounts/opening-balance/components/add-opeing-balance-form";
 import GeneralLedger from "@/pages/accounts/general-ledger";
 import LedgerView from "@/pages/accounts/ledger-view";
+import TrialBalance from "@/pages/accounts/trial-balance";
 
 const accountsRoutes = {
   path: "accounts/",
@@ -177,6 +178,11 @@ const accountsRoutes = {
         {
           path: "general-ledger",
           element: withFallback(<GeneralLedger />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "trial-balance",
+          element: withFallback(<TrialBalance />),
           errorElement: <ErrorPage />,
         },
       ]

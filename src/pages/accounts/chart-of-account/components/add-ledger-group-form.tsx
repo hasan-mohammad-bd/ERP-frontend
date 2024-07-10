@@ -115,7 +115,7 @@ export function AddLedgerGroupForm({
                       <FormLabel>Name</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Enter financial year name"
+                          placeholder="Enter name"
                           {...field}
                         />
                       </FormControl>

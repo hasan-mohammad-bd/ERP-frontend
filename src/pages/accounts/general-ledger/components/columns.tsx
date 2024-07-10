@@ -4,7 +4,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 
 import { GeneralLedgerRow } from "@/lib/validators/accounts/general-ledger";
 
-export const subAccountColumns: ColumnDef<GeneralLedgerRow>[] = [
+export const generalLedgerColumns: ColumnDef<GeneralLedgerRow>[] = [
 
 	{
 		accessorKey: "name",
@@ -33,7 +33,7 @@ export const subAccountColumns: ColumnDef<GeneralLedgerRow>[] = [
 		accessorKey: "dr_balance",
 		header: "Debit Balance",
 	}
-	,
+
 
 
 ];
