@@ -20,7 +20,7 @@ import {
 import { Loading } from "@/components/common/loading";
 import { useCreateLedgerAccountMutation } from "@/store/services/accounts/api/ledger-account";
 import { Switch } from "@/components/ui/switch";
-import React, { useState } from "react";
+import React from "react";
 import {
   Select,
   SelectContent,
@@ -28,8 +28,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { useGetLedgerGroupsArrayQuery } from "@/store/services/accounts/api/ledger-group";
 import { useGetEnumQuery } from "@/store/services/accounts/api/enum";
+
 
 interface AddLedgerFormProps {
   modalClose: () => void;
@@ -42,6 +44,7 @@ export function AddLedgerForm({
   rowData: previousData,
   coaType,
 }: AddLedgerFormProps) {
+
   const [createLedgerAccount, { isLoading }] = useCreateLedgerAccountMutation();
   const [isSubTypeTrue, setIsSubTypeTrue] = React.useState(0);
   /*   const [updateLedgerGroup, { isLoading: updateLoading }] =
@@ -53,16 +56,15 @@ export function AddLedgerForm({
 
   const account_nature = data?.account_nature || [];
 
-  const [parentType, setParentType] = useState("Assets");
+  // const [parentType, setParentType] = useState("Assets");
 
   const ledgerGroupData = ledgerGroupsArray?.data || [];
 
-
-  const filterLedgerGroupData = ledgerGroupData?.filter(
-    (ledger_group: LedgerGroupArrayRow) => {
-      return ledger_group?.type === parentType;
-    }
-  );
+  // const filterLedgerGroupData = ledgerGroupData?.filter(
+  //   (ledger_group: LedgerGroupArrayRow) => {
+  //     return ledger_group?.type === parentType;
+  //   }
+  // );
 
   const form = useForm<LedgerFromValues>({
     resolver: zodResolver(LedgerSchema),
@@ -71,13 +73,19 @@ export function AddLedgerForm({
       parent_id: previousData?.id || 0,
       is_sub_type: 0,
       nature: previousData?.nature || "",
-
     },
   });
 
+  console.log(ledgerGroupData);
+
+  const selectedType = form.watch("parent_id");
+  const filteredType = ledgerGroupData?.filter(
+    (ledger_group: LedgerGroupArrayRow) => ledger_group?.id == selectedType
+  );
+  console.log(filteredType[0]?.type);
+
   async function onSubmit(data: LedgerFromValues) {
     try {
-
       await createLedgerAccount(data);
       toast.success("Add ledger account successfully");
       modalClose();
@@ -86,7 +94,6 @@ export function AddLedgerForm({
       console.log(error);
     }
   }
-
 
   return (
     <>
@@ -109,12 +116,46 @@ export function AddLedgerForm({
 
             {!previousData?.id && (
               <>
+
+                <FormField
+                  control={form.control}
+                  name="parent_id"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Parent Group</FormLabel>
+                      <Select onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Parent" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {ledgerGroupsArrayLoading ? (
+                            <Loading />
+                          ) : (
+                            ledgerGroupData?.map(
+                              (parent: LedgerGroupArrayRow) => (
+                                <SelectItem
+                                  key={parent.id}
+                                  value={String(parent.id)}
+                                >
+                                  {parent.name}
+                                </SelectItem>
+                              )
+                            )
+                          )}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>Account Name</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Enter ledger account name"
@@ -143,7 +184,7 @@ export function AddLedgerForm({
                     </FormItem>
                   )}
                 />
-                <FormField
+                {/*                 <FormField
                   // control={}
                   name=""
                   render={() => (
@@ -173,54 +214,11 @@ export function AddLedgerForm({
                       <FormMessage />
                     </FormItem>
                   )}
-                />
-
-                {filterLedgerGroupData?.length > 0 ? (
-                  <FormField
-                    control={form.control}
-                    name="parent_id"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Parent</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          /* defaultValue={
-												previousData?.religion?.id
-													? String(previousData.religion.id)
-													: undefined
-											} */
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Parent" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {ledgerGroupsArrayLoading ? (
-                              <Loading />
-                            ) : (
-                              filterLedgerGroupData?.map(
-                                (parent: LedgerGroupArrayRow) => (
-                                  <SelectItem
-                                    key={parent.id}
-                                    value={String(parent.id)}
-                                  >
-                                    {parent.name}
-                                  </SelectItem>
-                                )
-                              )
-                            )}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                ) : null}
+                /> */}
               </>
             )}
 
-            {coaType === "Assets" || parentType === "Assets" ? (
+            {coaType === "Assets" || filteredType[0]?.type === "Assets" ? (
               <FormField
                 control={form.control}
                 name="nature"
