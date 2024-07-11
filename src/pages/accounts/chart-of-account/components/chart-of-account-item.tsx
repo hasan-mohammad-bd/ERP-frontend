@@ -76,7 +76,7 @@ const ChartOfAccountItem = ({
                     className: "text-blue-400 hover:no-underline",
                   })}
                   // to={`/accounts/${coaType}/${ledger.id}`}
-                  to={`/accounts/ledger-view/${ledger.id}`}
+                  to={`/accounts/detailed-general-ledger/${ledger.id}`}
                 >
                   &nbsp;&nbsp;&nbsp;&nbsp;{ledger.name}
                 </Link>

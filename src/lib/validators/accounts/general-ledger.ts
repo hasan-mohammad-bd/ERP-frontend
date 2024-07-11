@@ -21,7 +21,7 @@ export const generalLedgerRow = z.object({
 
 export type GeneralLedgerRow = z.infer<typeof generalLedgerRow>;
 
-export const generalLedgerDetailRow = z.object({
+export const detailedGeneralLedgerRow = z.object({
   id: z.coerce.number(),
   entry: entryRow.extend({ total: z.coerce.number() }).omit({
     details: true,
@@ -40,4 +40,4 @@ export const generalLedgerDetailRow = z.object({
   date: z.string().date(),
 });
 
-export type GeneralLedgerDetailRow = z.infer<typeof generalLedgerDetailRow>;
+export type DetailedGeneralLedgerRow = z.infer<typeof detailedGeneralLedgerRow>;

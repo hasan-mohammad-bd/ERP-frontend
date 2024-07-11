@@ -20,7 +20,7 @@ import { AddContraForm } from "@/pages/accounts/contra-voucher/components/add-co
 import OpeningBalance from "@/pages/accounts/opening-balance";
 import { AddOpeningBalanceForm } from "@/pages/accounts/opening-balance/components/add-opeing-balance-form";
 import GeneralLedger from "@/pages/accounts/general-ledger";
-import LedgerView from "@/pages/accounts/ledger-view";
+import DetailedGeneralLedger from "@/pages/accounts/detailed-general-ledger";
 import TrialBalance from "@/pages/accounts/trial-balance";
 
 const accountsRoutes = {
@@ -45,8 +45,8 @@ const accountsRoutes = {
     
 
     {
-      path: "ledger-view/:id",
-      element: withFallback(<LedgerView />),
+      path: "detailed-general-ledger/:ledgerId",
+      element: withFallback(<DetailedGeneralLedger />),
       errorElement: <ErrorPage />,
     },
 
