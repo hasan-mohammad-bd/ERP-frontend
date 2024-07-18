@@ -429,7 +429,7 @@ export function AddPaymentForm() {
                     )}
                   />
                 </div> */}
-                    <div className="max-w-[140px]">
+                    <div className="max-w-[180px]">
                       <FormField
                         control={form.control}
                         name={`details.${index}.dr_amount`}

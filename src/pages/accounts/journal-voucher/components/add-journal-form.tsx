@@ -342,9 +342,17 @@ export function AddJournalForm() {
                           </FormItem>
                         )}
                       />
+                      {index === lastIndex && (
+                        <>
+                          <p className="text-sm mt-2 whitespace-nowrap text-right">
+                            Total{" "}
+
+                          </p>
+                        </>
+                      )}
                     </div>
 
-                    <div className="max-w-[140px]">
+                    <div className="max-w-[180px]">
                       <FormField
                         control={form.control}
                         name={`details.${index}.dr_amount`}
@@ -371,7 +379,7 @@ export function AddJournalForm() {
                       {index === lastIndex && (
                         <>
                           <p className="text-sm mt-2 whitespace-nowrap">
-                            Total Debit:{" "}
+                             Debit:{" "}
                             <span className="font-semibold">
                               {" "}
                               {totalDrAmount}
@@ -380,7 +388,7 @@ export function AddJournalForm() {
                         </>
                       )}
                     </div>
-                    <div className="max-w-[140px]">
+                    <div className="max-w-[180px]">
                       <FormField
                         control={form.control}
                         name={`details.${index}.cr_amount`}
@@ -407,7 +415,7 @@ export function AddJournalForm() {
                       {index === lastIndex && (
                         <>
                           <p className="text-sm mt-2 whitespace-nowrap">
-                            Total Credit:{" "}
+                             Credit:{" "}
                             <span className="font-semibold">
                               {" "}
                               {totalCrAmount}
@@ -416,8 +424,6 @@ export function AddJournalForm() {
                         </>
                       )}
                     </div>
-
-
 
                     <FormItem
                       className={`mt-auto ${

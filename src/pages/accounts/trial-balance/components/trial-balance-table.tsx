@@ -82,7 +82,7 @@ const TrialBalanceTable = ({
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
+            <TableCell className="font-bold text-right" colSpan={3}>Total</TableCell>
             <TableCell className="text-left"> {totalDr} BDT</TableCell>
             <TableCell className="text-right">{totalCr} BDT</TableCell>
           </TableRow>
