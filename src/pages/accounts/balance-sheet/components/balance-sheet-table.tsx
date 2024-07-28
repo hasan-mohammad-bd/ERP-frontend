@@ -46,7 +46,7 @@ const BalanceSheetTable = ({ tableData, reportFormate }: Props) => {
         </div>
       ) : null}
 
-      <Table>
+      <Table className="">
         <TableHeader>
           <TableRow>
             <TableHead>#Account</TableHead>
@@ -115,8 +115,6 @@ const BalanceSheetTable = ({ tableData, reportFormate }: Props) => {
               </TableRow>
 
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableBody>
