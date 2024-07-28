@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
-  LedgerGroupArrayRow,
+  // LedgerGroupArrayRow,
   LedgerGroupRow,
   LedgerGroupFromValues,
   LedgerGroupSchema,
@@ -22,14 +22,22 @@ import {
   useCreateLedgerGroupMutation,
   useGetLedgerGroupsArrayQuery,
 } from "@/store/services/accounts/api/ledger-group";
+import { Check, ChevronsUpDown } from "lucide-react";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-// import { useState } from "react";
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/utils";
+import React from "react";
 
 interface AddLedgerGroupFormProps {
   modalClose: () => void;
@@ -40,48 +48,25 @@ export function AddLedgerGroupForm({
   modalClose,
   rowData: previousData,
 }: AddLedgerGroupFormProps) {
+  const [open, setOpen] = React.useState(false);
   const [createLedgerGroup, { isLoading }] = useCreateLedgerGroupMutation();
   const { data: ledgerGroupsArray, isLoading: ledgerGroupsArrayLoading } =
     useGetLedgerGroupsArrayQuery();
 
-  // const [parentType, setParentType] = useState("Assets");
-
   const ledgerGroupData = ledgerGroupsArray?.data || [];
-
-  /*   const [updateLedgerGroup, { isLoading: updateLoading }] =
-    useUpdateLedgerGroupMutation(); */
-
-  /*  const filterLedgerGroupData = ledgerGroupData?.filter(
-    (ledger_group: LedgerGroupArrayRow) => {
-      return ledger_group?.type === parentType;
-    }
-  ); */
 
   const form = useForm<LedgerGroupFromValues>({
     resolver: zodResolver(LedgerGroupSchema),
     defaultValues: {
-      // name: previousData?.name || "",
       parent_id: previousData?.id || 0,
-      // code: previousData?.code || "",
-
-      // is_active: previousData?.is_active || 1,
     },
   });
 
   async function onSubmit(data: LedgerGroupFromValues) {
     try {
-      /*       if (previousData) {
-        await updateLedgerGroup({
-          ledgerGroupId: previousData.id,
-          updatedLedgerGroup: data,
-        });
-        toast.success("Financial year updated successfully");
-        modalClose();
-      } else { */
       await createLedgerGroup(data);
       toast.success("Add ledger group successfully");
       modalClose();
-      // }
     } catch (error) {
       console.log(error);
     }
@@ -113,36 +98,62 @@ export function AddLedgerGroupForm({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Parent Group</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        /* defaultValue={
-												previousData?.religion?.id
-													? String(previousData.religion.id)
-													: undefined
-											} */
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Parent" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {ledgerGroupsArrayLoading ? (
-                            <Loading />
-                          ) : (
-                            ledgerGroupData?.map(
-                              (parent: LedgerGroupArrayRow) => (
-                                <SelectItem
-                                  key={parent.id}
-                                  value={String(parent.id)}
-                                >
-                                  {parent.name}
-                                </SelectItem>
-                              )
-                            )
-                          )}
-                        </SelectContent>
-                      </Select>
+                      <Popover open={open} onOpenChange={setOpen} modal={true}>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              className={cn(
+                                "w-full justify-between", // Adjusted width to full
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value
+                                ? ledgerGroupData.find(
+                                    (group) => group.id === Number(field.value)
+                                  )?.name
+                                : "Select Parent"}
+                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[460px] p-0">
+                          <Command>
+                            <CommandInput placeholder="Search parent group..." />
+                            <CommandList>
+                              <CommandEmpty>
+                                No parent group found.
+                              </CommandEmpty>
+                              <CommandGroup>
+                                {ledgerGroupsArrayLoading ? (
+                                  <Loading />
+                                ) : (
+                                  ledgerGroupData.map((parent) => (
+                                    <CommandItem
+                                      key={parent.id}
+                                      onSelect={() => {
+                                        field.onChange(String(parent.id));
+                                        setOpen(false);
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          Number(field.value) === parent.id
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {parent.name}
+                                    </CommandItem>
+                                  ))
+                                )}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -177,40 +188,8 @@ export function AddLedgerGroupForm({
                     </FormItem>
                   )}
                 />
-                {/*                 <FormField
-                  // control={}
-                  name=""
-                  render={() => (
-                    <FormItem>
-                      <FormLabel>Account Type</FormLabel>
-                      <Select
-                        value={parentType}
-                        onValueChange={(value) => {
-                          setParentType(value);
-                        }}
-                        // defaultValue={"Assets"}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Account Type" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="Assets">Assets</SelectItem>
-                          <SelectItem value="Liabilities">
-                            Liabilities
-                          </SelectItem>
-                          <SelectItem value="Income">Incomes</SelectItem>
-                          <SelectItem value="Expenses">Expenses</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
               </>
             )}
-
             <div>
               <Button variant="default" type="submit" className="w-full mt-4">
                 Add Group

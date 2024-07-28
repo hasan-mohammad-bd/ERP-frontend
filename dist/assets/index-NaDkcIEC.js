@@ -1,1 +1,0 @@
-import{am as e}from"./index-JcxNYC_Z.js";const s=e.injectEndpoints({endpoints:t=>({getEmploymentStatuses:t.query({query:()=>"employment-status",providesTags:["employment-status"]})}),overrideExisting:!1}),{useGetEmploymentStatusesQuery:o}=s;export{o as u};
