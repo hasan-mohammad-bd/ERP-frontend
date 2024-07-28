@@ -15,7 +15,7 @@ const baseIncomeStatementFields = z.object({
   cr_balance: z.coerce.number(),
 });
 
-// Define the child groups schema referencing the base structure
+// Define the child groups schema referencing
 const incomeStatementFields = baseIncomeStatementFields.extend({
   childs_groups: z.array(baseIncomeStatementFields),
   
