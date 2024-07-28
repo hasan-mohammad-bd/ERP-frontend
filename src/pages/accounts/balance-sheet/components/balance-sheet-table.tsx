@@ -33,7 +33,7 @@ const BalanceSheetTable = ({ tableData, reportFormate }: Props) => {
       : null;
 
   return (
-    <Card className="p-3 w-full mx-auto">
+    <Card className="p-3 w-full mx-auto ">
       {reportFormate ? (
         <div className="flex-1 space-y-4 my-4">
           <div className=" text-center ">
@@ -58,9 +58,9 @@ const BalanceSheetTable = ({ tableData, reportFormate }: Props) => {
 
         {tableData &&
           tableData.map((item) => (
-            <TableBody className="!mt-5" key={item.name}>
-              <TableRow>
-                <TableCell className="font-bold text-lg">{item.name}</TableCell>
+            <TableBody className="" key={item.name}>
+              <TableRow className="">
+                <TableCell className="font-bold">{item.name}</TableCell>
                 {/* <TableCell>{item.code}</TableCell> */}
                 {/* <TableCell>{item.balance}</TableCell> */}
               </TableRow>
