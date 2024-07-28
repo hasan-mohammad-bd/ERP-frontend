@@ -88,7 +88,7 @@ const BalanceSheetTable = ({ tableData, reportFormate }: Props) => {
                       ))}
 
                     <TableRow className="bg-gray-100 !mb-4">
-                      <TableCell className="font-semibold" colSpan={2}>
+                      <TableCell style={{ paddingLeft: "15px" }} className="font-semibold" colSpan={2}>
                         Total {child.name}
                       </TableCell>
 
