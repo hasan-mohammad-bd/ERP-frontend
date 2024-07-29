@@ -23,6 +23,7 @@ export const entryTypeSchema = z.object({
   cr_amount: z.coerce.number(),
   sub_account_id: z.coerce.number().optional().nullable(),
   note: z.string().optional().nullable(),
+  total: z.coerce.number().optional().nullable(),
 });
 
 
@@ -46,6 +47,7 @@ export const entryRow = entrySchema.extend({
   financial_year: financialYearRow,
   user: userRow,
   location: locationColumn.omit({organization: true}),
+  total: z.coerce.number().optional().nullable(),
 
 })
 

@@ -1,3 +1,6 @@
+
+import { Card } from "@/components/ui/card";
+import { format } from "date-fns";
 import {
   Table,
   TableBody,
@@ -7,13 +10,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card } from "@/components/ui/card";
-import { format } from "date-fns";
-import { BalanceSheetRow } from "@/lib/validators/accounts/balance-sheet";
+
+import { IncomeStatementRow } from "@/lib/validators/accounts/income-statement";
+
 // import BalanceSheetChild from "./balance-sheet-child";
 
 interface Props {
-  tableData?: BalanceSheetRow[];
+  tableData?: IncomeStatementRow[];
 
   reportFormate?: {
     startDate: Date | null;
@@ -22,11 +25,7 @@ interface Props {
     reportType: string;
   };
 }
-
-
-const BalanceSheetTable = ({ tableData, reportFormate }: Props) => {
-
-  console.log(tableData)
+const IncomeStatementTable = ({ tableData, reportFormate }: Props) => {
   const formateStartDate =
     reportFormate && reportFormate.startDate
       ? format(new Date(reportFormate.startDate), "dd-MMM-yyyy")
@@ -49,8 +48,7 @@ const BalanceSheetTable = ({ tableData, reportFormate }: Props) => {
           </div>
         </div>
       ) : null}
-
-      <Table className="">
+            <Table className="">
         <TableHeader>
           <TableRow>
             <TableHead>#Account</TableHead>
@@ -78,8 +76,8 @@ const BalanceSheetTable = ({ tableData, reportFormate }: Props) => {
                       </TableCell>
                       <TableCell>{child.code}</TableCell>
                     </TableRow>
-                    {child.childs_group.length > 0 &&
-                      child.childs_group.map((secondChild, subindex) => (
+                    {child.ledgers.length > 0 &&
+                      child.ledgers.map((secondChild, subindex) => (
                         <TableRow key={subindex + 3}>
                           <TableCell style={{ paddingLeft: "30px" }}>
                             {secondChild.name}
@@ -134,8 +132,9 @@ const BalanceSheetTable = ({ tableData, reportFormate }: Props) => {
         </TableBody>
         <TableFooter></TableFooter>
       </Table>
+
     </Card>
   );
 };
 
-export default BalanceSheetTable;
+export default IncomeStatementTable;

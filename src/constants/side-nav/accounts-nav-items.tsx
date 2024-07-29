@@ -94,6 +94,12 @@ const accountsNavItems: NavItem[] = [
 				color: "text-sky-500",
 			},
 			{
+				title: "Income Statement",
+				icon: Clock,
+				href: "/accounts/reports/income-statement",
+				color: "text-sky-500",
+			},
+			{
 				title: "Balance Sheet",
 				icon: Clock,
 				href: "/accounts/reports/balance-sheet",
