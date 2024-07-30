@@ -17,6 +17,9 @@ module.exports = {
       },
     },
     extend: {
+      screens: {
+        print: { 'raw': 'print' },
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -73,6 +76,12 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+    },
+
+  },
+  variants: {
+    extend: {
+      opacity: ["disabled"],
     },
   },
   plugins: [require("tailwindcss-animate")],

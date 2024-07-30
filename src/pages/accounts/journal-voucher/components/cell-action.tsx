@@ -10,11 +10,9 @@ import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { EntryRow } from "@/lib/validators/accounts";
 import { toast } from "sonner";
-
 import { useRemoveEntryMutation } from "@/store/services/accounts/api/entries";
+import { useNavigate } from "react-router-dom";
 
-import { Modal } from "@/components/common/modal";
-import JournalVoucherOpen from "./journal- voucher-open";
 
 interface CellActionProps {
   rowData: EntryRow;
@@ -22,7 +20,7 @@ interface CellActionProps {
 
 export function CellAction({ rowData }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [journalVoucherOpen, setJournalVoucherOpen] = useState(false);
+  const navigate = useNavigate();
 
   const [removeEntry, { isLoading: deleteLoading }] = useRemoveEntryMutation();
 
@@ -46,7 +44,7 @@ export function CellAction({ rowData }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-              onClick = {() => setJournalVoucherOpen(true)}
+              onClick = {() => navigate(`/accounts/journal-voucher/edit/${rowData.id}`)}
 
               // onClick={() => toggleModal()}
             >
@@ -89,18 +87,17 @@ export function CellAction({ rowData }: CellActionProps) {
         loading={deleteLoading}
       />
 
-      <Modal
+{/*       <Modal
         title=""
-        isOpen={journalVoucherOpen}
-        toggleModal={() => setJournalVoucherOpen(false)}
+        isOpen={voucherDetailsOpen}
+        toggleModal={() => setVoucherDetailsOpen(false)}
         className="max-w-5xl h-[77vh] "
       >
-        <JournalVoucherOpen data={rowData} />
-        {/* <AddJournalForm
-          rowData={rowData}
-          modalClose={() => setUpdateModalOpen(false)}
-        /> */}
-      </Modal>
+        <VoucherDetails data={rowData} />
+
+      </Modal> */}
     </div>
   );
 }
+
+

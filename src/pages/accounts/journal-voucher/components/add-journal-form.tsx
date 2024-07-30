@@ -464,6 +464,7 @@ export function AddJournalForm() {
                       ledger_account_id: 0,
                       sub_account_id: 0,
                       note: "",
+      
                     })
                   }
                 >
