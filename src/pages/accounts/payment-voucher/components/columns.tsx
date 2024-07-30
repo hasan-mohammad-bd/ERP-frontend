@@ -2,6 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { EntryRow } from "@/lib/validators/accounts";
 import { CellAction } from "./cell-action";
+import { CellActionVoucherDetails } from "@/components/common/accounts/entry/cell-action-voucher-details";
 
 export const subAccountColumns: ColumnDef<EntryRow>[] = [
 	{
@@ -31,6 +32,7 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
 	{
 		accessorKey: "entry_number",
 		header: "PV Number",
+		cell: ({ row }) => <CellActionVoucherDetails rowData={row.original} />,
 	},
 	{
 		accessorKey: "type",

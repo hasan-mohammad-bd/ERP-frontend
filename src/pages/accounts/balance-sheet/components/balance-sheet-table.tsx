@@ -22,7 +22,11 @@ interface Props {
     reportType: string;
   };
 }
+
+
 const BalanceSheetTable = ({ tableData, reportFormate }: Props) => {
+
+  console.log(tableData)
   const formateStartDate =
     reportFormate && reportFormate.startDate
       ? format(new Date(reportFormate.startDate), "dd-MMM-yyyy")

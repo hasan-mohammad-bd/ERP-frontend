@@ -23,6 +23,7 @@ import GeneralLedger from "@/pages/accounts/general-ledger";
 import DetailedGeneralLedger from "@/pages/accounts/detailed-general-ledger";
 import TrialBalance from "@/pages/accounts/trial-balance";
 import BalanceSheet from "@/pages/accounts/balance-sheet";
+import IncomeStatement from "@/pages/accounts/income-statement";
 
 const accountsRoutes = {
   path: "accounts/",
@@ -184,6 +185,11 @@ const accountsRoutes = {
         {
           path: "trial-balance",
           element: withFallback(<TrialBalance />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "income-statement",
+          element: withFallback(<IncomeStatement />),
           errorElement: <ErrorPage />,
         },
         {

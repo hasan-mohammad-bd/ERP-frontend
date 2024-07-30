@@ -4,7 +4,7 @@ import { accountApi } from "../..";
 const incomeStatementApi = accountApi.injectEndpoints({
 	endpoints: (build) => ({
 		getIncomeStatement: build.query<
-			{ data: IncomeStatementRow  },
+			{ data: IncomeStatementRow[]  },
 			string
 		>({
 			query: (params) => `reports/income-statement?${params}`,
