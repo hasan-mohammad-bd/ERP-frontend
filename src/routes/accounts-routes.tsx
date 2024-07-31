@@ -24,6 +24,7 @@ import DetailedGeneralLedger from "@/pages/accounts/detailed-general-ledger";
 import TrialBalance from "@/pages/accounts/trial-balance";
 import BalanceSheet from "@/pages/accounts/balance-sheet";
 import IncomeStatement from "@/pages/accounts/income-statement";
+import CostCategories from "@/pages/accounts/cost-categories";
 
 const accountsRoutes = {
   path: "accounts/",
@@ -44,7 +45,6 @@ const accountsRoutes = {
       element: withFallback(<ChartOfAccounts />),
       errorElement: withFallback(<ErrorPage />),
     },
-    
 
     {
       path: "detailed-general-ledger/:ledgerId",
@@ -55,6 +55,11 @@ const accountsRoutes = {
     {
       path: "contact",
       element: withFallback(<SubAccounts />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "cost-categories",
+      element: withFallback(<CostCategories />),
       errorElement: withFallback(<ErrorPage />),
     },
     {
@@ -197,8 +202,8 @@ const accountsRoutes = {
           element: withFallback(<BalanceSheet />),
           errorElement: <ErrorPage />,
         },
-      ]
-    }
+      ],
+    },
   ],
 };
 
