@@ -12,7 +12,6 @@ import {
   PaymentVoucher,
   ContraVoucher,
 } from "./components";
-
 import { AddJournalForm } from "@/pages/accounts/journal-voucher/components/add-journal-form";
 import { AddReceiptForm } from "@/pages/accounts/receipt-voucher/components/add-receipt-form";
 import { AddPaymentForm } from "@/pages/accounts/payment-voucher/components/add-payment-form";
@@ -25,6 +24,7 @@ import TrialBalance from "@/pages/accounts/trial-balance";
 import BalanceSheet from "@/pages/accounts/balance-sheet";
 import IncomeStatement from "@/pages/accounts/income-statement";
 import CostCategories from "@/pages/accounts/cost-categories";
+import CostCenters from "@/pages/accounts/cost-centers";
 
 const accountsRoutes = {
   path: "accounts/",
@@ -60,6 +60,11 @@ const accountsRoutes = {
     {
       path: "cost-categories",
       element: withFallback(<CostCategories />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "cost-centers",
+      element: withFallback(<CostCenters />),
       errorElement: withFallback(<ErrorPage />),
     },
     {

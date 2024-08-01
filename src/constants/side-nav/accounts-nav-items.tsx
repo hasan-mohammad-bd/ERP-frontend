@@ -1,5 +1,5 @@
 import { NavItem } from "@/types";
-import { Clock, Construction, LayoutDashboard, MapPin, ReceiptPoundSterlingIcon, Settings } from "lucide-react";
+import { Clock, Cone, Construction, LayoutDashboard, MapPin, ReceiptPoundSterlingIcon, Settings } from "lucide-react";
 
 const accountsNavItems: NavItem[] = [
 	{
@@ -30,6 +30,13 @@ const accountsNavItems: NavItem[] = [
 		title: "Cost Categories",
 		icon: Construction,
 		href: "/accounts/cost-categories",
+		color: "text-sky-500",
+	}
+	,
+	{
+		title: "Cost Centers",
+		icon: Cone,
+		href: "/accounts/cost-centers",
 		color: "text-sky-500",
 	}
 	,

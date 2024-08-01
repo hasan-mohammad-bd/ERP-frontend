@@ -31,10 +31,9 @@ export function CellActionVoucherDetails({ rowData }: CellActionProps) {
       </span>
 
       <Modal
-        title=""
         isOpen={voucherDetailsOpen}
         toggleModal={() => setVoucherDetailsOpen(false)}
-        className="max-w-5xl h-[77vh] "
+        className="max-w-5xl h-3/4 "
       >
         {fetchedData ? <VoucherDetails data={fetchedData} /> : <div className="w-full h-full flex justify-center items-center"><Loading /></div>}
       </Modal>

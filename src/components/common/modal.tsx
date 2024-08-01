@@ -17,7 +17,7 @@ import { cn } from "@/utils";
 interface ModalProps {
 	type?: "dialog" | "sheet";
 	className?: string;
-	title: string;
+	title?: string;
 	description?: string;
 	isOpen: boolean;
 	toggleModal: () => void;
@@ -39,7 +39,7 @@ export const Modal: React.FC<ModalProps> = ({
 				<Dialog open={isOpen}  onOpenChange={toggleModal}>
 					<DialogContent className={cn(className)}>
 						<DialogHeader>
-							<DialogTitle>{title}</DialogTitle>
+							{title && <DialogTitle>{title}</DialogTitle>}
 							<DialogDescription>{description}</DialogDescription>
 						</DialogHeader>
 						{children}
