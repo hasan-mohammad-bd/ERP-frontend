@@ -42,7 +42,9 @@ const VoucherDetails = ({ data }: Props) => {
   return (
     <div>
       <div ref={componentRef}>
+        
         <div className="p-4">
+          <div><img src="/images/logo.png" alt="" /></div>
           <div className="font-bold text-center text-xl">
             {data.organization.name}
           </div>
