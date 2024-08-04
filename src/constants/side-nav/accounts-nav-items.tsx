@@ -41,6 +41,13 @@ const accountsNavItems: NavItem[] = [
 	}
 	,
 	{
+		title: "Projects",
+		icon: Cone,
+		href: "/accounts/projects",
+		color: "text-sky-500",
+	}
+	,
+	{
 		title: "Accounts Settings",
 		icon: Settings,
 		href: "/accounts/accounts-settings",

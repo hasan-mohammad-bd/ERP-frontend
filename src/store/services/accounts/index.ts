@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const accountApi = createApi({
 	reducerPath: "accountApi",
 	baseQuery: fetchBaseQuery({
-		baseUrl: import.meta.env.VITE_ACCOUNT_API,
+		baseUrl: import.meta.env.VITE_ACCOUNTS_API,
 		prepareHeaders: (headers) => {
 			const token = getToken();
 			if (token) {
@@ -14,6 +14,6 @@ export const accountApi = createApi({
 			return headers;
 		},
 	}),
-	tagTypes: ["financial-years","ledger-groups", "ledger-groups-tree", "ledger-groups-array", "ledger-accounts", "sub-accounts", "currencies", "accounts-settings", "entries", "catalogs/enum", "opening-balance", "general-ledger", "detailed-general-ledger", "trial-balance", "balance-sheet", "cost-categories", "cost-centers"],
+	tagTypes: ["financial-years","ledger-groups", "ledger-groups-tree", "ledger-groups-array", "ledger-accounts", "sub-accounts", "currencies", "accounts-settings", "entries", "catalogs/enum", "opening-balance", "general-ledger", "detailed-general-ledger", "trial-balance", "balance-sheet", "cost-categories", "cost-centers", "projects"],
 	endpoints: () => ({}),
 });

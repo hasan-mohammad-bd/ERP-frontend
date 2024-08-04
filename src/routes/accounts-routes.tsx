@@ -25,6 +25,8 @@ import BalanceSheet from "@/pages/accounts/balance-sheet";
 import IncomeStatement from "@/pages/accounts/income-statement";
 import CostCategories from "@/pages/accounts/cost-categories";
 import CostCenters from "@/pages/accounts/cost-centers";
+import Projects from "@/pages/accounts/projects";
+
 
 const accountsRoutes = {
   path: "accounts/",
@@ -65,13 +67,19 @@ const accountsRoutes = {
     {
       path: "cost-centers",
       element: withFallback(<CostCenters />),
-      errorElement: withFallback(<ErrorPage />),
+      errorElement: <ErrorPage />,
+    },
+    {
+      path: "projects",
+      element: withFallback(<Projects/>),
+      errorElement: <ErrorPage />,
     },
     {
       path: "accounts-settings",
       element: withFallback(<AccountSettings />),
       errorElement: <ErrorPage />,
     },
+/*     , */
     {
       path: "opening-balance/",
       // element: withFallback(<JournalVoucher />),
