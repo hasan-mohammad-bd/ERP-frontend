@@ -3,6 +3,12 @@ import { financialYearRow } from './financial-year';
 import { locationColumn, organizationColumn } from "@/lib/validators";
 import { z } from "zod";
 
+
+export const constCenterRow = z.object({
+  cost_center_id: z.coerce.number(),
+  amount: z.coerce.number(),
+});
+
 export const userRow = z.object({
   id: z.number().int(),
   name: z.string(),
@@ -25,6 +31,7 @@ export const entryTypeSchema = z.object({
   sub_account_id: z.coerce.number().optional().nullable(),
   note: z.string().optional().nullable(),
   total: z.coerce.number().optional().nullable(),
+  cost_centers: constCenterRow.array().optional().nullable(),
 });
 
 
@@ -40,7 +47,7 @@ export const entrySchema = z.object({
 
 });
 
-export type EntryFromValues = z.infer<typeof entrySchema>
+export type  EntryFromValues = z.infer<typeof entrySchema>
 
 export const entryRow = entrySchema.extend({
   id: z.coerce.number(),
