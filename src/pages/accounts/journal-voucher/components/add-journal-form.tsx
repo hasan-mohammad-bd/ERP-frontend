@@ -78,12 +78,13 @@ export function AddJournalForm() {
         {
           dr_amount: 0,
           cr_amount: 0,
-          cost_centers: [{ cost_center_id: 0, amount: 0 }],
+          //if it is empty array , the value will be null
+          cost_centers: [],
         },
         {
           dr_amount: 0,
           cr_amount: 0,
-          cost_centers: [{ cost_center_id: 0, amount: 0 }],
+          cost_centers: [],
         },
       ],
       note: "",
@@ -101,12 +102,12 @@ export function AddJournalForm() {
           {
             dr_amount: 0,
             cr_amount: 0,
-            // cost_centers: [{ cost_center_id: 0, amount: 0 }],
+            cost_centers: [],
           },
           {
             dr_amount: 0,
             cr_amount: 0,
-            // cost_centers: [{ cost_center_id: 0, amount: 0 }],
+            cost_centers: [],
           },
         ],
         note: previousData.note || "",
@@ -255,7 +256,7 @@ export function AddJournalForm() {
                 />
 
                 {fields?.map((field, index) => (
-                  <div key={field.id} className="">
+                  <Card key={field.id} className="p-3">
                     <div className="flex w-full gap-x-3">
                       <div className="w-[250px]">
                         <FormField
@@ -469,7 +470,7 @@ export function AddJournalForm() {
                       </FormItem>
                     </div>
 
-                    <div className="flex flex-col w-full">
+                    <div className="flex flex-col ">
                       {form
                         ?.watch(`details.${index}.cost_centers`)
                         ?.map((costCenter, costCenterIndex) => (
@@ -548,9 +549,9 @@ export function AddJournalForm() {
                                       ?.getValues(
                                         `details.${index}.cost_centers`
                                       )
-                                      .filter(
+                                      ?.filter(
                                         (_, idx) => idx !== costCenterIndex
-                                      )
+                                      ) || []
                                   )
                                 }
                               >
@@ -561,11 +562,13 @@ export function AddJournalForm() {
                         ))}
                       <Button
                         variant="outline"
-                        className="border border-dashed border-gray-700 w-full mt-2"
+                        className="border border-dashed border-gray-700 w-fit mt-2"
                         type="button"
                         onClick={() =>
                           form.setValue(`details.${index}.cost_centers`, [
-                            ...form.getValues(`details.${index}.cost_centers`),
+                            ...(form.getValues(
+                              `details.${index}.cost_centers`
+                            ) ?? []),
                             { cost_center_id: 0, amount: 0 },
                           ])
                         }
@@ -574,7 +577,7 @@ export function AddJournalForm() {
                         <span className="ml-2">Add Cost Center</span>
                       </Button>
                     </div>
-                  </div>
+                  </Card>
                 ))}
 
                 <Button
