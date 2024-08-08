@@ -28,10 +28,10 @@ const ChartOfAccountChild = ({ group, coaType, depth = 0 }: ChartOfAccountItemPr
 				<TableCell className="py-2.5"></TableCell>
 				<TableCell className="py-2.5"></TableCell>
 			</TableRow>
-			{item.childs_group.length > 0 && (
+			{item.childs_group && item.childs_group.length > 0 && (
 				<ChartOfAccountChild group={item} coaType={coaType} depth={depth + 1} />
 			)}
-			{item.ledgers.map((ledger) => (
+			{item.ledgers && item.ledgers.length > 0 && item.ledgers.map((ledger) => (
 				<TableRow key={ledger.id}>
 					<TableCell className="py-0 col-span-2 w-2/3">
 						<Link

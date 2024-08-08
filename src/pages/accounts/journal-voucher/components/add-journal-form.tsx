@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -34,12 +34,28 @@ import {
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash2 } from "lucide-react";
+import { Check, ChevronsUpDown, Plus, Trash2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/common/heading";
 import { useGetCostCentersQuery } from "@/store/services/accounts/api/cost-center";
 import { CostCenterRow } from "@/lib/validators/accounts/cost-centers";
+import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { cn } from "@/utils";
+
 
 export function AddJournalForm() {
   const { id } = useParams();
@@ -50,6 +66,8 @@ export function AddJournalForm() {
     useGetLedgerAccountsQuery("page=1&per_page=1000");
   const { data: subAccounts, isLoading: subAccountLoading } =
     useGetSubAccountsQuery(`page=1&per_page=1000`);
+  const { data: projects, isLoading: projectLoading } =
+    useGetProjectsQuery(`per_page=1000&page=1`);
 
   const { data: journalById } = useGetEntryByIdQuery(`${id}`);
 
@@ -60,8 +78,8 @@ export function AddJournalForm() {
 
   const ledgerAccountData = ledgerAccount?.data || [];
   const subAccountData = subAccounts?.data || [];
-
   const costCentersData = costCenters?.data || [];
+  const projectData = projects?.data || [];
 
   const navigate = useNavigate();
 
@@ -123,6 +141,7 @@ export function AddJournalForm() {
 
   const [totalDrAmount, setTotalDrAmount] = useState(0);
   const [totalCrAmount, setTotalCrAmount] = useState(0);
+  const [open, setOpen] = React.useState(false);
 
   const details = useWatch({
     control: form.control,
@@ -236,6 +255,91 @@ export function AddJournalForm() {
                         </FormItem>
                       )}
                     />
+                  </div>
+                  <div>
+                    <FormField
+                      control={form.control}
+                      name="project_id"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Project</FormLabel>
+                          <Popover
+                            open={open}
+                            onOpenChange={setOpen}
+                            modal={true}
+                          >
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant="outline"
+                                  role="combobox"
+                                  className={cn(
+                                    "w-full justify-between", // Adjusted width to full
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value
+                                    ? projectData.find(
+                                        (project) =>
+                                          project.id === Number(field.value)
+                                      )?.name
+                                    : "Select Project"}
+                                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-[200px] p-0">
+                              <Command>
+                                <CommandInput placeholder="Search project" />
+                                <CommandList>
+                                  <CommandEmpty>
+                                    No parent group found.
+                                  </CommandEmpty>
+                                  <CommandGroup>
+                                    {projectLoading ? (
+                                      <Loading />
+                                    ) : (
+                                      projectData.map((project) => (
+                                        <CommandItem
+                                          key={project.id}
+                                          onSelect={() => {
+                                            field.onChange(String(project.id));
+                                            setOpen(false);
+                                          }}
+                                        >
+                                          <Check
+                                            className={cn(
+                                              "mr-2 h-4 w-4",
+                                              Number(field.value) === project.id
+                                                ? "opacity-100"
+                                                : "opacity-0"
+                                            )}
+                                          />
+                                          {project.name}
+                                        </CommandItem>
+                                      ))
+                                    )}
+                                  </CommandGroup>
+                                </CommandList>
+                              </Command>
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+         
+                      {/* <SelectWithSearch<ProjectRow>
+                        name="project_id"
+                        title={"Project"}
+                        data={projectData}
+                        loading={projectLoading}
+                        valueField="id"
+                        displayField="name"
+                        width="w-full"
+                        form={form}
+                      /> */}
+        
                   </div>
                 </div>
                 <FormField
@@ -475,11 +579,9 @@ export function AddJournalForm() {
                         ?.watch(`details.${index}.cost_centers`)
                         ?.map((costCenter, costCenterIndex) => (
                           <div
-
                             key={costCenter.cost_center_id}
                             className="flex w-full gap-x-3 mt-2"
                           >
-                            
                             <div className="w-[250px]">
                               <FormField
                                 control={form.control}
