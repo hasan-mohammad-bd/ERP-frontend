@@ -475,9 +475,11 @@ export function AddJournalForm() {
                         ?.watch(`details.${index}.cost_centers`)
                         ?.map((costCenter, costCenterIndex) => (
                           <div
-                            key={costCenterIndex}
+
+                            key={costCenter.cost_center_id}
                             className="flex w-full gap-x-3 mt-2"
                           >
+                            
                             <div className="w-[250px]">
                               <FormField
                                 control={form.control}
