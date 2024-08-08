@@ -42,10 +42,14 @@ const VoucherDetails = ({ data }: Props) => {
   return (
     <div>
       <div ref={componentRef}>
+        
         <div className="p-4">
+<div className="grid grid-cols-3">
+<div className="w-[180px]"><img src="/image/logo.png" alt="" /></div>
           <div className="font-bold text-center text-xl">
             {data.organization.name}
           </div>
+</div>
           <div className="text-center text-lg mb-3">{data.type}</div>
           <div className="text-right text-sm mb-3">
             <div>
@@ -65,6 +69,9 @@ const VoucherDetails = ({ data }: Props) => {
                     </TableHead>
                     <TableHead className="border border-black py-[5px] h-0">
                       Account No.
+                    </TableHead>
+                    <TableHead className="border border-black py-[5px] h-0">
+                      Account Code.
                     </TableHead>
                     {/* <TableHead className="border border-black">
                       Particulars
@@ -96,6 +103,9 @@ const VoucherDetails = ({ data }: Props) => {
                           {data.account?.name}
                         </TableCell>
                         <TableCell className="border border-black py-[5px]">
+                          {data.account?.code}
+                        </TableCell>
+                        <TableCell className="border border-black py-[5px]">
                           {data.note}
                         </TableCell>
                         <TableCell className="border border-black py-[5px]">
@@ -110,7 +120,7 @@ const VoucherDetails = ({ data }: Props) => {
 
                   <TableRow className="border border-black bg-gray-100">
                     <TableCell
-                      colSpan={3}
+                      colSpan={4}
                       className="text-right font-bold border border-black py-[5px]"
                     >
                       Total
