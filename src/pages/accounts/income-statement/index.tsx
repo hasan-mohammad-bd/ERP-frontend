@@ -25,13 +25,7 @@ const IncomeStatement = () => {
     }&ledger_account_id=${filtered ? filtered : ""}`
   );
 
-
-  
   const balanceSheet = data?.data;
-
-
-
-
 
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
     useGetLedgerAccountsQuery("page=1&per_page=1000");
@@ -52,9 +46,8 @@ const IncomeStatement = () => {
             loadingData: ledgerAccountLoading,
           }}
         />
-        <div className="flex-1 space-y-4">
+        <div className="flex-1 space-y-4 w-2/3 mx-auto">
           <Separator />
-
 
           {balanceSheet ? (
             <IncomeStatementTable
@@ -69,7 +62,6 @@ const IncomeStatement = () => {
               }}
             />
           ) : null}
-
         </div>
       </div>
     </>

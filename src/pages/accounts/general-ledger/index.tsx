@@ -60,7 +60,7 @@ const GeneralLedger = () => {
         <div className="flex-1 space-y-4">
           <Separator />
           {generalLedger && (
-            <div>
+            <div className="w-2/3 mx-auto">
               <DataTable
                 columns={generalLedgerColumns}
                 data={generalLedger}
