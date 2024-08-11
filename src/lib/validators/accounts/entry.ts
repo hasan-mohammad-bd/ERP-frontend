@@ -44,6 +44,7 @@ export const entrySchema = z.object({
   details: entryTypeSchema.array(),
   note: z.string(),
   file: z.string(),
+  project_id: z.coerce.number().optional().nullable(),
 
 });
 

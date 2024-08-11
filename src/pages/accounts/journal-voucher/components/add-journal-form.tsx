@@ -40,6 +40,10 @@ import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/common/heading";
 import { useGetCostCentersQuery } from "@/store/services/accounts/api/cost-center";
 import { CostCenterRow } from "@/lib/validators/accounts/cost-centers";
+import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
+
+import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
 
 export function AddJournalForm() {
   const { id } = useParams();
@@ -50,6 +54,8 @@ export function AddJournalForm() {
     useGetLedgerAccountsQuery("page=1&per_page=1000");
   const { data: subAccounts, isLoading: subAccountLoading } =
     useGetSubAccountsQuery(`page=1&per_page=1000`);
+  const { data: projects, isLoading: projectLoading } =
+    useGetProjectsQuery(`per_page=1000&page=1`);
 
   const { data: journalById } = useGetEntryByIdQuery(`${id}`);
 
@@ -60,8 +66,8 @@ export function AddJournalForm() {
 
   const ledgerAccountData = ledgerAccount?.data || [];
   const subAccountData = subAccounts?.data || [];
-
   const costCentersData = costCenters?.data || [];
+  const projectData = projects?.data || [];
 
   const navigate = useNavigate();
 
@@ -78,7 +84,6 @@ export function AddJournalForm() {
         {
           dr_amount: 0,
           cr_amount: 0,
-          //if it is empty array , the value will be null
           cost_centers: [],
         },
         {
@@ -123,6 +128,7 @@ export function AddJournalForm() {
 
   const [totalDrAmount, setTotalDrAmount] = useState(0);
   const [totalCrAmount, setTotalCrAmount] = useState(0);
+
 
   const details = useWatch({
     control: form.control,
@@ -236,6 +242,20 @@ export function AddJournalForm() {
                         </FormItem>
                       )}
                     />
+                  </div>
+                  <div>
+
+
+                    <SelectWithSearch<ProjectRow>
+                        name="project_id"
+                        title={"Project"}
+                        data={projectData}
+                        loading={projectLoading}
+                        valueField="id"
+                        displayField="name"
+                        width="w-[195px]"
+                        form={form}
+                      />
                   </div>
                 </div>
                 <FormField
@@ -475,11 +495,9 @@ export function AddJournalForm() {
                         ?.watch(`details.${index}.cost_centers`)
                         ?.map((costCenter, costCenterIndex) => (
                           <div
-
                             key={costCenter.cost_center_id}
                             className="flex w-full gap-x-3 mt-2"
                           >
-                            
                             <div className="w-[250px]">
                               <FormField
                                 control={form.control}

@@ -54,7 +54,7 @@ const BalanceSheet = () => {
             loadingData: ledgerAccountLoading,
           }}
         />
-        <div className="flex-1 space-y-4">
+        <div className="flex-1 space-y-4 w-2/3 mx-auto">
           <Separator />
           {balanceSheet ? (
             <BalanceSheetTable

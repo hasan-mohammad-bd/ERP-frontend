@@ -3,7 +3,6 @@ import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGetLedgerGroupsQuery } from "@/store/services/accounts/api/ledger-group";
 import ChartOfAccountItem from "./components/chart-of-account-item";

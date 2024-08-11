@@ -38,6 +38,9 @@ import { Plus, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useNavigate, useParams } from "react-router-dom";
 import { Heading } from "@/components/common/heading";
+import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
+import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
 
 export function AddContraForm() {
   const { id } = useParams();
@@ -47,12 +50,15 @@ export function AddContraForm() {
     useGetLedgerAccountsQuery("page=1&per_page=1000");
   const { data: subAccounts, isLoading: subAccountLoading } =
     useGetSubAccountsQuery(`page=1&per_page=1000`);
+  const { data: projects, isLoading: projectLoading } =
+    useGetProjectsQuery(`per_page=1000&page=1`);
 
   const { data: journalById } = useGetEntryByIdQuery(`${id}`);
 
   const previousData = journalById?.data;
   const ledgerAccountData = ledgerAccount?.data || [];
   const subAccountData = subAccounts?.data || [];
+  const projectData = projects?.data || [];
   const navigate = useNavigate();
 
   // const [totalDrAmount, setTotalDrAmount] = useState(0);
@@ -65,7 +71,7 @@ export function AddContraForm() {
     resolver: zodResolver(entrySchema),
     defaultValues: {
       type: previousData?.type || "Contra Voucher",
-      date: previousData?.date || new Date().toISOString().split('T')[0],
+      date: previousData?.date || new Date().toISOString().split("T")[0],
       entry_number: previousData?.entry_number || "",
       details: previousData?.details || [
         { dr_amount: totalCrAmount, cr_amount: 0 },
@@ -88,6 +94,7 @@ export function AddContraForm() {
         ],
         note: previousData?.note || "",
         file: previousData?.file || "",
+        project_id: previousData?.project_id || null,
       });
     }
   }, [form, previousData, totalCrAmount]);
@@ -216,6 +223,16 @@ export function AddContraForm() {
                         </FormItem>
                       )}
                     />
+                    <SelectWithSearch<ProjectRow>
+                      name="project_id"
+                      title={"Project"}
+                      data={projectData}
+                      loading={projectLoading}
+                      valueField="id"
+                      displayField="name"
+                      width="w-[195px]"
+                      form={form}
+                    />
 
                     <div className="w-[200px]">
                       <FormField
@@ -247,10 +264,7 @@ export function AddContraForm() {
                                   ledgerAccountData
                                     .filter(
                                       (ledgerAccount: LedgerRow) =>
-                                        !selectedLedgerAccounts.includes(
-                                          ledgerAccount.id
-                                        ) ||
-                                        ledgerAccount.id === Number(field.value)
+                                        ledgerAccount.nature === "Cash" || ledgerAccount.nature === "Bank Accounts"
                                     )
                                     .map((ledgerAccount: LedgerRow) => (
                                       <SelectItem
@@ -325,10 +339,7 @@ export function AddContraForm() {
                                   ledgerAccountData
                                     .filter(
                                       (ledgerAccount: LedgerRow) =>
-                                        !selectedLedgerAccounts.includes(
-                                          ledgerAccount.id
-                                        ) ||
-                                        ledgerAccount.id === Number(field.value)
+                                         ledgerAccount.nature === "Cash" || ledgerAccount.nature === "Bank Accounts"
                                     )
                                     .map((ledgerAccount: LedgerRow) => (
                                       <SelectItem

@@ -38,6 +38,9 @@ import { Plus, Trash2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/common/heading";
+import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
+import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
 
 export function AddPaymentForm() {
   const { id } = useParams();
@@ -48,9 +51,12 @@ export function AddPaymentForm() {
     useGetLedgerAccountsQuery("page=1&per_page=1000");
   const { data: subAccounts, isLoading: subAccountLoading } =
     useGetSubAccountsQuery(`page=1&per_page=1000`);
+  const { data: projects, isLoading: projectLoading } =
+    useGetProjectsQuery(`per_page=1000&page=1`);
 
   const ledgerAccountData = ledgerAccount?.data || [];
   const subAccountData = subAccounts?.data || [];
+  const projectData = projects?.data || [];
 
   const [totalDrAmount, setTotalDrAmount] = useState(0);
   const [totalCrAmount, setTotalCrAmount] = useState(0);
@@ -66,7 +72,7 @@ export function AddPaymentForm() {
     resolver: zodResolver(entrySchema),
     defaultValues: {
       type: "Payment Voucher",
-      date: new Date().toISOString().split('T')[0],
+      date: new Date().toISOString().split("T")[0],
       entry_number: "",
       details: [
         { dr_amount: totalCrAmount, cr_amount: 0 },
@@ -217,6 +223,16 @@ export function AddPaymentForm() {
                         </FormItem>
                       )}
                     />
+                    <SelectWithSearch<ProjectRow>
+                      name="project_id"
+                      title={"Project"}
+                      data={projectData}
+                      loading={projectLoading}
+                      valueField="id"
+                      displayField="name"
+                      width="w-[195px]"
+                      form={form}
+                    />
 
                     <div className="w-[200px]">
                       <FormField
@@ -300,7 +316,7 @@ export function AddPaymentForm() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              {index === 1 && "Ledger Account"}
+                              {index === 1 && "Debit Account Head"}
                             </FormLabel>
                             <Select
                               onValueChange={(value) => {
@@ -464,8 +480,6 @@ export function AddPaymentForm() {
                         </>
                       )}
                     </div>
-
-
 
                     <FormItem
                       className={`mt-auto ${

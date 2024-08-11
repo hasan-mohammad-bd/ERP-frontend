@@ -9,7 +9,7 @@ const generalLedgerApi = accountApi.injectEndpoints({
 			{ data: GeneralLedgerRow[]; meta: PaginationInfo },
 			string
 		>({
-			query: (params) => `reports/general-Ledger?${params}`,
+			query: (params) => `reports/general-ledger?${params}`,
 			providesTags: ["general-ledger"],
 		}),
 		getDetailGeneralLedgers: build.query<
