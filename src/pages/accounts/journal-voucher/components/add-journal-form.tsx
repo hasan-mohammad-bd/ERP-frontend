@@ -307,16 +307,7 @@ export function AddJournalForm() {
                                   {ledgerAccountLoading ? (
                                     <Loading />
                                   ) : (
-                                    ledgerAccountData
-                                      .filter(
-                                        (ledgerAccount: LedgerRow) =>
-                                          !selectedLedgerAccounts.includes(
-                                            ledgerAccount.id
-                                          ) ||
-                                          ledgerAccount.id ===
-                                            Number(field.value)
-                                      )
-                                      .map((ledgerAccount: LedgerRow) => (
+                                    ledgerAccountData.map((ledgerAccount: LedgerRow) => (
                                         <SelectItem
                                           key={ledgerAccount.id}
                                           value={String(ledgerAccount.id)}
