@@ -34,7 +34,7 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
   },
   {
     accessorKey: "entry_number",
-    header: "JV Number",
+    header: "JV No.",
     cell: ({ row }) => <CellActionVoucherDetails rowData={row.original} />,
   },
   {
@@ -43,7 +43,7 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
   },
   {
     accessorKey: "date",
-    header: "date",
+    header: "Date",
   },
   {
     accessorKey: "total",
@@ -61,7 +61,7 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
   },
 
   {
-    header: "financial-year",
+    header: "Financial Year",
     accessorFn: (row) => row.financial_year.name,
   },
 

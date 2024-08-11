@@ -264,10 +264,8 @@ export function AddPaymentForm() {
                                   ledgerAccountData
                                     .filter(
                                       (ledgerAccount: LedgerRow) =>
-                                        !selectedLedgerAccounts.includes(
-                                          ledgerAccount.id
-                                        ) ||
-                                        ledgerAccount.id === Number(field.value)
+                                        ledgerAccount.nature === "Cash" ||
+                                        ledgerAccount.nature === "Bank Accounts"
                                     )
                                     .map((ledgerAccount: LedgerRow) => (
                                       <SelectItem
@@ -341,10 +339,7 @@ export function AddPaymentForm() {
                                   ledgerAccountData
                                     .filter(
                                       (ledgerAccount: LedgerRow) =>
-                                        !selectedLedgerAccounts.includes(
-                                          ledgerAccount.id
-                                        ) ||
-                                        ledgerAccount.id === Number(field.value)
+ledgerAccount.nature !== "Cash" && ledgerAccount.nature !== "Bank Accounts"
                                     )
                                     .map((ledgerAccount: LedgerRow) => (
                                       <SelectItem
