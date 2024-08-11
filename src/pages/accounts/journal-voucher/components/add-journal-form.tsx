@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -34,28 +34,16 @@ import {
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
 import { Textarea } from "@/components/ui/textarea";
-import { Check, ChevronsUpDown, Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/common/heading";
 import { useGetCostCentersQuery } from "@/store/services/accounts/api/cost-center";
 import { CostCenterRow } from "@/lib/validators/accounts/cost-centers";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import { cn } from "@/utils";
 
+import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
 
 export function AddJournalForm() {
   const { id } = useParams();
@@ -96,7 +84,6 @@ export function AddJournalForm() {
         {
           dr_amount: 0,
           cr_amount: 0,
-          //if it is empty array , the value will be null
           cost_centers: [],
         },
         {
@@ -141,7 +128,7 @@ export function AddJournalForm() {
 
   const [totalDrAmount, setTotalDrAmount] = useState(0);
   const [totalCrAmount, setTotalCrAmount] = useState(0);
-  const [open, setOpen] = React.useState(false);
+
 
   const details = useWatch({
     control: form.control,
@@ -257,89 +244,18 @@ export function AddJournalForm() {
                     />
                   </div>
                   <div>
-                    <FormField
-                      control={form.control}
-                      name="project_id"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Project</FormLabel>
-                          <Popover
-                            open={open}
-                            onOpenChange={setOpen}
-                            modal={true}
-                          >
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <Button
-                                  variant="outline"
-                                  role="combobox"
-                                  className={cn(
-                                    "w-full justify-between", // Adjusted width to full
-                                    !field.value && "text-muted-foreground"
-                                  )}
-                                >
-                                  {field.value
-                                    ? projectData.find(
-                                        (project) =>
-                                          project.id === Number(field.value)
-                                      )?.name
-                                    : "Select Project"}
-                                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                </Button>
-                              </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-[200px] p-0">
-                              <Command>
-                                <CommandInput placeholder="Search project" />
-                                <CommandList>
-                                  <CommandEmpty>
-                                    No parent group found.
-                                  </CommandEmpty>
-                                  <CommandGroup>
-                                    {projectLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      projectData.map((project) => (
-                                        <CommandItem
-                                          key={project.id}
-                                          onSelect={() => {
-                                            field.onChange(String(project.id));
-                                            setOpen(false);
-                                          }}
-                                        >
-                                          <Check
-                                            className={cn(
-                                              "mr-2 h-4 w-4",
-                                              Number(field.value) === project.id
-                                                ? "opacity-100"
-                                                : "opacity-0"
-                                            )}
-                                          />
-                                          {project.name}
-                                        </CommandItem>
-                                      ))
-                                    )}
-                                  </CommandGroup>
-                                </CommandList>
-                              </Command>
-                            </PopoverContent>
-                          </Popover>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-         
-                      {/* <SelectWithSearch<ProjectRow>
+
+
+                    <SelectWithSearch<ProjectRow>
                         name="project_id"
                         title={"Project"}
                         data={projectData}
                         loading={projectLoading}
                         valueField="id"
                         displayField="name"
-                        width="w-full"
+                        width="w-[195px]"
                         form={form}
-                      /> */}
-        
+                      />
                   </div>
                 </div>
                 <FormField
