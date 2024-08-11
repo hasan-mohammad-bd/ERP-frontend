@@ -94,6 +94,7 @@ export function AddContraForm() {
         ],
         note: previousData?.note || "",
         file: previousData?.file || "",
+        project_id: previousData?.project_id || null,
       });
     }
   }, [form, previousData, totalCrAmount]);
@@ -263,10 +264,7 @@ export function AddContraForm() {
                                   ledgerAccountData
                                     .filter(
                                       (ledgerAccount: LedgerRow) =>
-                                        !selectedLedgerAccounts.includes(
-                                          ledgerAccount.id
-                                        ) ||
-                                        ledgerAccount.id === Number(field.value)
+                                        ledgerAccount.nature === "Cash" || ledgerAccount.nature === "Bank Accounts"
                                     )
                                     .map((ledgerAccount: LedgerRow) => (
                                       <SelectItem
@@ -341,10 +339,7 @@ export function AddContraForm() {
                                   ledgerAccountData
                                     .filter(
                                       (ledgerAccount: LedgerRow) =>
-                                        !selectedLedgerAccounts.includes(
-                                          ledgerAccount.id
-                                        ) ||
-                                        ledgerAccount.id === Number(field.value)
+                                         ledgerAccount.nature === "Cash" || ledgerAccount.nature === "Bank Accounts"
                                     )
                                     .map((ledgerAccount: LedgerRow) => (
                                       <SelectItem
