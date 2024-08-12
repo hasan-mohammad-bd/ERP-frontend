@@ -32,3 +32,15 @@ export interface PaginationInfo {
 	to: number;
 	total: number;
 }
+
+
+export interface ErrorResponse {
+    status: number;
+    data: {
+        success: boolean;
+        message: string;
+        data: {
+            [key: string]: string[];
+        };
+    };
+}
