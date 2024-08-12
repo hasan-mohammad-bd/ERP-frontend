@@ -5,7 +5,7 @@ FROM node:latest as build
 WORKDIR /app
 
 # Copy package.json and yarn.lock to the working directory
-COPY package.json yarn.lock ./
+#COPY package.json yarn.lock ./
 
 # Install dependencies
 # RUN yarn install
