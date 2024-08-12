@@ -38,7 +38,7 @@ const OpeningBalance = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="Journal Voucher"
+              title="Opening Balance"
               description="Manage your sub accounts for you business"
             />
             <Button

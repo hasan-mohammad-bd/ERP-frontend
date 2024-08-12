@@ -42,21 +42,44 @@ const VoucherDetails = ({ data }: Props) => {
   return (
     <div>
       <div ref={componentRef}>
-        
-        <div className="p-4">
-<div className="grid grid-cols-3">
-<div className="w-[180px]"><img src="/image/logo.png" alt="" /></div>
-          <div className="font-bold text-center text-xl">
-            {data.organization.name}
-          </div>
-</div>
-          <div className="text-center text-lg mb-3">{data.type}</div>
-          <div className="text-right text-sm mb-3">
-            <div>
-              <span className="font-bold">Voucher No:</span> {data.entry_number}
+        <div className="p-7">
+          <div className="grid grid-cols-4">
+            <div className="w-[180px]">
+              <img src="/image/logo.png" alt="" />
             </div>
-            <div>
-              <span className="font-bold">Date:</span> {data.date}
+            <div className="text-center col-span-2">
+              <div className="font-bold text-center text-xl">
+                {data.organization.name}
+              </div>
+              <div className="text-sm w-full">
+                <div>Address: House 51C Road-13/B, Dhaka 1230</div>{" "}
+                <div className="mb-2">Phone: 01712345678</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center text-base mb-3 border border-spacing-1 w-fit mx-auto py-2 px-4 rounded-full">
+            {data.type}
+          </div>
+          <div className="text-right text-sm mb-3">
+            <div className="flex justify-between items-start">
+              <div>
+                {data?.project?.name && (
+                  <div>
+                    <span className="font-bold">Project:</span>{" "}
+                    {data.project.name}
+                  </div>
+                )}
+              </div>
+              <div>
+                <div>
+                  <span className="font-bold">Voucher No:</span>{" "}
+                  {data.entry_number}
+                </div>
+                <div>
+                  <span className="font-bold">Date:</span> {data.date}
+                </div>
+              </div>
             </div>
           </div>
           <div>
@@ -72,6 +95,9 @@ const VoucherDetails = ({ data }: Props) => {
                     </TableHead>
                     <TableHead className="border border-black py-[5px] h-0">
                       Account Code.
+                    </TableHead>
+                    <TableHead className="border border-black py-[5px] h-0">
+                      Contact
                     </TableHead>
                     {/* <TableHead className="border border-black">
                       Particulars
@@ -106,6 +132,9 @@ const VoucherDetails = ({ data }: Props) => {
                           {data.account?.code}
                         </TableCell>
                         <TableCell className="border border-black py-[5px]">
+                          contact
+                        </TableCell>
+                        <TableCell className="border border-black py-[5px]">
                           {data.note}
                         </TableCell>
                         <TableCell className="border border-black py-[5px]">
@@ -120,7 +149,7 @@ const VoucherDetails = ({ data }: Props) => {
 
                   <TableRow className="border border-black bg-gray-100">
                     <TableCell
-                      colSpan={4}
+                      colSpan={5}
                       className="text-right font-bold border border-black py-[5px]"
                     >
                       Total
@@ -133,7 +162,7 @@ const VoucherDetails = ({ data }: Props) => {
                     </TableCell>
                   </TableRow>
                   <TableRow className="border border-black">
-                    <TableCell colSpan={4} className="py-[5px]">
+                    <TableCell colSpan={5} className="py-[5px]">
                       <span className="font-bold">In Words:</span>{" "}
                       {numberToWords(total)}
                     </TableCell>

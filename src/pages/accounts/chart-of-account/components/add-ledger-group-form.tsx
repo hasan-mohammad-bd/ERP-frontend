@@ -58,7 +58,7 @@ export function AddLedgerGroupForm({
   const form = useForm<LedgerGroupFromValues>({
     resolver: zodResolver(LedgerGroupSchema),
     defaultValues: {
-      parent_id: previousData?.id || 0,
+      parent_id: previousData?.id ,
     },
   });
 

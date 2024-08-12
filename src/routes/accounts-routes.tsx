@@ -201,6 +201,11 @@ const accountsRoutes = {
           errorElement: <ErrorPage />,
         },
         {
+          path: "detailed-general-ledger",
+          element: withFallback(<DetailedGeneralLedger />),
+          errorElement: <ErrorPage />,
+        },
+        {
           path: "trial-balance",
           element: withFallback(<TrialBalance />),
           errorElement: <ErrorPage />,

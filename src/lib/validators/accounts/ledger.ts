@@ -5,11 +5,14 @@ export const LedgerSchema = z.object({
 	name: z.string().min(2, {
 		message: "Name must be at least 2 characters.",
 	}),
-	parent_id: z.coerce.number(),
-/* 	is_fixed_asset: z.coerce.number(),
-	is_stock: z.coerce.number(),
-	is_cash_nature: z.coerce.number(),
-	is_bank_nature: z.coerce.number(), */
+	parent_id: z.union([
+    z.string().refine(val => !isNaN(Number(val)), {
+      message: "Account is required.",
+    }).transform(val => Number(val)),
+    z.number()
+  ]).refine(val => !isNaN(val), {
+    message: "Account is required.",
+  }),
 	nature: z.string().optional().nullable(),
 	is_sub_type: z.coerce.number().optional().nullable(),
 	sub_type: z
@@ -48,7 +51,14 @@ export const LedgerGroupSchema = z.object({
 	name: z.string().min(2, {
 		message: "Name must be at least 2 characters.",
 	}),
-	parent_id: z.coerce.number(),
+	parent_id: z.union([
+    z.string().refine(val => !isNaN(Number(val)), {
+      message: "Account is required.",
+    }).transform(val => Number(val)),
+    z.number()
+  ]).refine(val => !isNaN(val), {
+    message: "Account is required.",
+  }),
 });
 
 export type LedgerGroupFromValues = z.infer<typeof LedgerGroupSchema>;

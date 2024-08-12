@@ -109,6 +109,12 @@ const accountsNavItems: NavItem[] = [
 				color: "text-sky-500",
 			},
 			{
+				title: "GL Details",
+				icon: Clock,
+				href: "/accounts/reports/detailed-general-ledger",
+				color: "text-sky-500",
+			},
+			{
 				title: "Trail Balance",
 				icon: Clock,
 				href: "/accounts/reports/trial-balance",

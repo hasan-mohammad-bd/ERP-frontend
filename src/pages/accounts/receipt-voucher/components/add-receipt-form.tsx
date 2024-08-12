@@ -192,7 +192,7 @@ export function AddReceiptForm() {
                       name="date"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Date</FormLabel>
+                          <FormLabel>Date <span className="text-red-500">*</span></FormLabel>
                           <FormControl>
                             <Input
                               type="date"
@@ -240,7 +240,7 @@ export function AddReceiptForm() {
                         name={`details.0.ledger_account_id`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{"Debit Account Head"}</FormLabel>
+                            <FormLabel>Debit Account Head <span className="text-red-500">*</span></FormLabel>
                             <Select
                               onValueChange={(value) => {
                                 field.onChange(value);
@@ -313,7 +313,7 @@ export function AddReceiptForm() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              {index === 1 && "Credit Account Head"}
+                              {index === 1 && <>Credit Account Head <span className="text-red-500">*</span></>}
                             </FormLabel>
                             <Select
                               onValueChange={(value) => {
@@ -445,7 +445,7 @@ export function AddReceiptForm() {
                         name={`details.${index}.cr_amount`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{index === 1 && "Amount"}</FormLabel>
+                            <FormLabel>{index === 1 && <>Amount <span className="text-red-500">*</span></>}</FormLabel>
                             <FormControl>
                               <Input
                                 disabled={

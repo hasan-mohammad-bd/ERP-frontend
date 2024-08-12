@@ -192,7 +192,7 @@ export function AddContraForm() {
                       name="date"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Date</FormLabel>
+                          <FormLabel>Date <span className="text-red-500">*</span></FormLabel>
                           <FormControl>
                             <Input
                               type="date"
@@ -240,7 +240,7 @@ export function AddContraForm() {
                         name={`details.0.ledger_account_id`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{"Debit Account Head"}</FormLabel>
+                            <FormLabel>Debit Account Head <span className="text-red-500">*</span></FormLabel>
                             <Select
                               onValueChange={(value) => {
                                 field.onChange(value);
@@ -314,7 +314,7 @@ export function AddContraForm() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              {index === 1 && "Ledger Account"}
+                              {index === 1 && <>Credit Account Head <span className="text-red-500">*</span></>}
                             </FormLabel>
                             <Select
                               onValueChange={(value) => {
@@ -416,37 +416,13 @@ export function AddContraForm() {
                       />
                     </div>
 
-                    {/*                 <div className="max-w-[120px]">
-                  <FormField
-                    control={form.control}
-                    name={`details.0.dr_amount`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{index === 0 && "Debit Amount"}</FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled={
-                              form.watch(`details.${index}.cr_amount`) > 0
-                            }
-                            min={0}
-                            type="number"
-                            placeholder="Debit amount"
-                            {...field}
-                            value={totalCrAmount}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div> */}
                     <div className="max-w-[180px]">
                       <FormField
                         control={form.control}
                         name={`details.${index}.cr_amount`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{index === 1 && "Amount"}</FormLabel>
+                            <FormLabel>{index === 1 && <>Amount <span className="text-red-500">*</span></>}</FormLabel>
                             <FormControl>
                               <Input
                                 disabled={
@@ -495,14 +471,7 @@ export function AddContraForm() {
                     </FormItem>
                   </div>
                 ))}
-                {/*                         <div className="text-end mt-4">
-              <div>
-                <p className="text-sm ">Total Debit: {totalDrAmount}</p>
-              </div>
-              <div className="">
-                <p className="text-sm ">Total Credit: {totalCrAmount}</p>
-              </div>
-            </div> */}
+
 
                 <Button
                   variant="outline"

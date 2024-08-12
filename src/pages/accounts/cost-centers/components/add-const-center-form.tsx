@@ -58,7 +58,7 @@ export function AddCostCenterForm({
     defaultValues: {
       name: previousData?.name || "",
       description: previousData?.description || "",
-      cost_category_id: previousData?.cost_category_id || 1,
+      cost_category_id: previousData?.cost_category_id,
     },
   });
 
@@ -98,7 +98,7 @@ export function AddCostCenterForm({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Name <span className="text-red-500">*</span></FormLabel>
                   <FormControl>
                     <Input placeholder="Enter name" {...field} />
                   </FormControl>
@@ -129,7 +129,7 @@ export function AddCostCenterForm({
               name="cost_category_id"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Religion</FormLabel>
+                  <FormLabel>Cost Category <span className="text-red-500">*</span></FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={
