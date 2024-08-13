@@ -38,6 +38,8 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/utils";
 import React from "react";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface AddLedgerGroupFormProps {
   modalClose: () => void;
@@ -64,10 +66,11 @@ export function AddLedgerGroupForm({
 
   async function onSubmit(data: LedgerGroupFromValues) {
     try {
-      await createLedgerGroup(data);
+      await createLedgerGroup(data).unwrap();
       toast.success("Add ledger group successfully");
       modalClose();
     } catch (error) {
+      handleErrors(error as ErrorResponse);
       console.log(error);
     }
   }

@@ -31,6 +31,8 @@ import {
 
 import { useGetLedgerGroupsArrayQuery } from "@/store/services/accounts/api/ledger-group";
 import { useGetEnumQuery } from "@/store/services/accounts/api/enum";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 
 interface AddLedgerFormProps {
@@ -86,11 +88,12 @@ export function AddLedgerForm({
 
   async function onSubmit(data: LedgerFromValues) {
     try {
-      await createLedgerAccount(data);
+      await createLedgerAccount(data).unwrap();
       toast.success("Add ledger account successfully");
       modalClose();
       // }
     } catch (error) {
+      handleErrors(error as ErrorResponse);
       console.log(error);
     }
   }
