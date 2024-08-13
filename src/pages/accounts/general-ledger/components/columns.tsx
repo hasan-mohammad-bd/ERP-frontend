@@ -7,6 +7,11 @@ import { GeneralLedgerRow } from "@/lib/validators/accounts/general-ledger";
 export const generalLedgerColumns: ColumnDef<GeneralLedgerRow>[] = [
 
 	{
+		accessorKey: "code",
+		header: "Account Code",
+	}
+	,
+	{
 		accessorKey: "name",
 		header: "Account",
 	}

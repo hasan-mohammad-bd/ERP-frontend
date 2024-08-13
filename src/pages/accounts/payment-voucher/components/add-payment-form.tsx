@@ -192,7 +192,9 @@ export function AddPaymentForm() {
                       name="date"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Date</FormLabel>
+                          <FormLabel>
+                            Date <span className="text-red-500">*</span>
+                          </FormLabel>
                           <FormControl>
                             <Input
                               type="date"
@@ -240,7 +242,7 @@ export function AddPaymentForm() {
                         name={`details.0.ledger_account_id`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{"Credit Account Head"}</FormLabel>
+                            <FormLabel>Credit Account Head <span className="text-red-500">*</span></FormLabel>
                             <Select
                               onValueChange={(value) => {
                                 field.onChange(value);
@@ -314,7 +316,7 @@ export function AddPaymentForm() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              {index === 1 && "Debit Account Head"}
+                              {index === 1 && <>Debit Account Head <span className="text-red-500">*</span></>}
                             </FormLabel>
                             <Select
                               onValueChange={(value) => {
@@ -339,7 +341,8 @@ export function AddPaymentForm() {
                                   ledgerAccountData
                                     .filter(
                                       (ledgerAccount: LedgerRow) =>
-ledgerAccount.nature !== "Cash" && ledgerAccount.nature !== "Bank Accounts"
+                                        ledgerAccount.nature !== "Cash" &&
+                                        ledgerAccount.nature !== "Bank Accounts"
                                     )
                                     .map((ledgerAccount: LedgerRow) => (
                                       <SelectItem
@@ -446,7 +449,7 @@ ledgerAccount.nature !== "Cash" && ledgerAccount.nature !== "Bank Accounts"
                         name={`details.${index}.dr_amount`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{index === 1 && "Amount"}</FormLabel>
+                            <FormLabel>{index === 1 && <>Amount <span className="text-red-500">*</span></>}</FormLabel>
                             <FormControl>
                               <Input
                                 /*                             disabled={

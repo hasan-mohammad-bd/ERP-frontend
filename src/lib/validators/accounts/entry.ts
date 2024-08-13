@@ -24,7 +24,14 @@ export const userRow = z.object({
 
 
 export const entryTypeSchema = z.object({
-  ledger_account_id: z.coerce.number(),
+    ledger_account_id: z.union([
+    z.string().refine(val => !isNaN(Number(val)), {
+      message: "Account is required.",
+    }).transform(val => Number(val)),
+    z.number()
+  ]).refine(val => !isNaN(val), {
+    message: "Account is required.",
+  }),
   account: z.object({name: z.string(), code: z.string()}).optional().nullable(),
   dr_amount: z.coerce.number(),
   cr_amount: z.coerce.number(),
@@ -57,6 +64,7 @@ export const entryRow = entrySchema.extend({
   user: userRow,
   location: locationColumn.omit({organization: true}),
   total: z.coerce.number().optional().nullable(),
+  project: z.object({name: z.string()}).optional().nullable(),
 
 })
 

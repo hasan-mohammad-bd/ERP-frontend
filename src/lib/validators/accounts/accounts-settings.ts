@@ -8,9 +8,9 @@ const currencyRowWithId = currencyRow.pick({
 
 
 export const AccountsSettingsSchema = z.object({
-  currency_id: z.coerce.number(),
-  multi_currency: z.coerce.number(),
-  currencies: currencyRowWithId.array(),
+  currency_id: z.coerce.number({required_error: "Currency is required"}),
+  multi_currency: z.coerce.number().optional().nullable(),
+  currencies: currencyRowWithId.array().optional().nullable(),
 
 });
 

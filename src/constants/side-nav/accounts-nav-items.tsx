@@ -109,6 +109,12 @@ const accountsNavItems: NavItem[] = [
 				color: "text-sky-500",
 			},
 			{
+				title: "Transaction",
+				icon: Clock,
+				href: "/accounts/reports/transaction",
+				color: "text-sky-500",
+			},
+			{
 				title: "Trail Balance",
 				icon: Clock,
 				href: "/accounts/reports/trial-balance",

@@ -70,18 +70,4 @@ export const balanceSheet: z.ZodType<LedgerGroupRowType> = z.lazy(() =>
 
 export type BalanceSheetRow = z.infer<typeof balanceSheet>;
 
-// ledger group Array
 
-/* export const ledgerGroupArrayRow = z.object({
-	id: z.coerce.number(),
-	code: z.string(),
-	name: z.string(),
-	type: z.string(),
-	parent_id: z.coerce.number(),
-	description: z.string().optional().nullable(),
-	is_active: z.coerce.number().optional().nullable(),
-	is_default: z.coerce.number().optional().nullable(),
-	sorting_index: z.coerce.number().optional().nullable(),
-});
-
-export type LedgerGroupArrayRow = z.infer<typeof ledgerGroupArrayRow>; */

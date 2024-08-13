@@ -72,7 +72,7 @@ export function AddLedgerForm({
     resolver: zodResolver(LedgerSchema),
     defaultValues: {
       name: previousData?.name || "",
-      parent_id: previousData?.id || 0,
+      parent_id: previousData?.id ,
       is_sub_type: 0,
       nature: previousData?.nature || "",
     },
@@ -84,7 +84,7 @@ export function AddLedgerForm({
   const filteredType = ledgerGroupData?.filter(
     (ledger_group: LedgerGroupArrayRow) => ledger_group?.id == selectedType
   );
-  console.log(filteredType[0]?.type);
+
 
   async function onSubmit(data: LedgerFromValues) {
     try {

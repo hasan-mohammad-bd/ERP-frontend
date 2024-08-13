@@ -211,7 +211,7 @@ export function AddJournalForm() {
                       name="date"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Date</FormLabel>
+                          <FormLabel>Date <span className="text-red-500">*</span></FormLabel>
                           <FormControl>
                             <Input
                               type="date"
@@ -285,7 +285,7 @@ export function AddJournalForm() {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>
-                                {index === 0 && "Ledger Account"}
+                                {index === 0 && <>Ledger Account <span className="text-red-500">*</span></>}
                               </FormLabel>
                               <Select
                                 onValueChange={(value) => {
@@ -396,7 +396,7 @@ export function AddJournalForm() {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>
-                                {index === 0 && "Debit Amount"}
+                                {index === 0 && <>Debit Amount <span><span className="text-red-500">*</span></span></>}
                               </FormLabel>
                               <FormControl>
                                 <Input
@@ -432,7 +432,7 @@ export function AddJournalForm() {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>
-                                {index === 0 && "Credit Amount"}
+                                {index === 0 && <>"Credit Amount" <span className="text-red-500">*</span></>}
                               </FormLabel>
                               <FormControl>
                                 <Input

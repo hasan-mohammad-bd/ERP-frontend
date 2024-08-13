@@ -1,7 +1,7 @@
 
 import { accountApi } from "../..";
 import {PaginationInfo } from "@/types";
-import { DetailedGeneralLedgerRow, GeneralLedgerRow } from "@/lib/validators/accounts/general-ledger";
+import { DetailedGeneralLedgerRow, GeneralLedgerRow, SummeryRow } from "@/lib/validators/accounts/general-ledger";
 
 const generalLedgerApi = accountApi.injectEndpoints({
 	endpoints: (build) => ({
@@ -13,7 +13,7 @@ const generalLedgerApi = accountApi.injectEndpoints({
 			providesTags: ["general-ledger"],
 		}),
 		getDetailGeneralLedgers: build.query<
-			{ data: DetailedGeneralLedgerRow[]; meta: PaginationInfo },
+			{ data: DetailedGeneralLedgerRow[]; meta: PaginationInfo; summery: SummeryRow },
 			string
 		>({
 			query: (params) => `reports/detailed-general-ledger?${params}`,

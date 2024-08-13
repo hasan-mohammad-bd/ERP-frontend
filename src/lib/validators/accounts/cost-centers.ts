@@ -8,7 +8,14 @@ export const costCenterSchema = z.object({
     message: "Name must be at least 2 characters.",
   }),
   description: z.string().optional().nullable(),
-  cost_category_id: z.coerce.number(),
+  cost_category_id: z.union([
+    z.string().refine(val => !isNaN(Number(val)), {
+      message: "Account is required.",
+    }).transform(val => Number(val)),
+    z.number()
+  ]).refine(val => !isNaN(val), {
+    message: "Account is required.",
+  }),
 });
 
 export type CostCenterFromValues = z.infer<typeof costCenterSchema>;

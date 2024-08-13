@@ -41,7 +41,7 @@ const ChartOfAccountChild = ({ group, coaType, depth = 0 }: ChartOfAccountItemPr
 								className: "text-blue-400 hover:no-underline",
 							})}
 							// to={`/accounts/${coaType}/${ledger.id}`}
-							to={`/accounts/detailed-general-ledger/${ledger.id}`}
+							to={`/accounts/reports/detailed-general-ledger/${ledger.id}`}
 						>
 							{indent}{ledger.name}
 						</Link>

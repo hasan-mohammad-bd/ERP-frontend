@@ -19,14 +19,15 @@ import { AddContraForm } from "@/pages/accounts/contra-voucher/components/add-co
 import OpeningBalance from "@/pages/accounts/opening-balance";
 import { AddOpeningBalanceForm } from "@/pages/accounts/opening-balance/components/add-opeing-balance-form";
 import GeneralLedger from "@/pages/accounts/general-ledger";
-import DetailedGeneralLedger from "@/pages/accounts/detailed-general-ledger";
+
 import TrialBalance from "@/pages/accounts/trial-balance";
 import BalanceSheet from "@/pages/accounts/balance-sheet";
 import IncomeStatement from "@/pages/accounts/income-statement";
 import CostCategories from "@/pages/accounts/cost-categories";
 import CostCenters from "@/pages/accounts/cost-centers";
 import Projects from "@/pages/accounts/projects";
-
+import Transaction from "@/pages/accounts/transaction";
+import DetailedGeneralLedger from "@/pages/accounts/detailed-general-ledger";
 
 const accountsRoutes = {
   path: "accounts/",
@@ -48,11 +49,11 @@ const accountsRoutes = {
       errorElement: withFallback(<ErrorPage />),
     },
 
-    {
-      path: "detailed-general-ledger/:ledgerId",
-      element: withFallback(<DetailedGeneralLedger />),
-      errorElement: <ErrorPage />,
-    },
+    // {
+    //   path: "detailed-general-ledger/:ledgerId",
+    //   element: withFallback(<DetailedGeneralLedger />),
+    //   errorElement: <ErrorPage />,
+    // },
 
     {
       path: "contact",
@@ -71,7 +72,7 @@ const accountsRoutes = {
     },
     {
       path: "projects",
-      element: withFallback(<Projects/>),
+      element: withFallback(<Projects />),
       errorElement: <ErrorPage />,
     },
     {
@@ -79,7 +80,7 @@ const accountsRoutes = {
       element: withFallback(<AccountSettings />),
       errorElement: <ErrorPage />,
     },
-/*     , */
+    /*     , */
     {
       path: "opening-balance/",
       // element: withFallback(<JournalVoucher />),
@@ -201,6 +202,11 @@ const accountsRoutes = {
           errorElement: <ErrorPage />,
         },
         {
+          path: "transaction",
+          element: withFallback(<Transaction />),
+          errorElement: <ErrorPage />,
+        },
+        {
           path: "trial-balance",
           element: withFallback(<TrialBalance />),
           errorElement: <ErrorPage />,
@@ -213,6 +219,12 @@ const accountsRoutes = {
         {
           path: "balance-sheet",
           element: withFallback(<BalanceSheet />),
+          errorElement: <ErrorPage />,
+        },
+
+        {
+          path: "detailed-general-ledger/:ledgerId",
+          element: withFallback(<DetailedGeneralLedger />),
           errorElement: <ErrorPage />,
         },
       ],

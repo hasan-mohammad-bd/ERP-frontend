@@ -41,3 +41,12 @@ export const detailedGeneralLedgerRow = z.object({
 });
 
 export type DetailedGeneralLedgerRow = z.infer<typeof detailedGeneralLedgerRow>;
+
+export const summeryRow = z.object({
+
+  dr_amount: z.coerce.number(),
+  cr_amount: z.coerce.number(),
+  cumulative_amount: z.coerce.number(),
+});
+
+export type SummeryRow = z.infer<typeof summeryRow>;
