@@ -75,7 +75,7 @@ const DetailedGeneralTable = ({
               <TableCell>{item.entry.entry_number}</TableCell>
               <TableCell>{item.dr_amount}</TableCell>
               <TableCell>{item.cr_amount}</TableCell>
-              <TableCell>{item.total}</TableCell>
+              <TableCell>{item.cumulative_amount}</TableCell>
 
             </TableRow>
           ))}
