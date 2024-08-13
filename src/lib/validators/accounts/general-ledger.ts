@@ -48,7 +48,8 @@ export const summeryRow = z.object({
 
   dr_amount: z.coerce.number(),
   cr_amount: z.coerce.number(),
-  cumulative_amount: z.coerce.number(),
+  closeing_balance: z.coerce.number(),
+  opening_balance: z.coerce.number(),
 });
 
 export type SummeryRow = z.infer<typeof summeryRow>;

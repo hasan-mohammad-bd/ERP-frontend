@@ -227,6 +227,11 @@ const accountsRoutes = {
           element: withFallback(<DetailedGeneralLedger />),
           errorElement: <ErrorPage />,
         },
+        {
+          path: "detailed-general-ledger",
+          element: withFallback(<DetailedGeneralLedger />),
+          errorElement: <ErrorPage />,
+        },
       ],
     },
   ],

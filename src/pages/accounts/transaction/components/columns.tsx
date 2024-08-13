@@ -16,6 +16,10 @@ export const detailedGeneralLedgerColumns: ColumnDef<DetailedGeneralLedgerRow>[]
       cell: ({ row }) => <CellActionDynamicRoute rowData={row.original} />,
     },
     {
+      accessorKey: "ledger_account.type",
+      header: "Account Type",
+    },
+    {
       accessorKey: "entry.entry_number",
       header: "Journal No.",
     },
@@ -31,8 +35,5 @@ export const detailedGeneralLedgerColumns: ColumnDef<DetailedGeneralLedgerRow>[]
       accessorKey: "cr_amount",
       header: "Credit",
     },
-    {
-      accessorKey: "ledger_account.type",
-      header: "Account Type",
-    },
+
   ];

@@ -8,12 +8,14 @@ import { format } from "date-fns";
 import { useNavigate, useParams } from "react-router-dom";
 import DetailedGeneralTable from "./components/detailed-general-table";
 import { Button } from "@/components/ui/button";
+import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 
 const DetailedGeneralLedger = () => {
   // const [isOpen, setIsOpen] = useState(false);
 
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
+  const [ filtered, setFiltered ] = React.useState<number | null>(null);
 
 
   const param = useParams();
@@ -29,13 +31,17 @@ const DetailedGeneralLedger = () => {
   const { data, isLoading } = useGetDetailGeneralLedgersQuery(
     `start_date=${formateStartDate ? formateStartDate : ""}&end_date=${
       formateEndDate ? formateEndDate : ""
-    }&ledger_account_id=${param.ledgerId || ""}`
+    }&ledger_account_id=${param.ledgerId || filtered}`
   );
 
   const detailedGeneralLedgerData = data?.data || [];
   const navigate = useNavigate()
 
 
+  const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
+  useGetLedgerAccountsQuery("page=1&per_page=1000");
+
+  const ledgerAccountData = ledgerAccount?.data || [];
   console.log(detailedGeneralLedgerData)
 
 
@@ -57,6 +63,7 @@ const DetailedGeneralLedger = () => {
         <ReportsToolBar
           setStartDate={setStartDate}
           setEndDate={setEndDate}
+          filterProp={{ setFiltered, arrayItems: ledgerAccountData, loadingData: ledgerAccountLoading }}
 
         />
         <div className="flex-1 space-y-4 w-2/3 mx-auto">

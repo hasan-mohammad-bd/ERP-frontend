@@ -4,6 +4,8 @@ import { type ColumnDef } from "@tanstack/react-table";
 
 import { GeneralLedgerRow } from "@/lib/validators/accounts/general-ledger";
 
+import { CellActionDynamicGeneralRoute } from "./cell-action-dynamc-route";
+
 export const generalLedgerColumns: ColumnDef<GeneralLedgerRow>[] = [
 
 	{
@@ -14,6 +16,7 @@ export const generalLedgerColumns: ColumnDef<GeneralLedgerRow>[] = [
 	{
 		accessorKey: "name",
 		header: "Account",
+		cell: ({ row }) => <CellActionDynamicGeneralRoute rowData={row.original} />,
 	}
 	,
 

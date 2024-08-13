@@ -66,6 +66,11 @@ const DetailedGeneralTable = ({
           </TableRow>
         </TableHeader>
         <TableBody>
+          <TableRow className="bg-gray-100">
+           <TableCell>As On  {formateStartDate}</TableCell>
+           <TableCell colSpan={6}>Opening Balance</TableCell>
+           <TableCell colSpan={1}>{summery.opening_balance}</TableCell>
+          </TableRow>
           {tableData.map((item) => (
             <TableRow key={item.id}>
               <TableCell>{item.entry.date}</TableCell>
@@ -80,32 +85,20 @@ const DetailedGeneralTable = ({
             </TableRow>
           ))}
         </TableBody>
-        {/* <TableBody>
-          {Object.keys(tableData).map((key) =>
-            tableData[key as keyof TrialBalanceRow].map((item, index) => (
-              <TableRow key={item.id}>
-                {index === 0 && (
-                  <TableCell
-                    rowSpan={tableData[key as keyof TrialBalanceRow].length}
-                    className="font-bold"
-                  >
-                    {key}
-                  </TableCell>
-                )}
-                <TableCell className="font-medium">{item.name}</TableCell>
-                <TableCell>{item.code}</TableCell>
-                <TableCell>{item.dr_amount}</TableCell>
-                <TableCell className="text-right">{item.cr_amount}</TableCell>
-              </TableRow>
-            ))
-          )}
-        </TableBody> */}
+
         <TableFooter>
           <TableRow>
-            <TableCell className="font-bold text-right" colSpan={5}>Closing Balance</TableCell>
+            <TableCell className="font-bold text-right" colSpan={5}>Total Debits and Credits <span className="font-normal">({formateStartDate} - {formateEndDate})</span></TableCell>
             <TableCell className=""> {summery.dr_amount  || 0} </TableCell>
-            <TableCell className="">{summery.cr_amount || 0}  </TableCell>
-            <TableCell className="">{summery.cumulative_amount || 0}  </TableCell>
+            <TableCell colSpan={2} className="">{summery.cr_amount || 0}  </TableCell>
+            {/* <TableCell className="">{summery.cumulative_amount || 0}  </TableCell> */}
+          </TableRow>
+          <TableRow className="border-t border-gray-200">
+            <TableCell>As On {formateEndDate}</TableCell>
+            <TableCell className="font-bold text-right" colSpan={4}>Closing Balance</TableCell>
+            {/* <TableCell className=""> {summery.dr_amount  || 0} </TableCell>
+            <TableCell className="">{summery.cr_amount || 0}  </TableCell> */}
+            <TableCell colSpan={3} className="">{summery.closeing_balance || 0}  </TableCell>
           </TableRow>
         </TableFooter>
       </Table>

@@ -101,6 +101,9 @@ const IncomeStatementTable = ({ tableData, reportFormate }: Props) => {
                     <TableRow>
                       <TableCell></TableCell>
                     </TableRow>
+                    <TableRow>
+                  
+                    </TableRow>
                   </>
                 ))}
 
