@@ -235,6 +235,7 @@ export function AddReceiptForm() {
                     />
 
                     <div className="w-[200px]">
+                      
                       <FormField
                         control={form.control}
                         name={`details.0.ledger_account_id`}
