@@ -109,9 +109,9 @@ const accountsNavItems: NavItem[] = [
 				color: "text-sky-500",
 			},
 			{
-				title: "GL Details",
+				title: "Transaction",
 				icon: Clock,
-				href: "/accounts/reports/detailed-general-ledger",
+				href: "/accounts/reports/transaction",
 				color: "text-sky-500",
 			},
 			{

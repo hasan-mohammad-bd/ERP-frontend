@@ -27,6 +27,10 @@ const ItemFilter = ({ filterProp }: ItemFilterProps) => {
     }
   };
 
+  if (!arrayItems || arrayItems.length === 0) {
+    return null;
+  }
+
   return (
     <div>
       <div className="">

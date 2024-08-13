@@ -1,24 +1,24 @@
 import React from "react";
 import { Loading } from "@/components/common/loading";
 import { Separator } from "@radix-ui/react-dropdown-menu";
-import { DataTable } from "@/components/ui/data-table/data-table";
-import { PaginationInfo } from "@/types";
-import { PaginationState } from "@tanstack/react-table";
-import { detailedGeneralLedgerColumns } from "./components/columns";
 import { useGetDetailGeneralLedgersQuery } from "@/store/services/accounts/api/general-ledger";
 import ReportsToolBar from "@/components/common/tool-bar/reports-tool-bar";
-import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
+
 import { format } from "date-fns";
+import { useNavigate, useParams } from "react-router-dom";
+import DetailedGeneralTable from "./components/detailed-general-table";
+import { Button } from "@/components/ui/button";
 
 const DetailedGeneralLedger = () => {
   // const [isOpen, setIsOpen] = useState(false);
-  const [filtered, setFiltered] = React.useState<number | null>(null);
+
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
-  const [pagination, setPagination] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+
+
+  const param = useParams();
+
+
 
   const formateStartDate = format(
     startDate ? startDate : new Date(),
@@ -29,21 +29,25 @@ const DetailedGeneralLedger = () => {
   const { data, isLoading } = useGetDetailGeneralLedgersQuery(
     `start_date=${formateStartDate ? formateStartDate : ""}&end_date=${
       formateEndDate ? formateEndDate : ""
-    }&ledger_account_id=${filtered ? filtered : ""}`
+    }&ledger_account_id=${param.ledgerId || ""}`
   );
 
-  
-
   const detailedGeneralLedgerData = data?.data || [];
-  const paginationInfo: PaginationInfo | undefined = data?.meta;
+  const navigate = useNavigate()
+
 
   console.log(detailedGeneralLedgerData)
 
 
-  const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
-    useGetLedgerAccountsQuery("page=1&per_page=1000");
 
-  const ledgerAccountData = ledgerAccount?.data || [];
+ 
+  const summery = data?.summery || {
+    dr_amount: 0,
+    cr_amount: 0,
+    cumulative_amount: 0,
+  };
+
+  console.log(summery)
 
   if (isLoading) return <Loading />;
 
@@ -53,32 +57,25 @@ const DetailedGeneralLedger = () => {
         <ReportsToolBar
           setStartDate={setStartDate}
           setEndDate={setEndDate}
-          filterProp={{
-            setFiltered,
-            arrayItems: ledgerAccountData,
-            loadingData: ledgerAccountLoading,
-          }}
+
         />
-        <div className="flex-1 space-y-4">
+        <div className="flex-1 space-y-4 w-2/3 mx-auto">
           <Separator />
-          {detailedGeneralLedgerData && (
-            <div>
-              <DataTable
-                columns={detailedGeneralLedgerColumns}
-                data={detailedGeneralLedgerData}
-                paginationInfo={paginationInfo}
-                pagination={paginationInfo && pagination}
-                setPagination={paginationInfo && setPagination}
-                noPagination={true}
-                reportFormate={{
-                  startDate,
-                  endDate,
-                  company: "Akaar IT",
-                  reportType: "Detailed General Ledger",
-                }}
-              />
-            </div>
-          )}
+          {detailedGeneralLedgerData && summery ? (
+            <DetailedGeneralTable
+              tableData={detailedGeneralLedgerData}
+              summery={summery}
+              reportFormate={{
+                startDate,
+                endDate,
+                company: "Akaar IT",
+                reportType: "Detailed General Ledger",
+              }}
+            />
+          ) : null}
+          <div className="flex justify-end">
+          <Button className="" onClick={() => navigate("/accounts/reports/transaction")}>Back</Button>
+          </div>
         </div>
       </div>
     </>

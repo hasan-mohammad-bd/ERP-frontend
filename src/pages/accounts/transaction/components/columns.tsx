@@ -1,44 +1,38 @@
-
 import { type ColumnDef } from "@tanstack/react-table";
 
+import { DetailedGeneralLedgerRow } from "@/lib/validators/accounts/general-ledger";
+import { CellActionDynamicRoute } from "@/components/common/accounts/cell-action-dynamc-route";
 
-import { GeneralLedgerRow } from "@/lib/validators/accounts/general-ledger";
-
-export const generalLedgerColumns: ColumnDef<GeneralLedgerRow>[] = [
-
-	{
-		accessorKey: "code",
-		header: "Account Code",
-	}
-	,
-	{
-		accessorKey: "name",
-		header: "Account",
-	}
-	,
-
-	{
-		accessorKey: "dr_amount",
-		header: "Debit",
-	},
-	{
-		accessorKey: "cr_amount",
-		header: "Credit",
-	},
-
-	{
-		accessorKey: "balance",
-		header: "Balance",
-	},
-	{
-		accessorKey: "cr_balance",
-		header: "Credit Balance",
-	},
-	{
-		accessorKey: "dr_balance",
-		header: "Debit Balance",
-	}
-
-
-
-];
+export const detailedGeneralLedgerColumns: ColumnDef<DetailedGeneralLedgerRow>[] =
+  [
+    {
+      accessorKey: "entry.date",
+      header: "Date",
+    }
+    ,
+    {
+      accessorKey: "ledger_account.name",
+      header: "Account Head",
+      cell: ({ row }) => <CellActionDynamicRoute rowData={row.original} />,
+    },
+    {
+      accessorKey: "entry.entry_number",
+      header: "Journal No.",
+    },
+    {
+      accessorKey: "entry.note",
+      header: "Description",
+    },
+    {
+      accessorKey: "dr_amount",
+      header: "Debit",
+    },
+    {
+      accessorKey: "cr_amount",
+      header: "Credit",
+    },
+    {
+      accessorKey: "ledger_account.type",
+      header: "Account Type",
+    },
+  ];
