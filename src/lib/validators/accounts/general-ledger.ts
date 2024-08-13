@@ -29,6 +29,7 @@ export const detailedGeneralLedgerRow = z.object({
     user: true,
     location: true,
     financial_year: true,
+    
   }),
   ledger_account: ledgerRow,
   contact: z.string(),
@@ -36,6 +37,7 @@ export const detailedGeneralLedgerRow = z.object({
   dr_amount: z.coerce.number(),
   cr_amount: z.coerce.number(),
   total: z.coerce.number(),
+  cumulative_amount: z.coerce.number(),
   created_at: z.string().datetime(),
   date: z.string().date(),
 });
