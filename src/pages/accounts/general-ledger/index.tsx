@@ -34,11 +34,6 @@ const GeneralLedger = () => {
     `start_date=${formateStartDate? formateStartDate : "" }&end_date=${formateEndDate? formateEndDate : ""}&ledger_account_id=${filtered? filtered : ""}`
   );
 
- 
-
-
-
-
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
   useGetLedgerAccountsQuery("page=1&per_page=1000");
 

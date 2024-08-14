@@ -35,9 +35,6 @@ const Transaction = () => {
   const detailedGeneralLedgerData = data?.data || [];
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
-  console.log(detailedGeneralLedgerData)
-
-
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
     useGetLedgerAccountsQuery("page=1&per_page=1000");
 

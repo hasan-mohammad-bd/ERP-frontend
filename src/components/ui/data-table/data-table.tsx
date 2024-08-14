@@ -34,7 +34,6 @@ import { PaginationInfo } from "@/types";
 import { Card } from "../card";
 import { format } from "date-fns";
 
-
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -48,14 +47,15 @@ interface DataTableProps<TData, TValue> {
   // setStartDate?: (value: Date | null) => void;
   // setEndDate?: (value: Date | null) => void;
 
-	reportFormate?: {
-		startDate: Date | null;
-		endDate: Date | null; 
-		company: string;
-		reportType: string;
-	}
+  reportFormate?: {
+    startDate: Date | null;
+    endDate: Date | null;
+    company: string;
+    reportType: string;
+  };
   startDate?: Date | null;
   endDate?: Date | null;
+  padding?: string | null;
 }
 
 export function DataTable<TData, TValue>({
@@ -67,6 +67,7 @@ export function DataTable<TData, TValue>({
   noPagination,
   bulkActions,
   selectedBulkAction,
+  padding,
 
   setSelectedBulkAction,
 
@@ -87,9 +88,14 @@ export function DataTable<TData, TValue>({
       pageSize: noPagination ? data.length : 10,
     });
 
-    const formateStartDate =
-    reportFormate && reportFormate.startDate ? format(new Date(reportFormate.startDate), "dd-MMM-yyyy") : null;
-  const formateEndDate = reportFormate && reportFormate.endDate ? format(new Date(reportFormate.endDate), "dd-MMM-yyyy") : null;
+  const formateStartDate =
+    reportFormate && reportFormate.startDate
+      ? format(new Date(reportFormate.startDate), "dd-MMM-yyyy")
+      : null;
+  const formateEndDate =
+    reportFormate && reportFormate.endDate
+      ? format(new Date(reportFormate.endDate), "dd-MMM-yyyy")
+      : null;
 
   const pagination = externalPagination ?? internalPagination;
   const setPagination = externalSetPagination ?? setInternalPagination;
@@ -152,7 +158,6 @@ export function DataTable<TData, TValue>({
           bulkActions={bulkActions}
           selectedBulkAction={selectedBulkAction}
           setSelectedBulkAction={setSelectedBulkAction}
-          
         />
       ) : null}
       <div className="rounded-md border">
@@ -189,7 +194,9 @@ export function DataTable<TData, TValue>({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
-                      className={`${reportFormate ? "py-2" : "py-0"}`}
+                      className={`${
+                        reportFormate ? "py-2" : padding || "py-0"
+                      }`}
                       key={cell.id}
                     >
                       {flexRender(
