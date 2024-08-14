@@ -1,6 +1,5 @@
 import {
   CardHeader,
-  CardTitle,
   CardContent,
 
   Card,
@@ -10,22 +9,22 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { CalendarDateRangePicker } from "./date-range-picker";
 import { Overview } from "./overview";
 
-import { ArrowRightLeft, AudioLines, Blocks, ChevronDown, ChevronUp, CircleDollarSign, Coins, ReceiptText, Tags } from "lucide-react";
-import { DatePickerWithRange } from "@/components/common/tool-bar/tool-bar-items/date-range-picker";
-import React from "react";
-import { format } from "date-fns";
+import { ArrowRightLeft, ChevronDown, ChevronUp, CircleDollarSign, Coins, ReceiptText } from "lucide-react";
+// import { DatePickerWithRange } from "@/components/common/tool-bar/tool-bar-items/date-range-picker";
+// import React from "react";
+// import { format } from "date-fns";
 import { Chart } from "./chart";
 import Voucher from "./voucher-list";
 
 const Dashboard = () => {
-  const [startDate, setStartDate] = React.useState<Date | null>(new Date());
-  const [endDate, setEndDate] = React.useState<Date | null>(new Date());
+  // const [startDate, setStartDate] = React.useState<Date | null>(new Date());
+  // const [endDate, setEndDate] = React.useState<Date | null>(new Date());
 
-  const formateStartDate = format(
-    startDate ? startDate : new Date(),
-    "yyyy-MM-dd"
-  );
-  const formateEndDate = format(endDate ? endDate : new Date(), "yyyy-MM-dd");
+  // const formateStartDate = format(
+  //   startDate ? startDate : new Date(),
+  //   "yyyy-MM-dd"
+  // );
+  // const formateEndDate = format(endDate ? endDate : new Date(), "yyyy-MM-dd");
   return (
     <div className="flex h-full flex-col">
       <div className="flex-1 space-y-4">
@@ -43,10 +42,10 @@ const Dashboard = () => {
                 <Card className="p-3">
                   <div className="flex justify-between mb-2">
                     <h3 className="text-md ">Growth Pluses</h3>
-                    <DatePickerWithRange
+                    {/* <DatePickerWithRange
                       setStartDate={setStartDate}
                       setEndDate={setEndDate}
-                    />
+                    /> */}
                   </div>
                   <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                     <Card className="p-4">
@@ -89,10 +88,10 @@ const Dashboard = () => {
                 <Card className="p-3 mt-3">
                   <div className="flex justify-between mb-2">
                     <h3>Revenue Projection</h3>
-                    <DatePickerWithRange
+                    {/* <DatePickerWithRange
                       setStartDate={setStartDate}
                       setEndDate={setEndDate}
-                    />
+                    /> */}
                   </div>
                   <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                     <Card className="p-4">
