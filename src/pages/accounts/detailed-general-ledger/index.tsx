@@ -45,12 +45,13 @@ const DetailedGeneralLedger = () => {
   console.log(detailedGeneralLedgerData)
 
 
-
  
   const summery = data?.summery || {
+
     dr_amount: 0,
     cr_amount: 0,
-    cumulative_amount: 0,
+    closeing_balance: 0,
+    opening_balance: 0,
   };
 
   console.log(summery)
