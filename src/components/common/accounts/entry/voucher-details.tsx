@@ -1,4 +1,5 @@
-import { EntryRow } from "@/lib/validators/accounts";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -7,14 +8,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card } from "@/components/ui/card";
+import { EntryRow } from "@/lib/validators/accounts";
 import { numberToWords } from "@/utils/formate-number";
-import { Button } from "@/components/ui/button";
-import { File, Printer } from "lucide-react";
-import ReactToPrint from "react-to-print";
-import { useRef } from "react";
-import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import { File, Printer } from "lucide-react";
+import { useRef } from "react";
+import ReactToPrint from "react-to-print";
 
 interface Props {
   data: EntryRow;
