@@ -1,7 +1,6 @@
 import withFallback from "@/utils/with-fallback";
 import {
   ChartOfAccounts,
-  Dashboard,
   ErrorPage,
   FinancialYears,
   Layout,
@@ -11,6 +10,7 @@ import {
   ReceptVoucher,
   PaymentVoucher,
   ContraVoucher,
+  DashboardAccounts,
 } from "./components";
 import { AddJournalForm } from "@/pages/accounts/journal-voucher/components/add-journal-form";
 import { AddReceiptForm } from "@/pages/accounts/receipt-voucher/components/add-receipt-form";
@@ -35,8 +35,7 @@ const accountsRoutes = {
   children: [
     {
       index: true,
-      element: withFallback(<Dashboard title="Accounts" />),
-      errorElement: withFallback(<ErrorPage />),
+      element: withFallback(<DashboardAccounts />),
     },
     {
       path: "financial-year",
