@@ -6,9 +6,13 @@ import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-
 import { format } from "date-fns";
 import { useGetIncomeStatementQuery } from "@/store/services/accounts/api/income-statement";
 import IncomeStatementTable from "./components/incone-statement-table";
+import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
 
 const IncomeStatement = () => {
   // const [isOpen, setIsOpen] = useState(false);
+  const [projectFiltered, setProjectFiltered] = React.useState<number | null>(
+    null
+  );
   const [filtered, setFiltered] = React.useState<number | null>(null);
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
@@ -22,7 +26,9 @@ const IncomeStatement = () => {
   const { data, isLoading } = useGetIncomeStatementQuery(
     `start_date=${formateStartDate ? formateStartDate : ""}&end_date=${
       formateEndDate ? formateEndDate : ""
-    }&ledger_account_id=${filtered ? filtered : ""}`
+    }&ledger_account_id=${filtered ? filtered : ""}&project_id=${
+      projectFiltered ? projectFiltered : ""
+    }`
   );
 
   const balanceSheet = data?.data;
@@ -31,6 +37,11 @@ const IncomeStatement = () => {
     useGetLedgerAccountsQuery("page=1&per_page=1000");
 
   const ledgerAccountData = ledgerAccount?.data || [];
+
+  const { data: projects, isLoading: projectsLoading } =
+    useGetProjectsQuery(`page=1&per_page=1000`);
+
+  const projectData = projects?.data || [];
 
   if (isLoading) return <Loading />;
 
@@ -42,8 +53,11 @@ const IncomeStatement = () => {
           setEndDate={setEndDate}
           filterProp={{
             setFiltered,
+            setProjectFiltered,
             arrayItems: ledgerAccountData,
             loadingData: ledgerAccountLoading,
+            arrayItemsTwo: projectData,
+            loadingDataTwo: projectsLoading,
           }}
         />
         <div className="flex-1 space-y-4 w-2/3 mx-auto">

@@ -12,8 +12,11 @@ interface ReportsToolBarProps {
   setItem?: (value: object[]) => void
   filterProp?: {
     setFiltered?: (value: number | null) => void;
+    setProjectFiltered?: (value: number | null) => void
     arrayItems?: object[]
     loadingData?: boolean
+    arrayItemsTwo?: object[]
+    loadingDataTwo?: boolean
   }
   
 }
