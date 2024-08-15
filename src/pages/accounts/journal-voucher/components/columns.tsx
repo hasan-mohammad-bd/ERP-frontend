@@ -60,10 +60,7 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
     accessorFn: (row) => row?.user?.name,
   },
 
-  {
-    header: "Financial Year",
-    accessorFn: (row) => row?.financial_year?.name,
-  },
+
 
   /* 	{
 		accessorKey: "is_active",

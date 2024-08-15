@@ -49,18 +49,15 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
 
 	{
 		header: "Location",
-		accessorFn: (row) => row.location.name,
+		accessorFn: (row) => row?.location?.name,
 	},
 
 	{
 		header: "User",
-		accessorFn: (row) => row.user.name,
+		accessorFn: (row) => row?.user?.name,
 	},
 
-	{
-		header: "Financial Year",
-		accessorFn: (row) => row.financial_year.name,
-	},
+
 
 /* 	{
 		accessorKey: "is_active",
