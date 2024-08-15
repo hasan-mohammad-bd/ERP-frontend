@@ -9,18 +9,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import DetailedGeneralTable from "./components/detailed-general-table";
 import { Button } from "@/components/ui/button";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
+import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
 
 const DetailedGeneralLedger = () => {
   // const [isOpen, setIsOpen] = useState(false);
-
+  const [projectFiltered, setProjectFiltered] = React.useState<number | null>(
+    null
+  );
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
-  const [ filtered, setFiltered ] = React.useState<number | null>(null);
-
+  const [filtered, setFiltered] = React.useState<number | null>(null);
 
   const param = useParams();
-
-
 
   const formateStartDate = format(
     startDate ? startDate : new Date(),
@@ -31,30 +31,30 @@ const DetailedGeneralLedger = () => {
   const { data, isLoading } = useGetDetailGeneralLedgersQuery(
     `start_date=${formateStartDate ? formateStartDate : ""}&end_date=${
       formateEndDate ? formateEndDate : ""
-    }&ledger_account_id=${param.ledgerId || filtered}`
+    }&ledger_account_id=${param.ledgerId || filtered}&project_id=${
+      projectFiltered ? projectFiltered : ""
+    }`
   );
 
   const detailedGeneralLedgerData = data?.data || [];
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
 
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
-  useGetLedgerAccountsQuery("page=1&per_page=1000");
+    useGetLedgerAccountsQuery("page=1&per_page=1000");
 
   const ledgerAccountData = ledgerAccount?.data || [];
-  console.log(detailedGeneralLedgerData)
 
+  const { data: projects, isLoading: projectsLoading } =
+    useGetProjectsQuery(`page=1&per_page=1000`);
 
- 
+  const projectData = projects?.data || [];
+
   const summery = data?.summery || {
-
     dr_amount: 0,
     cr_amount: 0,
     closeing_balance: 0,
     opening_balance: 0,
   };
-
-  console.log(summery)
 
   if (isLoading) return <Loading />;
 
@@ -64,8 +64,14 @@ const DetailedGeneralLedger = () => {
         <ReportsToolBar
           setStartDate={setStartDate}
           setEndDate={setEndDate}
-          filterProp={{ setFiltered, arrayItems: ledgerAccountData, loadingData: ledgerAccountLoading }}
-
+          filterProp={{
+            setFiltered,
+            setProjectFiltered,
+            arrayItems: ledgerAccountData,
+            loadingData: ledgerAccountLoading,
+            arrayItemsTwo: projectData,
+            loadingDataTwo: projectsLoading,
+          }}
         />
         <div className="flex-1 space-y-4 w-2/3 mx-auto">
           <Separator />
@@ -82,7 +88,12 @@ const DetailedGeneralLedger = () => {
             />
           ) : null}
           <div className="flex justify-end">
-          <Button className="" onClick={() => navigate("/accounts/reports/transaction")}>Back</Button>
+            <Button
+              className=""
+              onClick={() => navigate("/accounts/reports/transaction")}
+            >
+              Back
+            </Button>
           </div>
         </div>
       </div>

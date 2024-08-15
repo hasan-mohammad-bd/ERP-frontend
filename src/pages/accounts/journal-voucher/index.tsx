@@ -28,6 +28,8 @@ const JournalVoucher = () => {
 
   const journalVoucher = data?.data || [];
 
+  console.log("journalVoucher", journalVoucher);
+
   const paginationInfo: PaginationInfo | undefined = data?.meta;
   if (isLoading) return <Loading />;
 

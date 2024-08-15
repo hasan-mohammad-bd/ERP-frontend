@@ -15,10 +15,12 @@ import { useGetGeneralLedgersQuery } from "@/store/services/accounts/api/general
 import ReportsToolBar from "@/components/common/tool-bar/reports-tool-bar";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { format } from "date-fns";
+import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
 
 const GeneralLedger = () => {
   // const [isOpen, setIsOpen] = useState(false);
-  const [ filtered, setFiltered ] = React.useState<number | null>(null);
+  const [projectFiltered, setProjectFiltered] = React.useState<number | null>(null);
+  const [filtered, setFiltered] = React.useState<number | null>(null);
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
   const [pagination, setPagination] = React.useState<PaginationState>({
@@ -26,16 +28,27 @@ const GeneralLedger = () => {
     pageSize: 10,
   });
 
+  const formateStartDate = format(
+    startDate ? startDate : new Date(),
+    "yyyy-MM-dd"
+  );
+  const formateEndDate = format(endDate ? endDate : new Date(), "yyyy-MM-dd");
 
-  const formateStartDate = format(startDate? startDate : new Date(), "yyyy-MM-dd");
-  const formateEndDate = format(endDate? endDate : new Date(), "yyyy-MM-dd");
-  
   const { data, isLoading } = useGetGeneralLedgersQuery(
-    `start_date=${formateStartDate? formateStartDate : "" }&end_date=${formateEndDate? formateEndDate : ""}&ledger_account_id=${filtered? filtered : ""}`
+    `start_date=${formateStartDate ? formateStartDate : ""}&end_date=${
+      formateEndDate ? formateEndDate : ""
+    }&ledger_account_id=${filtered ? filtered : ""}&project_id=${
+      projectFiltered ? projectFiltered : ""
+    }`
   );
 
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
-  useGetLedgerAccountsQuery("page=1&per_page=1000");
+    useGetLedgerAccountsQuery("page=1&per_page=1000");
+
+  const { data: projects, isLoading: projectsLoading } =
+    useGetProjectsQuery(`page=1&per_page=1000`);
+
+  const projectData = projects?.data || [];
 
   const ledgerAccountData = ledgerAccount?.data || [];
 
@@ -50,7 +63,14 @@ const GeneralLedger = () => {
         <ReportsToolBar
           setStartDate={setStartDate}
           setEndDate={setEndDate}
-          filterProp={{ setFiltered, arrayItems: ledgerAccountData, loadingData: ledgerAccountLoading }}
+          filterProp={{
+            setFiltered,
+            setProjectFiltered,
+            arrayItems: ledgerAccountData,
+            loadingData: ledgerAccountLoading,
+            arrayItemsTwo: projectData,
+            loadingDataTwo: projectsLoading,
+          }}
         />
         <div className="flex-1 space-y-4">
           <Separator />
