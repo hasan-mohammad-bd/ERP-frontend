@@ -7,7 +7,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Loading } from "../../loading";
-import { Cross } from "lucide-react";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
 interface ItemFilterProps {
