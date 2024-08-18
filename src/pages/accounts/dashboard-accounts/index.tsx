@@ -1,3 +1,4 @@
+
 import { CardHeader, CardContent, Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -54,6 +55,12 @@ const Dashboard = () => {
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsContent value="overview" className="space-y-4">
             <div className="grid grid-cols-5 gap-3">
+              <div className="col-span-3">
+                <div className="">
+                  <Card className="p-3">
+                    <div className="flex justify-between mb-2">
+                      <h3 className="text-md ">Growth Pluses</h3>
+                      {/* <DatePickerWithRange
               <div className="col-span-3">
                 <div className="">
                   <Card className="p-3">
