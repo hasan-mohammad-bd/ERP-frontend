@@ -34,7 +34,6 @@ import { useGetEnumQuery } from "@/store/services/accounts/api/enum";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 
-
 interface AddLedgerFormProps {
   modalClose: () => void;
   rowData?: LedgerRow;
@@ -46,7 +45,6 @@ export function AddLedgerForm({
   rowData: previousData,
   coaType,
 }: AddLedgerFormProps) {
-
   const [createLedgerAccount, { isLoading }] = useCreateLedgerAccountMutation();
   const [isSubTypeTrue, setIsSubTypeTrue] = React.useState(0);
   /*   const [updateLedgerGroup, { isLoading: updateLoading }] =
@@ -62,6 +60,8 @@ export function AddLedgerForm({
 
   const ledgerGroupData = ledgerGroupsArray?.data || [];
 
+  console.log(ledgerGroupData);
+
   // const filterLedgerGroupData = ledgerGroupData?.filter(
   //   (ledger_group: LedgerGroupArrayRow) => {
   //     return ledger_group?.type === parentType;
@@ -72,7 +72,7 @@ export function AddLedgerForm({
     resolver: zodResolver(LedgerSchema),
     defaultValues: {
       name: previousData?.name || "",
-      parent_id: previousData?.id ,
+      parent_id: previousData?.id,
       is_sub_type: 0,
       nature: previousData?.nature || "",
     },
@@ -84,7 +84,6 @@ export function AddLedgerForm({
   const filteredType = ledgerGroupData?.filter(
     (ledger_group: LedgerGroupArrayRow) => ledger_group?.id == selectedType
   );
-
 
   async function onSubmit(data: LedgerFromValues) {
     try {
@@ -119,7 +118,6 @@ export function AddLedgerForm({
 
             {!previousData?.id && (
               <>
-
                 <FormField
                   control={form.control}
                   name="parent_id"
@@ -136,16 +134,23 @@ export function AddLedgerForm({
                           {ledgerGroupsArrayLoading ? (
                             <Loading />
                           ) : (
-                            ledgerGroupData?.map(
-                              (parent: LedgerGroupArrayRow) => (
+                            ledgerGroupData
+                              ?.filter(
+                                (item) =>
+                                  item?.name !== "Assets" &&
+                                  item?.name !== "Liabilities" &&
+                                  item?.name !== "Equity" &&
+                                  item?.name !== "Expenses" &&
+                                  item?.name !== "Owner's Equity"
+                              )
+                              .map((parent: LedgerGroupArrayRow) => (
                                 <SelectItem
                                   key={parent.id}
                                   value={String(parent.id)}
                                 >
                                   {parent.name}
                                 </SelectItem>
-                              )
-                            )
+                              ))
                           )}
                         </SelectContent>
                       </Select>
