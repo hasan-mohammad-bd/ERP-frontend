@@ -1,8 +1,8 @@
+
 import { CardHeader, CardContent, Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { CalendarDateRangePicker } from "./date-range-picker";
-import { Overview } from "./overview";
+
 
 import {
   ArrowRightLeft,
@@ -12,34 +12,55 @@ import {
   Coins,
   ReceiptText,
 } from "lucide-react";
-// import { DatePickerWithRange } from "@/components/common/tool-bar/tool-bar-items/date-range-picker";
-// import React from "react";
-// import { format } from "date-fns";
+import { DatePickerWithRange } from "@/components/common/tool-bar/tool-bar-items/date-range-picker";
+import React from "react";
+import { format } from "date-fns";
 import { Chart } from "./chart";
 import Voucher from "./voucher-list";
+import { useGetDashboardSummariesQuery } from "@/store/services/accounts/api/general-ledger copy";
+import { BarChartComponent } from "./bar-chart";
 
 const Dashboard = () => {
-  // const [startDate, setStartDate] = React.useState<Date | null>(new Date());
-  // const [endDate, setEndDate] = React.useState<Date | null>(new Date());
+  const [startDate, setStartDate] = React.useState<Date | null>(new Date());
+  const [endDate, setEndDate] = React.useState<Date | null>(new Date());
+  const formateStartDate = format(
+    startDate ? startDate : new Date(),
+    "yyyy-MM-dd"
+  );
+  const formateEndDate = format(endDate ? endDate : new Date(), "yyyy-MM-dd");
 
-  // const formateStartDate = format(
-  //   startDate ? startDate : new Date(),
-  //   "yyyy-MM-dd"
-  // );
-  // const formateEndDate = format(endDate ? endDate : new Date(), "yyyy-MM-dd");
+  const { data } = useGetDashboardSummariesQuery(`start_date=${formateStartDate ? formateStartDate : ""}&end_date=${formateEndDate ? formateEndDate : ""}`); 
+
+
+
+  const chartData = data?.data || [];
+
+
+
+
+
   return (
     <div className="flex h-full flex-col">
       <div className="flex-1 space-y-4">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-xl tracking-tight">Accounts Dashboard</h2>
           <div className="flex items-center space-x-2">
-            <CalendarDateRangePicker />
+            <DatePickerWithRange
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+            />
             <Button size="sm">Download</Button>
           </div>
         </div>
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsContent value="overview" className="space-y-4">
             <div className="grid grid-cols-5 gap-3">
+              <div className="col-span-3">
+                <div className="">
+                  <Card className="p-3">
+                    <div className="flex justify-between mb-2">
+                      <h3 className="text-md ">Growth Pluses</h3>
+                      {/* <DatePickerWithRange
               <div className="col-span-3">
                 <div className="">
                   <Card className="p-3">
@@ -57,7 +78,7 @@ const Dashboard = () => {
                             <CircleDollarSign size={16} />
                           </div>
                           <div className="ml-3 text-lg font-bold">
-                            2334543 BDT
+                            {data?.growth?.income || 0} BDT
                           </div>
                         </div>
                         <h2 className="mt-2 text-sm">Total Income</h2>
@@ -69,7 +90,7 @@ const Dashboard = () => {
                           </div>
                           <div className="ml-3 text-lg font-bold">
                             {" "}
-                            2334543 BDT
+                            {data?.growth?.expence || 0} BDT
                           </div>
                         </div>
                         <h2 className="mt-2 text-sm">Total Expense</h2>
@@ -81,7 +102,7 @@ const Dashboard = () => {
                           </div>
                           <div className="ml-3 text-lg font-bold">
                             {" "}
-                            24543 BDT
+                            {data?.growth?.net_profit || 0} BDT
                           </div>
                         </div>
                         <h2 className="mt-2 text-sm">Net Profit</h2>
@@ -103,7 +124,7 @@ const Dashboard = () => {
                             <ChevronUp size={16} />
                           </div>
                           <div className="ml-3 text-lg font-bold">
-                            2334543 BDT
+                            {data?.revenue?.accounts_receivable || 0} BDT
                           </div>
                         </div>
                         <h2 className="mt-2 text-sm">Total Receivable</h2>
@@ -115,7 +136,7 @@ const Dashboard = () => {
                           </div>
                           <div className="ml-3 text-lg font-bold">
                             {" "}
-                            2334543 BDT
+                            {data?.revenue?.accounts_payable} BDT
                           </div>
                         </div>
                         <h2 className="mt-2 text-sm">Total Payable</h2>
@@ -127,7 +148,7 @@ const Dashboard = () => {
                           </div>
                           <div className="ml-3 text-lg font-bold">
                             {" "}
-                            2334543 BDT
+                            {data?.revenue?.difference} BDT
                           </div>
                         </div>
                         <h2 className="mt-2 text-sm">Difference</h2>
@@ -146,16 +167,17 @@ const Dashboard = () => {
                 </div>
                 <Card className="mt-3">
                   <CardHeader>
-                    <h2 className="text-md ">Sells per month</h2>
+                    <h2 className="text-md ">Sales per month</h2>
                   </CardHeader>
                   <CardContent className="pl-2">
-                    <Overview />
+                    <BarChartComponent chartData={chartData} />
+                    {/* <Overview /> */}
                   </CardContent>
                 </Card>
               </div>
               <div className="col-span-2">
                 <div className="">
-                  <Chart />
+                  <Chart chartData={chartData} />
                 </div>
                 <div className="mt-3">
                   <Voucher />

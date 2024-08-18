@@ -15,27 +15,30 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
+
+/* const chartData = [
   { month: "January", income: 186, expense: 80 },
   { month: "February", income: 305, expense: 200 },
   { month: "March", income: 237, expense: 120 },
   { month: "April", income: 73, expense: 190 },
   { month: "May", income: 209, expense: 130 },
   { month: "June", income: 214, expense: 140 },
-]
+] */
 
 const chartConfig = {
   desktop: {
-    label: "Income",
+    label: "income",
     color: "hsl(var(--chart-1))",
   },
   mobile: {
-    label: "Expense",
+    label: "expense",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig
 
-export function Chart() {
+
+
+export function Chart({ chartData }: any) {
   return (
     <Card>
       <CardHeader>
@@ -54,7 +57,7 @@ export function Chart() {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="full_name"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
@@ -65,7 +68,7 @@ export function Chart() {
               content={<ChartTooltipContent indicator="dot" />}
             />
             <Area
-              dataKey="income"
+              dataKey="expense"
               type="natural"
               fill="var(--color-mobile)"
               fillOpacity={0.4}
@@ -73,7 +76,7 @@ export function Chart() {
               stackId="a"
             />
             <Area
-              dataKey="expense"
+              dataKey="income"
               type="natural"
               fill="var(--color-desktop)"
               fillOpacity={0.4}
@@ -87,7 +90,7 @@ export function Chart() {
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              January - June 2024
+              {chartData[0]?.full_name} - {chartData[chartData.length - 1]?.full_name}
             </div>
           </div>
         </div>
