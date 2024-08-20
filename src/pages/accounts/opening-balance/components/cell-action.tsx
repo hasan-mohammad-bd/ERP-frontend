@@ -11,7 +11,7 @@ import { AlertModal } from "@/components/common/alert-modal";
 import { EntryRow } from "@/lib/validators/accounts";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { useRemoveOpeningBalanceMutation } from "@/store/services/accounts/api/opening-balance";
+import { useRemoveEntryMutation } from "@/store/services/accounts/api/entries";
 
 interface CellActionProps {
   rowData: EntryRow;
@@ -20,7 +20,7 @@ interface CellActionProps {
 export function CellAction({ rowData }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
 
-  const [removeEntry, { isLoading: deleteLoading }] = useRemoveOpeningBalanceMutation();
+  const [removeEntry, { isLoading: deleteLoading }] = useRemoveEntryMutation();
   const navigation = useNavigate();
 
   const handleDepartmentDelete = async (id: number) => {

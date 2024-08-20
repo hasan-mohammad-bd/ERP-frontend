@@ -1,10 +1,10 @@
-import { IncomeStatementRow } from "@/lib/validators/accounts/income-statement";
+import { IncomeStatementRow, SummeryRow } from "@/lib/validators/accounts/income-statement";
 import { accountApi } from "../..";
 
 const incomeStatementApi = accountApi.injectEndpoints({
 	endpoints: (build) => ({
 		getIncomeStatement: build.query<
-			{ data: IncomeStatementRow[]  },
+			{ data: IncomeStatementRow[], summery: SummeryRow   },
 			string
 		>({
 			query: (params) => `reports/income-statement?${params}`,

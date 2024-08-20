@@ -10,12 +10,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { IncomeStatementRow } from "@/lib/validators/accounts/income-statement";
+import {
+  IncomeStatementRow,
+  SummeryRow,
+} from "@/lib/validators/accounts/income-statement";
 
 // import BalanceSheetChild from "./balance-sheet-child";
 
 interface Props {
   tableData?: IncomeStatementRow[];
+  summery?: SummeryRow;
 
   reportFormate?: {
     startDate: Date | null;
@@ -24,7 +28,7 @@ interface Props {
     reportType: string;
   };
 }
-const IncomeStatementTable = ({ tableData, reportFormate }: Props) => {
+const IncomeStatementTable = ({ tableData, reportFormate, summery }: Props) => {
   const formateStartDate =
     reportFormate && reportFormate.startDate
       ? format(new Date(reportFormate.startDate), "dd-MMM-yyyy")
@@ -58,6 +62,21 @@ const IncomeStatementTable = ({ tableData, reportFormate }: Props) => {
               <TableHead className="text-right">Total</TableHead>
             </TableRow>
           </TableHeader>
+          <TableRow>
+            <TableCell>Product Sales</TableCell>
+            <TableCell></TableCell>
+            <TableCell className="text-right">{summery?.product_sale}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>COGS</TableCell>
+            <TableCell></TableCell>
+            <TableCell className="text-right">{summery?.cogs}</TableCell>
+          </TableRow>
+          <TableRow className="bg-gray-100">
+            <TableCell>Gross Profit</TableCell>
+            <TableCell></TableCell>
+            <TableCell className="text-right font-bold">{summery?.gros_profit}</TableCell>
+          </TableRow>
 
           {tableData &&
             tableData.map((item) => (
@@ -126,6 +145,27 @@ const IncomeStatementTable = ({ tableData, reportFormate }: Props) => {
                 </TableRow>
               </TableBody>
             ))}
+
+            <TableRow className="bg-gray-100">
+              <TableCell className="font-bold">Depreciation</TableCell>
+              <TableCell></TableCell>
+              <TableCell className="text-right font-bold ">{summery?.deprecetaion}</TableCell>
+            </TableRow>
+            <TableRow className="bg-gray-100">
+              <TableCell className="font-bold">Expense before tax</TableCell>
+              <TableCell></TableCell>
+              <TableCell className="text-right font-bold ">{summery?.profit_befor_tax}</TableCell>
+            </TableRow>
+            <TableRow className="bg-gray-100">
+              <TableCell className="font-bold">Tax</TableCell>
+              <TableCell></TableCell>
+              <TableCell className="text-right font-bold ">3324</TableCell>
+            </TableRow>
+            <TableRow className="bg-gray-100">
+              <TableCell className="font-bold">Profit</TableCell>
+              <TableCell></TableCell>
+              <TableCell className="text-right font-bold ">3234</TableCell>
+            </TableRow>
           <TableBody>
             {/* {tableData &&
             tableData.map((item, index) => (

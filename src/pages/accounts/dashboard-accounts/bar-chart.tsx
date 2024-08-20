@@ -5,7 +5,6 @@ import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts"
 import {
   Card,
   CardContent,
-
   CardFooter,
   CardHeader,
 

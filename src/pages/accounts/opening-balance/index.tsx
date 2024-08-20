@@ -5,13 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
-
 import { PaginationInfo } from "@/types";
 import { PaginationState } from "@tanstack/react-table";
-
 import { subAccountColumns } from "./components/columns";
 import { useNavigate } from "react-router-dom";
-import { useGetOpeningBalancesQuery } from "@/store/services/accounts/api/opening-balance";
+import { useGetEntriesQuery } from "@/store/services/accounts/api/entries";
 
 const OpeningBalance = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -20,10 +18,10 @@ const OpeningBalance = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const { data, isLoading } = useGetOpeningBalancesQuery(
+  const { data, isLoading } = useGetEntriesQuery(
     `per_page=${pagination.pageSize}&page=${
       pagination.pageIndex + 1
-    }`
+    }&type=opening balance`
   );
 
 
