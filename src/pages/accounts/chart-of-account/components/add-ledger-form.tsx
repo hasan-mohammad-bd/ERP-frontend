@@ -43,7 +43,7 @@ interface AddLedgerFormProps {
 export function AddLedgerForm({
   modalClose,
   rowData: previousData,
-  coaType,
+  // coaType,
 }: AddLedgerFormProps) {
   const [createLedgerAccount, { isLoading }] = useCreateLedgerAccountMutation();
   const [isSubTypeTrue, setIsSubTypeTrue] = React.useState(0);
@@ -80,10 +80,10 @@ export function AddLedgerForm({
 
   console.log(ledgerGroupData);
 
-  const selectedType = form.watch("parent_id");
-  const filteredType = ledgerGroupData?.filter(
-    (ledger_group: LedgerGroupArrayRow) => ledger_group?.id == selectedType
-  );
+  // const selectedType = form.watch("parent_id");
+  // const filteredType = ledgerGroupData?.filter(
+  //   (ledger_group: LedgerGroupArrayRow) => ledger_group?.id == selectedType
+  // );
 
   async function onSubmit(data: LedgerFromValues) {
     try {
@@ -226,7 +226,7 @@ export function AddLedgerForm({
               </>
             )}
 
-            {coaType === "Assets" || filteredType[0]?.type === "Assets" ? (
+          
               <FormField
                 control={form.control}
                 name="nature"
@@ -260,7 +260,7 @@ export function AddLedgerForm({
                   </FormItem>
                 )}
               />
-            ) : null}
+
 
             <FormField
               control={form.control}

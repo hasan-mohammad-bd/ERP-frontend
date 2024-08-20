@@ -4,11 +4,13 @@ import { entryRow, entryTypeSchema } from "./entry";
 
 
 export const openingBalanceSchema = z.object({
+  type: z.string(),
   location_id: z.coerce.number(),
   date: z.string().date(),
   details: entryTypeSchema.array(),
   note: z.string(),
   file: z.string(),
+  entry_number: z.string(),
 
 });
 

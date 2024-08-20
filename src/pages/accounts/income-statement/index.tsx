@@ -31,7 +31,10 @@ const IncomeStatement = () => {
     }`
   );
 
-  const balanceSheet = data?.data;
+  const incomeStatement = data?.data.slice().reverse();
+//descending order data
+
+  const summery = data?.summery;
 
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
     useGetLedgerAccountsQuery("page=1&per_page=1000");
@@ -63,9 +66,10 @@ const IncomeStatement = () => {
         <div className="flex-1 space-y-4 w-2/3 mx-auto">
           <Separator />
 
-          {balanceSheet ? (
+          {incomeStatement ? (
             <IncomeStatementTable
-              tableData={balanceSheet}
+              tableData={incomeStatement}
+              summery={summery}
               // totalCr={totalCr}
               // totalDr={totalDr}
               reportFormate={{

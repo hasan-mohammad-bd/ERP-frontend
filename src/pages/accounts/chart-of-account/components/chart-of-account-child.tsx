@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { LedgerGroupRow } from "@/lib/validators/accounts";
@@ -22,11 +22,11 @@ const ChartOfAccountChild = ({ group, coaType, depth = 0 }: ChartOfAccountItemPr
 				</TableCell>
 				<TableCell className="py-2.5">{item.code}</TableCell>
 				<TableCell className="py-2.5">Group</TableCell>
-				<TableCell className="py-2.5">
-					{/* <Badge variant="outline">Active</Badge> */}
+{/* 				<TableCell className="py-2.5">
+					<Badge variant="outline">Active</Badge>
 				</TableCell>
 				<TableCell className="py-2.5"></TableCell>
-				<TableCell className="py-2.5"></TableCell>
+				<TableCell className="py-2.5"></TableCell> */}
 			</TableRow>
 			{item.childs_group && item.childs_group.length > 0 && (
 				<ChartOfAccountChild group={item} coaType={coaType} depth={depth + 1} />
@@ -48,11 +48,11 @@ const ChartOfAccountChild = ({ group, coaType, depth = 0 }: ChartOfAccountItemPr
 					</TableCell>
 					<TableCell className="py-2.5">{ledger.code}</TableCell>
 					<TableCell className="py-2.5">Account</TableCell>
-					<TableCell className="py-2.5">
+{/* 					<TableCell className="py-2.5">
 						<Badge variant="outline">active</Badge>
 					</TableCell>
 					<TableCell className="py-2.5">700</TableCell>
-					<TableCell className="py-2.5">500</TableCell>
+					<TableCell className="py-2.5">500</TableCell> */}
 				</TableRow>
 			))}
 		</React.Fragment>

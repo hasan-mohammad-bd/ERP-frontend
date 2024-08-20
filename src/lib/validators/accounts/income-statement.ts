@@ -68,6 +68,18 @@ export const incomeStatement: z.ZodType<LedgerGroupRowType> = z.lazy(() =>
 
 export type IncomeStatementRow = z.infer<typeof incomeStatement>;
 
+const summeryRow = z.object({
+  product_sale: z.number(),
+  cogs: z.number(),
+  gros_profit: z.number(),
+  income: z.number(),
+  expence: z.number(),
+  deprecetaion: z.number(),
+  profit_befor_tax: z.number(),
+});
+
+export type SummeryRow = z.infer<typeof summeryRow>;
+
 
 
 

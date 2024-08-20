@@ -35,14 +35,15 @@ import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/common/heading";
 import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
 import { LocationColumn } from "@/lib/validators";
-import { useCreateOpeningBalanceMutation, useGetOpeningBalanceByIdQuery, useGetOpeningBalancesQuery, useUpdateOpeningBalanceMutation } from "@/store/services/accounts/api/opening-balance";
+import { useGetOpeningBalanceByIdQuery, useGetOpeningBalancesQuery } from "@/store/services/accounts/api/opening-balance";
 import { OpeningBalanceFromValues, openingBalanceSchema } from "@/lib/validators/accounts/opening-balance";
+import { useCreateEntryMutation, useUpdateEntryMutation } from "@/store/services/accounts/api/entries";
 
 export function AddOpeningBalanceForm() {
   const { id } = useParams();
 
-  const [createOpeningBalance, { isLoading }] = useCreateOpeningBalanceMutation();
-  const [updateOpeningBalance, { isLoading: updateLoading }] = useUpdateOpeningBalanceMutation();
+  const [createEntry, { isLoading }] = useCreateEntryMutation();
+  const [updateEntry, { isLoading: updateLoading }] = useUpdateEntryMutation();
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
     useGetLedgerAccountsQuery("page=1&per_page=1000");
   const { data: subAccounts, isLoading: subAccountLoading } =
@@ -76,9 +77,9 @@ export function AddOpeningBalanceForm() {
   const form = useForm<OpeningBalanceFromValues>({
     resolver: zodResolver(openingBalanceSchema),
     defaultValues: {
-      // type: "Journal voucher",
+      type: "Opening Balance",
       date: new Date().toISOString().split("T")[0],
-      // entry_number: "",
+      entry_number: "",
       details: [
         { dr_amount: 0, cr_amount: 0 },
         { dr_amount: 0, cr_amount: 0 },
@@ -141,15 +142,15 @@ export function AddOpeningBalanceForm() {
   async function onSubmit(data: OpeningBalanceFromValues) {
     try {
       if (previousData) {
-        await updateOpeningBalance({
-          openingBalanceId: previousData.id,
-          updatedOpeningBalance: data,
+        await updateEntry({
+          entryId: previousData.id,
+          updatedEntry: data,
         });
         toast.success("Voucher updated successfully");
         // modalClose();
         navigate("/accounts/opening-balance");
       } else {
-        await createOpeningBalance(data);
+        await createEntry(data);
         toast.success("Voucher created successfully");
         // modalClose();
         navigate("/accounts/opening-balance");
