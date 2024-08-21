@@ -6,13 +6,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 interface ChartOfAccountItemProps {
-	group: LedgerGroupRow;
-	coaType: string;
-	depth?: number;
+  group: LedgerGroupRow;
+  coaType: string;
+  depth?: number;
 }
 
-const ChartOfAccountChild = ({ group, coaType, depth = 0 }: ChartOfAccountItemProps) => {
-	const indent = Array(depth).fill("\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0").join(""); // Non-breaking spaces
+const ChartOfAccountChild = ({
+  group,
+  coaType,
+  depth = 0,
+}: ChartOfAccountItemProps) => {
+  const indent = Array(depth)
+    .fill("\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0")
+    .join(""); // Non-breaking spaces
 
 	return group.childs_group.map((item) => (
 		<React.Fragment key={item.id}>

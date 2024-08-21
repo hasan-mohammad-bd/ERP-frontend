@@ -1,7 +1,8 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm, useWatch } from "react-hook-form";
-import { useEffect, useState } from "react";
+import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
+import { Heading } from "@/components/common/heading";
+import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -11,14 +12,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import {
-  EntryFromValues,
-  LedgerRow,
-  SubAccountRow,
-  entrySchema,
-} from "@/lib/validators/accounts";
-import { Loading } from "@/components/common/loading";
 import {
   Select,
   SelectContent,
@@ -26,21 +19,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  EntryFromValues,
+  LedgerRow,
+  SubAccountRow,
+  entrySchema,
+} from "@/lib/validators/accounts";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
 import {
   useCreateEntryMutation,
   useGetEntryByIdQuery,
   useUpdateEntryMutation,
 } from "@/store/services/accounts/api/entries";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
-import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
-import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash2 } from "lucide-react";
-import { Card } from "@/components/ui/card";
-import { useNavigate, useParams } from "react-router-dom";
-import { Heading } from "@/components/common/heading";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
-import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
-import { ProjectRow } from "@/lib/validators/accounts/projects";
+import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Plus, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 export function AddContraForm() {
   const { id } = useParams();
@@ -192,7 +192,9 @@ export function AddContraForm() {
                       name="date"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Date <span className="text-red-500">*</span></FormLabel>
+                          <FormLabel>
+                            Date <span className="text-red-500">*</span>
+                          </FormLabel>
                           <FormControl>
                             <Input
                               type="date"
@@ -240,7 +242,10 @@ export function AddContraForm() {
                         name={`details.0.ledger_account_id`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Debit Account Head <span className="text-red-500">*</span></FormLabel>
+                            <FormLabel>
+                              Debit Account Head{" "}
+                              <span className="text-red-500">*</span>
+                            </FormLabel>
                             <Select
                               onValueChange={(value) => {
                                 field.onChange(value);
@@ -264,7 +269,8 @@ export function AddContraForm() {
                                   ledgerAccountData
                                     .filter(
                                       (ledgerAccount: LedgerRow) =>
-                                        ledgerAccount.nature === "Cash" || ledgerAccount.nature === "Bank Accounts"
+                                        ledgerAccount.nature === "Cash" ||
+                                        ledgerAccount.nature === "Bank Accounts"
                                     )
                                     .map((ledgerAccount: LedgerRow) => (
                                       <SelectItem
@@ -314,7 +320,12 @@ export function AddContraForm() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              {index === 1 && <>Credit Account Head <span className="text-red-500">*</span></>}
+                              {index === 1 && (
+                                <>
+                                  Credit Account Head{" "}
+                                  <span className="text-red-500">*</span>
+                                </>
+                              )}
                             </FormLabel>
                             <Select
                               onValueChange={(value) => {
@@ -339,7 +350,8 @@ export function AddContraForm() {
                                   ledgerAccountData
                                     .filter(
                                       (ledgerAccount: LedgerRow) =>
-                                         ledgerAccount.nature === "Cash" || ledgerAccount.nature === "Bank Accounts"
+                                        ledgerAccount.nature === "Cash" ||
+                                        ledgerAccount.nature === "Bank Accounts"
                                     )
                                     .map((ledgerAccount: LedgerRow) => (
                                       <SelectItem
@@ -422,7 +434,13 @@ export function AddContraForm() {
                         name={`details.${index}.cr_amount`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{index === 1 && <>Amount <span className="text-red-500">*</span></>}</FormLabel>
+                            <FormLabel>
+                              {index === 1 && (
+                                <>
+                                  Amount <span className="text-red-500">*</span>
+                                </>
+                              )}
+                            </FormLabel>
                             <FormControl>
                               <Input
                                 disabled={
@@ -471,7 +489,6 @@ export function AddContraForm() {
                     </FormItem>
                   </div>
                 ))}
-
 
                 <Button
                   variant="outline"
