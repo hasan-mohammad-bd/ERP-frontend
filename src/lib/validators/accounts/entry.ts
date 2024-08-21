@@ -67,7 +67,7 @@ export const entryRow = entrySchema.extend({
   user: userRow,
   location: locationColumn.omit({ organization: true }),
   total: z.coerce.number().optional().nullable(),
-  project: z.object({ name: z.string() }).optional().nullable(),
+  project: z.object({ name: z.string(), id: z.number() }).optional().nullable(),
 });
 
 export type EntryRow = z.infer<typeof entryRow>;

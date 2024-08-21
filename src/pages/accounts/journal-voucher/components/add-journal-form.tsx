@@ -106,6 +106,7 @@ export function AddJournalForm() {
 
   useEffect(() => {
     if (previousData) {
+      console.log(previousData, "Previous data")
       form.reset({
         type: previousData.type || "Journal Voucher",
         date: previousData.date || new Date().toISOString(),
@@ -124,6 +125,7 @@ export function AddJournalForm() {
         ],
         note: previousData.note || "",
         file: previousData.file || "",
+        project_id: previousData.project?.id?.toString() || null,
       });
     }
   }, [previousData, form]);
