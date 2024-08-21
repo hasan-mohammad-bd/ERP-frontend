@@ -76,6 +76,8 @@ const summeryRow = z.object({
   expence: z.number(),
   deprecetaion: z.number(),
   profit_befor_tax: z.number(),
+	tax: z.number(),
+	profit: z.number(),
 });
 
 export type SummeryRow = z.infer<typeof summeryRow>;

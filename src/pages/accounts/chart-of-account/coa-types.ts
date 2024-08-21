@@ -19,6 +19,11 @@ const COA_TYPES = [
 		title: "Expenses",
 		description: "Manage expenses for your business",
 	},
+	{
+		type: "Equity",
+		title: "Equity",
+		description: "Manage expenses for your business",
+	},
 ];
 
 export default COA_TYPES;
