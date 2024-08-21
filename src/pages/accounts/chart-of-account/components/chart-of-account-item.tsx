@@ -7,12 +7,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { LedgerGroupRow } from "@/lib/validators/accounts";
-import ChartOfAccountChild from "./chart-of-account-child";
 // import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { buttonVariants } from "@/components/ui/button";
+import ChartOfAccountChild from "./chart-of-account-child";
 // import { File, Folder } from "lucide-react";
 // import { LedgerCellAction } from "./ledger-cell-action";
 // import { GroupCellAction } from "./group-cell-action";
@@ -43,7 +43,7 @@ const ChartOfAccountItem = ({
             <TableHead className="py-2.5 h-8 col-span-2 w-2/3">Name</TableHead>
             <TableHead className="py-2.5 h-8 w-[100px]">Code</TableHead>
             <TableHead className="py-2.5 h-8">Type</TableHead>
-{/*             <TableHead className="py-2.5 h-8">Status</TableHead>
+            {/*             <TableHead className="py-2.5 h-8">Status</TableHead>
             <TableHead className="py-2.5 h-8">Debit</TableHead>
             <TableHead className="py-2.5 h-8">Credit</TableHead> */}
           </TableRow>
@@ -55,7 +55,7 @@ const ChartOfAccountItem = ({
             </TableCell>
             <TableCell className="py-2.5">{coaItemData.code}</TableCell>
             <TableCell className="py-2.5">Group</TableCell>
-{/*             <TableCell className="py-2.5">
+            {/*             <TableCell className="py-2.5">
               <Badge variant="outline">Active</Badge> 
             </TableCell>
             <TableCell className="py-2.5"></TableCell>
@@ -83,7 +83,7 @@ const ChartOfAccountItem = ({
               </TableCell>
               <TableCell className="py-2.5">{ledger.code}</TableCell>
               <TableCell className="py-2.5">Account</TableCell>
-{/*               <TableCell className="py-2.5">
+              {/*               <TableCell className="py-2.5">
                 <Badge variant="secondary">Inactive</Badge>
               </TableCell>
               <TableCell className="py-2.5">700</TableCell>

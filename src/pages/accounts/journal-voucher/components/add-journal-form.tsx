@@ -1,7 +1,7 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm, useWatch } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { Heading } from "@/components/common/heading";
+import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -11,14 +11,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import {
-  EntryFromValues,
-  LedgerRow,
-  SubAccountRow,
-  entrySchema,
-} from "@/lib/validators/accounts";
-import { Loading } from "@/components/common/loading";
 import {
   Select,
   SelectContent,
@@ -26,26 +18,40 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  EntryFromValues,
+  LedgerRow,
+  SubAccountRow,
+  entrySchema,
+} from "@/lib/validators/accounts";
+import { CostCenterRow } from "@/lib/validators/accounts/cost-centers";
+import { useGetCostCentersQuery } from "@/store/services/accounts/api/cost-center";
 import {
   useCreateEntryMutation,
   useGetEntryByIdQuery,
   useUpdateEntryMutation,
 } from "@/store/services/accounts/api/entries";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
-import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
-import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash2 } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Card } from "@/components/ui/card";
-import { Heading } from "@/components/common/heading";
-import { useGetCostCentersQuery } from "@/store/services/accounts/api/cost-center";
-import { CostCenterRow } from "@/lib/validators/accounts/cost-centers";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
+import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { serialize } from "object-to-formdata";
+
+import { Plus, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
+import FileUpload from "@/components/common/file-uploader";
 import { ProjectRow } from "@/lib/validators/accounts/projects";
 
 export function AddJournalForm() {
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  console.log("🚀 ~ AddJournalForm ~ uploadedFiles:", uploadedFiles);
+
   const { id } = useParams();
 
   const [createEntry, { isLoading }] = useCreateEntryMutation();
@@ -59,6 +65,7 @@ export function AddJournalForm() {
 
   const { data: journalById } = useGetEntryByIdQuery(`${id}`);
 
+  console.log("🚀 ~ AddJournalForm ~ journalById:", journalById);
   const { data: costCenters, isLoading: costCenterLoading } =
     useGetCostCentersQuery(`page=1&per_page=1000`);
 
@@ -129,7 +136,6 @@ export function AddJournalForm() {
   const [totalDrAmount, setTotalDrAmount] = useState(0);
   const [totalCrAmount, setTotalCrAmount] = useState(0);
 
-
   const details = useWatch({
     control: form.control,
     name: "details",
@@ -157,16 +163,21 @@ export function AddJournalForm() {
 
   async function onSubmit(data: EntryFromValues) {
     try {
+      // serialize the form data to match the backend requirements
+      const formData = serialize(
+        {
+          ...data,
+          files: uploadedFiles,
+        },
+        { indices: true }
+      );
       if (previousData) {
-        await updateEntry({
-          entryId: previousData.id,
-          updatedEntry: data,
-        });
+        await updateEntry({ entryId: previousData.id, updatedEntry: formData });
         toast.success("Voucher updated successfully");
         // modalClose();
         navigate("/accounts/journal-voucher");
       } else {
-        await createEntry(data);
+        await createEntry(formData);
         toast.success("Voucher created successfully");
         // modalClose();
         navigate("/accounts/journal-voucher");
@@ -204,77 +215,85 @@ export function AddJournalForm() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-3 mb-auto  px-2 overflow-y-scroll no-scrollbar"
               >
-                <div className="flex gap-x-4">
-                  <div className="w-fit">
-                    <FormField
-                      control={form.control}
-                      name="date"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Date <span className="text-red-500">*</span></FormLabel>
-                          <FormControl>
-                            <Input
-                              type="date"
-                              placeholder="Enter date"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="w-fit">
-                    <FormField
-                      control={form.control}
-                      name="entry_number"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Entry Number</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="text"
-                              placeholder="Enter entry number"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-
-
-                    <SelectWithSearch<ProjectRow>
-                        name="project_id"
-                        title={"Project"}
-                        data={projectData}
-                        loading={projectLoading}
-                        valueField="id"
-                        displayField="name"
-                        width="w-[195px]"
-                        form={form}
-                      />
+                    <div className="flex gap-x-4">
+                      <div className="w-fit">
+                        <FormField
+                          control={form.control}
+                          name="date"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>
+                                Date <span className="text-red-500">*</span>
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="date"
+                                  placeholder="Enter date"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="w-fit">
+                        <FormField
+                          control={form.control}
+                          name="entry_number"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Entry Number</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  placeholder="Enter entry number"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <SelectWithSearch<ProjectRow>
+                          name="project_id"
+                          title={"Project"}
+                          data={projectData}
+                          loading={projectLoading}
+                          valueField="id"
+                          displayField="name"
+                          width="w-[195px]"
+                          form={form}
+                        />
+                      </div>
+                    </div>
+                    <FormField
+                      control={form.control}
+                      name="note"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Type your message here."
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  {/* file Upload  */}
+                  <div className="space-y-2">
+                    <FormLabel>Upload Files</FormLabel>
+                    <FileUpload setUploadedFiles={setUploadedFiles} />
                   </div>
                 </div>
-                <FormField
-                  control={form.control}
-                  name="note"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Type your message here."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
                 {fields?.map((field, index) => (
                   <Card key={field.id} className="p-3">
                     <div className="flex w-full gap-x-3">
@@ -285,7 +304,12 @@ export function AddJournalForm() {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>
-                                {index === 0 && <>Ledger Account <span className="text-red-500">*</span></>}
+                                {index === 0 && (
+                                  <>
+                                    Ledger Account{" "}
+                                    <span className="text-red-500">*</span>
+                                  </>
+                                )}
                               </FormLabel>
                               <Select
                                 onValueChange={(value) => {
@@ -307,14 +331,16 @@ export function AddJournalForm() {
                                   {ledgerAccountLoading ? (
                                     <Loading />
                                   ) : (
-                                    ledgerAccountData.map((ledgerAccount: LedgerRow) => (
+                                    ledgerAccountData.map(
+                                      (ledgerAccount: LedgerRow) => (
                                         <SelectItem
                                           key={ledgerAccount.id}
                                           value={String(ledgerAccount.id)}
                                         >
                                           {ledgerAccount.name}
                                         </SelectItem>
-                                      ))
+                                      )
+                                    )
                                   )}
                                 </SelectContent>
                               </Select>
@@ -396,7 +422,14 @@ export function AddJournalForm() {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>
-                                {index === 0 && <>Debit Amount <span><span className="text-red-500">*</span></span></>}
+                                {index === 0 && (
+                                  <>
+                                    Debit Amount{" "}
+                                    <span>
+                                      <span className="text-red-500">*</span>
+                                    </span>
+                                  </>
+                                )}
                               </FormLabel>
                               <FormControl>
                                 <Input
@@ -432,7 +465,12 @@ export function AddJournalForm() {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>
-                                {index === 0 && <>"Credit Amount" <span className="text-red-500">*</span></>}
+                                {index === 0 && (
+                                  <>
+                                    "Credit Amount"{" "}
+                                    <span className="text-red-500">*</span>
+                                  </>
+                                )}
                               </FormLabel>
                               <FormControl>
                                 <Input
