@@ -14,6 +14,7 @@ import {
   IncomeStatementRow,
   SummeryRow,
 } from "@/lib/validators/accounts/income-statement";
+import React from "react";
 
 // import BalanceSheetChild from "./balance-sheet-child";
 
@@ -65,7 +66,9 @@ const IncomeStatementTable = ({ tableData, reportFormate, summery }: Props) => {
           <TableRow>
             <TableCell>Product Sales</TableCell>
             <TableCell></TableCell>
-            <TableCell className="text-right">{summery?.product_sale}</TableCell>
+            <TableCell className="text-right">
+              {summery?.product_sale}
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell>COGS</TableCell>
@@ -73,9 +76,11 @@ const IncomeStatementTable = ({ tableData, reportFormate, summery }: Props) => {
             <TableCell className="text-right">{summery?.cogs}</TableCell>
           </TableRow>
           <TableRow className="bg-gray-100">
-            <TableCell>Gross Profit</TableCell>
+            <TableCell className="font-bold">Gross Profit</TableCell>
             <TableCell></TableCell>
-            <TableCell className="text-right font-bold">{summery?.gros_profit}</TableCell>
+            <TableCell className="text-right font-bold">
+              {summery?.gros_profit}
+            </TableCell>
           </TableRow>
 
           {tableData &&
@@ -88,17 +93,18 @@ const IncomeStatementTable = ({ tableData, reportFormate, summery }: Props) => {
                 </TableRow>
 
                 {item.childs_group.length > 0 &&
-                  item.childs_group.map((child, index) => (
-                    <>
-                      <TableRow key={index + 1}>
+                  item.childs_group.map((child) => (
+                    <React.Fragment key={child.name}>
+                      <TableRow>
                         <TableCell style={{ paddingLeft: "15px" }}>
                           {child.name}
                         </TableCell>
                         <TableCell>{child.code}</TableCell>
                       </TableRow>
+
                       {child.ledgers.length > 0 &&
-                        child.ledgers.map((secondChild, subindex) => (
-                          <TableRow key={subindex + 3}>
+                        child.ledgers.map((secondChild) => (
+                          <TableRow key={secondChild.name}>
                             <TableCell style={{ paddingLeft: "30px" }}>
                               {secondChild.name}
                             </TableCell>
@@ -126,7 +132,7 @@ const IncomeStatementTable = ({ tableData, reportFormate, summery }: Props) => {
                         <TableCell></TableCell>
                       </TableRow>
                       <TableRow></TableRow>
-                    </>
+                    </React.Fragment>
                   ))}
 
                 {/* <BalanceSheetChild group={item} depth={0} /> */}
@@ -146,26 +152,32 @@ const IncomeStatementTable = ({ tableData, reportFormate, summery }: Props) => {
               </TableBody>
             ))}
 
-            <TableRow className="bg-gray-100">
-              <TableCell className="font-bold">Depreciation</TableCell>
-              <TableCell></TableCell>
-              <TableCell className="text-right font-bold ">{summery?.deprecetaion}</TableCell>
-            </TableRow>
-            <TableRow className="bg-gray-100">
-              <TableCell className="font-bold">Expense before tax</TableCell>
-              <TableCell></TableCell>
-              <TableCell className="text-right font-bold ">{summery?.profit_befor_tax}</TableCell>
-            </TableRow>
-            <TableRow className="bg-gray-100">
-              <TableCell className="font-bold">Tax</TableCell>
-              <TableCell></TableCell>
-              <TableCell className="text-right font-bold ">3324</TableCell>
-            </TableRow>
-            <TableRow className="bg-gray-100">
-              <TableCell className="font-bold">Profit</TableCell>
-              <TableCell></TableCell>
-              <TableCell className="text-right font-bold ">3234</TableCell>
-            </TableRow>
+          <TableRow className="">
+            <TableCell className="font-bold">Depreciation</TableCell>
+            <TableCell></TableCell>
+            <TableCell className="text-right font-bold ">
+              {summery?.deprecetaion}
+            </TableCell>
+          </TableRow>
+          <TableRow className="bg-gray-100">
+            <TableCell className="font-bold">Profit before tax</TableCell>
+            <TableCell></TableCell>
+            <TableCell className="text-right font-bold ">
+              {summery?.profit_befor_tax}
+            </TableCell>
+          </TableRow>
+          <TableRow className="">
+            <TableCell className="">Tax</TableCell>
+            <TableCell></TableCell>
+            <TableCell className="text-right">{summery?.tax}</TableCell>
+          </TableRow>
+          <TableRow className="bg-gray-100">
+            <TableCell className="font-bold">Profit</TableCell>
+            <TableCell></TableCell>
+            <TableCell className="text-right font-bold ">
+              {summery?.profit}
+            </TableCell>
+          </TableRow>
           <TableBody>
             {/* {tableData &&
             tableData.map((item, index) => (

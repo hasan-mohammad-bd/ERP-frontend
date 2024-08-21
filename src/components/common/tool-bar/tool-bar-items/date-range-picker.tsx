@@ -1,22 +1,21 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { format } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
-import { DateRange } from "react-day-picker"
+import * as React from "react";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { DateRange } from "react-day-picker";
 
-
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { cn } from "@/utils"
+} from "@/components/ui/popover";
+import { cn } from "@/utils";
 
 interface DatePickerWithRangeProps {
-  className?: string,
+  className?: string;
   setStartDate?: (value: Date | null) => void;
   setEndDate?: (value: Date | null) => void;
 }
@@ -24,32 +23,27 @@ interface DatePickerWithRangeProps {
 export function DatePickerWithRange({
   className,
   setStartDate,
-  setEndDate
+  setEndDate,
 }: DatePickerWithRangeProps) {
   const [date, setDate] = React.useState<DateRange | undefined>({
     //start from current month 1st date.
-    from: new Date(new Date().getFullYear(), new Date().getMonth(), 1), 
-  
+    from: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+
     //get last date of current month
-    to: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), 
-    
-
-  })
-
+    to: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
+  });
 
   React.useEffect(() => {
-    setStartDate?.(date?.from || null)
-    setEndDate?.(date?.to || null)
-  },[date?.from, date?.to, setStartDate, setEndDate])
-
-  
+    setStartDate?.(date?.from || null);
+    setEndDate?.(date?.to || null);
+  }, [date?.from, date?.to, setStartDate, setEndDate]);
 
   return (
     <div className={cn("grid gap-2 ", className)}>
-      <Popover >
+      <Popover>
         <PopoverTrigger asChild>
           <Button
-          size={"input"}
+            size={"input"}
             id="date"
             variant={"outline"}
             className={cn(
@@ -61,11 +55,11 @@ export function DatePickerWithRange({
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(new Date(date.from ?? 0), 'dd-MMM-yyyy')} -{" "}
-                  {format(new Date(date.to ?? 0), 'dd-MMM-yyyy')}
+                  {format(new Date(date.from ?? 0), "dd-MMM-yyyy")} -{" "}
+                  {format(new Date(date.to ?? 0), "dd-MMM-yyyy")}
                 </>
               ) : (
-                format(new Date(date.from ?? 0), 'dd-MMM-yyyy')
+                format(new Date(date.from ?? 0), "dd-MMM-yyyy")
               )
             ) : (
               <span>Pick a date</span>
@@ -84,5 +78,5 @@ export function DatePickerWithRange({
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }

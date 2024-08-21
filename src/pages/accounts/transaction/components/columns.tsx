@@ -13,7 +13,7 @@ export const detailedGeneralLedgerColumns: ColumnDef<DetailedGeneralLedgerRow>[]
     {
       accessorKey: "ledger_account.name",
       header: "Account Head",
-      cell: ({ row }) => <CellActionDynamicRoute rowData={row.original} />,
+      cell: ({ row }) => <CellActionDynamicRoute field={row.original.ledger_account.name} rowData={row.original} />,
     },
     {
       accessorKey: "ledger_account.type",
