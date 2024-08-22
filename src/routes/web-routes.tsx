@@ -6,6 +6,7 @@ import {
 	Location,
 	Dashboard,
 } from "./components";
+import { AddOrganizationForm } from "@/pages/web/organization/components/add-organization-form";
 
 const webRoutes = {
 	path: "web/",
@@ -17,9 +18,25 @@ const webRoutes = {
 			errorElement: withFallback(<ErrorPage />),
 		},
 		{
-			path: "organizations",
-			element: withFallback(<Organization />),
+			path: "organizations/",
 			errorElement: withFallback(<ErrorPage />),
+			children: [
+				{
+					index: true,
+					element: withFallback(<Organization />),
+					errorElement: withFallback(<ErrorPage />),
+				},
+				{
+					path: "add",
+					element: withFallback(<AddOrganizationForm />),
+					errorElement: withFallback(<ErrorPage />),
+				},
+				{
+					path: "edit/:id",
+					element: withFallback(<AddOrganizationForm />),
+					errorElement: withFallback(<ErrorPage />),
+				}
+			]
 		},
 		{
 			path: "locations",

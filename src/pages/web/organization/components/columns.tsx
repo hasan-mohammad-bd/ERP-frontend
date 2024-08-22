@@ -30,12 +30,13 @@ export const organizationColumns: ColumnDef<DesignationColumn>[] = [
 	},
 	{
 		accessorKey: "name",
-		header: "Location name",
+		header: "Organization name",
 	},
 	{
-		accessorKey: "sorting_index",
-		header: "Sorting",
+		accessorKey: "title",
+		header: "Organization Title",
 	},
+
 	{
 		id: "actions",
 		header: () => <div className="text-center">Actions</div>,

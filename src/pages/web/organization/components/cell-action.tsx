@@ -11,8 +11,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { type OrganizationColumn  } from "@/lib/validators";
 import { toast } from "sonner";
-import { AddOrganizationForm } from "./add-organization-form";
-import { Modal } from "@/components/common/modal";
+
 import { useRemoveOrganizationMutation } from "@/store/services/erp-main/api/organization";
 
 interface CellActionProps {
@@ -21,7 +20,7 @@ interface CellActionProps {
 
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+
   const [deleteOrganization, { isLoading: deleteLoading }] =
     useRemoveOrganizationMutation();
 
@@ -86,16 +85,13 @@ export function CellAction({ data }: CellActionProps) {
         onConfirm={() => handleDepartmentDelete(data.id)}
         loading={deleteLoading}
       />
-      <Modal
+      {/* <Modal
         title="Update Organization"
         isOpen={updateModalOpen}
         toggleModal={() => setUpdateModalOpen(false)}
-      >
-        <AddOrganizationForm
-          data={data}
-          modalClose={() => setUpdateModalOpen(false)}
-        />
-      </Modal>
+      > */}
+       
+      {/* </Modal> */}
     </div>
   );
 }
