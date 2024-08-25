@@ -12,12 +12,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
-	OrganizationColumn,
 	VacancyRequisitionColumn,
 	VacancyRequisitionFromValues,
 	VacancyRequisitionFormSchema,
 	DesignationColumn,
 	DepartmentColumn,
+	OrganizationDropdownColumn,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
 
@@ -214,7 +214,7 @@ export function AddVacancyRequisitionForm({
 												<Loading />
 											) : (
 												organizationData?.map(
-													(organization: OrganizationColumn) => (
+													(organization: OrganizationDropdownColumn) => (
 														<SelectItem
 															key={organization.id}
 															value={String(organization.id)}

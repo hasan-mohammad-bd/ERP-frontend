@@ -22,7 +22,7 @@ import {
 	EmployeeGradeColumn,
 	EmploymentStatusColumn,
 	LocationColumn,
-	OrganizationColumn,
+	OrganizationDropdownColumn,
 	ReligionColumn,
 	RoleColumn,
 	ScheduleColumn,
@@ -474,7 +474,7 @@ export function EmployeeForm({
 																		<Loading />
 																	) : (
 																		organizationData?.map(
-																			(organization: OrganizationColumn) => (
+																			(organization: OrganizationDropdownColumn) => (
 																				<SelectItem
 																					key={organization.id}
 																					value={String(organization.id)}

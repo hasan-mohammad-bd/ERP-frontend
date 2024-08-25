@@ -11,17 +11,18 @@ import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { type OrganizationColumn  } from "@/lib/validators";
 import { toast } from "sonner";
-import { AddOrganizationForm } from "./add-organization-form";
-import { Modal } from "@/components/common/modal";
+
 import { useRemoveOrganizationMutation } from "@/store/services/erp-main/api/organization";
+import { useNavigate } from "react-router-dom";
 
 interface CellActionProps {
   data: OrganizationColumn;
 }
 
 export function CellAction({ data }: CellActionProps) {
+  const navigate = useNavigate()
   const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+
   const [deleteOrganization, { isLoading: deleteLoading }] =
     useRemoveOrganizationMutation();
 
@@ -44,7 +45,8 @@ export function CellAction({ data }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-              onClick={() => setUpdateModalOpen(true)}
+              // onClick={() => setUpdateModalOpen(true)}
+              onClick={()=> navigate(`/web/organizations/edit/${data.id}`)}
 
               // onClick={() => toggleModal()}
             >
@@ -86,16 +88,13 @@ export function CellAction({ data }: CellActionProps) {
         onConfirm={() => handleDepartmentDelete(data.id)}
         loading={deleteLoading}
       />
-      <Modal
+      {/* <Modal
         title="Update Organization"
         isOpen={updateModalOpen}
         toggleModal={() => setUpdateModalOpen(false)}
-      >
-        <AddOrganizationForm
-          data={data}
-          modalClose={() => setUpdateModalOpen(false)}
-        />
-      </Modal>
+      > */}
+       
+      {/* </Modal> */}
     </div>
   );
 }

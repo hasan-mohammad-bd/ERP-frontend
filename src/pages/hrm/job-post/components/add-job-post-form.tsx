@@ -12,7 +12,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
-	OrganizationColumn,
 	DesignationColumn,
 	DepartmentColumn,
 	JobPostColumn,
@@ -22,6 +21,7 @@ import {
 	VacancyRequisitionColumn,
 	EmploymentStatusColumn,
 	WorkPlaceColumn,
+	OrganizationDropdownColumn,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
 
@@ -249,7 +249,7 @@ export function AddJobPostForm({
 													<Loading />
 												) : (
 													organizationData?.map(
-														(organization: OrganizationColumn) => (
+														(organization: OrganizationDropdownColumn) => (
 															<SelectItem
 																key={organization.id}
 																value={String(organization.id)}

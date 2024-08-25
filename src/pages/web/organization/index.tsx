@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
@@ -6,14 +6,16 @@ import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
 import { organizationColumns } from "./components/columns";
-import { Modal } from "@/components/common/modal";
-import { AddOrganizationForm } from "./components/add-organization-form";
+
 import { useGetOrganizationsQuery } from "@/store/services/erp-main/api/organization";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
+import { useNavigate } from "react-router-dom";
+import React from "react";
 
 const Organization = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -38,7 +40,7 @@ const Organization = () => {
               title="Organization"
               description="Manage organization for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
+            <Button onClick={() => navigate("/web/organizations/add")} size={"sm"}>
               <Plus className="mr-2 h-4 w-4" /> Add Organization
             </Button>
           </div>
@@ -56,13 +58,12 @@ const Organization = () => {
           )}
         </div>
       </div>
-      <Modal
+      {/* <Modal
         title="Add Organization"
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}
-      >
-        <AddOrganizationForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      > */}
+      {/* </Modal> */}
     </>
   );
 };
