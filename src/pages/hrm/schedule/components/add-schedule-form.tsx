@@ -15,7 +15,8 @@ import {
   ScheduleColumn,
   ScheduleFromValues,
   ScheduleFormSchema,
-  OrganizationColumn,
+
+  OrganizationDropdownColumn,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
 
@@ -195,7 +196,7 @@ export function AddScheduleForm({
                         <Loading />
                       ) : (
                         organizationData?.map(
-                          (organization: OrganizationColumn) => (
+                          (organization: OrganizationDropdownColumn) => (
                             <SelectItem
                               key={organization.id}
                               value={String(organization.id)}

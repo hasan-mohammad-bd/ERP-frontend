@@ -1,5 +1,4 @@
 import {
-  OrganizationFromValues,
   type OrganizationColumn,
 } from "@/lib/validators"; 
 import { authApi } from "../..";
@@ -14,9 +13,16 @@ const organizationApi = authApi.injectEndpoints({
       query: (params) => `organizations?${params}`, 
       providesTags: ["organizations"], 
     }),
+    getOrganizationById: build.query<OrganizationColumn, string>(
+      {
+        query: (params) => `organizations/${params}`,
+
+        providesTags: ["organizations"],
+      }
+    ),
     createOrganization: build.mutation<
       { data: OrganizationColumn },
-      OrganizationFromValues
+      FormData 
     >({
       query: (newOrganization) => ({
         url: `organizations`,
@@ -32,10 +38,10 @@ const organizationApi = authApi.injectEndpoints({
       }),
       invalidatesTags: ["organizations"], 
     }),
-    updateOrganization: build.mutation<{ data: OrganizationColumn }, { organizationId: number, updatedOrganization: OrganizationFromValues }>({
+    updateOrganization: build.mutation<{ data: OrganizationColumn }, { organizationId: number, updatedOrganization: FormData  }>({
       query: ({ organizationId, updatedOrganization }) => ({
         url: `organizations/${organizationId}`, 
-        method: "PUT", 
+        method: "POST", 
         body: updatedOrganization,
       }),
       invalidatesTags: ["organizations"],
@@ -46,6 +52,7 @@ const organizationApi = authApi.injectEndpoints({
 
 export const {
   useGetOrganizationsQuery, 
+  useGetOrganizationByIdQuery,
   useCreateOrganizationMutation, 
   useRemoveOrganizationMutation, 
   useUpdateOrganizationMutation 

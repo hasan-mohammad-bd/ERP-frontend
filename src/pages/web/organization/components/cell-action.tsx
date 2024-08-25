@@ -13,12 +13,14 @@ import { type OrganizationColumn  } from "@/lib/validators";
 import { toast } from "sonner";
 
 import { useRemoveOrganizationMutation } from "@/store/services/erp-main/api/organization";
+import { useNavigate } from "react-router-dom";
 
 interface CellActionProps {
   data: OrganizationColumn;
 }
 
 export function CellAction({ data }: CellActionProps) {
+  const navigate = useNavigate()
   const [alertModalOpen, setAlertModalOpen] = useState(false);
 
   const [deleteOrganization, { isLoading: deleteLoading }] =
@@ -43,7 +45,8 @@ export function CellAction({ data }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-              onClick={() => setUpdateModalOpen(true)}
+              // onClick={() => setUpdateModalOpen(true)}
+              onClick={()=> navigate(`/web/organizations/edit/${data.id}`)}
 
               // onClick={() => toggleModal()}
             >

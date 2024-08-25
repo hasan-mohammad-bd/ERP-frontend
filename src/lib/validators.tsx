@@ -177,14 +177,7 @@ export type EmployeeGradeColumn = z.infer<typeof employeeGradeColumn>;
 
 export const OrganizationFormSchema = z.object({
 
-  name: z
-    .string()
-    .min(2, {
-      message: "Name must be at least 2 characters.",
-    })
-    .max(255, {
-      message: "Name must be at most 255 characters.",
-    }),
+  name: z.string(),
   title: z.string().optional().nullable(),
   email: z.string().array().optional().nullable(),
   address: z.string().array().optional().nullable(),
@@ -195,15 +188,7 @@ export const OrganizationFormSchema = z.object({
   banner: z.string().optional().nullable(),
   parent_id: z.coerce.number().nullable().optional(),
 
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+
 });
 
 export type OrganizationFromValues = z.infer<typeof OrganizationFormSchema>;
