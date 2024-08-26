@@ -118,6 +118,12 @@ const accountsNavItems: NavItem[] = [
     isChildren: true,
     children: [
       {
+        title: "Cash Book",
+        icon: Clock,
+        href: "/accounts/reports/cash-book",
+        color: "text-sky-500",
+      },
+      {
         title: "Transaction",
         icon: Clock,
         href: "/accounts/reports/transaction",

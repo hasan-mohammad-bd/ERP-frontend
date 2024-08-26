@@ -6,7 +6,7 @@ import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGetLedgerGroupsQuery } from "@/store/services/accounts/api/ledger-group";
 import ChartOfAccountItem from "./components/chart-of-account-item";
-import COA_TYPES from "./coa-types";
+import COA_TYPES from "../../../constants/coa-types";
 import { useState } from "react";
 import { Modal } from "@/components/common/modal";
 import { AddLedgerGroupForm } from "./components/add-ledger-group-form";

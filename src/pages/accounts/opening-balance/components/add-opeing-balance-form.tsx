@@ -54,12 +54,11 @@ export function AddOpeningBalanceForm() {
 
 
   const { data: openingBalanceById } = useGetOpeningBalanceByIdQuery(`${id}`);
+  const previousData = openingBalanceById?.data;
+  const openingBalanceData = openingBalance?.data || [];
 
   const {data: location, isLoading: locationLoading} =useGetLocationsQuery("page=1&per_page=1000")
-
-  const previousData = openingBalanceById?.data;
   const locationData = location?.data || [];
-  const openingBalanceData = openingBalance?.data || [];
 
   const filteredLocation = locationData?.filter((item) => !openingBalanceData?.some((openingBalance) => openingBalance.location.id === item.id));
 

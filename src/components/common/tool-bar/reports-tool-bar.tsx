@@ -18,13 +18,14 @@ interface ReportsToolBarProps {
     arrayItemsTwo?: object[]
     loadingDataTwo?: boolean
   }
-  
+
+  children?: React.ReactNode
 }
 
-const ReportsToolBar = ({ setEndDate, setStartDate, filterProp }: ReportsToolBarProps) => {
+const ReportsToolBar = ({ setEndDate, setStartDate, filterProp, children }: ReportsToolBarProps) => {
   return (
     <Card className="p-3 flex justify-between items-center">
-    <div className="flex space-x-3">
+    <div className="flex space-x-3 flex-wrap">
       <div className="date-picker">
         <DatePickerWithRange
           setStartDate={setStartDate}
@@ -34,9 +35,10 @@ const ReportsToolBar = ({ setEndDate, setStartDate, filterProp }: ReportsToolBar
       <div className="item-filter">
         <ItemFilter filterProp={filterProp}  />
       </div>
-      <Button size={"input"}>
+      {children}
+      {/* <Button size={"input"}>
         Generate Report
-      </Button>
+      </Button> */}
     </div>
 
     <div className="flex space-x-2 items-center">

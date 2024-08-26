@@ -28,6 +28,7 @@ import CostCenters from "@/pages/accounts/cost-centers";
 import Projects from "@/pages/accounts/projects";
 import Transaction from "@/pages/accounts/transaction";
 import DetailedGeneralLedger from "@/pages/accounts/detailed-general-ledger";
+import CashBook from "@/pages/accounts/cash-book";
 
 const accountsRoutes = {
   path: "accounts/",
@@ -203,6 +204,11 @@ const accountsRoutes = {
         {
           path: "transaction",
           element: withFallback(<Transaction />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "cash-book",
+          element: withFallback(<CashBook />),
           errorElement: <ErrorPage />,
         },
         {
