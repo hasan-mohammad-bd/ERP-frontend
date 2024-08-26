@@ -441,9 +441,9 @@ export default function FileUpload({ setUploadedFiles }: ImageUploadProps) {
               {filesToUpload.map((file) => (
                 <div
                   key={file.lastModified}
-                  className="flex justify-between gap-2 rounded-lg overflow-hidden border border-slate-100 group hover:pr-0 pr-2"
+                  className="flex justify-between gap-2 rounded-lg overflow-hidden border border-slate-100 group pr-0"
                 >
-                  <div className="flex items-center flex-1 p-2">
+                  <div className="flex items-center flex-1 p-1">
                     <div className="text-white">
                       {getFileIconAndColor(file).icon}
                     </div>
@@ -458,7 +458,7 @@ export default function FileUpload({ setUploadedFiles }: ImageUploadProps) {
                   </div>
                   <button
                     onClick={() => removeFile(file)}
-                    className="bg-red-500 text-white transition-all items-center justify-center px-2 hidden group-hover:flex"
+                    className="bg-red-500 text-white transition-all items-center justify-center px-2 flex"
                   >
                     <X size={20} />
                   </button>

@@ -1,4 +1,5 @@
 import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
+import FileUpload from "@/components/common/file-uploader";
 import { Heading } from "@/components/common/heading";
 import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import handleErrors from "@/lib/handle-errors";
 import {
   EntryFromValues,
   LedgerRow,
@@ -35,8 +37,10 @@ import {
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
 import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
+import { ErrorResponse } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Trash2 } from "lucide-react";
+import { serialize } from "object-to-formdata";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
@@ -44,6 +48,9 @@ import { toast } from "sonner";
 
 export function AddContraForm() {
   const { id } = useParams();
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  console.log("🚀 ~ AddJournalForm ~ uploadedFiles:", uploadedFiles);
+
   const [createEntry, { isLoading }] = useCreateEntryMutation();
   const [updateEntry, { isLoading: updateLoading }] = useUpdateEntryMutation();
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
@@ -138,21 +145,36 @@ export function AddContraForm() {
     };
 
     try {
+      const formData = serialize(
+        {
+          ...updateData,
+          file: uploadedFiles[0] || "",
+          // files: uploadedFiles,
+        },
+        { indices: true }
+      );
+      //Handling files additionally
+      // if (uploadedFiles.length) {
+      //   uploadedFiles.forEach((image) => {
+      //     formData.append("files[]", image);
+      //   });
+      // }
       if (previousData) {
         await updateEntry({
           entryId: previousData.id,
-          updatedEntry: updateData,
-        });
+          updatedEntry: formData,
+        }).unwrap();
         toast.success("Voucher updated successfully");
         // modalClose();
         navigate("/accounts/contra-voucher");
       } else {
-        await createEntry(updateData);
+        await createEntry(formData).unwrap();
         toast.success("Voucher created successfully");
         // modalClose();
         navigate("/accounts/contra-voucher");
       }
     } catch (error) {
+      handleErrors(error as ErrorResponse);
       console.log(error);
     }
   }
@@ -185,20 +207,124 @@ export function AddContraForm() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-3 px-2 no-scrollbar"
               >
-                <div className="flex">
-                  <div className="w-fit">
+                <div className="grid grid-cols-2 gap-16">
+                  <div>
+                    <div className="flex">
+                      <div className="w-fit">
+                        <FormField
+                          control={form.control}
+                          name="date"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>
+                                Date <span className="text-red-500">*</span>
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="date"
+                                  placeholder="Enter date"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="w-fit flex space-x-3 ml-3">
+                        <FormField
+                          control={form.control}
+                          name="entry_number"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Entry Number</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  placeholder="Enter entry number"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <SelectWithSearch<ProjectRow>
+                          name="project_id"
+                          title={"Project"}
+                          data={projectData}
+                          loading={projectLoading}
+                          valueField="id"
+                          displayField="name"
+                          width="w-[195px]"
+                          form={form}
+                        />
+
+                        <div className="w-[200px]">
+                          <FormField
+                            control={form.control}
+                            name={`details.0.ledger_account_id`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>
+                                  Debit Account Head{" "}
+                                  <span className="text-red-500">*</span>
+                                </FormLabel>
+                                <Select
+                                  onValueChange={(value) => {
+                                    field.onChange(value);
+                                    const updatedAccounts = [
+                                      ...selectedLedgerAccounts,
+                                    ];
+                                    updatedAccounts[0] = Number(value);
+                                    setSelectedLedgerAccounts(updatedAccounts);
+                                  }}
+                                  value={(field.value || "").toString()}
+                                >
+                                  <FormControl>
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Select Ledger Account" />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent>
+                                    {ledgerAccountLoading ? (
+                                      <Loading />
+                                    ) : (
+                                      ledgerAccountData
+                                        .filter(
+                                          (ledgerAccount: LedgerRow) =>
+                                            ledgerAccount.nature === "Cash" ||
+                                            ledgerAccount.nature ===
+                                              "Bank Accounts"
+                                        )
+                                        .map((ledgerAccount: LedgerRow) => (
+                                          <SelectItem
+                                            key={ledgerAccount.id}
+                                            value={String(ledgerAccount.id)}
+                                          >
+                                            {ledgerAccount.name}
+                                          </SelectItem>
+                                        ))
+                                    )}
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
                     <FormField
                       control={form.control}
-                      name="date"
+                      name="note"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>
-                            Date <span className="text-red-500">*</span>
-                          </FormLabel>
+                          <FormLabel>Description</FormLabel>
                           <FormControl>
-                            <Input
-                              type="date"
-                              placeholder="Enter date"
+                            <Textarea
+                              placeholder="Type your message here."
                               {...field}
                             />
                           </FormControl>
@@ -207,106 +333,12 @@ export function AddContraForm() {
                       )}
                     />
                   </div>
-                  <div className="w-fit flex space-x-3 ml-3">
-                    <FormField
-                      control={form.control}
-                      name="entry_number"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Entry Number</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="text"
-                              placeholder="Enter entry number"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <SelectWithSearch<ProjectRow>
-                      name="project_id"
-                      title={"Project"}
-                      data={projectData}
-                      loading={projectLoading}
-                      valueField="id"
-                      displayField="name"
-                      width="w-[195px]"
-                      form={form}
-                    />
-
-                    <div className="w-[200px]">
-                      <FormField
-                        control={form.control}
-                        name={`details.0.ledger_account_id`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>
-                              Debit Account Head{" "}
-                              <span className="text-red-500">*</span>
-                            </FormLabel>
-                            <Select
-                              onValueChange={(value) => {
-                                field.onChange(value);
-                                const updatedAccounts = [
-                                  ...selectedLedgerAccounts,
-                                ];
-                                updatedAccounts[0] = Number(value);
-                                setSelectedLedgerAccounts(updatedAccounts);
-                              }}
-                              value={(field.value || "").toString()}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select Ledger Account" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {ledgerAccountLoading ? (
-                                  <Loading />
-                                ) : (
-                                  ledgerAccountData
-                                    .filter(
-                                      (ledgerAccount: LedgerRow) =>
-                                        ledgerAccount.nature === "Cash" ||
-                                        ledgerAccount.nature === "Bank Accounts"
-                                    )
-                                    .map((ledgerAccount: LedgerRow) => (
-                                      <SelectItem
-                                        key={ledgerAccount.id}
-                                        value={String(ledgerAccount.id)}
-                                      >
-                                        {ledgerAccount.name}
-                                      </SelectItem>
-                                    ))
-                                )}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                  {/* file Upload  */}
+                  <div className="space-y-2">
+                    <FormLabel>Upload Files</FormLabel>
+                    <FileUpload setUploadedFiles={setUploadedFiles} />
                   </div>
                 </div>
-
-                <FormField
-                  control={form.control}
-                  name="note"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Type your message here."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
 
                 {fields.map((field, index) => (
                   <div

@@ -38,9 +38,15 @@ import { LocationColumn } from "@/lib/validators";
 import { useGetOpeningBalanceByIdQuery, useGetOpeningBalancesQuery } from "@/store/services/accounts/api/opening-balance";
 import { OpeningBalanceFromValues, openingBalanceSchema } from "@/lib/validators/accounts/opening-balance";
 import { useCreateEntryMutation, useUpdateEntryMutation } from "@/store/services/accounts/api/entries";
+import FileUpload from "@/components/common/file-uploader";
+import { serialize } from "object-to-formdata";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 export function AddOpeningBalanceForm() {
   const { id } = useParams();
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  console.log("🚀 ~ AddJournalForm ~ uploadedFiles:", uploadedFiles);
 
   const [createEntry, { isLoading }] = useCreateEntryMutation();
   const [updateEntry, { isLoading: updateLoading }] = useUpdateEntryMutation();
@@ -140,21 +146,37 @@ export function AddOpeningBalanceForm() {
 
   async function onSubmit(data: OpeningBalanceFromValues) {
     try {
+      const formData = serialize(
+        {
+          ...data,
+          file: uploadedFiles[0] || "",
+          // files: uploadedFiles,
+        },
+        { indices: true }
+      );
+      //Handling files additionally
+      // if (uploadedFiles.length) {
+      //   uploadedFiles.forEach((image) => {
+      //     formData.append("files[]", image);
+      //   });
+      // }
+
       if (previousData) {
         await updateEntry({
           entryId: previousData.id,
-          updatedEntry: data,
-        });
+          updatedEntry: formData,
+        }).unwrap();
         toast.success("Voucher updated successfully");
         // modalClose();
         navigate("/accounts/opening-balance");
       } else {
-        await createEntry(data);
+        await createEntry(formData).unwrap();
         toast.success("Voucher created successfully");
         // modalClose();
         navigate("/accounts/opening-balance");
       }
     } catch (error) {
+      handleErrors(error as ErrorResponse);
       console.log(error);
     }
   }
@@ -187,85 +209,96 @@ export function AddOpeningBalanceForm() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-3 mb-auto  px-2 overflow-y-scroll no-scrollbar"
               >
-                <div className="flex gap-x-4">
-                  <div className="w-fit">
+                <div className="grid grid-cols-2 gap-16">
+                  
+                <div>
+                  <div className="flex gap-x-4">
+                    <div className="w-fit">
+                      <FormField
+                        control={form.control}
+                        name="date"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Date</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="date"
+                                placeholder="Enter date"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="w-[250px]">
                     <FormField
                       control={form.control}
-                      name="date"
+                      name="location_id"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Date</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="date"
-                              placeholder="Enter date"
-                              {...field}
-                            />
-                          </FormControl>
+                          <FormLabel>Branch</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={
+                          previousData?.location?.id
+                            ? String(previousData.location.id)
+                            : undefined
+                        }
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select Branch" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {locationLoading ? (
+                                <Loading />
+                              ) : (
+                                filteredLocation?.map(
+                                  (location: LocationColumn) => (
+                                    <SelectItem
+                                      key={location.id}
+                                      value={String(location.id)}
+                                    >
+                                      {location.name}
+                                    </SelectItem>
+                                  )
+                                )
+                              )}
+                            </SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
+                    </div>
                   </div>
-                  <div className="w-[250px]">
                   <FormField
                     control={form.control}
-                    name="location_id"
+                    name="note"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Branch</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={
-												previousData?.location?.id
-													? String(previousData.location.id)
-													: undefined
-											}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Branch" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {locationLoading ? (
-                              <Loading />
-                            ) : (
-                              filteredLocation?.map(
-                                (location: LocationColumn) => (
-                                  <SelectItem
-                                    key={location.id}
-                                    value={String(location.id)}
-                                  >
-                                    {location.name}
-                                  </SelectItem>
-                                )
-                              )
-                            )}
-                          </SelectContent>
-                        </Select>
+                        <FormLabel>Description</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Type your message here."
+                            {...field}
+                          />
+                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
+                </div>
+
+                 {/* file Upload  */}
+                 <div className="space-y-2">
+                    <FormLabel>Upload Files</FormLabel>
+                    <FileUpload setUploadedFiles={setUploadedFiles} />
                   </div>
                 </div>
-                <FormField
-                  control={form.control}
-                  name="note"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Type your message here."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
 
                 {fields.map((field, index) => (
                   <div key={field.id} className="flex w-full gap-x-3">

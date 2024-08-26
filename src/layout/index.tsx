@@ -11,7 +11,7 @@ const Layout = () => {
       <div className="flex border-collapse overflow-hidden">
         <Sidebar />
         <div className="flex-1 overflow-y-auto overflow-x-hidden bg-mainBackground pt-16 pb-1">
-          <main className="min-h-[calc(100%-3.8rem)] md:px-5">
+          <main className="min-h-[calc(100%-3rem)] md:px-5">
             <Outlet />
           </main>
           <Footer />
