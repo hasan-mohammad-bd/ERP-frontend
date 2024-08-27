@@ -96,7 +96,7 @@ export function AddContraForm() {
         date: previousData?.date || new Date().toISOString(),
         entry_number: previousData?.entry_number || "",
         details: previousData?.details || [
-          { dr_amount: totalCrAmount, cr_amount: 0 },
+          { dr_amount: 0, cr_amount: 0 },
           { dr_amount: 0, cr_amount: 0 },
         ],
         note: previousData?.note || "",
@@ -104,7 +104,7 @@ export function AddContraForm() {
         project_id: previousData?.project_id || null,
       });
     }
-  }, [form, previousData, totalCrAmount]);
+  }, [form, previousData]);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
