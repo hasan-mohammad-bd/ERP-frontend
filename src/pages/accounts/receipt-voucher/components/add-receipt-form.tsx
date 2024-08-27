@@ -49,7 +49,7 @@ import { ErrorResponse } from "@/types";
 export function AddReceiptForm() {
   const { id } = useParams();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  console.log("🚀 ~ AddJournalForm ~ uploadedFiles:", uploadedFiles);
+
 
   const navigate = useNavigate();
   const [createEntry, { isLoading }] = useCreateEntryMutation();
@@ -97,14 +97,15 @@ export function AddReceiptForm() {
         date: previousData?.date,
         entry_number: previousData?.entry_number || "",
         details: previousData?.details || [
-          { dr_amount: totalCrAmount, cr_amount: 0 },
+          { dr_amount: 0, cr_amount: 0 },
           { dr_amount: 0, cr_amount: 0 },
         ],
         note: previousData?.note || "",
         file: previousData?.file || "",
       });
     }
-  }, [previousData, form, totalCrAmount]);
+  }, [previousData, form]);
+  
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -340,7 +341,8 @@ export function AddReceiptForm() {
                 </div>
 
                 {fields.map((field, index) => (
-                  <div
+                  index !== 0 && (
+                                      <div
                     key={field.id}
                     className={`flex w-full gap-x-3 ${index === 0 && "hidden"}`}
                   >
@@ -543,6 +545,7 @@ export function AddReceiptForm() {
                       </span>
                     </FormItem>
                   </div>
+                  )
                 ))}
                 {/*                         <div className="text-end mt-4">
               <div>
