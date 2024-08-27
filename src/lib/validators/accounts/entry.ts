@@ -46,6 +46,17 @@ export const entryTypeSchema = z.object({
   total: z.coerce.number().optional().nullable(),
   cost_centers: constCenterRow.array().optional().nullable(),
 });
+export const files = z
+  .object({
+    id: z.coerce.number(),
+    file_name: z.string(),
+    file_type: z.string(),
+    path: z.string(),
+    thumbnail: z.string(),
+  })
+  .array()
+  .optional()
+  .nullable();
 
 export const entrySchema = z.object({
   type: z.string(),
@@ -55,6 +66,7 @@ export const entrySchema = z.object({
   details: entryTypeSchema.array(),
   note: z.string(),
   file: z.string(),
+  files: files,
   project_id: z.string().optional().nullable(),
 });
 

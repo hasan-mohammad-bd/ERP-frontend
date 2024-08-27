@@ -47,10 +47,11 @@ import { toast } from "sonner";
 import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
 import FileUpload from "@/components/common/file-uploader";
 import { ProjectRow } from "@/lib/validators/accounts/projects";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 export function AddJournalForm() {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  console.log("🚀 ~ AddJournalForm ~ uploadedFiles:", uploadedFiles);
 
   const { id } = useParams();
 
@@ -63,9 +64,10 @@ export function AddJournalForm() {
   const { data: projects, isLoading: projectLoading } =
     useGetProjectsQuery(`per_page=1000&page=1`);
 
-  const { data: journalById } = useGetEntryByIdQuery(`${id}`);
+  const { data: journalById, refetch } = useGetEntryByIdQuery(`${id}`, {
+    skip: !id,
+  });
 
-  console.log("🚀 ~ AddJournalForm ~ journalById:", journalById);
   const { data: costCenters, isLoading: costCenterLoading } =
     useGetCostCentersQuery(`page=1&per_page=1000`);
 
@@ -106,7 +108,6 @@ export function AddJournalForm() {
 
   useEffect(() => {
     if (previousData) {
-      console.log(previousData, "Previous data")
       form.reset({
         type: previousData.type || "Journal Voucher",
         date: previousData.date || new Date().toISOString(),
@@ -169,22 +170,26 @@ export function AddJournalForm() {
       const formData = serialize(
         {
           ...data,
+          _method: previousData ? "PUT" : "POST",
           files: uploadedFiles,
         },
         { indices: true }
       );
       if (previousData) {
-        await updateEntry({ entryId: previousData.id, updatedEntry: formData });
+        await updateEntry({
+          entryId: previousData.id,
+          updatedEntry: formData,
+        }).unwrap();
+
         toast.success("Voucher updated successfully");
-        // modalClose();
         navigate("/accounts/journal-voucher");
       } else {
-        await createEntry(formData);
+        await createEntry(formData).unwrap();
         toast.success("Voucher created successfully");
-        // modalClose();
         navigate("/accounts/journal-voucher");
       }
     } catch (error) {
+      handleErrors(error as ErrorResponse);
       console.log(error);
     }
   }
@@ -217,7 +222,7 @@ export function AddJournalForm() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-3 mb-auto  px-2 overflow-y-scroll no-scrollbar"
               >
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-16">
                   <div>
                     <div className="flex gap-x-4">
                       <div className="w-fit">
@@ -293,7 +298,11 @@ export function AddJournalForm() {
                   {/* file Upload  */}
                   <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
-                    <FileUpload setUploadedFiles={setUploadedFiles} />
+                    <FileUpload
+                      setUploadedFiles={setUploadedFiles}
+                      uploadedFiles={previousData?.files}
+                      onDeleteSuccess={() => refetch()}
+                    />
                   </div>
                 </div>
                 {fields?.map((field, index) => (

@@ -42,7 +42,7 @@ const entryApi = accountApi.injectEndpoints({
     >({
       query: ({ entryId, updatedEntry }) => ({
         url: `entries/${entryId}`,
-        method: "PUT",
+        method: "POST",
         body: updatedEntry,
       }),
       invalidatesTags: ["entries"],

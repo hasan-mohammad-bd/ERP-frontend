@@ -1,3 +1,239 @@
+import { Input } from "@/components/ui/input";
+import {
+  AudioWaveform,
+  File,
+  FileImage,
+  FolderArchive,
+  Trash2,
+  Video,
+  X,
+} from "lucide-react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { ScrollArea } from "../ui/scroll-area";
+import { ErrorResponse, FilesType, FileType } from "@/types";
+import { useRemoveAccountsMediaMutation } from "@/store/services/accounts/api/media";
+import { toast } from "sonner";
+import handleErrors from "@/lib/handle-errors";
+
+interface ImageUploadProps {
+  setUploadedFiles: Dispatch<SetStateAction<File[]>>;
+  uploadedFiles?: FilesType | null;
+  onDeleteSuccess?: (file: FileType) => void;
+}
+
+export default function FileUpload({
+  setUploadedFiles,
+  uploadedFiles,
+  onDeleteSuccess,
+}: ImageUploadProps) {
+  const [filesToUpload, setFilesToUpload] = useState<File[]>([]);
+  const [removeMedia] = useRemoveAccountsMediaMutation();
+
+  const getFileIconAndColor = (file: File) => {
+    // This function remains the same, returning the correct icon and color for the file type
+    if (file.type.includes("image")) {
+      return {
+        icon: <FileImage size={40} className="fill-purple-600" />,
+        color: "bg-purple-600",
+      };
+    }
+    if (file.type.includes("pdf")) {
+      return {
+        icon: <File size={40} className="fill-blue-400" />,
+        color: "bg-blue-400",
+      };
+    }
+    if (file.type.includes("audio")) {
+      return {
+        icon: <AudioWaveform size={40} className="fill-yellow-400" />,
+        color: "bg-yellow-400",
+      };
+    }
+    if (file.type.includes("video")) {
+      return {
+        icon: <Video size={40} className="fill-green-400" />,
+        color: "bg-green-400",
+      };
+    }
+    return {
+      icon: <FolderArchive size={40} className="fill-gray-400" />,
+      color: "bg-gray-400",
+    };
+  };
+
+  const getUpdateFileIconAndColor = (fileType: string) => {
+    // This function remains the same, returning the correct icon and color for the file type
+    if (
+      fileType == "png" ||
+      fileType == "jpg" ||
+      fileType == "jpeg" ||
+      fileType == "gif" ||
+      fileType == "webp"
+    ) {
+      return {
+        icon: <FileImage size={40} className="fill-purple-600" />,
+        color: "bg-purple-600",
+      };
+    }
+    if (fileType === "pdf") {
+      return {
+        icon: <File size={40} className="fill-blue-400" />,
+        color: "bg-blue-400",
+      };
+    }
+    if (fileType === "audio") {
+      return {
+        icon: <AudioWaveform size={40} className="fill-yellow-400" />,
+        color: "bg-yellow-400",
+      };
+    }
+    if (fileType === "video") {
+      return {
+        icon: <Video size={40} className="fill-green-400" />,
+        color: "bg-green-400",
+      };
+    }
+    return {
+      icon: <FolderArchive size={40} className="fill-gray-400" />,
+      color: "bg-gray-400",
+    };
+  };
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      // Add dropped files to the internal state
+      setFilesToUpload((prevFiles) => [...prevFiles, ...acceptedFiles]);
+
+      // Also send these files to the parent component using setUploadedFiles
+      setUploadedFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+    },
+    [setUploadedFiles]
+  );
+
+  const removeFile = (file: File) => {
+    setFilesToUpload((prevFiles) => prevFiles.filter((item) => item !== file));
+    setUploadedFiles((prevFiles) => prevFiles.filter((item) => item !== file));
+  };
+  const removeUploadedFile = async (file: FileType) => {
+    try {
+      await removeMedia(file.id).unwrap();
+      toast.success("File removed successfully");
+      onDeleteSuccess && onDeleteSuccess(file); // Call the onDeleteSuccess callback if provided
+    } catch (error) {
+      handleErrors(error as ErrorResponse);
+      console.log(error, "Failed to remove file");
+    }
+  };
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+  return (
+    <div>
+      <div>
+        <label
+          {...getRootProps()}
+          className="relative flex flex-col items-center justify-center w-full py-6 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+        >
+          <div className="text-center">
+            <div className="border p-2 rounded-md max-w-min mx-auto">
+              <FileImage size={20} />
+            </div>
+
+            <p className="mt-2 text-sm text-gray-600">
+              <span className="font-semibold">Drag files</span>
+            </p>
+            <p className="text-xs text-gray-500">
+              Click to upload files (files should be under 10 MB)
+            </p>
+          </div>
+        </label>
+
+        <Input
+          {...getInputProps()}
+          id="dropzone-file"
+          accept="image/png, image/jpeg"
+          type="file"
+          className="hidden"
+        />
+      </div>
+
+      {/* for create */}
+      {filesToUpload.length > 0 && (
+        <ScrollArea className="">
+          <p className="font-medium my-2 mt-6 text-muted-foreground text-sm">
+            Files to upload
+          </p>
+          <div className="space-y-2 pr-3">
+            {filesToUpload.map((file) => (
+              <div
+                key={file.lastModified}
+                className="flex justify-between gap-2 rounded-lg overflow-hidden border border-slate-100 group pr-0"
+              >
+                <div className="flex items-center flex-1">
+                  <div className="text-white">
+                    {getFileIconAndColor(file).icon}
+                  </div>
+
+                  <div className="w-full ml-2 space-y-1">
+                    <div className="text-sm flex justify-between">
+                      <p className="text-muted-foreground ">
+                        {file.name.slice(0, 25)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  onClick={() => removeFile(file)}
+                  className="bg-red-500 text-white transition-all items-center justify-center px-2 flex"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
+      )}
+
+      {/* for update  */}
+      {uploadedFiles && uploadedFiles?.length > 0 && (
+        <div>
+          <ScrollArea className="mt-2">
+            <div className="space-y-2 pr-3">
+              {uploadedFiles.map((file) => (
+                <div
+                  key={file.id}
+                  className="flex justify-between gap-2 rounded-lg overflow-hidden border border-slate-100 group pr-0"
+                >
+                  <div className="flex items-center flex-1">
+                    <div className="text-white">
+                      {getUpdateFileIconAndColor(file.file_type).icon}
+                    </div>
+
+                    <div className="w-full ml-2 space-y-1">
+                      <div className="text-sm flex justify-between">
+                        <p className="text-muted-foreground ">
+                          {file.file_name.slice(0, 25)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeUploadedFile(file)}
+                    className="bg-red-500 text-white transition-all items-center justify-center px-2 flex"
+                  >
+                    <Trash2 size={20} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // "use client";
 
 // import { Input } from "@/components/ui/input";
@@ -330,144 +566,3 @@
 //     </div>
 //   );
 // }
-
-import { Input } from "@/components/ui/input";
-import {
-  AudioWaveform,
-  File,
-  FileImage,
-  FolderArchive,
-  Video,
-  X,
-} from "lucide-react";
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
-import { useDropzone } from "react-dropzone";
-import { ScrollArea } from "../ui/scroll-area";
-
-interface ImageUploadProps {
-  setUploadedFiles: Dispatch<SetStateAction<File[]>>;
-}
-
-export default function FileUpload({ setUploadedFiles }: ImageUploadProps) {
-  const [filesToUpload, setFilesToUpload] = useState<File[]>([]);
-
-  const getFileIconAndColor = (file: File) => {
-    // This function remains the same, returning the correct icon and color for the file type
-    if (file.type.includes("image")) {
-      return {
-        icon: <FileImage size={40} className="fill-purple-600" />,
-        color: "bg-purple-600",
-      };
-    }
-    if (file.type.includes("pdf")) {
-      return {
-        icon: <File size={40} className="fill-blue-400" />,
-        color: "bg-blue-400",
-      };
-    }
-    if (file.type.includes("audio")) {
-      return {
-        icon: <AudioWaveform size={40} className="fill-yellow-400" />,
-        color: "bg-yellow-400",
-      };
-    }
-    if (file.type.includes("video")) {
-      return {
-        icon: <Video size={40} className="fill-green-400" />,
-        color: "bg-green-400",
-      };
-    }
-    return {
-      icon: <FolderArchive size={40} className="fill-gray-400" />,
-      color: "bg-gray-400",
-    };
-  };
-
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      // Add dropped files to the internal state
-      setFilesToUpload((prevFiles) => [...prevFiles, ...acceptedFiles]);
-
-      // Also send these files to the parent component using setUploadedFiles
-      setUploadedFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
-    },
-    [setUploadedFiles]
-  );
-
-  const removeFile = (file: File) => {
-    setFilesToUpload((prevFiles) => prevFiles.filter((item) => item !== file));
-    setUploadedFiles((prevFiles) => prevFiles.filter((item) => item !== file));
-  };
-
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
-  return (
-    <div>
-      <div>
-        <label
-          {...getRootProps()}
-          className="relative flex flex-col items-center justify-center w-full py-6 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-        >
-          <div className="text-center">
-            <div className="border p-2 rounded-md max-w-min mx-auto">
-              <FileImage size={20} />
-            </div>
-
-            <p className="mt-2 text-sm text-gray-600">
-              <span className="font-semibold">Drag files</span>
-            </p>
-            <p className="text-xs text-gray-500">
-              Click to upload files (files should be under 10 MB)
-            </p>
-          </div>
-        </label>
-
-        <Input
-          {...getInputProps()}
-          id="dropzone-file"
-          accept="image/png, image/jpeg"
-          type="file"
-          className="hidden"
-        />
-      </div>
-
-      {filesToUpload.length > 0 && (
-        <div>
-          <ScrollArea className="h-40">
-            <p className="font-medium my-2 mt-6 text-muted-foreground text-sm">
-              Files to upload
-            </p>
-            <div className="space-y-2 pr-3">
-              {filesToUpload.map((file) => (
-                <div
-                  key={file.lastModified}
-                  className="flex justify-between gap-2 rounded-lg overflow-hidden border border-slate-100 group pr-0"
-                >
-                  <div className="flex items-center flex-1 p-1">
-                    <div className="text-white">
-                      {getFileIconAndColor(file).icon}
-                    </div>
-
-                    <div className="w-full ml-2 space-y-1">
-                      <div className="text-sm flex justify-between">
-                        <p className="text-muted-foreground ">
-                          {file.name.slice(0, 25)}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => removeFile(file)}
-                    className="bg-red-500 text-white transition-all items-center justify-center px-2 flex"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </ScrollArea>
-        </div>
-      )}
-    </div>
-  );
-}
