@@ -21,6 +21,12 @@ const webNavItems: NavItem[] = [
 		href: "/web/locations",
 		color: "text-sky-500",
 	},
+	{
+		title: "User Role",
+		icon: MapPin,
+		href: "/web/role",
+		color: "text-sky-500",
+	},
 ];
 
 export default webNavItems;
