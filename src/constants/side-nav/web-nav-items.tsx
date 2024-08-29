@@ -1,5 +1,5 @@
 import { NavItem } from "@/types";
-import { LayoutDashboard, MapPin, Store } from "lucide-react";
+import { LayoutDashboard, MapPin, RollerCoaster, Store, Users } from "lucide-react";
 
 const webNavItems: NavItem[] = [
 	{
@@ -19,6 +19,18 @@ const webNavItems: NavItem[] = [
 		title: "Locations",
 		icon: MapPin,
 		href: "/web/locations",
+		color: "text-sky-500",
+	},
+	{
+		title: "User Role",
+		icon: RollerCoaster,
+		href: "/web/role",
+		color: "text-sky-500",
+	},
+	{
+		title: "Users",
+		icon: Users,
+		href: "/web/users",
 		color: "text-sky-500",
 	},
 ];
