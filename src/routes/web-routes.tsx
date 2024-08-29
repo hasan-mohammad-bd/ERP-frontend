@@ -7,7 +7,9 @@ import {
 	Dashboard,
 } from "./components";
 import { AddOrganizationForm } from "@/pages/web/organization/components/add-organization-form";
-import UserRole from "@/pages/web/sub-accounts";
+import UserRole from "@/pages/web/user-role";
+import Users from "@/pages/web/users";
+
 
 const webRoutes = {
 	path: "web/",
@@ -47,6 +49,11 @@ const webRoutes = {
 		{
 			path: "role",
 			element: withFallback(<UserRole />),
+			errorElement: withFallback(<ErrorPage />),
+		},
+		{
+			path: "users",
+			element: withFallback(<Users />),
 			errorElement: withFallback(<ErrorPage />),
 		},
 	],
