@@ -1,4 +1,7 @@
 import { Input } from "@/components/ui/input";
+import handleErrors from "@/lib/handle-errors";
+import { useRemoveAccountsMediaMutation } from "@/store/services/accounts/api/media";
+import { ErrorResponse, FilesType, FileType } from "@/types";
 import {
   AudioWaveform,
   File,
@@ -10,11 +13,8 @@ import {
 } from "lucide-react";
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { ScrollArea } from "../ui/scroll-area";
-import { ErrorResponse, FilesType, FileType } from "@/types";
-import { useRemoveAccountsMediaMutation } from "@/store/services/accounts/api/media";
 import { toast } from "sonner";
-import handleErrors from "@/lib/handle-errors";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface ImageUploadProps {
   setUploadedFiles: Dispatch<SetStateAction<File[]>>;

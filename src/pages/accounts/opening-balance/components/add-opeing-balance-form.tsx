@@ -1,7 +1,8 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm, useWatch } from "react-hook-form";
-import { useEffect, useState } from "react";
+import FileUpload from "@/components/common/file-uploader";
+import { Heading } from "@/components/common/heading";
+import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -11,14 +12,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import {
- 
-  LedgerRow,
-  SubAccountRow,
- 
-} from "@/lib/validators/accounts";
-import { Loading } from "@/components/common/loading";
 import {
   Select,
   SelectContent,
@@ -26,27 +19,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
-import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash2 } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Card } from "@/components/ui/card";
-import { Heading } from "@/components/common/heading";
-import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
-import { LocationColumn } from "@/lib/validators";
-import { useGetOpeningBalanceByIdQuery, useGetOpeningBalancesQuery } from "@/store/services/accounts/api/opening-balance";
-import { OpeningBalanceFromValues, openingBalanceSchema } from "@/lib/validators/accounts/opening-balance";
-import { useCreateEntryMutation, useUpdateEntryMutation } from "@/store/services/accounts/api/entries";
-import FileUpload from "@/components/common/file-uploader";
-import { serialize } from "object-to-formdata";
 import handleErrors from "@/lib/handle-errors";
+import { LocationColumn } from "@/lib/validators";
+import { LedgerRow, SubAccountRow } from "@/lib/validators/accounts";
+import {
+  OpeningBalanceFromValues,
+  openingBalanceSchema,
+} from "@/lib/validators/accounts/opening-balance";
+import {
+  useCreateEntryMutation,
+  useGetEntryByIdQuery,
+  useUpdateEntryMutation,
+} from "@/store/services/accounts/api/entries";
+import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
+import { useGetOpeningBalancesQuery } from "@/store/services/accounts/api/opening-balance";
+import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
+import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
 import { ErrorResponse } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Plus, Trash2 } from "lucide-react";
+import { serialize } from "object-to-formdata";
+import { useEffect, useState } from "react";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 export function AddOpeningBalanceForm() {
   const { id } = useParams();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  console.log("🚀 ~ AddJournalForm ~ uploadedFiles:", uploadedFiles);
 
   const [createEntry, { isLoading }] = useCreateEntryMutation();
   const [updateEntry, { isLoading: updateLoading }] = useUpdateEntryMutation();
@@ -55,21 +56,28 @@ export function AddOpeningBalanceForm() {
   const { data: subAccounts, isLoading: subAccountLoading } =
     useGetSubAccountsQuery(`page=1&per_page=1000`);
 
-    const { data: openingBalance } = useGetOpeningBalancesQuery(`page=1&per_page=1000`);
+  const { data: openingBalance } =
+    useGetOpeningBalancesQuery(`page=1&per_page=1000`);
 
+  const { data: openingBalanceById, refetch } = useGetEntryByIdQuery(`${id}`, {
+    skip: !id,
+  });
 
-
-  const { data: openingBalanceById } = useGetOpeningBalanceByIdQuery(`${id}`);
   const previousData = openingBalanceById?.data;
+  console.log("🚀 ~ AddOpeningBalanceForm ~ previousData:", previousData);
   const openingBalanceData = openingBalance?.data || [];
 
-  const {data: location, isLoading: locationLoading} =useGetLocationsQuery("page=1&per_page=1000")
+  const { data: location, isLoading: locationLoading } = useGetLocationsQuery(
+    "page=1&per_page=1000"
+  );
   const locationData = location?.data || [];
 
-  const filteredLocation = locationData?.filter((item) => !openingBalanceData?.some((openingBalance) => openingBalance.location.id === item.id));
-
-
-
+  const filteredLocation = locationData?.filter(
+    (item) =>
+      !openingBalanceData?.some(
+        (openingBalance) => openingBalance.location.id === item.id
+      )
+  );
 
   const ledgerAccountData = ledgerAccount?.data || [];
   const subAccountData = subAccounts?.data || [];
@@ -97,7 +105,7 @@ export function AddOpeningBalanceForm() {
   useEffect(() => {
     if (previousData) {
       form.reset({
-        // type: previousData.type || "Journal voucher",
+        type: previousData.type || "Opening balance",
         date: previousData.date || new Date().toISOString(),
         // entry_number: previousData.entry_number || "",
         details: previousData.details || [
@@ -105,8 +113,8 @@ export function AddOpeningBalanceForm() {
           { dr_amount: 0, cr_amount: 0 },
         ],
         note: previousData.note || "",
-        file: previousData.file || "",
-        location_id: previousData.location.id ,
+
+        location_id: previousData.location.id,
       });
     }
   }, [previousData, form]);
@@ -145,21 +153,16 @@ export function AddOpeningBalanceForm() {
   }, [details]);
 
   async function onSubmit(data: OpeningBalanceFromValues) {
+    console.log("button clicked");
     try {
       const formData = serialize(
         {
           ...data,
-          file: uploadedFiles[0] || "",
-          // files: uploadedFiles,
+          files: uploadedFiles,
+          _method: previousData ? "PUT" : "POST",
         },
         { indices: true }
       );
-      //Handling files additionally
-      // if (uploadedFiles.length) {
-      //   uploadedFiles.forEach((image) => {
-      //     formData.append("files[]", image);
-      //   });
-      // }
 
       if (previousData) {
         await updateEntry({
@@ -193,7 +196,9 @@ export function AddOpeningBalanceForm() {
         <div>
           <div className="flex items-center justify-between mb-4">
             <Heading
-              title={previousData ? "Edit Opening Balance" : "Add Opening Balance"}
+              title={
+                previousData ? "Edit Opening Balance" : "Add Opening Balance"
+              }
               description="Manage your sub accounts for you business"
             />
             <Button
@@ -210,93 +215,96 @@ export function AddOpeningBalanceForm() {
                 className="space-y-3 mb-auto  px-2 overflow-y-scroll no-scrollbar"
               >
                 <div className="grid grid-cols-2 gap-16">
-                  
-                <div>
-                  <div className="flex gap-x-4">
-                    <div className="w-fit">
-                      <FormField
-                        control={form.control}
-                        name="date"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Date</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="date"
-                                placeholder="Enter date"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                  <div>
+                    <div className="flex gap-x-4">
+                      <div className="w-fit">
+                        <FormField
+                          control={form.control}
+                          name="date"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Date</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="date"
+                                  placeholder="Enter date"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="w-[250px]">
+                        <FormField
+                          control={form.control}
+                          name="location_id"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Branch</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.location?.id
+                                    ? String(previousData.location.id)
+                                    : undefined
+                                }
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Branch" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {locationLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    filteredLocation?.map(
+                                      (location: LocationColumn) => (
+                                        <SelectItem
+                                          key={location.id}
+                                          value={String(location.id)}
+                                        >
+                                          {location.name}
+                                        </SelectItem>
+                                      )
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
                     </div>
-                    <div className="w-[250px]">
                     <FormField
                       control={form.control}
-                      name="location_id"
+                      name="note"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Branch</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={
-                          previousData?.location?.id
-                            ? String(previousData.location.id)
-                            : undefined
-                        }
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select Branch" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {locationLoading ? (
-                                <Loading />
-                              ) : (
-                                filteredLocation?.map(
-                                  (location: LocationColumn) => (
-                                    <SelectItem
-                                      key={location.id}
-                                      value={String(location.id)}
-                                    >
-                                      {location.name}
-                                    </SelectItem>
-                                  )
-                                )
-                              )}
-                            </SelectContent>
-                          </Select>
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Type your message here."
+                              {...field}
+                            />
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    </div>
                   </div>
-                  <FormField
-                    control={form.control}
-                    name="note"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Type your message here."
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
 
-                 {/* file Upload  */}
-                 <div className="space-y-2">
+                  {/* file Upload  */}
+                  <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
-                    <FileUpload setUploadedFiles={setUploadedFiles} />
+                    <FileUpload
+                      setUploadedFiles={setUploadedFiles}
+                      uploadedFiles={previousData?.files}
+                      onDeleteSuccess={() => refetch()}
+                    />
                   </div>
                 </div>
 
@@ -412,7 +420,7 @@ export function AddOpeningBalanceForm() {
                           </FormItem>
                         )}
                       />
-                                            {index === lastIndex && (
+                      {index === lastIndex && (
                         <>
                           <p className="text-sm mt-2 whitespace-nowrap text-right">
                             Total{" "}
@@ -493,8 +501,6 @@ export function AddOpeningBalanceForm() {
                         </>
                       )}
                     </div>
-
-
 
                     <FormItem
                       className={`mt-auto ${

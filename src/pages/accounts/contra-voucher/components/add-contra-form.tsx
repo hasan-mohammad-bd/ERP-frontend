@@ -60,7 +60,7 @@ export function AddContraForm() {
   const { data: projects, isLoading: projectLoading } =
     useGetProjectsQuery(`per_page=1000&page=1`);
 
-  const { data: journalById } = useGetEntryByIdQuery(`${id}`);
+  const { data: journalById, refetch } = useGetEntryByIdQuery(`${id}`);
 
   const previousData = journalById?.data;
   const ledgerAccountData = ledgerAccount?.data || [];
@@ -148,17 +148,12 @@ export function AddContraForm() {
       const formData = serialize(
         {
           ...updateData,
-          file: uploadedFiles[0] || "",
-          // files: uploadedFiles,
+          files: uploadedFiles || "",
+          _method: previousData ? "PUT" : "POST",
         },
         { indices: true }
       );
-      //Handling files additionally
-      // if (uploadedFiles.length) {
-      //   uploadedFiles.forEach((image) => {
-      //     formData.append("files[]", image);
-      //   });
-      // }
+
       if (previousData) {
         await updateEntry({
           entryId: previousData.id,
@@ -336,7 +331,11 @@ export function AddContraForm() {
                   {/* file Upload  */}
                   <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
-                    <FileUpload setUploadedFiles={setUploadedFiles} />
+                    <FileUpload
+                      setUploadedFiles={setUploadedFiles}
+                      uploadedFiles={previousData?.files}
+                      onDeleteSuccess={() => refetch()}
+                    />
                   </div>
                 </div>
 

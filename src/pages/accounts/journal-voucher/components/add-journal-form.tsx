@@ -46,8 +46,8 @@ import { toast } from "sonner";
 
 import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
 import FileUpload from "@/components/common/file-uploader";
-import { ProjectRow } from "@/lib/validators/accounts/projects";
 import handleErrors from "@/lib/handle-errors";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
 import { ErrorResponse } from "@/types";
 
 export function AddJournalForm() {

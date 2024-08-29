@@ -1,7 +1,9 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm, useWatch } from "react-hook-form";
-import { useEffect, useState } from "react";
+import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
+import FileUpload from "@/components/common/file-uploader";
+import { Heading } from "@/components/common/heading";
+import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -11,14 +13,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import {
-  EntryFromValues,
-  LedgerRow,
-  SubAccountRow,
-  entrySchema,
-} from "@/lib/validators/accounts";
-import { Loading } from "@/components/common/loading";
 import {
   Select,
   SelectContent,
@@ -26,30 +20,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import handleErrors from "@/lib/handle-errors";
+import {
+  EntryFromValues,
+  LedgerRow,
+  SubAccountRow,
+  entrySchema,
+} from "@/lib/validators/accounts";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
 import {
   useCreateEntryMutation,
   useGetEntryByIdQuery,
   useUpdateEntryMutation,
 } from "@/store/services/accounts/api/entries";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
-import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
-import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash2 } from "lucide-react";
-import { Card } from "@/components/ui/card";
-import { Heading } from "@/components/common/heading";
-import { useNavigate, useParams } from "react-router-dom";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
-import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
-import { ProjectRow } from "@/lib/validators/accounts/projects";
-import { serialize } from "object-to-formdata";
-import FileUpload from "@/components/common/file-uploader";
-import handleErrors from "@/lib/handle-errors";
+import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
 import { ErrorResponse } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Plus, Trash2 } from "lucide-react";
+import { serialize } from "object-to-formdata";
+import { useEffect, useState } from "react";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 export function AddReceiptForm() {
   const { id } = useParams();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-
 
   const navigate = useNavigate();
   const [createEntry, { isLoading }] = useCreateEntryMutation();
@@ -65,8 +64,9 @@ export function AddReceiptForm() {
   const subAccountData = subAccounts?.data || [];
   const projectData = projects?.data || [];
 
-  const { data: paymentById } = useGetEntryByIdQuery(`${id}`);
+  const { data: paymentById, refetch } = useGetEntryByIdQuery(`${id}`);
 
+  console.log("🚀 ~ AddReceiptForm ~ paymentById:", paymentById);
   const previousData = paymentById?.data;
 
   // const [totalDrAmount, setTotalDrAmount] = useState(0);
@@ -101,11 +101,9 @@ export function AddReceiptForm() {
           { dr_amount: 0, cr_amount: 0 },
         ],
         note: previousData?.note || "",
-        file: previousData?.file || "",
       });
     }
   }, [previousData, form]);
-  
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -149,17 +147,12 @@ export function AddReceiptForm() {
       const formData = serialize(
         {
           ...updateData,
-          file: uploadedFiles[0] || "",
-          // files: uploadedFiles,
+          files: uploadedFiles,
+          _method: previousData ? "PUT" : "POST",
         },
         { indices: true }
       );
-      //Handling files additionally
-      // if (uploadedFiles.length) {
-      //   uploadedFiles.forEach((image) => {
-      //     formData.append("files[]", image);
-      //   });
-      // }
+
       if (previousData) {
         await updateEntry({
           entryId: previousData.id,
@@ -336,132 +329,142 @@ export function AddReceiptForm() {
                   {/* file Upload  */}
                   <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
-                    <FileUpload setUploadedFiles={setUploadedFiles} />
+                    <FileUpload
+                      setUploadedFiles={setUploadedFiles}
+                      uploadedFiles={previousData?.files}
+                      onDeleteSuccess={() => refetch()}
+                    />
                   </div>
                 </div>
 
-                {fields.map((field, index) => (
-                  index !== 0 && (
-                                      <div
-                    key={field.id}
-                    className={`flex w-full gap-x-3 ${index === 0 && "hidden"}`}
-                  >
-                    <div className={`w-[250px]`}>
-                      <FormField
-                        control={form.control}
-                        name={`details.${index}.ledger_account_id`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>
-                              {index === 1 && (
-                                <>
-                                  Credit Account Head{" "}
-                                  <span className="text-red-500">*</span>
-                                </>
-                              )}
-                            </FormLabel>
-                            <Select
-                              onValueChange={(value) => {
-                                field.onChange(value);
-                                const updatedAccounts = [
-                                  ...selectedLedgerAccounts,
-                                ];
-                                updatedAccounts[index] = Number(value);
-                                setSelectedLedgerAccounts(updatedAccounts);
-                              }}
-                              value={(field.value || "").toString()}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select Ledger Account" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {ledgerAccountLoading ? (
-                                  <Loading />
-                                ) : (
-                                  ledgerAccountData
-                                    .filter(
-                                      (ledgerAccount: LedgerRow) =>
-                                        ledgerAccount.nature !== "Cash" &&
-                                        ledgerAccount.nature !== "Bank Accounts"
-                                    )
-                                    .map((ledgerAccount: LedgerRow) => (
-                                      <SelectItem
-                                        key={ledgerAccount.id}
-                                        value={String(ledgerAccount.id)}
-                                      >
-                                        {ledgerAccount.name}
-                                      </SelectItem>
-                                    ))
-                                )}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <div className="w-[250px]">
-                      <FormField
-                        control={form.control}
-                        name={`details.${index}.sub_account_id`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{index === 1 && "Contact"}</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              value={(field.value || "").toString()}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select Contact" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {subAccountLoading ? (
-                                  <Loading />
-                                ) : (
-                                  subAccountData?.map(
-                                    (subAccount: SubAccountRow) => (
-                                      <SelectItem
-                                        key={subAccount.id}
-                                        value={String(subAccount.id)}
-                                      >
-                                        {subAccount.name}
-                                      </SelectItem>
-                                    )
-                                  )
-                                )}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <FormField
-                        control={form.control}
-                        name={`details.${index}.note`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{index === 1 && "Note"}</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                placeholder="Take Note"
-                                {...field}
-                                value={field.value || ""}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                {fields.map(
+                  (field, index) =>
+                    index !== 0 && (
+                      <div
+                        key={field.id}
+                        className={`flex w-full gap-x-3 ${
+                          index === 0 && "hidden"
+                        }`}
+                      >
+                        <div className={`w-[250px]`}>
+                          <FormField
+                            control={form.control}
+                            name={`details.${index}.ledger_account_id`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>
+                                  {index === 1 && (
+                                    <>
+                                      Credit Account Head{" "}
+                                      <span className="text-red-500">*</span>
+                                    </>
+                                  )}
+                                </FormLabel>
+                                <Select
+                                  onValueChange={(value) => {
+                                    field.onChange(value);
+                                    const updatedAccounts = [
+                                      ...selectedLedgerAccounts,
+                                    ];
+                                    updatedAccounts[index] = Number(value);
+                                    setSelectedLedgerAccounts(updatedAccounts);
+                                  }}
+                                  value={(field.value || "").toString()}
+                                >
+                                  <FormControl>
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Select Ledger Account" />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent>
+                                    {ledgerAccountLoading ? (
+                                      <Loading />
+                                    ) : (
+                                      ledgerAccountData
+                                        .filter(
+                                          (ledgerAccount: LedgerRow) =>
+                                            ledgerAccount.nature !== "Cash" &&
+                                            ledgerAccount.nature !==
+                                              "Bank Accounts"
+                                        )
+                                        .map((ledgerAccount: LedgerRow) => (
+                                          <SelectItem
+                                            key={ledgerAccount.id}
+                                            value={String(ledgerAccount.id)}
+                                          >
+                                            {ledgerAccount.name}
+                                          </SelectItem>
+                                        ))
+                                    )}
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="w-[250px]">
+                          <FormField
+                            control={form.control}
+                            name={`details.${index}.sub_account_id`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>
+                                  {index === 1 && "Contact"}
+                                </FormLabel>
+                                <Select
+                                  onValueChange={field.onChange}
+                                  value={(field.value || "").toString()}
+                                >
+                                  <FormControl>
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Select Contact" />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent>
+                                    {subAccountLoading ? (
+                                      <Loading />
+                                    ) : (
+                                      subAccountData?.map(
+                                        (subAccount: SubAccountRow) => (
+                                          <SelectItem
+                                            key={subAccount.id}
+                                            value={String(subAccount.id)}
+                                          >
+                                            {subAccount.name}
+                                          </SelectItem>
+                                        )
+                                      )
+                                    )}
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <FormField
+                            control={form.control}
+                            name={`details.${index}.note`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>{index === 1 && "Note"}</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="text"
+                                    placeholder="Take Note"
+                                    {...field}
+                                    value={field.value || ""}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
 
-                    {/*                 <div className="max-w-[120px]">
+                        {/*                 <div className="max-w-[120px]">
                   <FormField
                     control={form.control}
                     name={`details.0.dr_amount`}
@@ -485,68 +488,72 @@ export function AddReceiptForm() {
                     )}
                   />
                 </div> */}
-                    <div className="max-w-[180px]">
-                      <FormField
-                        control={form.control}
-                        name={`details.${index}.cr_amount`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>
-                              {index === 1 && (
-                                <>
-                                  Amount <span className="text-red-500">*</span>
-                                </>
-                              )}
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                disabled={
-                                  form.watch(`details.${index}.dr_amount`) > 0
-                                }
-                                type="number"
-                                min={0}
-                                placeholder="Credit amount"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                        <div className="max-w-[180px]">
+                          <FormField
+                            control={form.control}
+                            name={`details.${index}.cr_amount`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>
+                                  {index === 1 && (
+                                    <>
+                                      Amount{" "}
+                                      <span className="text-red-500">*</span>
+                                    </>
+                                  )}
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    disabled={
+                                      form.watch(`details.${index}.dr_amount`) >
+                                      0
+                                    }
+                                    type="number"
+                                    min={0}
+                                    placeholder="Credit amount"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
 
-                      {index === lastIndex && (
-                        <>
-                          <p className="text-sm mt-2 whitespace-nowrap">
-                            Total Amount:{" "}
-                            <span className="font-semibold">
-                              {" "}
-                              {totalCrAmount}
-                            </span>
-                          </p>
-                        </>
-                      )}
-                    </div>
+                          {index === lastIndex && (
+                            <>
+                              <p className="text-sm mt-2 whitespace-nowrap">
+                                Total Amount:{" "}
+                                <span className="font-semibold">
+                                  {" "}
+                                  {totalCrAmount}
+                                </span>
+                              </p>
+                            </>
+                          )}
+                        </div>
 
-                    <FormItem
-                      className={`mt-auto ${
-                        index === lastIndex ? "mb-10" : "mb-3"
-                      } `}
-                    >
-                      <span
-                        className=""
-                        onClick={() => {
-                          remove(index);
-                          const updatedAccounts = [...selectedLedgerAccounts];
-                          updatedAccounts.splice(index, 1);
-                          setSelectedLedgerAccounts(updatedAccounts);
-                        }}
-                      >
-                        <Trash2 size={16} color="red" className="" />
-                      </span>
-                    </FormItem>
-                  </div>
-                  )
-                ))}
+                        <FormItem
+                          className={`mt-auto ${
+                            index === lastIndex ? "mb-10" : "mb-3"
+                          } `}
+                        >
+                          <span
+                            className=""
+                            onClick={() => {
+                              remove(index);
+                              const updatedAccounts = [
+                                ...selectedLedgerAccounts,
+                              ];
+                              updatedAccounts.splice(index, 1);
+                              setSelectedLedgerAccounts(updatedAccounts);
+                            }}
+                          >
+                            <Trash2 size={16} color="red" className="" />
+                          </span>
+                        </FormItem>
+                      </div>
+                    )
+                )}
                 {/*                         <div className="text-end mt-4">
               <div>
                 <p className="text-sm ">Total Debit: {totalDrAmount}</p>

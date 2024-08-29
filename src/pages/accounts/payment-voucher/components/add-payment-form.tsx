@@ -1,7 +1,9 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm, useWatch } from "react-hook-form";
-import { useEffect, useState } from "react";
+import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
+import FileUpload from "@/components/common/file-uploader";
+import { Heading } from "@/components/common/heading";
+import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -11,14 +13,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import {
-  EntryFromValues,
-  LedgerRow,
-  SubAccountRow,
-  entrySchema,
-} from "@/lib/validators/accounts";
-import { Loading } from "@/components/common/loading";
 import {
   Select,
   SelectContent,
@@ -26,25 +20,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import handleErrors from "@/lib/handle-errors";
+import {
+  EntryFromValues,
+  LedgerRow,
+  SubAccountRow,
+  entrySchema,
+} from "@/lib/validators/accounts";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
 import {
   useCreateEntryMutation,
   useGetEntryByIdQuery,
   useUpdateEntryMutation,
 } from "@/store/services/accounts/api/entries";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
-import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
-import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash2 } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Card } from "@/components/ui/card";
-import { Heading } from "@/components/common/heading";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
-import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
-import { ProjectRow } from "@/lib/validators/accounts/projects";
-import handleErrors from "@/lib/handle-errors";
+import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
 import { ErrorResponse } from "@/types";
-import FileUpload from "@/components/common/file-uploader";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Plus, Trash2 } from "lucide-react";
 import { serialize } from "object-to-formdata";
+import { useEffect, useState } from "react";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 export function AddPaymentForm() {
   const { id } = useParams();
@@ -69,9 +69,7 @@ export function AddPaymentForm() {
   const [totalDrAmount, setTotalDrAmount] = useState(0);
   // const [totalCrAmount, setTotalCrAmount] = useState(0);
 
-
-
-  const { data: paymentById } = useGetEntryByIdQuery(`${id}`);
+  const { data: paymentById, refetch } = useGetEntryByIdQuery(`${id}`);
 
   const previousData = paymentById?.data;
 
@@ -89,7 +87,6 @@ export function AddPaymentForm() {
         { dr_amount: 0, cr_amount: 0 },
       ],
       note: "",
-      file: "",
     },
   });
 
@@ -104,7 +101,6 @@ export function AddPaymentForm() {
           { dr_amount: 0, cr_amount: 0 },
         ],
         note: previousData?.note || "",
-        file: previousData?.file || "",
       });
     }
   }, [previousData, form]);
@@ -151,17 +147,12 @@ export function AddPaymentForm() {
       const formData = serialize(
         {
           ...updateData,
-          file: uploadedFiles[0] || "",
-          // files: uploadedFiles,
+          files: uploadedFiles,
+          _method: previousData ? "PUT" : "POST",
         },
         { indices: true }
       );
-      //Handling files additionally
-      // if (uploadedFiles.length) {
-      //   uploadedFiles.forEach((image) => {
-      //     formData.append("files[]", image);
-      //   });
-      // }
+
       if (previousData) {
         await updateEntry({
           entryId: previousData.id,
@@ -339,7 +330,11 @@ export function AddPaymentForm() {
                     {/* file Upload  */}
                     <div className="space-y-2">
                       <FormLabel>Upload Files</FormLabel>
-                      <FileUpload setUploadedFiles={setUploadedFiles} />
+                      <FileUpload
+                        setUploadedFiles={setUploadedFiles}
+                        uploadedFiles={previousData?.files}
+                        onDeleteSuccess={() => refetch()}
+                      />
                     </div>
                   </div>
                 </div>
