@@ -44,11 +44,11 @@ import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
-import SelectWithSearch from "@/components/common/accounts/entry/select-input-with-search";
 import FileUpload from "@/components/common/file-uploader";
 import handleErrors from "@/lib/handle-errors";
 import { ProjectRow } from "@/lib/validators/accounts/projects";
 import { ErrorResponse } from "@/types";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 
 export function AddJournalForm() {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -265,16 +265,16 @@ export function AddJournalForm() {
                           )}
                         />
                       </div>
-                      <div>
-                        <SelectWithSearch<ProjectRow>
-                          name="project_id"
-                          title={"Project"}
-                          data={projectData}
+                      <div className="w-[250px]">
+                        <FormSearchSelect<ProjectRow>
                           loading={projectLoading}
-                          valueField="id"
+                          data={projectData}
                           displayField="name"
-                          width="w-[195px]"
+                          valueField="id"
                           form={form}
+                          name="project_id"
+                          title="Project"
+                          className="w-[250px]"
                         />
                       </div>
                     </div>
