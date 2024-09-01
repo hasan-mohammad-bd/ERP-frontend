@@ -1,48 +1,45 @@
-import {
-
-} from "@/lib/validators"; 
+import {} from "@/lib/validators";
 import { authApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
-import { RoleFormValues, RoleRow } from "@/lib/validators/web/user-role";
+import { PermissionRow, RoleFormValues, RoleRow } from "@/lib/validators/web/user-role";
 
 const roleApi = authApi.injectEndpoints({
   endpoints: (build) => ({
-    getRoles: build.query<
-      { data: RoleRow[]; meta: PaginationInfo },
-      string
-    >({ 
-      query: (params) => `roles?${params}`, 
-      providesTags: ["roles"], 
+    getRoles: build.query<{ data: RoleRow[]; meta: PaginationInfo }, string>({
+      query: (params) => `roles?${params}`,
+      providesTags: ["roles"],
     }),
-    getPermission: build.query<
-      string[],
-      void
-    >({ 
-      query: () => `permissions`, 
-      providesTags: ["permissions"], 
+    getRoleById: build.query<{ data: RoleRow }, string>({
+      query: (params) => `roles/${params}`,
+      providesTags: ["roles"],
     }),
-    createRole: build.mutation<
-      { data: RoleRow },
-      RoleFormValues
-    >({
+
+    getPermission: build.query<PermissionRow[], void>({
+      query: () => `permissions`,
+      providesTags: ["permissions"],
+    }),
+    createRole: build.mutation<{ data: RoleRow }, RoleFormValues>({
       query: (newRole) => ({
         url: `roles`,
         method: "POST",
         body: newRole,
       }),
-      invalidatesTags: ["roles"], 
+      invalidatesTags: ["roles"],
     }),
     removeRole: build.mutation<DeleteResponse, number>({
       query: (roleId) => ({
-        url: `roles/${roleId}`, 
+        url: `roles/${roleId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["roles"], 
+      invalidatesTags: ["roles"],
     }),
-    updateRole: build.mutation<{ data: RoleRow }, { roleId: number, updatedRole: RoleFormValues }>({
+    updateRole: build.mutation<
+      { data: RoleRow },
+      { roleId: number; updatedRole: RoleFormValues }
+    >({
       query: ({ roleId, updatedRole }) => ({
-        url: `roles/${roleId}`, 
-        method: "PUT", 
+        url: `roles/${roleId}`,
+        method: "PUT",
         body: updatedRole,
       }),
       invalidatesTags: ["roles"],
@@ -52,9 +49,10 @@ const roleApi = authApi.injectEndpoints({
 });
 
 export const {
-  useGetRolesQuery, 
+  useGetRolesQuery,
+  useGetRoleByIdQuery,
   useGetPermissionQuery,
-  useCreateRoleMutation, 
-  useRemoveRoleMutation, 
-  useUpdateRoleMutation 
+  useCreateRoleMutation,
+  useRemoveRoleMutation,
+  useUpdateRoleMutation,
 } = roleApi;
