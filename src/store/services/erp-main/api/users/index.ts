@@ -3,7 +3,7 @@ import {
 } from "@/lib/validators"; 
 import { authApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
-import { UsersFormValues, UsersRow } from "@/lib/validators/web/users";
+import { UsersRow } from "@/lib/validators/web/users";
 
 
 const userApi = authApi.injectEndpoints({
