@@ -51,11 +51,7 @@ export function AddUserRoleForm() {
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
 
   const previousData = getRoleById?.data;
-  console.log(previousData);
 
-  console.log(selectedPermissions);
-
-  console.log(permissionsData);
   const form = useForm<RoleFormValues>({
     resolver: zodResolver(RoleFormSchema),
     defaultValues: {
@@ -107,6 +103,7 @@ export function AddUserRoleForm() {
         </div>
       ) : (
         <Card className="w-1/2 mx-auto p-3">
+          <h1 className="text-xl font-bold mb-5">{previousData ? "Edit" : "Add"} User Role</h1>
           {" "}
           <Form {...form}>
             <form

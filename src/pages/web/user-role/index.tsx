@@ -54,6 +54,7 @@ const UserRole = () => {
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}
+                className={"py-2"}
                 
               />
             </div>

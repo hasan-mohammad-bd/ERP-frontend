@@ -3,50 +3,46 @@ import { type ColumnDef } from "@tanstack/react-table";
 
 import { CellAction } from "./cell-action";
 import { RoleRow } from "@/lib/validators/web/user-role";
-
-
+import RoleBadge from "./badge";
 
 export const subAccountColumns: ColumnDef<RoleRow>[] = [
-	{
-		id: "select",
-		header: ({ table }) => (
-			<Checkbox
-				checked={
-					table.getIsAllPageRowsSelected() ||
-					(table.getIsSomePageRowsSelected() && "indeterminate")
-				}
-				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-				aria-label="Select all"
-				className="translate-y-[2px]"
-			/>
-		),
-		cell: ({ row }) => (
-			<Checkbox
-				checked={row.getIsSelected()}
-				onCheckedChange={(value) => row.toggleSelected(!!value)}
-				aria-label="Select row"
-				className="translate-y-[2px]"
-			/>
-		),
-		enableSorting: false,
-		enableHiding: false,
-	},
-	{
-		accessorKey: "name",
-		header: "Role Name",
-	},
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+        className="translate-y-[2px]"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+        className="translate-y-[2px]"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "name",
+    header: "Role Name",
+  },
 
-	{
-		accessorKey: "permissions",
-		header: "Permissions",
-		//map the array of permissions to a string
-		accessorFn: ({ permissions }) => permissions.map((p) => p).join(", "),
-		
+  {
+    accessorKey: "permissions",
+    header: "Permissions",
+    //map the array of permissions to a string
+    cell: ({ row }) => <RoleBadge rowData={row.original} />,
+  },
 
-	},
-
-
-/* 	{
+  /* 	{
 		accessorKey: "",
 		header: "Currency",
 	accessorFn: ({currency}) => {
@@ -54,7 +50,7 @@ export const subAccountColumns: ColumnDef<RoleRow>[] = [
 	},
 		
 	}, */
-/* 	{
+  /* 	{
 		accessorKey: "is_active",
 		header: "Status",
 		cell: ({ row }) => {
@@ -89,10 +85,10 @@ export const subAccountColumns: ColumnDef<RoleRow>[] = [
 			);
 		},
 	}, */
-	{
-		id: "actions",
-		header: () => <div className="text-center">Actions</div>,
-		enableSorting: false,
-		cell: ({ row }) => <CellAction rowData={row.original} />,
-	},
+  {
+    id: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    enableSorting: false,
+    cell: ({ row }) => <CellAction rowData={row.original} />,
+  },
 ];
