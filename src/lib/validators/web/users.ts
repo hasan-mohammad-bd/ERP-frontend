@@ -6,22 +6,18 @@ name: z.string().min(2, {
 }),
 username: z.string().optional().nullable(),
 phone: z.string().optional().nullable(),
-email: z.string().optional().nullable(),
+email: z.string(),
 password: z.string()
 .min(8, { message: "Password must be at least 8 characters long" })
 .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
 .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
 .regex(/[0-9]/, { message: "Password must contain at least one digit" })
 .regex(/[@$!%*?&#]/, { message: "Password must contain at least one special character (@$!%*?&#)" }),
-password_confirmation: z.string()
-.min(8, { message: "Password must be at least 8 characters long" })
-.regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
-.regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
-.regex(/[0-9]/, { message: "Password must contain at least one digit" })
-.regex(/[@$!%*?&#]/, { message: "Password must contain at least one special character (@$!%*?&#)" }),
+password_confirmation: z.string(),
+
 organization_id: z.coerce.number().optional().nullable(),
 location_id: z.coerce.number().optional().nullable(),
-role_id: z.coerce.number(),
+role_id: z.coerce.number().optional().nullable(),
 image: z.string().optional().nullable(),
 
 });

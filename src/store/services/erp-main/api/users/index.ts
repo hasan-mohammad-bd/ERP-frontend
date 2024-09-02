@@ -18,7 +18,7 @@ const userApi = authApi.injectEndpoints({
 
     createUser: build.mutation<
       { data: UsersRow },
-      UsersFormValues
+      FormData
     >({
 
       query: (newUser) => ({
@@ -35,10 +35,10 @@ const userApi = authApi.injectEndpoints({
       }),
       invalidatesTags: ["users"], 
     }),
-    updateUser: build.mutation<{ data: UsersRow }, { userId: number, updatedUser: UsersFormValues }>({
+    updateUser: build.mutation<{ data: UsersRow }, { userId: number, updatedUser: FormData }>({
       query: ({ userId, updatedUser }) => ({
         url: `users/${userId}`, 
-        method: "PUT", 
+        method: "POST", 
         body: updatedUser,
       }),
       invalidatesTags: ["users"],
