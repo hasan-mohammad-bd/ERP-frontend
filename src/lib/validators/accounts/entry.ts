@@ -26,11 +26,17 @@ export const entryTypeSchema = z.object({
     .union([
       z
         .string()
+        .refine((val) => val.trim() !== "", { message: "Account is required." }) 
         .refine((val) => !isNaN(Number(val)), {
           message: "Account is required.",
         })
-        .transform((val) => Number(val)),
-      z.number(),
+        .transform((val) => Number(val))
+        .refine((val) => val !== 0, {
+          message: "Account is required",
+        }),
+      z.number().refine((val) => val !== 0, {
+        message: "Account is required",
+      }),
     ])
     .refine((val) => !isNaN(val), {
       message: "Account is required.",

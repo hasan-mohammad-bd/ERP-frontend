@@ -530,7 +530,7 @@ export function AddContraForm() {
                       dr_amount: 0,
                       cr_amount: 0,
                       ledger_account_id: 0,
-                      sub_account_id: 0,
+                      sub_account_id: null,
                       note: "",
                     })
                   }

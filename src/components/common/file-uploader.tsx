@@ -211,12 +211,16 @@ export default function FileUpload({
 
                     <div className="w-full ml-2 space-y-1">
                       <div className="text-sm flex justify-between">
-                        <p className="text-muted-foreground ">
+                        <a 
+                         href={file.path} // Assuming file.file_url contains the URL to the file
+                         target="_blank"
+                         rel="noopener noreferrer"
+                        className="text-primary">
                           {file.file_name.slice(0, 25)}
-                        </p>
+                        </a>
                       </div>
                     </div>
-                  </div>
+                  </div>           
                   <button
                     type="button"
                     onClick={() => removeUploadedFile(file)}

@@ -649,9 +649,9 @@ export function AddJournalForm() {
                       dr_amount: 0,
                       cr_amount: 0,
                       ledger_account_id: 0,
-                      sub_account_id: 0,
+                      sub_account_id: null,
                       note: "",
-                      cost_centers: [{ cost_center_id: 0, amount: 0 }],
+                      // cost_centers: [{ cost_center_id: 0, amount: 0 }],
                     })
                   }
                 >
