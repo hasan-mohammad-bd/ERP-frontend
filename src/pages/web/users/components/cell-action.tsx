@@ -12,8 +12,8 @@ import { toast } from "sonner";
 import { Modal } from "@/components/common/modal";
 
 import { AddUsers } from "./add-users-form";
-import { useRemoveRoleMutation } from "@/store/services/erp-main/api/user-role";
 import { UsersRow } from "@/lib/validators/web/users";
+import { useRemoveUserMutation } from "@/store/services/erp-main/api/users";
 
 interface CellActionProps {
   rowData: UsersRow;
@@ -22,12 +22,12 @@ interface CellActionProps {
 export function CellAction({ rowData }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [deleteRole, { isLoading: deleteLoading }] = useRemoveRoleMutation();
+  const [deleteUser, { isLoading: deleteLoading }] = useRemoveUserMutation();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
-      await deleteRole(id);
-      toast.success("Role deleted successfully");
+      await deleteUser(id);
+      toast.success("User deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
@@ -51,7 +51,7 @@ export function CellAction({ rowData }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Update Role</p>
+            <p>Update User</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -89,6 +89,7 @@ export function CellAction({ rowData }: CellActionProps) {
         title="Update Role"
         isOpen={updateModalOpen}
         toggleModal={() => setUpdateModalOpen(false)}
+        className="w-1/2 max-w-5xl"
       >
         <AddUsers
           rowData={rowData}

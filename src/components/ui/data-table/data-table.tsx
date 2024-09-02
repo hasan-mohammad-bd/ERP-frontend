@@ -55,7 +55,7 @@ interface DataTableProps<TData, TValue> {
   };
   startDate?: Date | null;
   endDate?: Date | null;
-  padding?: string | null;
+  className?: string | null;
 }
 
 export function DataTable<TData, TValue>({
@@ -67,7 +67,7 @@ export function DataTable<TData, TValue>({
   noPagination,
   bulkActions,
   selectedBulkAction,
-  padding,
+  className,
 
   setSelectedBulkAction,
 
@@ -195,7 +195,7 @@ export function DataTable<TData, TValue>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       className={`${
-                        reportFormate ? "py-2" : padding || "py-0"
+                        reportFormate ? "py-2" : className || "py-0"
                       }`}
                       key={cell.id}
                     >

@@ -21,3 +21,20 @@ export const roleRow = RoleFormSchema.extend({
 })
 
 export type RoleRow = z.infer<typeof roleRow>
+
+
+type permissionRowType = {
+  name: string;
+  slug: string;
+  comment: string | null;
+  permissions: permissionRowType[] | null;
+};
+
+const permissionRow: z.ZodType<permissionRowType> = z.lazy(() => z.object({
+  name: z.string(),
+  slug: z.string(),
+  comment: z.string().nullable(),
+  permissions: z.array(permissionRow).nullable(),
+}));
+
+export type PermissionRow = z.infer<typeof permissionRow>; 

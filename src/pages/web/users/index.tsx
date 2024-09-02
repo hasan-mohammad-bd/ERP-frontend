@@ -56,9 +56,10 @@ const Users = () => {
         </div>
       </div>
       <Modal
-        title="Add Contact"
+        title="Add User"
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}
+        className="w-1/2 max-w-5xl"
       >
         <AddUsers modalClose={() => setIsOpen(false)} />
       </Modal>

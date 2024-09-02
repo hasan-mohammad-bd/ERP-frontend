@@ -9,6 +9,7 @@ import {
 import { AddOrganizationForm } from "@/pages/web/organization/components/add-organization-form";
 import UserRole from "@/pages/web/user-role";
 import Users from "@/pages/web/users";
+import { AddUserRoleForm } from "@/pages/web/user-role/components/add-user-role-form";
 
 
 const webRoutes = {
@@ -48,8 +49,25 @@ const webRoutes = {
 		},
 		{
 			path: "role",
-			element: withFallback(<UserRole />),
+			// element: withFallback(<UserRole />),
 			errorElement: withFallback(<ErrorPage />),
+			children: [
+				{
+					index: true,
+					element: withFallback(<UserRole />),
+					errorElement: withFallback(<ErrorPage />), 
+				},
+				{
+					path: "add",
+					element: withFallback(<AddUserRoleForm />),
+					errorElement: withFallback(<ErrorPage />),
+				},
+				{
+					path: "edit/:id",
+					element: withFallback(<AddUserRoleForm />),
+					errorElement: withFallback(<ErrorPage />),
+				}
+			]
 		},
 		{
 			path: "users",

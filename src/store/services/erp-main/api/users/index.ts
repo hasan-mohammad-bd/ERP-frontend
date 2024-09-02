@@ -3,7 +3,7 @@ import {
 } from "@/lib/validators"; 
 import { authApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
-import { UsersFormValues, UsersRow } from "@/lib/validators/web/users";
+import { UsersRow } from "@/lib/validators/web/users";
 
 
 const userApi = authApi.injectEndpoints({
@@ -18,7 +18,7 @@ const userApi = authApi.injectEndpoints({
 
     createUser: build.mutation<
       { data: UsersRow },
-      UsersFormValues
+      FormData
     >({
 
       query: (newUser) => ({
@@ -35,10 +35,10 @@ const userApi = authApi.injectEndpoints({
       }),
       invalidatesTags: ["users"], 
     }),
-    updateUser: build.mutation<{ data: UsersRow }, { userId: number, updatedUser: UsersFormValues }>({
+    updateUser: build.mutation<{ data: UsersRow }, { userId: number, updatedUser: FormData }>({
       query: ({ userId, updatedUser }) => ({
         url: `users/${userId}`, 
-        method: "PUT", 
+        method: "POST", 
         body: updatedUser,
       }),
       invalidatesTags: ["users"],
