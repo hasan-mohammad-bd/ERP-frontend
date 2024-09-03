@@ -85,6 +85,12 @@ const accountsNavItems: NavItem[] = [
         color: "text-sky-500",
       },
       {
+        title: "Budget",
+        icon: Clock,
+        href: "/accounts/budget",
+        color: "text-sky-500",
+      },
+      {
         title: "Journal Voucher",
         icon: Clock,
         href: "/accounts/journal-voucher",
