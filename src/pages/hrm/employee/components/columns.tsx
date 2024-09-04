@@ -4,62 +4,68 @@ import { EmployeeColumn } from "@/lib/validators";
 import { CellAction } from "./cell-action";
 
 export const employeeColumns: ColumnDef<EmployeeColumn>[] = [
-	{
-		id: "select",
-		header: ({ table }) => (
-			<Checkbox
-				checked={
-					table.getIsAllPageRowsSelected() ||
-					(table.getIsSomePageRowsSelected() && "indeterminate")
-				}
-				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-				aria-label="Select all"
-				className="translate-y-[2px]"
-			/>
-		),
-		cell: ({ row }) => (
-			<Checkbox
-				checked={row.getIsSelected()}
-				onCheckedChange={(value) => row.toggleSelected(!!value)}
-				aria-label="Select row"
-				className="translate-y-[2px]"
-			/>
-		),
-		enableSorting: false,
-		enableHiding: false,
-	},
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+        className="translate-y-[2px]"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+        className="translate-y-[2px]"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
 
-	{
-		accessorKey: "first_name",
-		header: "First name",
-	},
-	{
-		accessorKey: "last_name",
-		header: "Last name",
-	},
-	{
-		accessorKey: "email",
-		header: "Email",
-	},
+  {
+    accessorKey: "first_name",
+    header: "First name",
+  },
+  {
+    accessorKey: "last_name",
+    header: "Last name",
+  },
+  {
+    accessorKey: "email",
+    header: "Email",
+  },
 
-	{
-		accessorKey: "phone",
-		header: "Phone",
-	},
-	{
-		accessorKey: "nid_number",
-		header: "NID Number",
-	},
-	{
-		accessorKey: "birth_date",
-		header: "Birth date",
-	},
-	{
-		accessorKey: "marital_status",
-		header: "Marital status",
-	},
+  {
+    accessorKey: "phone",
+    header: "Phone",
+  },
+  {
+	accessorKey: "",
+	accessorFn: ({ department }) => department?.name,
+	header: "Department",
+  },
+  {
+    accessorKey: "location",
+    accessorFn: ({ location }) => location?.name,
+    header: "Location",
+  },
+//   {
+//     accessorKey: "birth_date",
+//     header: "Birth date",
+//   },
+//   {
+//     accessorKey: "marital_status",
+//     header: "Marital status",
+//   },
 
-	/*   {
+  /*   {
     accessorKey: "",
     accessorFn: ({ department }) => department?.name,
     header: "Department",
@@ -76,11 +82,6 @@ export const employeeColumns: ColumnDef<EmployeeColumn>[] = [
     accessorKey: "",
     accessorFn: ({ designation }) => designation?.name,
     header: "Designation",
-  },
-  {
-    accessorKey: "location",
-    accessorFn: ({ location }) => location?.name,
-    header: "Location",
   },
   {
     accessorKey: "vacancy_requisition",
@@ -102,10 +103,10 @@ export const employeeColumns: ColumnDef<EmployeeColumn>[] = [
     header: "Work place",
   }, */
 
-	{
-		id: "actions",
-		header: () => <div className="text-center">Actions</div>,
-		enableSorting: false,
-		cell: ({ row }) => <CellAction data={row.original} />,
-	},
+  {
+    id: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    enableSorting: false,
+    cell: ({ row }) => <CellAction data={row.original} />,
+  },
 ];

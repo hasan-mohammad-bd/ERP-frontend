@@ -11,6 +11,21 @@ import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
 import { employeeColumns } from "./components/columns";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
+import { BulkAction } from "@/components/ui/data-table/data-table-bulk-actions";
+import { EmployeeColumn } from "@/lib/validators";
+import { AlertModal } from "@/components/common/alert-modal";
+import { toast } from "sonner";
+
+const BULK_ACTIONS = [
+  {
+    label: "Enable Roster",
+    value: "enable-roster",
+  },
+  {
+    label: "Delete Selected",
+    value: "delete-selected",
+  },
+];
 
 const Employee = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,12 +38,26 @@ const Employee = () => {
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
 
+  // Set appropriate bulk action type here
+  const [selectedBulkAction, setSelectedBulkAction] = useState<
+    BulkAction<EmployeeColumn>
+  >({ action: "", payload: [] });
+
   const employee = data?.data || [];
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
-  // console.log(departments);
+  
   if (isLoading) return <Loading />;
+
+
+  const handleEmployeeRosterChange = () => {
+    console.log("Handle Employee Roster Change");
+    console.log(selectedBulkAction);
+    // Handle selectedBulkAction here
+    toast.success("Employee roster updated successfully");
+    setSelectedBulkAction({ action: "", payload: [] });
+  };
 
   return (
     <>
@@ -49,6 +78,8 @@ const Employee = () => {
               <DataTable
                 columns={employeeColumns}
                 data={employee}
+                bulkActions={BULK_ACTIONS} // optional - pass it if you want to show bulk actions
+                onBulkSelectChange={setSelectedBulkAction} // ((fun) optional - pass it if you want to get selected bulk action
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}
@@ -65,6 +96,19 @@ const Employee = () => {
       >
         <EmployeeForm modalClose={() => setIsOpen(false)} />
       </Modal>
+
+      {/* Example uses with modal using selected bulk action  */}
+      {selectedBulkAction.action === "enable-roster" && (
+        <AlertModal
+          title="Enable Employee Roster?"
+          description="This action can be changed later"
+          alertMessage="Are you sure you want to update employee roster status?"
+          type="default"
+          isOpen={selectedBulkAction.action === "enable-roster"}
+          onClose={() => setSelectedBulkAction({ action: "", payload: [] })}
+          onConfirm={handleEmployeeRosterChange}
+        ></AlertModal>
+      )}
     </>
   );
 };

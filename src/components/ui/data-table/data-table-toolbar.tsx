@@ -14,8 +14,7 @@ import { File, Sheet } from "lucide-react";
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   bulkActions?: BulkActionItem[];
-  selectedBulkAction?: BulkAction<TData>;
-  setSelectedBulkAction?: (value: BulkAction<TData>) => void;
+  onBulkSelectChange?: (value: BulkAction<TData>) => void;
   setStartDate?: (value: Date | null) => void;
   setEndDate?: (value: Date | null) => void;
   datePicker?: boolean;
@@ -24,10 +23,7 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
   bulkActions,
-
-
-  selectedBulkAction = { action: "", payload: [] },
-  setSelectedBulkAction = () => {},
+  onBulkSelectChange = () => {},
 }: DataTableToolbarProps<TData>) {
   return (
     <div className="flex items-center justify-between">
@@ -43,8 +39,7 @@ export function DataTableToolbar<TData>({
           <DataTableBulkActions
             table={table}
             actions={bulkActions}
-            selectedBulkAction={selectedBulkAction}
-            setSelectedBulkAction={setSelectedBulkAction}
+            onBulkSelectChange={onBulkSelectChange}
           />
         )}
       </div>

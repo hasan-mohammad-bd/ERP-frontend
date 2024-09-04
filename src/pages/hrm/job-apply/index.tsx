@@ -70,8 +70,7 @@ const JobApply = () => {
                 columns={jobApplyColumns}
                 data={jobApply}
                 bulkActions={BULK_ACTIONS} // optional - pass it if you want to show bulk actions
-                selectedBulkAction={selectedBulkAction} // optional - pass it if you want to show active bulk action
-                setSelectedBulkAction={setSelectedBulkAction} // ((fun) optional - pass it if you want to get selected bulk action
+                onBulkSelectChange={setSelectedBulkAction} // ((fun) optional - pass it if you want to get selected bulk action
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}

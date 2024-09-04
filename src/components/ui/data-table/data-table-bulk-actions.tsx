@@ -7,8 +7,8 @@ import { type Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
-	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
+	DropdownMenuItem
 } from "@/components/ui/dropdown-menu";
 
 export type BulkActionItem = {
@@ -24,22 +24,20 @@ export type BulkAction<TData> = {
 interface DataTableBulkActionsProps<TData> {
 	table: Table<TData>;
 	actions: BulkActionItem[];
-	selectedBulkAction: BulkAction<TData>;
-	setSelectedBulkAction: (value: BulkAction<TData>) => void;
+	onBulkSelectChange: (value: BulkAction<TData>) => void;
 }
 
 export const DataTableBulkActions = <TData,>({
 	table,
 	actions,
-	selectedBulkAction,
-	setSelectedBulkAction,
+	onBulkSelectChange,
 }: DataTableBulkActionsProps<TData>) => {
 	const getSelectedRowData = (bulkActionType: string) => {
 		const selectedRows = table
 			.getSelectedRowModel()
 			.flatRows.map((row) => row.original);
 
-		setSelectedBulkAction({
+		onBulkSelectChange({
 			action: bulkActionType,
 			payload: selectedRows,
 		});
@@ -56,16 +54,15 @@ export const DataTableBulkActions = <TData,>({
 					Select Action
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent align="end" className="w-[150px]">
+			<DropdownMenuContent align="center" className="w-[140px]">
 				{actions.map((bulkAction) => (
-					<DropdownMenuCheckboxItem
+					<DropdownMenuItem
 						key={bulkAction.value}
 						className="capitalize"
-						checked={bulkAction.value === selectedBulkAction.action}
-						onCheckedChange={() => getSelectedRowData(bulkAction.value)}
+						onClick={() => getSelectedRowData(bulkAction.value)}
 					>
 						{bulkAction.label}
-					</DropdownMenuCheckboxItem>
+					</DropdownMenuItem>
 				))}
 			</DropdownMenuContent>
 		</DropdownMenu>

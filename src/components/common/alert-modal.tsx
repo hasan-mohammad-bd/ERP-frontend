@@ -11,10 +11,12 @@ import { Loading } from "@/components/common/loading";
 
 interface AlertModalProps {
   title: string;
-  description: string;
+  description?: string;
+  alertMessage?: string;
   name?: string;
-  loading: boolean;
+  loading?: boolean;
   isOpen: boolean;
+  type?: "default" | "destructive";
   onClose: () => void;
   onConfirm: () => void;
 }
@@ -22,13 +24,14 @@ interface AlertModalProps {
 export const AlertModal = ({
   title,
   description,
+  alertMessage,
   name,
   isOpen,
+  type = "destructive",
   onClose,
   onConfirm,
-  loading,
+  loading=false,
 }: AlertModalProps) => {
-  console.log();
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     setIsMounted(true);
@@ -56,19 +59,22 @@ export const AlertModal = ({
         ) : (
           <div>
             <div className="flex items-center gap-x-2">
-              <span>Are you sure want to delete</span>
-              <span className="text-lg font-bold text-red-500">{name}</span>?
+              {alertMessage ? (
+                <span>{alertMessage}</span>
+              ) : (
+                <>
+                  <span>Are you sure want to delete</span>
+                  <span className="text-lg font-bold text-red-500">{name}</span>
+                  ?
+                </>
+              )}
             </div>
             <div className="flex w-full items-center justify-end space-x-2 pt-6">
               <Button disabled={loading} variant="outline" onClick={onClose}>
                 Cancel
               </Button>
-              <Button
-                disabled={loading}
-                variant="destructive"
-                onClick={onConfirm}
-              >
-                Continue
+              <Button disabled={loading} variant={type} onClick={onConfirm}>
+                Confirm
               </Button>
             </div>
           </div>

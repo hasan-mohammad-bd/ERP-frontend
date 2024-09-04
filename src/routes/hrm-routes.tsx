@@ -78,6 +78,11 @@ const hrmRoutes = {
       element: withFallback(<Roster />),
       errorElement: withFallback(<ErrorPage />),
     },
+		{
+			path: "roster-employee",
+			element: withFallback(<Roster />),
+			errorElement: withFallback(<ErrorPage />),
+		},
     {
       path: "holidays",
       element: withFallback(<Holiday />),

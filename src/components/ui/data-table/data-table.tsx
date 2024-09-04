@@ -42,8 +42,7 @@ interface DataTableProps<TData, TValue> {
   setPagination?: OnChangeFn<PaginationState>;
   noPagination?: boolean;
   bulkActions?: BulkActionItem[];
-  selectedBulkAction?: BulkAction<TData>;
-  setSelectedBulkAction?: (value: BulkAction<TData>) => void;
+  onBulkSelectChange?: (value: BulkAction<TData>) => void;
   // setStartDate?: (value: Date | null) => void;
   // setEndDate?: (value: Date | null) => void;
 
@@ -66,11 +65,8 @@ export function DataTable<TData, TValue>({
   setPagination: externalSetPagination,
   noPagination,
   bulkActions,
-  selectedBulkAction,
   className,
-
-  setSelectedBulkAction,
-
+  onBulkSelectChange,
   reportFormate,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
@@ -156,8 +152,7 @@ export function DataTable<TData, TValue>({
         <DataTableToolbar
           table={table}
           bulkActions={bulkActions}
-          selectedBulkAction={selectedBulkAction}
-          setSelectedBulkAction={setSelectedBulkAction}
+          onBulkSelectChange={onBulkSelectChange}
         />
       ) : null}
       <div className="rounded-md border">
