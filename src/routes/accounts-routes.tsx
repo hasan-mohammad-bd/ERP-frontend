@@ -31,6 +31,7 @@ import DetailedGeneralLedger from "@/pages/accounts/detailed-general-ledger";
 import CashBook from "@/pages/accounts/cash-book";
 import Budget from "@/pages/accounts/budget";
 import { AddBudgetForm } from "@/pages/accounts/budget/components/add-budjet-form";
+import CheckBooks from "@/pages/accounts/check-books";
 
 const accountsRoutes = {
   path: "accounts/",
@@ -70,6 +71,11 @@ const accountsRoutes = {
     {
       path: "cost-centers",
       element: withFallback(<CostCenters />),
+      errorElement: <ErrorPage />,
+    },
+    {
+      path: "check-books",
+      element: withFallback(<CheckBooks />),
       errorElement: <ErrorPage />,
     },
     {
