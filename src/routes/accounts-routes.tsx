@@ -29,6 +29,9 @@ import Projects from "@/pages/accounts/projects";
 import Transaction from "@/pages/accounts/transaction";
 import DetailedGeneralLedger from "@/pages/accounts/detailed-general-ledger";
 import CashBook from "@/pages/accounts/cash-book";
+import Budget from "@/pages/accounts/budget";
+import { AddBudgetForm } from "@/pages/accounts/budget/components/add-budjet-form";
+import CheckBooks from "@/pages/accounts/check-books";
 
 const accountsRoutes = {
   path: "accounts/",
@@ -71,6 +74,11 @@ const accountsRoutes = {
       errorElement: <ErrorPage />,
     },
     {
+      path: "check-books",
+      element: withFallback(<CheckBooks />),
+      errorElement: <ErrorPage />,
+    },
+    {
       path: "projects",
       element: withFallback(<Projects />),
       errorElement: <ErrorPage />,
@@ -99,6 +107,28 @@ const accountsRoutes = {
         {
           path: "edit/:id",
           element: withFallback(<AddOpeningBalanceForm />),
+          errorElement: <ErrorPage />,
+        },
+      ],
+    },
+    {
+      path: "budget/",
+      // element: withFallback(<JournalVoucher />),
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          index: true,
+          element: withFallback(<Budget />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "add",
+          element: withFallback(<AddBudgetForm />),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<AddBudgetForm />),
           errorElement: <ErrorPage />,
         },
       ],

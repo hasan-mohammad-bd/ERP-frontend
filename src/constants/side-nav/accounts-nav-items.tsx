@@ -56,6 +56,12 @@ const accountsNavItems: NavItem[] = [
         color: "text-sky-500",
       },
       {
+        title: "Check Books",
+        icon: Cone,
+        href: "/accounts/check-books",
+        color: "text-sky-500",
+      },
+      {
         title: "Projects",
         icon: Cone,
         href: "/accounts/projects",
@@ -82,6 +88,12 @@ const accountsNavItems: NavItem[] = [
         title: "Opening Balance",
         icon: Clock,
         href: "/accounts/opening-balance",
+        color: "text-sky-500",
+      },
+      {
+        title: "Budget",
+        icon: Clock,
+        href: "/accounts/budget",
         color: "text-sky-500",
       },
       {

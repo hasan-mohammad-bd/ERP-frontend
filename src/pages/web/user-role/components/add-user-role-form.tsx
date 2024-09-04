@@ -30,7 +30,7 @@ import {
 } from "@/store/services/erp-main/api/user-role";
 import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
 import { OrganizationDropdownColumn } from "@/lib/validators";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import SECTION_TYPES from "@/constants/section-types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -49,6 +49,7 @@ export function AddUserRoleForm() {
   const organizationData = organizations?.data || [];
   const { data: getRoleById } = useGetRoleByIdQuery(`${id}`);
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   const previousData = getRoleById?.data;
 
@@ -85,10 +86,13 @@ export function AddUserRoleForm() {
         });
         toast.success("Contact updated successfully");
         // modalClose();
+        navigate("/web/role");
+        
       } else {
         await createRole(updatedData);
         toast.success("Contact created successfully");
         // modalClose();
+        navigate("/web/role");
       }
     } catch (error) {
       console.log(error);
