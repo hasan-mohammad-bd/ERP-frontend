@@ -7,6 +7,7 @@ export const DashboardAccounts = lazy(() => import("@/pages/accounts/dashboard-a
 export const Department = lazy(() => import("@/pages/hrm/department"));
 export const Designation = lazy(() => import("@/pages/hrm/designation"));
 export const Employee = lazy(() => import("@/pages/hrm/employee"));
+export const Attendance = lazy(() => import("@/pages/hrm/attendance"));
 export const EmployeeClass = lazy(() => import("@/pages/hrm/employee-class"));
 export const EmployeeGrade = lazy(() => import("@/pages/hrm/employee-grade"));
 export const Holiday = lazy(() => import("@/pages/hrm/holiday"));
