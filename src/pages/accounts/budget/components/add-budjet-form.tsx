@@ -32,7 +32,6 @@ import { ProjectRow } from "@/lib/validators/accounts/projects";
 import {
   useCreateBudgetMutation,
   useGetBudgetByIdQuery,
-  useGetBudgetsQuery,
   useUpdateBudgetMutation,
 } from "@/store/services/accounts/api/budget";
 
@@ -60,8 +59,8 @@ export function AddBudgetForm() {
   // const { data: subAccounts, isLoading: subAccountLoading } =
   //   useGetSubAccountsQuery(`page=1&per_page=1000`);
 
-  const { data: budget } =
-    useGetBudgetsQuery(`page=1&per_page=1000`);
+  // const { data: budget } =
+  //   useGetBudgetsQuery(`page=1&per_page=1000`);
 
   const { data: openingBalanceById } = useGetBudgetByIdQuery(`${id}`, {
     skip: !id,
@@ -72,7 +71,7 @@ export function AddBudgetForm() {
   const previousData = openingBalanceById?.data;
   console.log("🚀 ~ AddOpeningBalanceForm ~ previousData:", previousData);
 
-  const openingBalanceData = budget?.data || [];
+  // const openingBalanceData = budget?.data || [];
   const projectData = projects?.data || [];
 
   const { data: location, isLoading: locationLoading } = useGetLocationsQuery(
@@ -80,12 +79,7 @@ export function AddBudgetForm() {
   );
   const locationData = location?.data || [];
 
-  const filteredLocation = locationData?.filter(
-    (item) =>
-      !openingBalanceData?.some(
-        (budget) => budget.location.id === item.id
-      )
-  );
+
 
   const ledgerAccountData = ledgerAccount?.data || [];
   // const subAccountData = subAccounts?.data || [];
@@ -308,7 +302,7 @@ export function AddBudgetForm() {
                                   {locationLoading ? (
                                     <Loading />
                                   ) : (
-                                    filteredLocation?.map(
+                                    locationData?.map(
                                       (location: LocationColumn) => (
                                         <SelectItem
                                           key={location.id}
