@@ -3,7 +3,8 @@ import { lazy } from "react";
 export const Layout = lazy(() => import("@/layout"));
 export const ErrorPage = lazy(() => import("@/pages/ErrorPage"));
 export const Dashboard = lazy(() => import("@/pages/dashboard"));
-export const DashboardAccounts = lazy(() => import("@/pages/accounts/dashboard-accounts"));
+
+// HRM
 export const Department = lazy(() => import("@/pages/hrm/department"));
 export const Designation = lazy(() => import("@/pages/hrm/designation"));
 export const Employee = lazy(() => import("@/pages/hrm/employee"));
@@ -17,12 +18,16 @@ export const JobPost = lazy(() => import("@/pages/hrm/job-post"));
 export const Roster = lazy(() => import("@/pages/hrm/roster"));
 export const Schedule = lazy(() => import("@/pages/hrm/schedule"));
 export const Section = lazy(() => import("@/pages/hrm/section"));
+export const EmployeeRoster = lazy(() => import("@/pages/hrm/employee-roster"));
 export const VacancyRequisition = lazy(
   () => import("@/pages/hrm/vacancy-requisitions")
 );
 export const LoginScreen = lazy(() => import("@/pages/login"));
 export const Lobby = lazy(() => import("@/pages/lobby"));
 export const PrivateOutlet = lazy(() => import("@/utils/private-outlet"));
+
+// Accounts
+export const DashboardAccounts = lazy(() => import("@/pages/accounts/dashboard-accounts"));
 export const FinancialYears = lazy(
   () => import("@/pages/accounts/financial-year")
 );
