@@ -17,6 +17,7 @@ import {
   Schedule,
   Section,
   VacancyRequisition,
+  EmployeeRoster 
 } from "./components";
 
 const hrmRoutes = {
@@ -80,7 +81,7 @@ const hrmRoutes = {
     },
 		{
 			path: "roster-employee",
-			element: withFallback(<Roster />),
+			element: withFallback(<EmployeeRoster />),
 			errorElement: withFallback(<ErrorPage />),
 		},
     {
