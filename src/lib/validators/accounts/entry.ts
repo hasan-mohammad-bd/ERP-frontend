@@ -71,7 +71,7 @@ export const entrySchema = z.object({
   entry_number: z.string(),
   details: entryTypeSchema.array(),
   note: z.string(),
-  file: z.string(),
+  file: z.string().optional().nullable(),
   files: files,
   project_id: z.string().optional().nullable(),
 });
