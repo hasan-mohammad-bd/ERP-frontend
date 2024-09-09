@@ -2,6 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { BudgetRow } from "@/lib/validators/accounts/budget";
+import { FormatIndianCurrency } from "@/utils/indian-formate";
 
 export const subAccountColumns: ColumnDef<BudgetRow>[] = [
   {
@@ -54,16 +55,19 @@ export const subAccountColumns: ColumnDef<BudgetRow>[] = [
     header: "End Date",
   },
   {
-    accessorKey: "dr_amount",
+    // accessorKey: "dr_amount",
     header: "Dr Amount",
+    cell: ({ row }) => <FormatIndianCurrency amount={row.original.dr_amount} />,
   },
   {
-    accessorKey: "cr_amount",
+    // accessorKey: "cr_amount",
     header: "Cr Amount",
+    cell: ({ row }) => <FormatIndianCurrency amount={row.original.cr_amount} />,
   },
   {
-    accessorKey: "total",
+    // accessorKey: "total",
     header: "Total",
+    cell: ({ row }) => <FormatIndianCurrency amount={row.original.total} />,
   },
 
   {

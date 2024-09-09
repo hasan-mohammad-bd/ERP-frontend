@@ -2,6 +2,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 
 import { DetailedGeneralLedgerRow } from "@/lib/validators/accounts/general-ledger";
 import { CellActionDynamicRoute } from "@/components/common/accounts/cell-action-dynamc-route";
+import { FormatIndianCurrency } from "@/utils/indian-formate";
 
 export const detailedGeneralLedgerColumns: ColumnDef<DetailedGeneralLedgerRow>[] =
   [
@@ -30,10 +31,12 @@ export const detailedGeneralLedgerColumns: ColumnDef<DetailedGeneralLedgerRow>[]
     {
       accessorKey: "dr_amount",
       header: "Debit",
+      cell: ({ row }) => <FormatIndianCurrency amount={row.original.dr_amount} />,
     },
     {
       accessorKey: "cr_amount",
       header: "Credit",
+      cell: ({ row }) => <FormatIndianCurrency amount={row.original.cr_amount} />,
     },
 
   ];

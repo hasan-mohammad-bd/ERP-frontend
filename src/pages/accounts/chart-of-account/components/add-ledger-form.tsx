@@ -141,7 +141,8 @@ export function AddLedgerForm({
                                   item?.name !== "Liabilities" &&
                                   item?.name !== "Equity" &&
                                   item?.name !== "Expenses" &&
-                                  item?.name !== "Owner's Equity"
+                                  item?.name !== "Income"
+                                 
                               )
                               .map((parent: LedgerGroupArrayRow) => (
                                 <SelectItem

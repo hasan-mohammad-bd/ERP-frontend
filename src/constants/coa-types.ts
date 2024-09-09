@@ -11,7 +11,7 @@ const COA_TYPES = [
 	},
 	{
 		type: "Income",
-		title: "Incomes",
+		title: "Income",
 		description: "Manage incomes for your business",
 	},
 	{

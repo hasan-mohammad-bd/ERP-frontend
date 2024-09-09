@@ -6,7 +6,7 @@ export default function Footer() {
     <footer>
       <p
         className={cn(
-          "flex mt-4 px-5 justify-between py-2 text-sm bg-primary text-primary-foreground font-medium"
+          "flex mt-4 px-5 justify-between py-2 text-sm bg-gray-500 text-primary-foreground font-medium"
         )}
       >
         <div>

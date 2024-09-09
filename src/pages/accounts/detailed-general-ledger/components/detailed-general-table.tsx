@@ -13,6 +13,7 @@ import {
   DetailedGeneralLedgerRow,
   SummeryRow,
 } from "@/lib/validators/accounts/general-ledger";
+import AmountDisplay from "@/utils/amount-display";
 
 interface Props {
   tableData: DetailedGeneralLedgerRow[];
@@ -67,7 +68,7 @@ const DetailedGeneralTable = ({ tableData, summery, reportFormate }: Props) => {
             <TableRow>
               <TableCell>As On {formateStartDate}</TableCell>
               <TableCell colSpan={6}>Opening Balance</TableCell>
-              <TableCell colSpan={1}>{summery.opening_balance}</TableCell>
+              <TableCell colSpan={1}><AmountDisplay amount={summery.opening_balance} /></TableCell>
             </TableRow>
             {tableData.map((item) => (
               <TableRow key={item.id}>
@@ -76,9 +77,9 @@ const DetailedGeneralTable = ({ tableData, summery, reportFormate }: Props) => {
                 <TableCell>{item.entry.note}</TableCell>
                 <TableCell>{item.entry.type}</TableCell>
                 <TableCell>{item.entry.entry_number}</TableCell>
-                <TableCell>{item.dr_amount}</TableCell>
-                <TableCell>{item.cr_amount}</TableCell>
-                <TableCell>{item.cumulative_amount}</TableCell>
+                <TableCell>{item.dr_amount.toLocaleString(`en-IN`)}</TableCell>
+                <TableCell>{item.cr_amount.toLocaleString(`en-IN`)}</TableCell>
+                <TableCell><AmountDisplay amount={item.cumulative_amount} /></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -93,9 +94,9 @@ const DetailedGeneralTable = ({ tableData, summery, reportFormate }: Props) => {
               <TableCell className="font-bold text-right" colSpan={2}>
                 Total Debits & Credits
               </TableCell>
-              <TableCell className=""> {summery.dr_amount || 0} </TableCell>
+              <TableCell className=""> {summery.dr_amount.toLocaleString(`en-IN`) || 0} </TableCell>
               <TableCell colSpan={2} className="">
-                {summery.cr_amount || 0}{" "}
+                {summery.cr_amount.toLocaleString(`en-IN`) || 0}{" "}
               </TableCell>
               {/* <TableCell className="">{summery.cumulative_amount || 0}  </TableCell> */}
             </TableRow>
@@ -107,7 +108,7 @@ const DetailedGeneralTable = ({ tableData, summery, reportFormate }: Props) => {
               {/* <TableCell className=""> {summery.dr_amount  || 0} </TableCell>
             <TableCell className="">{summery.cr_amount || 0}  </TableCell> */}
               <TableCell colSpan={3} className="">
-                {summery.closeing_balance || 0}{" "}
+                <AmountDisplay amount={summery.closeing_balance} />
               </TableCell>
             </TableRow>
           </TableFooter>
