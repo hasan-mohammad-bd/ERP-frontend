@@ -444,6 +444,7 @@ export function AddJournalForm() {
                               </FormLabel>
                               <FormControl>
                                 <Input
+                                step="any"
                                   disabled={
                                     form.watch(`details.${index}.cr_amount`) > 0
                                   }
@@ -478,13 +479,14 @@ export function AddJournalForm() {
                               <FormLabel>
                                 {index === 0 && (
                                   <>
-                                    "Credit Amount"{" "}
+                                    Credit Amount{" "}
                                     <span className="text-red-500">*</span>
                                   </>
                                 )}
                               </FormLabel>
                               <FormControl>
                                 <Input
+                                step="any"
                                   disabled={
                                     form.watch(`details.${index}.dr_amount`) > 0
                                   }
@@ -668,7 +670,7 @@ export function AddJournalForm() {
                     {previousData ? "Update" : "Save"}
                   </Button>
                   <Button
-                    variant="default"
+                    variant="primary"
                     onClick={() => navigate("/accounts/journal-voucher")}
                     className="w-fit "
                   >

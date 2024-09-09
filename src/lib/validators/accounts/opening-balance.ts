@@ -5,12 +5,12 @@ import { entryRow, entryTypeSchema } from "./entry";
 
 export const openingBalanceSchema = z.object({
   type: z.string(),
-  location_id: z.coerce.number(),
+  location_id: z.coerce.number().optional().nullable(),
   date: z.string().date(),
   details: entryTypeSchema.array(),
-  note: z.string(),
-  file: z.string(),
-  entry_number: z.string(),
+  note: z.string().optional(),
+  file: z.string().optional().nullable(),
+  // entry_number: z.string(),
 
 });
 

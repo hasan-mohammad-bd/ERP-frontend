@@ -474,6 +474,7 @@ export function AddContraForm() {
                             </FormLabel>
                             <FormControl>
                               <Input
+                              step="any"
                                 disabled={
                                   form.watch(`details.${index}.dr_amount`) > 0
                                 }
@@ -547,7 +548,7 @@ export function AddContraForm() {
                     {previousData ? "Update" : "Save"}
                   </Button>
                   <Button
-                    variant="default"
+                    variant="primary"
                     onClick={() => navigate("/accounts/contra-voucher")}
                     className="w-fit "
                   >

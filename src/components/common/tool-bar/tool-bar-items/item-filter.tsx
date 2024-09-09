@@ -18,6 +18,7 @@ interface ItemFilterProps {
     loadingData?: boolean;
     arrayItemsTwo?: object[];
     loadingDataTwo?: boolean;
+    detailedGeneralLedger?: boolean;
   };
 }
 
@@ -29,6 +30,7 @@ const ItemFilter = ({ filterProp }: ItemFilterProps) => {
     arrayItemsTwo,
     loadingDataTwo,
     setProjectFiltered,
+    detailedGeneralLedger,
   } = filterProp || {};
 
   const param = useParams(); 
@@ -41,10 +43,10 @@ const ItemFilter = ({ filterProp }: ItemFilterProps) => {
     if (setFiltered) {
       setFiltered(numericValue);
     }
-    if (numericValue !== null) {
+    if (numericValue !== null && detailedGeneralLedger) {
       navigate(`/accounts/reports/detailed-general-ledger/${numericValue}`); // Update the URL with the new ledger account ID
     } else {
-      navigate("/accounts/reports/detailed-general-ledger"); // Reset the URL if the filter is cleared
+      detailedGeneralLedger && navigate("/accounts/reports/detailed-general-ledger"); // Reset the URL if the filter is cleared
     }
   };
 

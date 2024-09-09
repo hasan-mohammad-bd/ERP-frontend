@@ -92,7 +92,7 @@ export function AddOpeningBalanceForm() {
     defaultValues: {
       type: "Opening Balance",
       date: new Date().toISOString().split("T")[0],
-      entry_number: "",
+      // entry_number: "",
       details: [
         { dr_amount: 0, cr_amount: 0 },
         { dr_amount: 0, cr_amount: 0 },
@@ -288,6 +288,7 @@ export function AddOpeningBalanceForm() {
                           <FormControl>
                             <Textarea
                               placeholder="Type your message here."
+                              
                               {...field}
                             />
                           </FormControl>
@@ -440,6 +441,7 @@ export function AddOpeningBalanceForm() {
                             </FormLabel>
                             <FormControl>
                               <Input
+                                step="any"
                                 disabled={
                                   form.watch(`details.${index}.cr_amount`) > 0
                                 }
@@ -476,6 +478,7 @@ export function AddOpeningBalanceForm() {
                             </FormLabel>
                             <FormControl>
                               <Input
+                                step="any"
                                 disabled={
                                   form.watch(`details.${index}.dr_amount`) > 0
                                 }
@@ -557,7 +560,7 @@ export function AddOpeningBalanceForm() {
                     {previousData ? "Update" : "Save"}
                   </Button>
                   <Button
-                    variant="default"
+                    variant="primary"
                     onClick={() => navigate("/accounts/opening-balance")}
                     className="w-fit "
                   >

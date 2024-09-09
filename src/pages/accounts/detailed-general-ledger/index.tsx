@@ -16,6 +16,8 @@ const DetailedGeneralLedger = () => {
   const [projectFiltered, setProjectFiltered] = React.useState<number | null>(
     null
   );
+
+  console.log(projectFiltered, "projectFiltered");
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
   const [filtered, setFiltered] = React.useState<number | null>(null);
@@ -31,10 +33,12 @@ const DetailedGeneralLedger = () => {
   const { data, isLoading } = useGetDetailGeneralLedgersQuery(
     `start_date=${formateStartDate ? formateStartDate : ""}&end_date=${
       formateEndDate ? formateEndDate : ""
-    }&ledger_account_id=${param.ledgerId || filtered}&project_id=${
-      projectFiltered ? projectFiltered : ""
-    }`
+    }&ledger_account_id=${param.ledgerId || filtered}&project_id=${projectFiltered || ""}`
   );
+
+  console.log(data)
+
+  
 
   const detailedGeneralLedgerData = data?.data || [];
   const navigate = useNavigate();
@@ -71,6 +75,7 @@ const DetailedGeneralLedger = () => {
             loadingData: ledgerAccountLoading,
             arrayItemsTwo: projectData,
             loadingDataTwo: projectsLoading,
+            detailedGeneralLedger: true
           }}
         />
         <div className="flex-1 space-y-4 w-2/3 mx-auto">

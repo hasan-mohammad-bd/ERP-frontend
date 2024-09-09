@@ -435,6 +435,7 @@ export function AddBudgetForm() {
                             </FormLabel>
                             <FormControl>
                               <Input
+                              step="any"
                                 disabled={
                                   form.watch(`details.${index}.cr_amount`) > 0
                                 }
@@ -471,6 +472,7 @@ export function AddBudgetForm() {
                             </FormLabel>
                             <FormControl>
                               <Input
+                              step="any"
                                 disabled={
                                   form.watch(`details.${index}.dr_amount`) > 0
                                 }
@@ -552,7 +554,7 @@ export function AddBudgetForm() {
                     {previousData ? "Update" : "Save"}
                   </Button>
                   <Button
-                    variant="default"
+                    variant="primary"
                     onClick={() => navigate("/accounts/opening-balance")}
                     className="w-fit "
                   >
