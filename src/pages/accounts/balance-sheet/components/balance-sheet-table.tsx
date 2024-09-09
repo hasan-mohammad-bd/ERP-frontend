@@ -84,7 +84,7 @@ const BalanceSheetTable = ({ tableData, reportFormate }: Props) => {
                           </TableCell>
                           <TableCell>{secondChild.code}</TableCell>
                           <TableCell className="text-right">
-                            {secondChild.balance}
+                            {secondChild.balance.toLocaleString(`en-IN`)}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -99,7 +99,7 @@ const BalanceSheetTable = ({ tableData, reportFormate }: Props) => {
                       </TableCell>
 
                       <TableCell className="font-bold text-end">
-                        {child.balance}
+                        {child.balance.toLocaleString(`en-IN`)}
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -115,7 +115,7 @@ const BalanceSheetTable = ({ tableData, reportFormate }: Props) => {
                 </TableCell>
 
                 <TableCell className="font-bold text-end">
-                  {item.balance}
+                  {item.balance.toLocaleString(`en-IN`)}
                 </TableCell>
               </TableRow>
 
