@@ -8,7 +8,7 @@ export const openingBalanceSchema = z.object({
   location_id: z.coerce.number().optional().nullable(),
   date: z.string().date(),
   details: entryTypeSchema.array(),
-  note: z.string().optional().nullable(),
+  note: z.string().optional(),
   file: z.string().optional().nullable(),
   // entry_number: z.string(),
 

@@ -92,7 +92,7 @@ export function AddOpeningBalanceForm() {
     defaultValues: {
       type: "Opening Balance",
       date: new Date().toISOString().split("T")[0],
-      entry_number: "",
+      // entry_number: "",
       details: [
         { dr_amount: 0, cr_amount: 0 },
         { dr_amount: 0, cr_amount: 0 },
@@ -288,6 +288,7 @@ export function AddOpeningBalanceForm() {
                           <FormControl>
                             <Textarea
                               placeholder="Type your message here."
+                              
                               {...field}
                             />
                           </FormControl>
