@@ -482,6 +482,7 @@ export function AddPaymentForm() {
                                 </FormLabel>
                                 <FormControl>
                                   <Input
+                                   step="any"
                                     type="number"
                                     min={0}
                                     placeholder="Credit amount"
@@ -565,7 +566,7 @@ export function AddPaymentForm() {
                     {previousData ? "Update" : "Save"}
                   </Button>
                   <Button
-                    variant="default"
+                    variant="primary"
                     onClick={() => navigate("/accounts/payment-voucher")}
                     className="w-fit "
                   >

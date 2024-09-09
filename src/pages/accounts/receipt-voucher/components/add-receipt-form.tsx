@@ -504,6 +504,7 @@ export function AddReceiptForm() {
                                 </FormLabel>
                                 <FormControl>
                                   <Input
+                                  step="any"
                                     disabled={
                                       form.watch(`details.${index}.dr_amount`) >
                                       0
@@ -590,7 +591,7 @@ export function AddReceiptForm() {
                     {previousData ? "Update" : "Save"}
                   </Button>
                   <Button
-                    variant="default"
+                    variant="primary"
                     onClick={() => navigate("/accounts/receipt-voucher")}
                     className="w-fit "
                   >

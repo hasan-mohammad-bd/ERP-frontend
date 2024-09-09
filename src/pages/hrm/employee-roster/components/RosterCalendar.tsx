@@ -100,7 +100,7 @@ const RosterCalendar = ({ rosterEligibleEmployees }: RosterCalendarProps) => {
             { id: "c", title: "Night Shift" },
           ]}
           weekends={true}
-          eventContent={(eventInfo) => (
+          eventContent={(eventInfo : any) => (
             <div>
               {eventInfo.event.title}
               <div className="text-sm text-gray-500">
