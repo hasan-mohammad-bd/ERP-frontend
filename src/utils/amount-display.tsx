@@ -1,10 +1,13 @@
-import { formatIndianCurrency } from "./indian-formate";
+
 
 
 interface AmountDisplayProps {
   amount: number;
 }
-// Reusable functional component
+const formatIndianCurrency = (amount: number) => {
+  return amount.toLocaleString('en-IN');
+};
+
 const AmountDisplay = ({ amount }: AmountDisplayProps) => {
   const formatAmount = (amt : number) => {
     if (amt === 0) {

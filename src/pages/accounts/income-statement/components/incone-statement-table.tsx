@@ -67,19 +67,19 @@ const IncomeStatementTable = ({ tableData, reportFormate, summery }: Props) => {
             <TableCell>Product Sales</TableCell>
             <TableCell></TableCell>
             <TableCell className="text-right">
-              {summery?.product_sale}
+              {summery?.product_sale.toLocaleString("en-IN")}
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell>COGS</TableCell>
             <TableCell></TableCell>
-            <TableCell className="text-right">{summery?.cogs}</TableCell>
+            <TableCell className="text-right">{summery?.cogs.toLocaleString("en-IN")}</TableCell>
           </TableRow>
           <TableRow className="bg-gray-100">
             <TableCell className="font-bold">Gross Profit</TableCell>
             <TableCell></TableCell>
             <TableCell className="text-right font-bold">
-              {summery?.gros_profit}
+              {summery?.gros_profit.toLocaleString("en-IN")}
             </TableCell>
           </TableRow>
 
@@ -110,7 +110,7 @@ const IncomeStatementTable = ({ tableData, reportFormate, summery }: Props) => {
                             </TableCell>
                             <TableCell>{secondChild.code}</TableCell>
                             <TableCell className="text-right">
-                              {secondChild.balance}
+                              {secondChild.balance.toLocaleString(`en-IN`)}
                             </TableCell>
                           </TableRow>
                         ))}
@@ -125,7 +125,7 @@ const IncomeStatementTable = ({ tableData, reportFormate, summery }: Props) => {
                         </TableCell>
 
                         <TableCell className="font-bold text-end">
-                          {child.balance}
+                          {child.balance.toLocaleString(`en-IN`)}
                         </TableCell>
                       </TableRow>
                       <TableRow>
@@ -142,7 +142,7 @@ const IncomeStatementTable = ({ tableData, reportFormate, summery }: Props) => {
                   </TableCell>
 
                   <TableCell className="font-bold text-end">
-                    {item.balance}
+                    {item.balance.toLocaleString(`en-IN`)}
                   </TableCell>
                 </TableRow>
 
@@ -156,14 +156,14 @@ const IncomeStatementTable = ({ tableData, reportFormate, summery }: Props) => {
             <TableCell className="font-bold">Depreciation</TableCell>
             <TableCell></TableCell>
             <TableCell className="text-right font-bold ">
-              {summery?.deprecetaion}
+              {summery?.deprecetaion.toLocaleString(`en-IN`)}
             </TableCell>
           </TableRow>
           <TableRow className="bg-gray-100">
             <TableCell className="font-bold">Profit before tax</TableCell>
             <TableCell></TableCell>
             <TableCell className="text-right font-bold ">
-              {summery?.profit_befor_tax}
+              {summery?.profit_befor_tax.toLocaleString(`en-IN`)}
             </TableCell>
           </TableRow>
           <TableRow className="">
@@ -175,7 +175,7 @@ const IncomeStatementTable = ({ tableData, reportFormate, summery }: Props) => {
             <TableCell className="font-bold">Profit</TableCell>
             <TableCell></TableCell>
             <TableCell className="text-right font-bold ">
-              {summery?.profit}
+              {summery?.profit.toLocaleString(`en-IN`)}
             </TableCell>
           </TableRow>
           <TableBody>

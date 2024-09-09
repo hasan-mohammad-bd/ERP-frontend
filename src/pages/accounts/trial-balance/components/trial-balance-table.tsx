@@ -75,8 +75,8 @@ const TrialBalanceTable = ({
                   )}
                   <TableCell className="font-medium">{item.name}</TableCell>
                   <TableCell>{item.code}</TableCell>
-                  <TableCell>{item.dr_amount}</TableCell>
-                  <TableCell className="text-right">{item.cr_amount}</TableCell>
+                  <TableCell>{item.dr_amount.toLocaleString("en-IN")}</TableCell>
+                  <TableCell className="text-right">{item.cr_amount.toLocaleString("en-IN")}</TableCell>
                 </TableRow>
               ))
             )}
@@ -86,8 +86,8 @@ const TrialBalanceTable = ({
               <TableCell className="font-bold text-right" colSpan={3}>
                 Total
               </TableCell>
-              <TableCell className="text-left"> {totalDr} BDT</TableCell>
-              <TableCell className="text-right">{totalCr} BDT</TableCell>
+              <TableCell className="text-left"> {totalDr.toLocaleString("en-IN")} BDT</TableCell>
+              <TableCell className="text-right">{totalCr.toLocaleString("en-IN")} BDT</TableCell>
             </TableRow>
           </TableFooter>
         </Table>
