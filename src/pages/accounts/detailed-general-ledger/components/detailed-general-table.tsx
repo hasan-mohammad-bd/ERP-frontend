@@ -26,7 +26,7 @@ interface Props {
   };
 }
 const DetailedGeneralTable = ({ tableData, summery, reportFormate }: Props) => {
-  console.log(summery, tableData);
+
   const formateStartDate =
     reportFormate && reportFormate.startDate
       ? format(new Date(reportFormate.startDate), "dd-MMM-yyyy")

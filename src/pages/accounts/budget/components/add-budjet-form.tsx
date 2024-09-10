@@ -109,12 +109,12 @@ export function AddBudgetForm() {
   useEffect(() => {
     if (previousData) {
       form.reset({
-        name: previousData.name || "",
-        start_date: previousData.start_date || new Date().toString(),
-        end_date: previousData.end_date || new Date().toString(),
-        project_id: previousData.project.id,
-        location_id: previousData.location.id,
-        details: previousData.details || [
+        name: previousData?.name || "",
+        start_date: previousData?.start_date || new Date().toString(),
+        end_date: previousData?.end_date || new Date().toString(),
+        project_id: previousData?.project?.id || null,
+        location_id: previousData?.location?.id || null,
+        details: previousData?.details || [
           { dr_amount: 0, cr_amount: 0 },
           { dr_amount: 0, cr_amount: 0 },
         ],

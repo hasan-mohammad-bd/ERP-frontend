@@ -13,9 +13,9 @@ export const budgetSchema = z.object({
   name: z.string(),
   start_date: z.string().date(),
   end_date: z.string().date(),
-  project_id: z.coerce.number(),
+  project_id: z.coerce.number().optional().nullable(),
   
-  location_id: z.coerce.number(),
+  location_id: z.coerce.number().optional().nullable(),
   details: entryTypeSchema.array(),
   note: z.string(),
 

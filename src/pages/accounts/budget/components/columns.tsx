@@ -57,17 +57,17 @@ export const subAccountColumns: ColumnDef<BudgetRow>[] = [
   {
     // accessorKey: "dr_amount",
     header: "Dr Amount",
-    cell: ({ row }) => <FormatIndianCurrency amount={row.original.dr_amount} />,
+    cell: ({ row }) => <FormatIndianCurrency amount={row.original.dr_amount as number} />,
   },
   {
     // accessorKey: "cr_amount",
     header: "Cr Amount",
-    cell: ({ row }) => <FormatIndianCurrency amount={row.original.cr_amount} />,
+    cell: ({ row }) => <FormatIndianCurrency amount={row.original.cr_amount as number} />,
   },
   {
     // accessorKey: "total",
     header: "Total",
-    cell: ({ row }) => <FormatIndianCurrency amount={row.original.total} />,
+    cell: ({ row }) => <FormatIndianCurrency amount={row.original.total as number} />,
   },
 
   {

@@ -13,10 +13,13 @@ interface ReportsToolBarProps {
   filterProp?: {
     setFiltered?: (value: number | null) => void;
     setProjectFiltered?: (value: number | null) => void
+    setContactFiltered?: (value: number | null) => void
     arrayItems?: object[]
     loadingData?: boolean
     arrayItemsTwo?: object[]
     loadingDataTwo?: boolean
+    arrayItemsThree?: object[]
+    loadingDataThree?: boolean
     detailedGeneralLedger?: boolean
   }
 
