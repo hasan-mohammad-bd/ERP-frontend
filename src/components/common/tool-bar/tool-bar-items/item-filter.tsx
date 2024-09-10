@@ -14,11 +14,15 @@ interface ItemFilterProps {
   filterProp?: {
     setFiltered?: (value: number | null) => void;
     setProjectFiltered?: (value: number | null) => void;
+    setContactFiltered?: (value: number | null) => void;
     arrayItems?: object[];
     loadingData?: boolean;
     arrayItemsTwo?: object[];
     loadingDataTwo?: boolean;
+    arrayItemsThree?: object[];
+    loadingDataThree?: boolean;
     detailedGeneralLedger?: boolean;
+
   };
 }
 
@@ -29,7 +33,10 @@ const ItemFilter = ({ filterProp }: ItemFilterProps) => {
     loadingData,
     arrayItemsTwo,
     loadingDataTwo,
+    arrayItemsThree,
+    loadingDataThree,
     setProjectFiltered,
+    setContactFiltered,
     detailedGeneralLedger,
   } = filterProp || {};
 
@@ -53,6 +60,12 @@ const ItemFilter = ({ filterProp }: ItemFilterProps) => {
   const handleProjectChange = (value: string) => {
     if (setProjectFiltered) {
       setProjectFiltered(value === "-1" ? null : Number(value));
+    }
+  };
+
+  const handleContactChange = (value: string) => {
+    if (setContactFiltered) {
+      setContactFiltered(value === "-1" ? null : Number(value));
     }
   };
 
@@ -114,6 +127,35 @@ const ItemFilter = ({ filterProp }: ItemFilterProps) => {
                     {arrayItemsTwo?.map((project: any) => (
                       <SelectItem key={project.id} value={String(project.id)}>
                         {project.name}
+                      </SelectItem>
+                    ))}
+                  </>
+                )}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+      {arrayItemsThree && arrayItemsThree.length !== 0 && (
+        <div className="">
+          <Select onValueChange={handleContactChange}>
+            <SelectTrigger className="w-[200px] h-8">
+              <SelectValue placeholder="Select project" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {loadingDataThree ? (
+                  <Loading />
+                ) : (
+                  <>
+                    <SelectItem key="clear" value="-1">
+                      <span className="flex space-x-1 items-center">
+                        <p>Clear Filter</p> <Cross2Icon color="red" />
+                      </span>
+                    </SelectItem>
+                    {arrayItemsThree?.map((contact: any) => (
+                      <SelectItem key={contact.id} value={String(contact.id)}>
+                        {contact.name}
                       </SelectItem>
                     ))}
                   </>

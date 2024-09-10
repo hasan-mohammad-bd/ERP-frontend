@@ -3,6 +3,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { EntryRow } from "@/lib/validators/accounts";
 import { CellAction } from "./cell-action";
 import { CellActionVoucherDetails } from "@/components/common/accounts/entry/cell-action-voucher-details";
+import { FormatIndianCurrency } from "@/utils/indian-formate";
 
 
 
@@ -48,6 +49,7 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
   {
     accessorKey: "total",
     header: "Total",
+    cell: ({ row }) => <FormatIndianCurrency amount={row.original.total as number} />,
   },
 
   {

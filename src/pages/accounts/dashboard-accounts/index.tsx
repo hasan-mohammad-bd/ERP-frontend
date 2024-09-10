@@ -78,7 +78,7 @@ const Dashboard = () => {
                             <CircleDollarSign size={16} />
                           </div>
                           <div className="ml-3 text-lg font-bold">
-                            {data?.growth?.income || 0} BDT
+                            {data?.growth?.income.toLocaleString("en-IN") || 0} BDT
                           </div>
                         </div>
                         <h2 className="mt-2 text-sm">Total Income</h2>
@@ -90,7 +90,7 @@ const Dashboard = () => {
                           </div>
                           <div className="ml-3 text-lg font-bold">
                             {" "}
-                            {data?.growth?.expence || 0} BDT
+                            {data?.growth?.expence.toLocaleString("en-IN") || 0} BDT
                           </div>
                         </div>
                         <h2 className="mt-2 text-sm">Total Expense</h2>
@@ -102,7 +102,7 @@ const Dashboard = () => {
                           </div>
                           <div className="ml-3 text-lg font-bold">
                             {" "}
-                            {data?.growth?.net_profit || 0} BDT
+                            {data?.growth?.net_profit.toLocaleString("en-IN") || 0} BDT
                           </div>
                         </div>
                         <h2 className="mt-2 text-sm">Net Profit</h2>
@@ -124,7 +124,7 @@ const Dashboard = () => {
                             <ChevronUp size={16} />
                           </div>
                           <div className="ml-3 text-lg font-bold">
-                            {data?.revenue?.accounts_receivable || 0} BDT
+                            {data?.revenue?.accounts_receivable.toLocaleString("en-IN") || 0} BDT
                           </div>
                         </div>
                         <h2 className="mt-2 text-sm">Total Receivable</h2>
@@ -136,7 +136,7 @@ const Dashboard = () => {
                           </div>
                           <div className="ml-3 text-lg font-bold">
                             {" "}
-                            {data?.revenue?.accounts_payable} BDT
+                            {data?.revenue?.accounts_payable.toLocaleString("en-IN") || 0} BDT
                           </div>
                         </div>
                         <h2 className="mt-2 text-sm">Total Payable</h2>
@@ -148,7 +148,7 @@ const Dashboard = () => {
                           </div>
                           <div className="ml-3 text-lg font-bold">
                             {" "}
-                            {data?.revenue?.difference} BDT
+                            {data?.revenue?.difference.toLocaleString("en-IN") || 0} BDT
                           </div>
                         </div>
                         <h2 className="mt-2 text-sm">Difference</h2>

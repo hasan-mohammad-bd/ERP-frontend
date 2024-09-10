@@ -10,12 +10,14 @@ import DetailedGeneralTable from "./components/detailed-general-table";
 import { Button } from "@/components/ui/button";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
+import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
 
 const DetailedGeneralLedger = () => {
   // const [isOpen, setIsOpen] = useState(false);
   const [projectFiltered, setProjectFiltered] = React.useState<number | null>(
     null
   );
+  const [contactFiltered, setContactFiltered] = React.useState<number | null>(null);
 
   console.log(projectFiltered, "projectFiltered");
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
@@ -33,10 +35,10 @@ const DetailedGeneralLedger = () => {
   const { data, isLoading } = useGetDetailGeneralLedgersQuery(
     `start_date=${formateStartDate ? formateStartDate : ""}&end_date=${
       formateEndDate ? formateEndDate : ""
-    }&ledger_account_id=${param.ledgerId || filtered}&project_id=${projectFiltered || ""}`
+    }&ledger_account_id=${param.ledgerId || filtered || ""}&project_id=${projectFiltered || ""}&sub_account_id=${contactFiltered || ""}`
   );
 
-  console.log(data)
+
 
   
 
@@ -45,6 +47,14 @@ const DetailedGeneralLedger = () => {
 
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
     useGetLedgerAccountsQuery("page=1&per_page=1000");
+
+    const { data: contacts, isLoading: contactsLoading } = useGetSubAccountsQuery(
+      `page=1&per_page=1000`
+    );
+
+
+  const contactData = contacts?.data || [];
+
 
   const ledgerAccountData = ledgerAccount?.data || [];
 
@@ -71,11 +81,14 @@ const DetailedGeneralLedger = () => {
           filterProp={{
             setFiltered,
             setProjectFiltered,
+            setContactFiltered,
             arrayItems: ledgerAccountData,
             loadingData: ledgerAccountLoading,
             arrayItemsTwo: projectData,
             loadingDataTwo: projectsLoading,
-            detailedGeneralLedger: true
+            detailedGeneralLedger: true,
+            arrayItemsThree: contactData,
+            loadingDataThree: contactsLoading,
           }}
         />
         <div className="flex-1 space-y-4 w-2/3 mx-auto">
