@@ -102,7 +102,7 @@
     @apply bg-background text-foreground;
     font-family: "Inter", sans-serif;
   }
-  .fc-license-message {
-    display: none !important;
+  .roster-calendar .fc-license-message {
+    @apply !hidden;
   }
 }
