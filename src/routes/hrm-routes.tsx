@@ -9,6 +9,7 @@ import {
   EmployeeGrade,
   ErrorPage,
   Holiday,
+  DeductionPolicy,
   JobApply,
   JobCandidate,
   JobPost,
@@ -89,6 +90,12 @@ const hrmRoutes = {
       element: withFallback(<Holiday />),
       errorElement: withFallback(<ErrorPage />),
     },
+    {
+      path: "deduction-policy",
+      element: withFallback(<DeductionPolicy />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
     {
       path: "vacancy-requisitions",
       element: withFallback(<VacancyRequisition />),
