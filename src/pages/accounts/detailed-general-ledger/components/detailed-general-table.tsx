@@ -26,6 +26,7 @@ interface Props {
   };
 }
 const DetailedGeneralTable = ({ tableData, summery, reportFormate }: Props) => {
+  console.log(tableData)
 
   const formateStartDate =
     reportFormate && reportFormate.startDate
@@ -37,6 +38,7 @@ const DetailedGeneralTable = ({ tableData, summery, reportFormate }: Props) => {
       : null;
   return (
     <Card className="p-3 w-full mx-auto">
+      
       {reportFormate ? (
         <div className="flex-1 space-y-4 my-4">
           <div className=" text-center ">
@@ -70,6 +72,7 @@ const DetailedGeneralTable = ({ tableData, summery, reportFormate }: Props) => {
               <TableCell colSpan={6}>Opening Balance</TableCell>
               <TableCell colSpan={1}><AmountDisplay amount={summery.opening_balance} /></TableCell>
             </TableRow>
+           
             {tableData.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.entry.date}</TableCell>

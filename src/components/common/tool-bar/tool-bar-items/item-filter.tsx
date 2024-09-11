@@ -140,7 +140,7 @@ const ItemFilter = ({ filterProp }: ItemFilterProps) => {
         <div className="">
           <Select onValueChange={handleContactChange}>
             <SelectTrigger className="w-[200px] h-8">
-              <SelectValue placeholder="Select project" />
+              <SelectValue placeholder="Select contact" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -155,7 +155,7 @@ const ItemFilter = ({ filterProp }: ItemFilterProps) => {
                     </SelectItem>
                     {arrayItemsThree?.map((contact: any) => (
                       <SelectItem key={contact.id} value={String(contact.id)}>
-                        {contact.name}
+                        {contact.name} ({contact.type}), Phone: {contact.phone}
                       </SelectItem>
                     ))}
                   </>
