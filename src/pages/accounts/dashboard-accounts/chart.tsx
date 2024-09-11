@@ -50,7 +50,9 @@ export function Chart({ chartData }: any) {
           <AreaChart
             accessibilityLayer
             data={chartData}
+            
             margin={{
+              top: 20,
               left: 12,
               right: 12,
             }}

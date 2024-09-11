@@ -132,16 +132,16 @@ const VoucherDetails = ({ data }: Props) => {
                           {data.account?.code}
                         </TableCell>
                         <TableCell className="border border-black py-[5px]">
-                          contact
+                          {data?.sub_account_id}
                         </TableCell>
                         <TableCell className="border border-black py-[5px]">
                           {data.note}
                         </TableCell>
                         <TableCell className="border border-black py-[5px]">
-                          {data.dr_amount}
+                          {data.dr_amount.toLocaleString("en-IN")}
                         </TableCell>
                         <TableCell className="border border-black py-[5px]">
-                          {data.cr_amount}
+                          {data.cr_amount.toLocaleString("en-IN")}
                         </TableCell>
                       </TableRow>
                     );
@@ -158,7 +158,7 @@ const VoucherDetails = ({ data }: Props) => {
                       colSpan={2}
                       className="font-bold border border-black py-[5px]"
                     >
-                      {data.total}
+                      {data.total?.toLocaleString("en-IN")}
                     </TableCell>
                   </TableRow>
                   <TableRow className="border border-black">

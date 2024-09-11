@@ -29,7 +29,7 @@ const VoucherTableDashboard = ({ tableData }: Props) => {
             <TableRow key={item.id}>
               <TableCell>{item.date}</TableCell>
               <TableCell>{item.entry_number}</TableCell>
-              <TableCell>{item.total}</TableCell>
+              <TableCell>{item.total?.toLocaleString("en-IN")}</TableCell>
             </TableRow>
           ))}
         </TableBody>
