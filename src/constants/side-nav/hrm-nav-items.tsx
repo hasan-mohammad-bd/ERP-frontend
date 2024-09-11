@@ -12,6 +12,7 @@ import {
   Fan,
   FileBadge2,
   LayoutDashboard,
+  PlayIcon,
   ScrollText,
   Soup,
   SquarePen,
@@ -169,6 +170,23 @@ const hrmNavItems: NavItem[] = [
       },
     ],
   },
+  {
+    title: "Policy",
+    icon: PlayIcon,
+    href: "/hrm",
+    color: "text-sky-500",
+    isChildren: true,
+    children: [
+      {
+        title: "Attendance Policy",
+        icon: PlayIcon,
+        href: "/hrm/attendance-policy",
+        color: "text-sky-500",
+      }
+    ]
+    
+
+  }
 ];
 
 export default hrmNavItems;

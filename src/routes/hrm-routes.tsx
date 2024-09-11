@@ -20,6 +20,7 @@ import {
   VacancyRequisition,
   EmployeeRoster 
 } from "./components";
+import AttendancePolicy from "@/pages/hrm/attendance-policy";
 
 const hrmRoutes = {
   path: "hrm/",
@@ -115,6 +116,13 @@ const hrmRoutes = {
       path: "job-apply",
       element: withFallback(<JobApply />),
       errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "attendance-policy",
+      element: withFallback(<AttendancePolicy />),
+      errorElement: withFallback(<ErrorPage />),
+      
+
     },
   ],
 };
