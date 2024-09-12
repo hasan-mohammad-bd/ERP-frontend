@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Form } from "@/components/ui/form";
 import { DelayPolicy } from "./components/delay-policy";
+import { ExtremeDelayPolicy } from "./components/extreme-delay-policy";
 
 const DeductionPolicy = () => {
   const form = useForm({
@@ -41,8 +42,7 @@ const DeductionPolicy = () => {
             >
               <AbsentPolicy form={form} />
               <DelayPolicy form={form} />
-              {/* <LeavePolicy form={form} /> */}
-              {/* <OtherPolicy form={form} /> */}
+              <ExtremeDelayPolicy form={form} />
             </form>
           </Form>
         </div>
