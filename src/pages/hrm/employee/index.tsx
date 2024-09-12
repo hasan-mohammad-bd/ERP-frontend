@@ -15,11 +15,16 @@ import { BulkAction } from "@/components/ui/data-table/data-table-bulk-actions";
 import { EmployeeColumn } from "@/lib/validators";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
+import { AddAttendancePolicyMappingForm } from "./components/employee-form/add-attendance-policy";
 
 const BULK_ACTIONS = [
   {
     label: "Enable Roster",
     value: "enable-roster",
+  },
+  {
+    label: "Attendance Policy Mapping",
+    value: "attendance-policy-mapping",
   },
   {
     label: "Delete Selected",
@@ -47,9 +52,8 @@ const Employee = () => {
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
-  
+  console.log(selectedBulkAction);
   if (isLoading) return <Loading />;
-
 
   const handleEmployeeRosterChange = () => {
     console.log("Handle Employee Roster Change");
@@ -108,6 +112,22 @@ const Employee = () => {
           onClose={() => setSelectedBulkAction({ action: "", payload: [] })}
           onConfirm={handleEmployeeRosterChange}
         ></AlertModal>
+      )}
+
+      {selectedBulkAction.action === "attendance-policy-mapping" && (
+        <Modal
+          title="Attendance Policy Mapping"
+          toggleModal={() => setSelectedBulkAction({ action: "", payload: [] })}
+          isOpen={selectedBulkAction.action === "attendance-policy-mapping"}
+          className="!h-fit"
+        >
+          <AddAttendancePolicyMappingForm
+            payload={selectedBulkAction.payload as any}
+            modelClose={() =>
+              setSelectedBulkAction({ action: "", payload: [] })
+            }
+          />
+        </Modal>
       )}
     </>
   );

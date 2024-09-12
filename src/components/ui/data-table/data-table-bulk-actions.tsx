@@ -54,7 +54,7 @@ export const DataTableBulkActions = <TData,>({
 					Select Action
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent align="center" className="w-[140px]">
+			<DropdownMenuContent align="start" className="w-fit">
 				{actions.map((bulkAction) => (
 					<DropdownMenuItem
 						key={bulkAction.value}
