@@ -13,6 +13,7 @@ export const EmployeeClass = lazy(() => import("@/pages/hrm/employee-class"));
 export const EmployeeGrade = lazy(() => import("@/pages/hrm/employee-grade"));
 export const Holiday = lazy(() => import("@/pages/hrm/holiday"));
 export const DeductionPolicy = lazy(() => import("@/pages/hrm/policy/deduction-policy"));
+export const OverTimePolicy = lazy(() => import("@/pages/hrm/policy/overtime-policy"));
 export const JobApply = lazy(() => import("@/pages/hrm/job-apply"));
 export const JobCandidate = lazy(() => import("@/pages/hrm/job-candidate"));
 export const JobPost = lazy(() => import("@/pages/hrm/job-post"));

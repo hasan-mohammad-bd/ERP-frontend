@@ -100,12 +100,6 @@ const hrmNavItems: NavItem[] = [
         href: "/hrm/holidays",
         color: "text-sky-500",
       },
-      {
-        title: "Deduction Policy",
-        icon: SquarePen,
-        href: "/hrm/deduction-policy",
-        color: "text-sky-500",
-      },
     ],
   },
 
@@ -182,11 +176,21 @@ const hrmNavItems: NavItem[] = [
         icon: PlayIcon,
         href: "/hrm/attendance-policy",
         color: "text-sky-500",
-      }
-    ]
-    
-
-  }
+      },
+      {
+        title: "Deduction Policy",
+        icon: SquarePen,
+        href: "/hrm/deduction-policy",
+        color: "text-sky-500",
+      },
+      {
+        title: "Over Time Policy",
+        icon: SquarePen,
+        href: "/hrm/overtime-policy",
+        color: "text-sky-500",
+      },
+    ],
+  },
 ];
 
 export default hrmNavItems;

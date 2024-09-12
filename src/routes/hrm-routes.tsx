@@ -10,6 +10,7 @@ import {
   ErrorPage,
   Holiday,
   DeductionPolicy,
+  OverTimePolicy,
   JobApply,
   JobCandidate,
   JobPost,
@@ -96,7 +97,11 @@ const hrmRoutes = {
       element: withFallback(<DeductionPolicy />),
       errorElement: withFallback(<ErrorPage />),
     },
-
+    {
+      path: "overtime-policy",
+      element: withFallback(<OverTimePolicy />),
+      errorElement: withFallback(<ErrorPage />),
+    },
     {
       path: "vacancy-requisitions",
       element: withFallback(<VacancyRequisition />),
