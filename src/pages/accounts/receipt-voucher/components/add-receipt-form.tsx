@@ -526,7 +526,7 @@ export function AddReceiptForm() {
                                 Total Amount:{" "}
                                 <span className="font-semibold">
                                   {" "}
-                                  {totalCrAmount}
+                                  {totalCrAmount.toLocaleString("en-IN")}
                                 </span>
                               </p>
                             </>

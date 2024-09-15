@@ -500,7 +500,7 @@ export function AddPaymentForm() {
                                 Total Amount:{" "}
                                 <span className="font-semibold">
                                   {" "}
-                                  {totalDrAmount}
+                                  {totalDrAmount.toLocaleString("en-IN")}
                                 </span>
                               </p>
                             </>

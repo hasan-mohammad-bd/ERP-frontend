@@ -2,6 +2,7 @@ import { financialYearRow } from "./financial-year";
 
 import { locationColumn, organizationColumn } from "@/lib/validators";
 import { z } from "zod";
+import { subAccountRow } from "./sub-account";
 
 export const constCenterRow = z.object({
   cost_center_id: z.coerce.number(),
@@ -51,6 +52,7 @@ export const entryTypeSchema = z.object({
   note: z.string().optional().nullable(),
   total: z.coerce.number().optional().nullable(),
   cost_centers: constCenterRow.array().optional().nullable(),
+  contact: subAccountRow.optional().nullable(),
 });
 export const files = z
   .object({

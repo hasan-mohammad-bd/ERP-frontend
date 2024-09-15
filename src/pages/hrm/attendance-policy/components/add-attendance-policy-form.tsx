@@ -64,11 +64,11 @@ export function AttendancePolicyForm({
   const copyTo7Days = () => {
     const values = form.getValues();
     DAYS.forEach((day) => {
-      form.setValue(`${day}_in_time`, values.in_time);
-      form.setValue(`${day}_working_hours`, values.working_hours);
-      form.setValue(`${day}_delay_buffer`, values.delay_buffer);
-      form.setValue(`${day}_ex_delay_buffer`, values.ex_delay_buffer);
-      form.setValue(`${day}_break_time`, values.break_time);
+      form.setValue(`${day}.in_time`, values.in_time);
+      form.setValue(`${day}.working_hours`, values.working_hours);
+      form.setValue(`${day}.delay_buffer`, values.delay_buffer);
+      form.setValue(`${day}.ex_delay_buffer`, values.ex_delay_buffer);
+      form.setValue(`${day}.break_time`, values.break_time);
     });
   };
 
@@ -287,35 +287,35 @@ export function AttendancePolicyForm({
                       <Input
                         type="text"
                         className="p-1 text-xs h-7"
-                        {...form.register(`${day}_in_time`)}
+                        {...form.register(`${day}.in_time`)}
                       />
                     </TableCell>
                     <TableCell className="p-1">
                       <Input
                         type="text"
                         className="p-1 text-xs h-7"
-                        {...form.register(`${day}_working_hours`)}
+                        {...form.register(`${day}.working_hours`)}
                       />
                     </TableCell>
                     <TableCell className="p-1">
                       <Input
                         type="text"
                         className="p-1 text-xs h-7"
-                        {...form.register(`${day}_delay_buffer`)}
+                        {...form.register(`${day}.delay_buffer`)}
                       />
                     </TableCell>
                     <TableCell className="p-1">
                       <Input
                         type="text"
                         className="p-1 text-xs h-7"
-                        {...form.register(`${day}_ex_delay_buffer`)}
+                        {...form.register(`${day}.ex_delay_buffer`)}
                       />
                     </TableCell>
                     <TableCell className="p-1">
                       <Input
                         type="text"
                         className="p-1 text-xs h-7"
-                        {...form.register(`${day}_break_time`)}
+                        {...form.register(`${day}.break_time`)}
                       />
                     </TableCell>
                   </TableRow>

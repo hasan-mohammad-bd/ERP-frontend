@@ -464,7 +464,7 @@ export function AddJournalForm() {
                               Debit:{" "}
                               <span className="font-semibold">
                                 {" "}
-                                {totalDrAmount}
+                                {totalDrAmount.toLocaleString("en-IN")}
                               </span>
                             </p>
                           </>
@@ -506,7 +506,7 @@ export function AddJournalForm() {
                               Credit:{" "}
                               <span className="font-semibold">
                                 {" "}
-                                {totalCrAmount}
+                                {totalCrAmount.toLocaleString("en-IN")}
                               </span>
                             </p>
                           </>

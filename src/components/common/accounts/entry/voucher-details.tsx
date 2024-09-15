@@ -102,9 +102,11 @@ const VoucherDetails = ({ data }: Props) => {
                     {/* <TableHead className="border border-black">
                       Particulars
                     </TableHead> */}
-                    <TableHead className="border border-black py-[5px] h-0">
-                      Description
-                    </TableHead>
+
+                      <TableHead className="border border-black py-[5px] h-0">
+                        Description
+                      </TableHead>
+      
                     <TableHead className="border border-black py-[5px] h-0">
                       Debit
                     </TableHead>
@@ -131,12 +133,14 @@ const VoucherDetails = ({ data }: Props) => {
                         <TableCell className="border border-black py-[5px]">
                           {data.account?.code}
                         </TableCell>
-                        <TableCell className="border border-black py-[5px]">
-                          {data?.sub_account_id}
+                        <TableCell className="border border-black py-[5px] ">
+                          {data?.contact?.name}
                         </TableCell>
-                        <TableCell className="border border-black py-[5px]">
-                          {data.note}
-                        </TableCell>
+
+                          <TableCell className="border border-black py-[5px]">
+                            {data.note}
+                          </TableCell>
+             
                         <TableCell className="border border-black py-[5px]">
                           {data.dr_amount.toLocaleString("en-IN")}
                         </TableCell>
@@ -149,7 +153,9 @@ const VoucherDetails = ({ data }: Props) => {
 
                   <TableRow className="border border-black bg-gray-100">
                     <TableCell
+                    //dynamic colspan
                       colSpan={5}
+                      // colSpan={TableCell.length -3 } 
                       className="text-right font-bold border border-black py-[5px]"
                     >
                       Total

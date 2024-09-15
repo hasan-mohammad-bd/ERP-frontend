@@ -13,7 +13,7 @@ export const subAccountSchema = z.object({
 
 export type SubAccountFromValues = z.infer<typeof subAccountSchema>;
 
-const subAccountRow = subAccountSchema.extend({
+export const subAccountRow = subAccountSchema.extend({
 	id: z.coerce.number(),
 	currency: currencyRow
 });

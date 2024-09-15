@@ -461,7 +461,7 @@ export function AddOpeningBalanceForm() {
                             Debit:{" "}
                             <span className="font-semibold">
                               {" "}
-                              {totalDrAmount}
+                              {totalDrAmount.toLocaleString("en-IN")}
                             </span>
                           </p>
                         </>
@@ -498,7 +498,7 @@ export function AddOpeningBalanceForm() {
                             Credit:{" "}
                             <span className="font-semibold">
                               {" "}
-                              {totalCrAmount}
+                              {totalCrAmount.toLocaleString("en-IN")}
                             </span>
                           </p>
                         </>
