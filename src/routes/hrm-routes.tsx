@@ -1,4 +1,3 @@
-import Attendance from "@/pages/hrm/attendance";
 import withFallback from "@/utils/with-fallback";
 import {
   Dashboard,
@@ -8,9 +7,12 @@ import {
   EmployeeClass,
   EmployeeGrade,
   ErrorPage,
+  Attendance,
+  DailyAttendance,
   Holiday,
   DeductionPolicy,
   OverTimePolicy,
+  AttendancePolicy,
   JobApply,
   JobCandidate,
   JobPost,
@@ -21,7 +23,6 @@ import {
   VacancyRequisition,
   EmployeeRoster 
 } from "./components";
-import AttendancePolicy from "@/pages/hrm/attendance-policy";
 
 const hrmRoutes = {
   path: "hrm/",
@@ -40,6 +41,11 @@ const hrmRoutes = {
     {
       path: "create-attendance",
       element: withFallback(<Attendance />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "daily-attendance",
+      element: withFallback(<DailyAttendance />),
       errorElement: withFallback(<ErrorPage />),
     },
     {

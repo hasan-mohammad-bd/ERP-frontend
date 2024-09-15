@@ -71,6 +71,12 @@ const hrmNavItems: NavItem[] = [
         href: "/hrm/create-attendance",
       },
       {
+        title: "Daily Attendance",
+        icon: CalendarCheck2,
+        color: "text-sky-500",
+        href: "/hrm/daily-attendance",
+      },
+      {
         title: "Attendance List",
         icon: CalendarCheck2,
         color: "text-sky-500",
