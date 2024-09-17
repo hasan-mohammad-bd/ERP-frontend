@@ -32,6 +32,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 
 interface AddScheduleFormProps {
@@ -69,16 +71,17 @@ export function AddScheduleForm({
         await updateSchedule({
           scheduleId: previousData.id,
           updatedSchedule: data,
-        });
+        }).unwrap();
         toast.success("Schedule updated successfully");
         modalClose();
       } else {
-        await createSchedule(data);
+        await createSchedule(data).unwrap();
         toast.success("Schedule created successfully");
         modalClose();
       }
     } catch (error) {
       console.log(error);
+      handleErrors(error as ErrorResponse);
     }
   }
 

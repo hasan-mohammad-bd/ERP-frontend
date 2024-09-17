@@ -22,6 +22,8 @@ import {
   useCreateDepartmentMutation,
   useUpdateDepartmentMutation,
 } from "@/store/services/hrm/api/department";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface AddDepartmentFormProps {
   modalClose: () => void;
@@ -50,16 +52,17 @@ export function AddDepartmentForm({
         await updateDepartment({
           departmentId: previousData.id,
           updatedDepartment: data,
-        });
+        }).unwrap();
         toast.success("Department updated successfully");
         modalClose();
       } else {
-        await createDepartment(data);
+        await createDepartment(data).unwrap();
         toast.success("Department created successfully");
         modalClose();
       }
     } catch (error) {
       console.log(error);
+      handleErrors(error as ErrorResponse);
     }
   }
 

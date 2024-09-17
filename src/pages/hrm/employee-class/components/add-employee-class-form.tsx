@@ -21,6 +21,8 @@ import {
   useCreateEmployeeClassMutation,
   useUpdateEmployeeClassMutation,
 } from "@/store/services/hrm/api/employee-class";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface AddSectionFormProps {
   modalClose: () => void;
@@ -49,16 +51,17 @@ export function AddEmployeeClassForm({
         await updateEmployeeClass({
           employeeClassId: previousData.id,
           updatedEmployeeClass: data,
-        });
+        }).unwrap();
         toast.success("Employee class updated successfully");
         modalClose();
       } else {
-        await createEmployeeClass(data);
+        await createEmployeeClass(data).unwrap();
         toast.success("Employee class created successfully");
         modalClose();
       }
     } catch (error) {
       console.log(error);
+      handleErrors(error as ErrorResponse);
     }
   }
 

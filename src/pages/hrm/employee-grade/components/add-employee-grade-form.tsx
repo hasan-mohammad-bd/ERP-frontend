@@ -21,6 +21,8 @@ import {
   useCreateEmployeeGradeMutation,
   useUpdateEmployeeGradeMutation,
 } from "@/store/services/hrm/api/employee-grade";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface AddSectionFormProps {
   modalClose: () => void;
@@ -51,16 +53,17 @@ export function AddEmployeeGradeForm({
         await updateEmployeeGrade({
           employeeGradeId: previousData.id,
           updatedEmployeeGrade: data,
-        });
+        }).unwrap();
         toast.success("Section updated successfully");
         modalClose();
       } else {
-        await createEmployeeGrade(data);
+        await createEmployeeGrade(data).unwrap();
         toast.success("Section created successfully");
         modalClose();
       }
     } catch (error) {
       console.log(error);
+      handleErrors(error as ErrorResponse);
     }
   }
 

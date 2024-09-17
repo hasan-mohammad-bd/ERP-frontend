@@ -11,17 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Calendar, Save, Trash2 } from "lucide-react";
 import { FilterSate } from "..";
-
-// Helper function to generate an array of dates between two dates
-const getDatesInRange = (startDate: Date, endDate: Date) => {
-  const dates = [];
-  const currentDate = new Date(startDate);
-  while (currentDate <= endDate) {
-    dates.push(new Date(currentDate));
-    currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
-  }
-  return dates;
-};
+import { getDatesInRange } from "@/utils/format-dates";
 
 export default function AttendanceInformation({
   filterData,

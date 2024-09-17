@@ -69,6 +69,8 @@ import { useGetRolesQuery } from "@/store/services/erp-main/api/role";
 import { AddAdditionalInfoForm } from "./add-additional-data";
 import { AddSkillForm } from "./add-skill";
 import { AddNomineeForm } from "./add-nominee";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface EmployeeFormProps {
 	modalClose: () => void;
@@ -187,17 +189,18 @@ export function EmployeeForm({
 				await updateEmployee({
 					employeeId: previousData.id,
 					updatedEmployee: data,
-				});
+				}).unwrap();
 
 				toast.success("Job Post updated successfully");
 				modalClose();
 			} else {
-				await createEmployee(data);
+				await createEmployee(data).unwrap();
 				toast.success("Job Post created successfully");
 				modalClose();
 			}
 		} catch (error) {
 			console.log(error);
+			handleErrors(error as ErrorResponse);
 		}
 	}
 

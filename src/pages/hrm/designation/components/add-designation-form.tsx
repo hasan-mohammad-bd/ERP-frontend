@@ -21,6 +21,8 @@ import {
   useCreateDesignationMutation,
   useUpdateDesignationMutation,
 } from "@/store/services/hrm/api/designation";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface AddDesignationFormProps {
   modalClose: () => void;
@@ -49,16 +51,17 @@ export function AddDesignationForm({
         await updateDesignation({
           designationId: previousData.id,
           updatedDesignation: data,
-        });
+        }).unwrap();
         toast.success("Designation updated successfully");
         modalClose();
       } else {
-        await createDesignation(data);
+        await createDesignation(data).unwrap();
         toast.success("Designation created successfully");
         modalClose();
       }
     } catch (error) {
       console.log(error);
+      handleErrors(error as ErrorResponse);
     }
   }
 

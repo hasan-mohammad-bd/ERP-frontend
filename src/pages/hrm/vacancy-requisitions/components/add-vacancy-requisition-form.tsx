@@ -36,6 +36,8 @@ import {
 import { useGetDepartmentsQuery } from "@/store/services/hrm/api/department";
 import { useGetDesignationQuery } from "@/store/services/hrm/api/designation";
 import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface AddVacancyRequisitionFormProps {
 	modalClose: () => void;
@@ -79,16 +81,17 @@ export function AddVacancyRequisitionForm({
 				await updateVacancyRequisition({
 					vacancyRequisitionId: previousData.id,
 					updatedVacancyRequisition: data,
-				});
+				}).unwrap();
 				toast.success("requisition updated successfully");
 				modalClose();
 			} else {
-				await createVacancyRequisition(data);
+				await createVacancyRequisition(data).unwrap();
 				toast.success("requisition created successfully");
 				modalClose();
 			}
 		} catch (error) {
 			console.log(error);
+			handleErrors(error as ErrorResponse);
 		}
 	}
 

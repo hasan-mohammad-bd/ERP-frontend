@@ -21,6 +21,8 @@ import {
   useCreateSectionMutation,
   useUpdateSectionMutation,
 } from "@/store/services/hrm/api/section";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface AddSectionFormProps {
   modalClose: () => void;
@@ -49,16 +51,17 @@ export function AddSectionForm({
         await updateSection({
           sectionId: previousData.id,
           updatedSection: data,
-        });
+        }).unwrap();
         toast.success("Section updated successfully");
         modalClose();
       } else {
-        await createSection(data);
+        await createSection(data).unwrap();
         toast.success("Section created successfully");
         modalClose();
       }
     } catch (error) {
       console.log(error);
+      handleErrors(error as ErrorResponse);
     }
   }
 

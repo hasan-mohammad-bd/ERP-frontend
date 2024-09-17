@@ -26,6 +26,8 @@ import {
   useUpdateHolidayMutation,
 } from "@/store/services/hrm/api/holiday";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { ErrorResponse } from "@/types";
+import handleErrors from "@/lib/handle-errors";
 
 interface AddHolidayFormProps {
   modalClose: () => void;
@@ -57,16 +59,17 @@ export function AddRosterForm({
         await updateHoliday({
           holidayId: previousData.id,
           updatedHoliday: data,
-        });
+        }).unwrap();
         toast.success("Holiday updated successfully");
         modalClose();
       } else {
-        await createHoliday(data);
+        await createHoliday(data).unwrap();
         toast.success("Holiday created successfully");
         modalClose();
       }
     } catch (error) {
       console.log(error);
+      handleErrors(error as ErrorResponse);
     }
   }
 

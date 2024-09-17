@@ -28,8 +28,8 @@ export default function AttendanceSearchToolbar({
 }: AttendanceSearchToolbarProps) {
   const [selectedEmployees, setSelectedEmployees] = useState<Option[]>([]);
 
-  const [fromDate, setFromDate] = useState<Date>();
-  const [toDate, setToDate] = useState<Date>();
+  const [fromDate, setFromDate] = useState<Date>(new Date());
+  const [toDate, setToDate] = useState<Date>(new Date());
   const [employeeSearchTerm, setEmployeeSearchTerm] = useState("");
   const [locationFiltered, setLocationFiltered] = useState<string | null>(null);
 
@@ -66,11 +66,13 @@ export default function AttendanceSearchToolbar({
   const [openFromDate, setOpenFromDate] = useState(false);
   const [openToDate, setOpenToDate] = useState(false);
   const handleFromDateSelect = (date: Date | undefined) => {
+    if(!date) return
     setFromDate(date);
     setOpenFromDate(false); // Close popover after selecting a date
   };
 
   const handleToDateSelect = (date: Date | undefined) => {
+    if(!date) return
     setToDate(date);
     setOpenToDate(false); // Close popover after selecting a date
   };
