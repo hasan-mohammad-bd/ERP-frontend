@@ -58,3 +58,6 @@ export const ContraVoucher = lazy(
 
 export const Organization = lazy(() => import("@/pages/web/organization"));
 export const Location = lazy(() => import("@/pages/web/location"));
+export const LeaveRequest = lazy(() => import("@/pages/hrm/leave/leave-request"));
+export const LeaveType = lazy(() => import("@/pages/hrm/leave/leave-type"));
+export const LeaveGroup = lazy(() => import("@/pages/hrm/leave/leave-group"));

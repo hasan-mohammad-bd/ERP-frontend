@@ -237,7 +237,7 @@ export function AttendancePolicyForm({
             />
             <FormField
               control={form.control}
-              name="exclude_from_att_report"
+              name="mat"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm h-10">
                   <div className="space-y-0.5">
@@ -324,8 +324,8 @@ export function AttendancePolicyForm({
             </Table>
           </Card>
 
-          <div>
-            <Button variant="default" type="submit" className="w-full mt-4">
+          <div className="text-right">
+            <Button variant="default" type="submit" className="w-fit mt-4">
               {previousData ? "Update" : "Add"}
             </Button>
           </div>

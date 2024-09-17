@@ -197,6 +197,31 @@ const hrmNavItems: NavItem[] = [
       },
     ],
   },
+  {
+    title: "Leave",
+    icon: Clock,
+    href: "/hrm",
+    color: "text-sky-500",
+    isChildren: true,
+    children: [
+      {
+        title: "Leave Request",
+        icon: Clock,
+        href: "/hrm/leave-request",
+        color: "text-sky-500",
+      },
+      {
+        title: "Leave Type",
+        icon: Clock,
+        href: "/hrm/leave-type",
+        color: "text-sky-500",
+      },
+      {
+        title: "Leave Group",
+        icon: Clock,
+        href: "/hrm/leave-group",
+        color: "text-sky-500",
+  }],}
 ];
 
 export default hrmNavItems;
