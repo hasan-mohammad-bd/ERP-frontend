@@ -45,8 +45,6 @@ export function CellAction({ data }: CellActionProps) {
               size="icon"
               className="hover:bg-secondary"
               onClick={() => setUpdateModalOpen(true)}
-
-              
             >
               <Pencil className="h-4 w-4 text-foreground" />
             </Button>
@@ -86,16 +84,18 @@ export function CellAction({ data }: CellActionProps) {
         onConfirm={() => handleDepartmentDelete(data.id)}
         loading={deleteLoading}
       />
-      <Modal
-        title="Update Over Time Policy"
-        isOpen={updateModalOpen}
-        toggleModal={() => setUpdateModalOpen(false)}
-      >
-        <OTPolicyForm
-          data={data}
-          modalClose={() => setUpdateModalOpen(false)}
-        />
-      </Modal>
+      {updateModalOpen && (
+        <Modal
+          title="Update Over Time Policy"
+          isOpen={updateModalOpen}
+          toggleModal={() => setUpdateModalOpen(false)}
+        >
+          <OTPolicyForm
+            data={data}
+            modalClose={() => setUpdateModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

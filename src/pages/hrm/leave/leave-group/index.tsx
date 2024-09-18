@@ -40,7 +40,6 @@ const demoData = [
     total_leave: "20",
     employee_count: "5",
   },
-
 ];
 
 const LeaveGroup = () => {
@@ -95,14 +94,16 @@ const LeaveGroup = () => {
         </div>
       </div>
 
-      <Modal
-        title="Add Leave Group"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-        className=""
-      >
-        <AttendancePolicyForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      {isOpen && (
+        <Modal
+          title="Add Leave Group"
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+          className=""
+        >
+          <AttendancePolicyForm modalClose={() => setIsOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };

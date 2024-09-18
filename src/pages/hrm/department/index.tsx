@@ -55,13 +55,15 @@ const Department = () => {
           )}
         </div>
       </div>
-      <Modal
-        title="Add Department"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-      >
-        <AddDepartmentForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      {isOpen && (
+        <Modal
+          title="Add Department"
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+        >
+          <AddDepartmentForm modalClose={() => setIsOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };

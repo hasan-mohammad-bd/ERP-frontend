@@ -94,14 +94,16 @@ const LeaveType = () => {
         </div>
       </div>
 
-      <Modal
-        title="Add Leave Type"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-        className=""
-      >
-        <AttendancePolicyForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      {isOpen && (
+        <Modal
+          title="Add Leave Type"
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+          className=""
+        >
+          <AttendancePolicyForm modalClose={() => setIsOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };

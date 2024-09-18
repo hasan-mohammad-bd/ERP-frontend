@@ -57,13 +57,15 @@ const EmployeeClass = () => {
           )}
         </div>
       </div>
-      <Modal
-        title="Add Employee Class"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-      >
-        <AddEmployeeClassForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      {isOpen && (
+        <Modal
+          title="Add Employee Class"
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+        >
+          <AddEmployeeClassForm modalClose={() => setIsOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };

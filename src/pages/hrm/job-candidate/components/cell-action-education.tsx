@@ -34,7 +34,6 @@ export function CellActionEducation({ data }: CellActionProps) {
               size="icon"
               className="hover:bg-secondary"
               onClick={() => setUpdateModalOpen(true)}
-
             >
               <Pencil className="h-4 w-4 text-foreground" />
             </Button>
@@ -45,18 +44,19 @@ export function CellActionEducation({ data }: CellActionProps) {
         </Tooltip>
       </TooltipProvider>
 
-      <Modal
-        title="Update Education"
-        isOpen={updateModalOpen}
-        toggleModal={() => setUpdateModalOpen(false)}
-        className="w-[90%] max-w-6xl"
-      >
-        <AddEducationForm
-          data={data}
-          modelClose={() => setUpdateModalOpen(false)}
-        />
-      </Modal>
-
+      {updateModalOpen && (
+        <Modal
+          title="Update Education"
+          isOpen={updateModalOpen}
+          toggleModal={() => setUpdateModalOpen(false)}
+          className="w-[90%] max-w-6xl"
+        >
+          <AddEducationForm
+            data={data}
+            modelClose={() => setUpdateModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

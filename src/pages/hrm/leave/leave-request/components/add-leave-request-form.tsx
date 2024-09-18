@@ -70,7 +70,7 @@ export function AttendancePolicyForm({
               name="employee_id"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Attendance Policy</FormLabel>
+                  <FormLabel>Employee</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     // defaultValue={
@@ -81,7 +81,7 @@ export function AttendancePolicyForm({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Attendance Policy" />
+                        <SelectValue placeholder="Select Employee" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -127,7 +127,7 @@ export function AttendancePolicyForm({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Attendance Policy" />
+                        <SelectValue placeholder="Select Leave Type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

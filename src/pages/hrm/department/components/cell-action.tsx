@@ -23,7 +23,8 @@ interface CellActionProps {
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [deleteDepartment, { isLoading: deleteLoading }] = useRemoveDepartmentMutation();
+  const [deleteDepartment, { isLoading: deleteLoading }] =
+    useRemoveDepartmentMutation();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
@@ -44,7 +45,7 @@ export function CellAction({ data }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-							onClick={() => setUpdateModalOpen(true)}
+              onClick={() => setUpdateModalOpen(true)}
 
               // onClick={() => toggleModal()}
             >
@@ -85,15 +86,19 @@ export function CellAction({ data }: CellActionProps) {
         onClose={() => setAlertModalOpen(false)}
         onConfirm={() => handleDepartmentDelete(data.id)}
         loading={deleteLoading}
-
       />
-      <Modal
-        title="Update Department"
-        isOpen={updateModalOpen}
-        toggleModal={() => setUpdateModalOpen(false)}
-      >
-        <AddDepartmentForm data={data} modalClose={() => setUpdateModalOpen(false)} />
-      </Modal>
+      {updateModalOpen && (
+        <Modal
+          title="Update Department"
+          isOpen={updateModalOpen}
+          toggleModal={() => setUpdateModalOpen(false)}
+        >
+          <AddDepartmentForm
+            data={data}
+            modalClose={() => setUpdateModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

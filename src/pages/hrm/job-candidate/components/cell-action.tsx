@@ -16,7 +16,6 @@ import { Modal } from "@/components/common/modal";
 import ProductDetails from "./productDetails";
 import { useRemoveJobCandidateMutation } from "@/store/services/hrm/api/job-candidate";
 
-
 interface CellActionProps {
   data: JobCandidateColumn;
 }
@@ -108,27 +107,30 @@ export function CellAction({ data }: CellActionProps) {
         onConfirm={() => handleDepartmentDelete(data.id)}
         loading={deleteLoading}
       />
-      <Modal
-        title="Update Job"
-        isOpen={updateModalOpen}
-        toggleModal={() => setUpdateModalOpen(false)}
-        className="w-[90%] max-w-6xl"
-      >
-        <AddJobCandidateForm
-          data={data}
-          modalClose={() => setUpdateModalOpen(false)}
-        />
-        
-      </Modal>
+      {updateModalOpen && (
+        <Modal
+          title="Update Job"
+          isOpen={updateModalOpen}
+          toggleModal={() => setUpdateModalOpen(false)}
+          className="w-[90%] max-w-6xl"
+        >
+          <AddJobCandidateForm
+            data={data}
+            modalClose={() => setUpdateModalOpen(false)}
+          />
+        </Modal>
+      )}
       {/* <AddEducationForm jobData={data} /> */}
-      <Modal
-        title="Job Details"
-        isOpen={detailsModalOpen}
-        toggleModal={() => setDetailsModalOpen(false)}
-        className="w-[90%] max-w-6xl"
-      >
-        <ProductDetails />
-      </Modal>
+      {detailsModalOpen && (
+        <Modal
+          title="Job Details"
+          isOpen={detailsModalOpen}
+          toggleModal={() => setDetailsModalOpen(false)}
+          className="w-[90%] max-w-6xl"
+        >
+          <ProductDetails />
+        </Modal>
+      )}
     </div>
   );
 }

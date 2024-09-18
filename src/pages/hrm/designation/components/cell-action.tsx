@@ -22,11 +22,12 @@ interface CellActionProps {
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [deleteDesignation , { isLoading: deleteLoading }] = useRemoveDesignationMutation();
+  const [deleteDesignation, { isLoading: deleteLoading }] =
+    useRemoveDesignationMutation();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
-      await deleteDesignation(id)
+      await deleteDesignation(id);
       toast.success("Designation deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
@@ -43,7 +44,7 @@ export function CellAction({ data }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-							onClick={() => setUpdateModalOpen(true)}
+              onClick={() => setUpdateModalOpen(true)}
 
               // onClick={() => toggleModal()}
             >
@@ -85,13 +86,18 @@ export function CellAction({ data }: CellActionProps) {
         onConfirm={() => handleDepartmentDelete(data.id)}
         loading={deleteLoading}
       />
-      <Modal
-        title="Update Designation"
-        isOpen={updateModalOpen}
-        toggleModal={() => setUpdateModalOpen(false)}
-      >
-        <AddDesignationForm data={data} modalClose={() => setUpdateModalOpen(false)} />
-      </Modal>
+      {updateModalOpen && (
+        <Modal
+          title="Update Designation"
+          isOpen={updateModalOpen}
+          toggleModal={() => setUpdateModalOpen(false)}
+        >
+          <AddDesignationForm
+            data={data}
+            modalClose={() => setUpdateModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

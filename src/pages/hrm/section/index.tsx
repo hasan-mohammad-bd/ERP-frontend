@@ -57,13 +57,15 @@ const Section = () => {
           )}
         </div>
       </div>
-      <Modal
-        title="Add Section"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-      >
-        <AddSectionForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      {isOpen && (
+        <Modal
+          title="Add Section"
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+        >
+          <AddSectionForm modalClose={() => setIsOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };

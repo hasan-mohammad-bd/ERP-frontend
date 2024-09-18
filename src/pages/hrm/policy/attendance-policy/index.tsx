@@ -104,14 +104,16 @@ const AttendancePolicy = () => {
         </div>
       </div>
 
-      <Modal
-        title="Add Attendance Policy"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-        className="w-2/3 max-w-5xl"
-      >
-        <AttendancePolicyForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      {isOpen && (
+        <Modal
+          title="Add Attendance Policy"
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+          className="w-2/3 max-w-5xl"
+        >
+          <AttendancePolicyForm modalClose={() => setIsOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };

@@ -15,7 +15,6 @@ import { AddEmployeeClassForm } from "./add-employee-class-form";
 import { Modal } from "@/components/common/modal";
 import { useRemoveEmployeeClassMutation } from "@/store/services/hrm/api/employee-class";
 
-
 interface CellActionProps {
   data: EmployeeClassColumn;
 }
@@ -23,7 +22,8 @@ interface CellActionProps {
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [deleteEmployeeClass, { isLoading: deleteLoading }] = useRemoveEmployeeClassMutation();
+  const [deleteEmployeeClass, { isLoading: deleteLoading }] =
+    useRemoveEmployeeClassMutation();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
@@ -34,7 +34,6 @@ export function CellAction({ data }: CellActionProps) {
       console.log(error);
     }
   };
-
 
   return (
     <div className="flex justify-center space-x-2">
@@ -87,16 +86,18 @@ export function CellAction({ data }: CellActionProps) {
         onConfirm={() => handleDepartmentDelete(data.id)}
         loading={deleteLoading}
       />
-      <Modal
-        title="Update Employee Class"
-        isOpen={updateModalOpen}
-        toggleModal={() => setUpdateModalOpen(false)}
-      >
-        <AddEmployeeClassForm
-          data={data}
-          modalClose={() => setUpdateModalOpen(false)}
-        />
-      </Modal>
+      {updateModalOpen && (
+        <Modal
+          title="Update Employee Class"
+          isOpen={updateModalOpen}
+          toggleModal={() => setUpdateModalOpen(false)}
+        >
+          <AddEmployeeClassForm
+            data={data}
+            modalClose={() => setUpdateModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

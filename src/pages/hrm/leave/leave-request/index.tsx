@@ -114,14 +114,16 @@ const LeaveRequest = () => {
         </div>
       </div>
 
-      <Modal
-        title="Add Leave Request"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-        className=""
-      >
-        <AttendancePolicyForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      {isOpen && (
+        <Modal
+          title="Add Leave Request"
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+          className=""
+        >
+          <AttendancePolicyForm modalClose={() => setIsOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };

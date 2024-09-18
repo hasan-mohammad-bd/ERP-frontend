@@ -15,7 +15,6 @@ import { AddScheduleForm } from "./add-schedule-form";
 import { Modal } from "@/components/common/modal";
 import { useRemoveScheduleMutation } from "@/store/services/hrm/api/schedule";
 
-
 interface CellActionProps {
   data: ScheduleColumn;
 }
@@ -33,8 +32,6 @@ export function CellAction({ data }: CellActionProps) {
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
-      
-
     }
   };
 
@@ -89,16 +86,18 @@ export function CellAction({ data }: CellActionProps) {
         onConfirm={() => handleDepartmentDelete(data.id)}
         loading={deleteLoading}
       />
-      <Modal
-        title="Update Schedule"
-        isOpen={updateModalOpen}
-        toggleModal={() => setUpdateModalOpen(false)}
-      >
-        <AddScheduleForm
-          data={data}
-          modalClose={() => setUpdateModalOpen(false)}
-        />
-      </Modal>
+      {updateModalOpen && (
+        <Modal
+          title="Update Schedule"
+          isOpen={updateModalOpen}
+          toggleModal={() => setUpdateModalOpen(false)}
+        >
+          <AddScheduleForm
+            data={data}
+            modalClose={() => setUpdateModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

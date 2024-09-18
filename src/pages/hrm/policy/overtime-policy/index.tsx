@@ -60,14 +60,16 @@ const OverTimePolicy = () => {
           )}
         </div>
       </div>
-      <Modal
-        title="New Over Time Policy"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-        className="w-full max-w-3xl"
-      >
-        <OTPolicyForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      {isOpen && (
+        <Modal
+          title="New Over Time Policy"
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+          className="w-full max-w-3xl"
+        >
+          <OTPolicyForm modalClose={() => setIsOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };

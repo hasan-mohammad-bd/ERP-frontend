@@ -58,13 +58,15 @@ const Schedule = () => {
           )}
         </div>
       </div>
-      <Modal
-        title="Add Schedule"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-      >
-        <AddScheduleForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      {isOpen && (
+        <Modal
+          title="Add Schedule"
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+        >
+          <AddScheduleForm modalClose={() => setIsOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };

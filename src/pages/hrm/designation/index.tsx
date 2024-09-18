@@ -53,13 +53,15 @@ const Designation = () => {
           )}
         </div>
       </div>
-      <Modal
-        title="Add Designation"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-      >
-        <AddDesignationForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      {isOpen && (
+        <Modal
+          title="Add Designation"
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+        >
+          <AddDesignationForm modalClose={() => setIsOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };

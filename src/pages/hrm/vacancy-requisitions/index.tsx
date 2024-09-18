@@ -58,13 +58,15 @@ const VacancyRequisition = () => {
           )}
         </div>
       </div>
-      <Modal
-        title="Add Vacancy "
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-      >
-        <AddVacancyRequisitionForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      {isOpen && (
+        <Modal
+          title="Add Vacancy "
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+        >
+          <AddVacancyRequisitionForm modalClose={() => setIsOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };

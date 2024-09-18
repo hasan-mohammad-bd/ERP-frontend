@@ -9,7 +9,7 @@ import {
 
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
-import { type EmployeeGradeColumn} from "@/lib/validators";
+import { type EmployeeGradeColumn } from "@/lib/validators";
 import { toast } from "sonner";
 import { AddEmployeeGradeForm } from "./add-employee-grade-form";
 import { Modal } from "@/components/common/modal";
@@ -22,7 +22,8 @@ interface CellActionProps {
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [deleteEmployeeGrade, { isLoading: deleteLoading } ] = useRemoveEmployeeGradeMutation();
+  const [deleteEmployeeGrade, { isLoading: deleteLoading }] =
+    useRemoveEmployeeGradeMutation();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
@@ -85,16 +86,18 @@ export function CellAction({ data }: CellActionProps) {
         onConfirm={() => handleDepartmentDelete(data.id)}
         loading={deleteLoading}
       />
-      <Modal
-        title="Update Employee Grade"
-        isOpen={updateModalOpen}
-        toggleModal={() => setUpdateModalOpen(false)}
-      >
-        <AddEmployeeGradeForm
-          data={data}
-          modalClose={() => setUpdateModalOpen(false)}
-        />
-      </Modal>
+      {updateModalOpen && (
+        <Modal
+          title="Update Employee Grade"
+          isOpen={updateModalOpen}
+          toggleModal={() => setUpdateModalOpen(false)}
+        >
+          <AddEmployeeGradeForm
+            data={data}
+            modalClose={() => setUpdateModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

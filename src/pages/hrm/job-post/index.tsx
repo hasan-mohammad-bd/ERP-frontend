@@ -57,14 +57,16 @@ const JobPost = () => {
           )}
         </div>
       </div>
-      <Modal
-        title="Add Job Post"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-        className="w-[90%] max-w-6xl"
-      >
-        <AddJobPostForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      {isOpen && (
+        <Modal
+          title="Add Job Post"
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+          className="w-[90%] max-w-6xl"
+        >
+          <AddJobPostForm modalClose={() => setIsOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };

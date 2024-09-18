@@ -45,17 +45,19 @@ export function CellActionExperience({ data }: CellActionProps) {
         </Tooltip>
       </TooltipProvider>
 
-      <Modal
-        title="Update Experience"
-        isOpen={updateModalOpen}
-        toggleModal={() => setUpdateModalOpen(false)}
-        className="w-[90%] max-w-6xl"
-      >
-        <AddExperienceForm
-          data={data}
-          modelClose={() => setUpdateModalOpen(false)}
-        />
-      </Modal>
+      {updateModalOpen && (
+        <Modal
+          title="Update Experience"
+          isOpen={updateModalOpen}
+          toggleModal={() => setUpdateModalOpen(false)}
+          className="w-[90%] max-w-6xl"
+        >
+          <AddExperienceForm
+            data={data}
+            modelClose={() => setUpdateModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

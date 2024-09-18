@@ -59,13 +59,15 @@ const Roster = () => {
           )}
         </div>
       </div>
-      <Modal
-        title="Add Roster"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-      >
-        <AddRosterForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+      {isOpen && (
+        <Modal
+          title="Add Roster"
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+        >
+          <AddRosterForm modalClose={() => setIsOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };

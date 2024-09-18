@@ -108,25 +108,29 @@ export function CellAction({ data }: CellActionProps) {
         onConfirm={() => handleDepartmentDelete(data.id)}
         loading={deleteLoading}
       />
-      <Modal
-        title="Update Job"
-        isOpen={updateModalOpen}
-        toggleModal={() => setUpdateModalOpen(false)}
-        className="w-[90%] max-w-6xl"
-      >
-        <AttendancePolicyForm
-          data={data}
-          modalClose={() => setUpdateModalOpen(false)}
-        />
-      </Modal>
-      <Modal
-        title="Job Details"
-        isOpen={detailsModalOpen}
-        toggleModal={() => setDetailsModalOpen(false)}
-        className="w-[90%] max-w-6xl"
-      >
-        <ProductDetails data={data} />
-      </Modal>
+      {updateModalOpen && (
+        <Modal
+          title="Update Job"
+          isOpen={updateModalOpen}
+          toggleModal={() => setUpdateModalOpen(false)}
+          className="w-[90%] max-w-6xl"
+        >
+          <AttendancePolicyForm
+            data={data}
+            modalClose={() => setUpdateModalOpen(false)}
+          />
+        </Modal>
+      )}
+      {detailsModalOpen && (
+        <Modal
+          title="Job Details"
+          isOpen={detailsModalOpen}
+          toggleModal={() => setDetailsModalOpen(false)}
+          className="w-[90%] max-w-6xl"
+        >
+          <ProductDetails data={data} />
+        </Modal>
+      )}
     </div>
   );
 }
