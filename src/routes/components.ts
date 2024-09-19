@@ -3,7 +3,6 @@ import { lazy } from "react";
 export const Layout = lazy(() => import("@/layout"));
 export const ErrorPage = lazy(() => import("@/pages/ErrorPage"));
 export const Dashboard = lazy(() => import("@/pages/dashboard"));
-
 // HRM
 export const Department = lazy(() => import("@/pages/hrm/department"));
 export const Designation = lazy(() => import("@/pages/hrm/designation"));
@@ -14,6 +13,9 @@ export const DailyAttendance = lazy(
 );
 export const EmployeeClass = lazy(() => import("@/pages/hrm/employee-class"));
 export const EmployeeGrade = lazy(() => import("@/pages/hrm/employee-grade"));
+
+export const EmployeeSalary = lazy(() => import("@/pages/hrm/add-employee-salary"));
+
 export const Holiday = lazy(() => import("@/pages/hrm/holiday"));
 export const AttendancePolicy = lazy(
   () => import("@/pages/hrm/policy/attendance-policy")

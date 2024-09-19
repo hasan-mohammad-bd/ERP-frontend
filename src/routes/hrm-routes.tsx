@@ -24,6 +24,7 @@ import {
   LeaveRequest,
   LeaveType,
   LeaveGroup,
+  EmployeeSalary,
   AttendancesList,
   AddBankSalary,
 } from "./components";
@@ -39,9 +40,17 @@ const hrmRoutes = {
       element: withFallback(<Dashboard title="HRM" />),
       errorElement: withFallback(<ErrorPage />),
     },
+
     {
       path: "employees-list",
       element: withFallback(<Employee />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    //our(new) dev task
+    {
+      path: "add-employee-salary",
+      element: withFallback(<EmployeeSalary />),
       errorElement: withFallback(<ErrorPage />),
     },
 

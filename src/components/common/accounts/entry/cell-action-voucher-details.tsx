@@ -36,7 +36,7 @@ export function CellActionVoucherDetails({ rowData }: CellActionProps) {
         <Modal
           isOpen={voucherDetailsOpen}
           toggleModal={() => setVoucherDetailsOpen(false)}
-          className="max-w-5xl h-fit"
+          className="w-[100px] h-fit"
         >
           {isFetching ? (
             <div className="w-full h-full flex justify-center items-center">

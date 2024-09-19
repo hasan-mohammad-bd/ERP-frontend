@@ -10,7 +10,7 @@ const departmentApi = hrmApi.injectEndpoints({
     getDepartments: build.query<
     { data: DepartmentColumn[]; meta: PaginationInfo },
     string
-  >({ 
+  >({
       query: (params) => `departments?${params}`, 
       providesTags: ["departments"], 
     }),
@@ -45,7 +45,7 @@ const departmentApi = hrmApi.injectEndpoints({
 });
 
 export const {
-  useGetDepartmentsQuery, 
+  useGetDepartmentsQuery,
   useCreateDepartmentMutation, 
   useRemoveDepartmentMutation, 
   useUpdateDepartmentMutation 
