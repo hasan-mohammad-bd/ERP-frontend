@@ -9,13 +9,21 @@ export const Department = lazy(() => import("@/pages/hrm/department"));
 export const Designation = lazy(() => import("@/pages/hrm/designation"));
 export const Employee = lazy(() => import("@/pages/hrm/employee"));
 
-export const DailyAttendance = lazy(() => import("@/pages/hrm/daily-attendance"));
+export const DailyAttendance = lazy(
+  () => import("@/pages/hrm/daily-attendance")
+);
 export const EmployeeClass = lazy(() => import("@/pages/hrm/employee-class"));
 export const EmployeeGrade = lazy(() => import("@/pages/hrm/employee-grade"));
 export const Holiday = lazy(() => import("@/pages/hrm/holiday"));
-export const AttendancePolicy = lazy(() => import("@/pages/hrm/policy/attendance-policy"));
-export const DeductionPolicy = lazy(() => import("@/pages/hrm/policy/deduction-policy"));
-export const OverTimePolicy = lazy(() => import("@/pages/hrm/policy/overtime-policy"));
+export const AttendancePolicy = lazy(
+  () => import("@/pages/hrm/policy/attendance-policy")
+);
+export const DeductionPolicy = lazy(
+  () => import("@/pages/hrm/policy/deduction-policy")
+);
+export const OverTimePolicy = lazy(
+  () => import("@/pages/hrm/policy/overtime-policy")
+);
 export const JobApply = lazy(() => import("@/pages/hrm/job-apply"));
 export const JobCandidate = lazy(() => import("@/pages/hrm/job-candidate"));
 export const JobPost = lazy(() => import("@/pages/hrm/job-post"));
@@ -29,9 +37,12 @@ export const VacancyRequisition = lazy(
 export const LoginScreen = lazy(() => import("@/pages/login"));
 export const Lobby = lazy(() => import("@/pages/lobby"));
 export const PrivateOutlet = lazy(() => import("@/utils/private-outlet"));
+export const AddBankSalary = lazy(() => import("@/pages/hrm/add-bank-salary"));
 
 // Accounts
-export const DashboardAccounts = lazy(() => import("@/pages/accounts/dashboard-accounts"));
+export const DashboardAccounts = lazy(
+  () => import("@/pages/accounts/dashboard-accounts")
+);
 export const FinancialYears = lazy(
   () => import("@/pages/accounts/financial-year")
 );
@@ -58,7 +69,11 @@ export const ContraVoucher = lazy(
 
 export const Organization = lazy(() => import("@/pages/web/organization"));
 export const Location = lazy(() => import("@/pages/web/location"));
-export const LeaveRequest = lazy(() => import("@/pages/hrm/leave/leave-request"));
+export const LeaveRequest = lazy(
+  () => import("@/pages/hrm/leave/leave-request")
+);
 export const LeaveType = lazy(() => import("@/pages/hrm/leave/leave-type"));
 export const LeaveGroup = lazy(() => import("@/pages/hrm/leave/leave-group"));
-export const AttendancesList = lazy(()=> import("@/pages/hrm/attendance-list"))
+export const AttendancesList = lazy(
+  () => import("@/pages/hrm/attendance-list")
+);

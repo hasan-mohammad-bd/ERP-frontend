@@ -24,12 +24,11 @@ import {
   LeaveRequest,
   LeaveType,
   LeaveGroup,
-  AttendancesList
+  AttendancesList,
+  AddBankSalary,
 } from "./components";
 
-
 // import AttendancePolicy from "@/pages/hrm/attendance-policy";
-
 
 const hrmRoutes = {
   path: "hrm/",
@@ -43,6 +42,12 @@ const hrmRoutes = {
     {
       path: "employees-list",
       element: withFallback(<Employee />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "add-bank-salary",
+      element: withFallback(<AddBankSalary />),
       errorElement: withFallback(<ErrorPage />),
     },
 
@@ -87,11 +92,11 @@ const hrmRoutes = {
       element: withFallback(<Roster />),
       errorElement: withFallback(<ErrorPage />),
     },
-		{
-			path: "roster-employee",
-			element: withFallback(<EmployeeRoster />),
-			errorElement: withFallback(<ErrorPage />),
-		},
+    {
+      path: "roster-employee",
+      element: withFallback(<EmployeeRoster />),
+      errorElement: withFallback(<ErrorPage />),
+    },
     {
       path: "holidays",
       element: withFallback(<Holiday />),
