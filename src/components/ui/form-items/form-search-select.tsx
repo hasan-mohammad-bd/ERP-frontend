@@ -29,7 +29,7 @@ interface FormSearchSelectProps<T> {
   name: string;
   title: string;
   data: T[];
-  loading: boolean;
+  loading?: boolean;
   className?: string;
   width?: string;
   valueField: keyof T;

@@ -7,7 +7,6 @@ import {
   EmployeeClass,
   EmployeeGrade,
   ErrorPage,
-  Attendance,
   DailyAttendance,
   Holiday,
   DeductionPolicy,
@@ -25,7 +24,9 @@ import {
   LeaveRequest,
   LeaveType,
   LeaveGroup,
+  AttendancesList
 } from "./components";
+
 
 // import AttendancePolicy from "@/pages/hrm/attendance-policy";
 
@@ -44,21 +45,13 @@ const hrmRoutes = {
       element: withFallback(<Employee />),
       errorElement: withFallback(<ErrorPage />),
     },
-    {
-      path: "create-attendance",
-      element: withFallback(<Attendance />),
-      errorElement: withFallback(<ErrorPage />),
-    },
+
     {
       path: "daily-attendance",
       element: withFallback(<DailyAttendance />),
       errorElement: withFallback(<ErrorPage />),
     },
-    {
-      path: "attendance-list",
-      element: withFallback(<Attendance />),
-      errorElement: withFallback(<ErrorPage />),
-    },
+
     {
       path: "departments",
       element: withFallback(<Department />),
@@ -152,6 +145,11 @@ const hrmRoutes = {
     {
       path: "leave-type",
       element: withFallback(<LeaveType />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "attendances-list",
+      element: withFallback(<AttendancesList />),
       errorElement: withFallback(<ErrorPage />),
     },
   ],

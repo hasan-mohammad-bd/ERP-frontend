@@ -65,22 +65,17 @@ const hrmNavItems: NavItem[] = [
     isChildren: true,
     children: [
       {
-        title: "Create Attendance",
-        icon: CalendarCheck2,
+        title: "Attendances List",
+        icon: PlayIcon,
+        href: "/hrm/attendances-list",
         color: "text-sky-500",
-        href: "/hrm/create-attendance",
       },
+
       {
         title: "Daily Attendance",
         icon: CalendarCheck2,
         color: "text-sky-500",
         href: "/hrm/daily-attendance",
-      },
-      {
-        title: "Attendance List",
-        icon: CalendarCheck2,
-        color: "text-sky-500",
-        href: "/hrm/attendance-list",
       },
       {
         title: "Schedules",
@@ -183,6 +178,7 @@ const hrmNavItems: NavItem[] = [
         href: "/hrm/attendance-policy",
         color: "text-sky-500",
       },
+
       {
         title: "Deduction Policy",
         icon: SquarePen,

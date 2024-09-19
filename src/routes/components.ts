@@ -8,7 +8,7 @@ export const Dashboard = lazy(() => import("@/pages/dashboard"));
 export const Department = lazy(() => import("@/pages/hrm/department"));
 export const Designation = lazy(() => import("@/pages/hrm/designation"));
 export const Employee = lazy(() => import("@/pages/hrm/employee"));
-export const Attendance = lazy(() => import("@/pages/hrm/attendance"));
+
 export const DailyAttendance = lazy(() => import("@/pages/hrm/daily-attendance"));
 export const EmployeeClass = lazy(() => import("@/pages/hrm/employee-class"));
 export const EmployeeGrade = lazy(() => import("@/pages/hrm/employee-grade"));
@@ -61,3 +61,4 @@ export const Location = lazy(() => import("@/pages/web/location"));
 export const LeaveRequest = lazy(() => import("@/pages/hrm/leave/leave-request"));
 export const LeaveType = lazy(() => import("@/pages/hrm/leave/leave-type"));
 export const LeaveGroup = lazy(() => import("@/pages/hrm/leave/leave-group"));
+export const AttendancesList = lazy(()=> import("@/pages/hrm/attendance-list"))
