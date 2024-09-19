@@ -77,26 +77,16 @@ const hrmNavItems: NavItem[] = [
         color: "text-sky-500",
         href: "/hrm/add-bank-salary",
       },
-
-    ],
-  },
-
-
-  {
-    title: "Salary",
-    icon: CalendarCheck2,
-    href: "/hrm",
-    color: "text-sky-500",
-    isChildren: true,
-    children: [
       {
-        title: "Add Bank Salary",
+        title: "Salary Breakup",
         icon: CalendarCheck2,
         color: "text-sky-500",
-        href: "/hrm/add-bank-salary",
+        href: "/hrm/salary_breakup"
       },
+
     ],
   },
+
 
   {
     title: "Attendance",

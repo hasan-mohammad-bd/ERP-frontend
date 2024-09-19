@@ -79,3 +79,4 @@ export const LeaveGroup = lazy(() => import("@/pages/hrm/leave/leave-group"));
 export const AttendancesList = lazy(
   () => import("@/pages/hrm/attendance-list")
 );
+export const SalaryBreakUp  = lazy(()=> import("@/pages/hrm/salary/salary-breakup"))

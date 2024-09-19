@@ -3,7 +3,7 @@ import { Modal } from "@/components/common/modal";
 import { Button } from "@/components/ui/button";
 
 import { Plus } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const JournalVoucher = () => {
   // const [isOpen, setIsOpen] = useState(false);

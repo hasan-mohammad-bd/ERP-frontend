@@ -27,7 +27,9 @@ import {
   EmployeeSalary,
   AttendancesList,
   AddBankSalary,
+  SalaryBreakUp
 } from "./components";
+
 
 // import AttendancePolicy from "@/pages/hrm/attendance-policy";
 
@@ -164,6 +166,11 @@ const hrmRoutes = {
     {
       path: "attendances-list",
       element: withFallback(<AttendancesList />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "salary_breakup",
+      element: withFallback(<SalaryBreakUp />),
       errorElement: withFallback(<ErrorPage />),
     },
   ],
