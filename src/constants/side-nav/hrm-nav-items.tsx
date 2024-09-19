@@ -57,7 +57,6 @@ const hrmNavItems: NavItem[] = [
     ],
   },
 
-
   {
     title: "Salary",
     icon: CalendarCheck2,
@@ -66,13 +65,13 @@ const hrmNavItems: NavItem[] = [
     isChildren: true,
     children: [
       {
-        title: "Add Employee Salary",
+        title: "Employee Payslip",
         icon: CalendarCheck2,
         color: "text-sky-500",
         href: "/hrm/add-employee-salary",
       },
       {
-        title: "Add Bank Salary",
+        title: "Bank Salary Advice",
         icon: CalendarCheck2,
         color: "text-sky-500",
         href: "/hrm/add-bank-salary",
@@ -81,12 +80,17 @@ const hrmNavItems: NavItem[] = [
         title: "Salary Breakup",
         icon: CalendarCheck2,
         color: "text-sky-500",
-        href: "/hrm/salary_breakup"
+        href: "/hrm/salary_breakup",
       },
 
+      {
+        title: "Salary Certificate",
+        icon: CalendarCheck2,
+        color: "text-sky-500",
+        href: "/hrm/salary-certificate",
+      },
     ],
   },
-
 
   {
     title: "Attendance",

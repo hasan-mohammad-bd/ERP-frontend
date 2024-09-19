@@ -40,6 +40,9 @@ export const LoginScreen = lazy(() => import("@/pages/login"));
 export const Lobby = lazy(() => import("@/pages/lobby"));
 export const PrivateOutlet = lazy(() => import("@/utils/private-outlet"));
 export const AddBankSalary = lazy(() => import("@/pages/hrm/add-bank-salary"));
+export const SalaryCertificate = lazy(
+  () => import("@/pages/hrm/salary-certificate-screen")
+);
 
 // Accounts
 export const DashboardAccounts = lazy(
