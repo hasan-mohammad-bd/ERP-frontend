@@ -29,6 +29,7 @@ import {
   BankSalaryAdvice,
   SalaryBreakUp,
   SalaryCertificate,
+  SalarySetup,
 } from "./components";
 
 // import AttendancePolicy from "@/pages/hrm/attendance-policy";
@@ -176,6 +177,11 @@ const hrmRoutes = {
     {
       path: "salary_breakup",
       element: withFallback(<SalaryBreakUp />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "salary-setup",
+      element: withFallback(<SalarySetup />),
       errorElement: withFallback(<ErrorPage />),
     },
   ],

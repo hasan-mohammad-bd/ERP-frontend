@@ -14,6 +14,9 @@ export const DailyAttendance = lazy(
 export const EmployeeClass = lazy(() => import("@/pages/hrm/employee-class"));
 export const EmployeeGrade = lazy(() => import("@/pages/hrm/employee-grade"));
 
+// export const EmployeeSalary = lazy(
+//   () => import("@/pages/hrm/add-employee-salary")
+// );
 export const EmployeeSalaryPayslip = lazy(
   () => import("@/pages/hrm/salary/employee-salary-payslip")
 );
@@ -46,6 +49,9 @@ export const BankSalaryAdvice = lazy(
 );
 export const SalaryCertificate = lazy(
   () => import("@/pages/hrm/salary/salary-certificate-screen")
+);
+export const SalarySetup = lazy(
+  () => import("@/pages/hrm/salary/salary-setup")
 );
 
 // Accounts
