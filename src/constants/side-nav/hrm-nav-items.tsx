@@ -68,13 +68,13 @@ const hrmNavItems: NavItem[] = [
         title: "Employee Payslip",
         icon: CalendarCheck2,
         color: "text-sky-500",
-        href: "/hrm/add-employee-salary",
+        href: "/hrm/employee-salary-payslip",
       },
       {
         title: "Bank Salary Advice",
         icon: CalendarCheck2,
         color: "text-sky-500",
-        href: "/hrm/add-bank-salary",
+        href: "/hrm/bank-salary-advice",
       },
       {
         title: "Salary Breakup",

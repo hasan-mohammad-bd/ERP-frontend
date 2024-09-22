@@ -24,9 +24,9 @@ import {
   LeaveRequest,
   LeaveType,
   LeaveGroup,
-  EmployeeSalary,
+  EmployeeSalaryPayslip,
   AttendancesList,
-  AddBankSalary,
+  BankSalaryAdvice,
   SalaryBreakUp,
   SalaryCertificate,
 } from "./components";
@@ -51,14 +51,14 @@ const hrmRoutes = {
 
     //our(new) dev task
     {
-      path: "add-employee-salary",
-      element: withFallback(<EmployeeSalary />),
+      path: "employee-salary-payslip",
+      element: withFallback(<EmployeeSalaryPayslip />),
       errorElement: withFallback(<ErrorPage />),
     },
 
     {
-      path: "add-bank-salary",
-      element: withFallback(<AddBankSalary />),
+      path: "bank-salary-advice",
+      element: withFallback(<BankSalaryAdvice />),
       errorElement: withFallback(<ErrorPage />),
     },
     {

@@ -14,7 +14,9 @@ export const DailyAttendance = lazy(
 export const EmployeeClass = lazy(() => import("@/pages/hrm/employee-class"));
 export const EmployeeGrade = lazy(() => import("@/pages/hrm/employee-grade"));
 
-export const EmployeeSalary = lazy(() => import("@/pages/hrm/add-employee-salary"));
+export const EmployeeSalaryPayslip = lazy(
+  () => import("@/pages/hrm/salary/employee-salary-payslip")
+);
 
 export const Holiday = lazy(() => import("@/pages/hrm/holiday"));
 export const AttendancePolicy = lazy(
@@ -39,9 +41,11 @@ export const VacancyRequisition = lazy(
 export const LoginScreen = lazy(() => import("@/pages/login"));
 export const Lobby = lazy(() => import("@/pages/lobby"));
 export const PrivateOutlet = lazy(() => import("@/utils/private-outlet"));
-export const AddBankSalary = lazy(() => import("@/pages/hrm/add-bank-salary"));
+export const BankSalaryAdvice = lazy(
+  () => import("@/pages/hrm/salary/bank-salary-advice")
+);
 export const SalaryCertificate = lazy(
-  () => import("@/pages/hrm/salary-certificate-screen")
+  () => import("@/pages/hrm/salary/salary-certificate-screen")
 );
 
 // Accounts
@@ -82,4 +86,6 @@ export const LeaveGroup = lazy(() => import("@/pages/hrm/leave/leave-group"));
 export const AttendancesList = lazy(
   () => import("@/pages/hrm/attendance-list")
 );
-export const SalaryBreakUp  = lazy(()=> import("@/pages/hrm/salary/salary-breakup"))
+export const SalaryBreakUp = lazy(
+  () => import("@/pages/hrm/salary/salary-breakup")
+);
