@@ -14,7 +14,6 @@ import { File, Printer } from "lucide-react";
 import { useRef } from "react";
 import ReactToPrint from "react-to-print";
 
-
 const BankSalaryVoucher = () => {
   const componentRef = useRef<HTMLDivElement>(null);
 
@@ -43,7 +42,7 @@ const BankSalaryVoucher = () => {
             </div>
             <p>The Branch Manager</p>
             <p>Ductch Bangla Bank Ltd.</p>
-            <p>Rabindra Sarami Branch</p>
+            <p>Rabindra Sarani Branch</p>
             <p>Sub: Request for salary disbursment</p>
             <p className="mt-2">Dear Sir,</p>
             <p>
@@ -135,7 +134,6 @@ const BankSalaryVoucher = () => {
         >
           PDF <File className="ml-1" size={16} strokeWidth={1.2} />
         </Button>
-
       </div>
     </div>
   );
@@ -208,53 +206,4 @@ const tableData = [
     accountNumber: "107103636860",
     salary: "XXXX",
   },
-  // {
-  //   slNo: 9,
-  //   name: "Masud Rana Tapu",
-  //   designation: "Software Developer",
-  //   accountNumber: "107103636868",
-  //   salary: "XXXX",
-  // },
-  // {
-  //   slNo: 10,
-  //   name: "Asif Al Razi",
-  //   designation: "Marketing Executive",
-  //   accountNumber: "321103002563",
-  //   salary: "XXXX",
-  // },
-  // {
-  //   slNo: 11,
-  //   name: "Hasan Mohammad",
-  //   designation: "Software Developer",
-  //   accountNumber: "321103019334",
-  //   salary: "XXXX",
-  // },
-  // {
-  //   slNo: 12,
-  //   name: "Md. Shahin",
-  //   designation: "Software Developer",
-  //   accountNumber: "321103015680",
-  //   salary: "XXXX",
-  // },
-  // {
-  //   slNo: 13,
-  //   name: "Alik Hasan",
-  //   designation: "Software Developer",
-  //   accountNumber: "321103005548",
-  //   salary: "XXXX",
-  // },
-  // {
-  //   slNo: 14,
-  //   name: "Nayeem Hossain",
-  //   designation: "Sr. Marketing Executive",
-  //   accountNumber: "321103003753",
-  //   salary: "XXXX",
-  // },
-  // {
-  //   slNo: 15,
-  //   name: "Md. Habib Miah",
-  //   designation: "Customer Support",
-  //   accountNumber: "321103002838",
-  //   salary: "XXXX",
-  // },
 ];

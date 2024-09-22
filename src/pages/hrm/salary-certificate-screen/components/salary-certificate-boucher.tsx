@@ -33,7 +33,6 @@ const SalaryCertificateVoucher = () => {
   return (
     <div>
       <div ref={componentRef}>
-        {/* <div> */}
         <div className="p-7">
           <div className="flex flex-col items-center gap-8 mb-4">
             <h2 className="font-bold text-center text-2xl">
@@ -48,9 +47,8 @@ const SalaryCertificateVoucher = () => {
             <p className="mb-4">Date: 10/06/2024</p>
             <p className="mb-3">
               This is to certify that Mr. Shaik Mahmud, has been employed with
-              Akaar IT Ltd. for the past two years.
-              {/* He has been a dedicated and
-              hardworking employee of our company. */}
+              Akaar IT Ltd. for the past two years. He has been a dedicated and
+              hardworking employee of our company.
             </p>
             <div className="space-y-3 mb-3">
               <p className="font-bold">Employee Details:</p>
@@ -129,15 +127,15 @@ const SalaryCertificateVoucher = () => {
               </Table>
             </Card>
           </div>
-          {/* <p className="my-4">
+          <p className="my-4">
             Mr. Shaik Mahmud’s salary is paid on a monthly basis and includes
             all applicable allowances and deductions as per company policy. He
             has shown excellent performance throughout his tenure.
-          </p> */}
-          {/* <p className="mb-4">
+          </p>
+          <p className="mb-4">
             If you have any questions or need further information, please feel
             free to contact us.
-          </p> */}
+          </p>
 
           <p className="mb-10 font-medium">Sincerely,</p>
           <div className="space-y-2">
@@ -184,22 +182,22 @@ const tableData = [
     deductions: "",
     deductionAmount: "123",
   },
-  // {
-  //   earnings: "Conveyance Allowances",
-  //   earningAmount: "100",
-  //   deductions: "",
-  //   deductionAmount: "123",
-  // },
-  // {
-  //   earnings: "Medical Allowances",
-  //   earningAmount: "100",
-  //   deductions: "",
-  //   deductionAmount: "123",
-  // },
-  // {
-  //   earnings: "Other Allowances",
-  //   earningAmount: "100",
-  //   deductions: "",
-  //   deductionAmount: "123",
-  // },
+  {
+    earnings: "Conveyance Allowances",
+    earningAmount: "100",
+    deductions: "",
+    deductionAmount: "123",
+  },
+  {
+    earnings: "Medical Allowances",
+    earningAmount: "100",
+    deductions: "",
+    deductionAmount: "123",
+  },
+  {
+    earnings: "Other Allowances",
+    earningAmount: "100",
+    deductions: "",
+    deductionAmount: "123",
+  },
 ];
