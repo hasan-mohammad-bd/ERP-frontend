@@ -1,7 +1,9 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
+import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance-policy";
+
+
 
 export const attendanceColumns: ColumnDef<AttendancePolicyRow>[] = [
 	{
@@ -29,7 +31,7 @@ export const attendanceColumns: ColumnDef<AttendancePolicyRow>[] = [
 		enableHiding: false,
 	},
 	{
-		accessorKey: "policy_name",
+		accessorKey: "name",
 		header: "Policy Name",
 	},
 
@@ -38,24 +40,66 @@ export const attendanceColumns: ColumnDef<AttendancePolicyRow>[] = [
 		header: "In Time",
 	},
 	{
-		accessorKey: "delay_buffer",
+		accessorKey: "delay_buffer_time",
 		header: "Delay Buffer",
 	},
 	{
-		accessorKey: "ex_delay_buffer",
+		accessorKey: "ex_delay_buffer_time",
 		header: "Ex Delay Buffer",
 	},
 	{
-		accessorKey: "last_in_time",
-		header: "Last In Time",
+		accessorKey: "break_time",
+		header: "Break Time",
+	},
+	// {
+	// 	accessorKey: "effective_from",
+	// 	header: "Effective From",
+	// }
+	// ,
+	{
+		accessorKey: "working_hour",
+		header: "Working Hours",
 	},
 	{
-		accessorKey: "ignore_from_att_report",
+		accessorKey: "out_time",
+		header: "Out Time",
+	}
+	,
+	{
+		accessorKey: "ignore_overtime",
+		header: "Ignore Overtime",
+		//if the value is 1 then yes if 0 then no
+		cell: ({ row }) => {
+			if (row.original.ignore_overtime === 1) {
+				return "Yes";
+			} else {
+				return "No";
+			}
+		}
+	},
+	{
+		accessorKey: "exclude_attendance_report",
 		header: "Ignore from att report",
+		//if the value is 1 then yes if 0 then no
+		cell: ({ row }) => {
+			if (row.original.exclude_attendance_report === 1) {
+				return "Yes";
+			} else {
+				return "No";
+			}
+		}
 	},
 	{
-		accessorKey: "discard_attendance_on_weekend",
+		accessorKey: "discard_weekend_attendance",
 		header: "Discard attendance on weekend",
+		//if the value is 1 then yes if 0 then no
+		cell: ({ row }) => {
+			if (row.original.discard_weekend_attendance === 1) {
+				return "Yes";
+			} else {
+				return "No";
+			}
+		}
 	},
 
 

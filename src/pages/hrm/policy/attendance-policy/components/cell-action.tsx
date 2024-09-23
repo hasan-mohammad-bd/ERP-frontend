@@ -6,16 +6,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-import { Pencil, Trash2, ZoomIn } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
-
 import { Modal } from "@/components/common/modal";
-import ProductDetails from "./productDetails";
-import { useRemoveJobApplyMutation } from "@/store/services/hrm/api/job-apply";
-import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
 import { AttendancePolicyForm } from "./add-attendance-policy-form";
+import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance-policy";
+import { useRemoveAttendancePolicyMutation } from "@/store/services/hrm/api/attendance-policy";
 
 interface CellActionProps {
   data: AttendancePolicyRow;
@@ -24,14 +21,14 @@ interface CellActionProps {
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
-  const [deleteJobApply, { isLoading: deleteLoading }] =
-    useRemoveJobApplyMutation();
+
+  const [deleteAttendancePolicy, { isLoading: deleteLoading }] =
+    useRemoveAttendancePolicyMutation();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
-      await deleteJobApply(id);
-      toast.success("Job deleted successfully");
+      await deleteAttendancePolicy(id);
+      toast.success("Policy deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
@@ -48,8 +45,6 @@ export function CellAction({ data }: CellActionProps) {
               size="icon"
               className="hover:bg-secondary"
               onClick={() => setUpdateModalOpen(true)}
-
-              // onClick={() => toggleModal()}
             >
               <Pencil className="h-4 w-4 text-foreground" />
             </Button>
@@ -62,7 +57,7 @@ export function CellAction({ data }: CellActionProps) {
 
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger asChild>
+          {/* <TooltipTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
@@ -73,7 +68,7 @@ export function CellAction({ data }: CellActionProps) {
             >
               <ZoomIn className="h-4 w-4 text-foreground" />
             </Button>
-          </TooltipTrigger>
+          </TooltipTrigger> */}
           <TooltipContent>
             <p>Delete Requisition</p>
           </TooltipContent>
@@ -94,7 +89,7 @@ export function CellAction({ data }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Delete Requisition</p>
+            <p>Delete Policy</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -102,7 +97,7 @@ export function CellAction({ data }: CellActionProps) {
       <AlertModal
         title="Are you sure?"
         description="This action cannot be undone."
-        name={data.policy_name}
+        name={data.name}
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
         onConfirm={() => handleDepartmentDelete(data.id)}
@@ -110,7 +105,7 @@ export function CellAction({ data }: CellActionProps) {
       />
       {updateModalOpen && (
         <Modal
-          title="Update Job"
+          title="Update Policy"
           isOpen={updateModalOpen}
           toggleModal={() => setUpdateModalOpen(false)}
           className="w-[90%] max-w-6xl"
@@ -121,7 +116,7 @@ export function CellAction({ data }: CellActionProps) {
           />
         </Modal>
       )}
-      {detailsModalOpen && (
+      {/* {detailsModalOpen && (
         <Modal
           title="Job Details"
           isOpen={detailsModalOpen}
@@ -130,7 +125,7 @@ export function CellAction({ data }: CellActionProps) {
         >
           <ProductDetails data={data} />
         </Modal>
-      )}
+      )} */}
     </div>
   );
 }

@@ -1,22 +1,23 @@
-import React, { useState } from "react";
-import { Loading } from "@/components/common/loading";
+import { useState } from "react";
+// import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
 import { Modal } from "@/components/common/modal";
-import { useGetJobAppliesQuery } from "@/store/services/hrm/api/job-apply";
+// import { useGetJobAppliesQuery } from "@/store/services/hrm/api/job-apply";
 import { attendanceColumns } from "./components/columns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // import { JobApplyColumn } from "@/lib/validators";
 
-import { PaginationState } from "@tanstack/react-table";
-import { PaginationInfo } from "@/types";
+// import { PaginationState } from "@tanstack/react-table";
+// import { PaginationInfo } from "@/types";
 // import { AttendancePolicyForm } from "./components/add-leave-group-form";
 import { AddAttendanceForm } from "./components/add-attendance-form";
 import {  CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+// import { useGetAttendancePoliciesQuery } from "@/store/services/hrm/api/attendance-policy";
 // import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
 
 // const BULK_ACTIONS = [
@@ -56,25 +57,23 @@ export type Tab = "check-in" | "check-out";
 const AttendancesList = () => {
   const [tab, setTab] = useState<Tab>("check-in");
   const [isOpen, setIsOpen] = useState(false);
-  const [pagination, setPagination] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+  // const [pagination, setPagination] = React.useState<PaginationState>({
+  //   pageIndex: 0,
+  //   pageSize: 10,
+  // });
 
-  const { data, isLoading } = useGetJobAppliesQuery(
-    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
-  );
+
 
   // Set appropriate bulk action type here
   // const [selectedBulkAction, setSelectedBulkAction] = useState<
   //   BulkAction<JobApplyColumn>
   // >({ action: "", payload: [] });
 
-  const jobApply = data?.data || [];
-  const paginationInfo: PaginationInfo | undefined = data?.meta;
+  // const jobApply = data?.data || [];
+  // const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   // console.log(departments);
-  if (isLoading) return <Loading />;
+  // if (isLoading) return <Loading />;
 
   // console.log(selectedBulkAction); // you can see selected bulk action here
 
@@ -92,14 +91,14 @@ const AttendancesList = () => {
             </Button>
           </div>
           <Separator />
-          {jobApply && (
+          {demoData && (
             <div>
               <DataTable
                 columns={attendanceColumns}
                 data={demoData as any}
-                paginationInfo={paginationInfo}
-                pagination={pagination}
-                setPagination={setPagination}
+                // paginationInfo={paginationInfo}
+                // pagination={pagination}
+                // setPagination={setPagination}
               />
             </div>
           )}
