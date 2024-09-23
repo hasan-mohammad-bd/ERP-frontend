@@ -17,6 +17,7 @@ import { PaginationInfo } from "@/types";
 // import { AttendancePolicyForm } from "./components/add-leave-group-form";
 import { AddAttendanceForm } from "./components/add-attendance-form";
 import {  CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useGetAttendancePoliciesQuery } from "@/store/services/hrm/api/attendance-policy";
 // import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
 
 // const BULK_ACTIONS = [
@@ -61,9 +62,7 @@ const AttendancesList = () => {
     pageSize: 10,
   });
 
-  const { data, isLoading } = useGetJobAppliesQuery(
-    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
-  );
+
 
   // Set appropriate bulk action type here
   // const [selectedBulkAction, setSelectedBulkAction] = useState<

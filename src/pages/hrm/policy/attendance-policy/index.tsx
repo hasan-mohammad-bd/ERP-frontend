@@ -6,49 +6,18 @@ import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
 import { Modal } from "@/components/common/modal";
-import { useGetJobAppliesQuery } from "@/store/services/hrm/api/job-apply";
-import { attendanceColumns } from "./components/columns";
+
+
 
 // import { JobApplyColumn } from "@/lib/validators";
 
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
 import { AttendancePolicyForm } from "./components/add-attendance-policy-form";
-import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
+import { useGetAttendancePoliciesQuery } from "@/store/services/hrm/api/attendance-policy";
+import { attendanceColumns } from "./components/columns";
 
-// const BULK_ACTIONS = [
-//   {
-//     label: "Update Status",
-//     value: "update-status",
-//   },
-//   {
-//     label: "Delete Selected",
-//     value: "delete-selected",
-//   },
-// ];
 
-const demoData = [
-  {
-    policy_name: "Attendance Policy",
-    id: 1,
-    in_time: "10:00 AM",
-    delay_buffer: "00:10",
-    ex_delay_buffer: "00:10",
-    last_in_time: "10:00 AM",
-    ignore_from_att_report: true,
-    discard_attendance_on_weekend: true,
-  },
-  {
-    policy_name: "Attendance Policy",
-    id: 2,
-    in_time: "10:00 AM",
-    delay_buffer: "00:10",
-    ex_delay_buffer: "00:10",
-    last_in_time: "10:00 AM",
-    ignore_from_att_report: true,
-    discard_attendance_on_weekend: true,
-  },
-];
 
 const AttendancePolicy = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,9 +26,15 @@ const AttendancePolicy = () => {
     pageSize: 10,
   });
 
-  const { data, isLoading } = useGetJobAppliesQuery(
+
+
+  const { data, isLoading } = useGetAttendancePoliciesQuery(
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
+
+  const attendancePolicyList = data?.data || [];
+
+  console.log(data, "hello")
 
   // Set appropriate bulk action type here
   // const [selectedBulkAction, setSelectedBulkAction] = useState<
@@ -92,7 +67,7 @@ const AttendancePolicy = () => {
             <div>
               <DataTable
                 columns={attendanceColumns}
-                data={demoData as AttendancePolicyRow[]}
+                data={attendancePolicyList}
                 // bulkActions={BULK_ACTIONS} // optional - pass it if you want to show bulk actions
                 // onBulkSelectChange={setSelectedBulkAction} // ((fun) optional - pass it if you want to get selected bulk action
                 paginationInfo={paginationInfo}
