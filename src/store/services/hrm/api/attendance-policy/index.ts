@@ -1,5 +1,5 @@
 
-import { AttendancePolicyFormValues, AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
+import { AttendancePolicyFormValues, AttendancePolicyRow } from "@/lib/validators/hrm/attendance-policy";
 import { hrmApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
 

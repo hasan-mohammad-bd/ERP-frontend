@@ -96,7 +96,7 @@ export function AttendancePolicyForm({
   const copyTo7Days = () => {
     const values = form.getValues();
     const fieldNames = Object.keys(attendancePolicySchema.shape);
-    DAYS.forEach((day, index) => {
+    DAYS.forEach((_, index) => {
       fieldNames.forEach((fieldName) => {
         form.setValue(
           `days.${index}.${fieldName}` as keyof typeof attendancePolicySchema.shape,

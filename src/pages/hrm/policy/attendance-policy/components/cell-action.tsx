@@ -6,11 +6,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Pencil, Trash2, ZoomIn } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
 import { Modal } from "@/components/common/modal";
-import ProductDetails from "./productDetails";
 import { AttendancePolicyForm } from "./add-attendance-policy-form";
 import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance-policy";
 import { useRemoveAttendancePolicyMutation } from "@/store/services/hrm/api/attendance-policy";
@@ -22,7 +21,7 @@ interface CellActionProps {
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+
   const [deleteAttendancePolicy, { isLoading: deleteLoading }] =
     useRemoveAttendancePolicyMutation();
 
@@ -58,7 +57,7 @@ export function CellAction({ data }: CellActionProps) {
 
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger asChild>
+          {/* <TooltipTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
@@ -69,7 +68,7 @@ export function CellAction({ data }: CellActionProps) {
             >
               <ZoomIn className="h-4 w-4 text-foreground" />
             </Button>
-          </TooltipTrigger>
+          </TooltipTrigger> */}
           <TooltipContent>
             <p>Delete Requisition</p>
           </TooltipContent>
@@ -117,7 +116,7 @@ export function CellAction({ data }: CellActionProps) {
           />
         </Modal>
       )}
-      {detailsModalOpen && (
+      {/* {detailsModalOpen && (
         <Modal
           title="Job Details"
           isOpen={detailsModalOpen}
@@ -126,7 +125,7 @@ export function CellAction({ data }: CellActionProps) {
         >
           <ProductDetails data={data} />
         </Modal>
-      )}
+      )} */}
     </div>
   );
 }
