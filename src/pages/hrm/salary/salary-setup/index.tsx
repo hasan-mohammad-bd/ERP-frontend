@@ -18,18 +18,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+// import { Checkbox } from "@/components/ui/checkbox";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import EmployeeDetails from "./components/employee-details";
+import salarySetupData from "./components/salary-setup-data";
 
 const allowanceSchema = z.object({
   no: z.number().min(1),
   name: z.string(),
   currentAmount: z.string(),
-  arrearAmount: z.string(),
-  total: z.string(),
-  ruleOver: z.boolean(),
+  // arrearAmount: z.string(),
+  // total: z.string(),
+  // ruleOver: z.boolean(),
   comments: z.string().optional(),
 });
 
@@ -68,68 +70,31 @@ const SalarySetup = () => {
               <Separator />
 
               <Card className="px-4 py-6">
-                <div className="mb-3 flex justify-between">
-                  <ul className="space-y-2.5">
-                    <li>
-                      <span className="font-bold">Name:</span>{" "}
-                      {salarySetupData.employee.name}
-                    </li>
-                    <li>
-                      <span className="font-bold">Designation:</span>{" "}
-                      {salarySetupData.employee.designation}
-                    </li>
-                    <li>
-                      <span className="font-bold">Department:</span>{" "}
-                      {salarySetupData.employee.department}
-                    </li>
-                    <li>
-                      <span className="font-bold">joining Date:</span>{" "}
-                      {salarySetupData.employee.joiningDate}
-                    </li>
-                  </ul>
-                  <ul className="space-y-2.5 text-right">
-                    <li>
-                      <span className="font-bold">Employee ID:</span>{" "}
-                      {salarySetupData.employee.employeeId}
-                    </li>
-                    <li>
-                      <span className="font-bold">Basic:</span>{" "}
-                      {Number(salarySetupData.employee.basePay).toFixed(2)}
-                    </li>
-                    <li>
-                      <span className="font-bold">Bank A/C:</span>{" "}
-                      {salarySetupData.employee.bankAccount}
-                    </li>
-                    <li>
-                      <span className="font-bold">Date:</span>{" "}
-                      {salarySetupData.employee.date}
-                    </li>
-                  </ul>
-                </div>
-                <Table className="border border-black">
-                  <TableHeader className="border border-black bg-primary">
-                    <TableRow className="border border-black h-0 bg-primary hover:bg-primary hover:text-white">
+                <EmployeeDetails employeeData={salarySetupData.employee} />
+                <Table className="border">
+                  <TableHeader className="border">
+                    <TableRow className="border h-0">
                       {allowancesHeadings.map((heading, index) => (
                         <TableHead
                           key={index}
-                          className="border border-black py-[5px] h-0 text-center text-white"
+                          className="border py-2 h-0 text-center text-black bg-gray-100"
                         >
                           {heading}
                         </TableHead>
                       ))}
                     </TableRow>
                   </TableHeader>
-                  <TableBody className="border border-black">
+                  <TableBody className="border">
                     {salarySetupData.allowances.map((allowance, index) => {
                       return (
-                        <TableRow className="border border-black " key={index}>
-                          <TableCell className="border border-black py-[5px]">
+                        <TableRow className="border " key={index}>
+                          <TableCell className="border py-[5px]">
                             {allowance.no}
                           </TableCell>
-                          <TableCell className="border border-black py-[5px]">
+                          <TableCell className="border py-[5px] w-1/3">
                             {allowance.name}
                           </TableCell>
-                          <TableCell className="border border-black py-[5px] max-w-[120px]">
+                          <TableCell className="border py-[5px]">
                             <FormField
                               control={control}
                               name={`allowances.${index}.currentAmount`}
@@ -147,7 +112,7 @@ const SalarySetup = () => {
                               )}
                             />
                           </TableCell>
-                          <TableCell className="border border-black py-[5px] max-w-[120px]">
+                          {/* <TableCell className="border py-[5px]">
                             <FormField
                               control={control}
                               name={`allowances.${index}.arrearAmount`}
@@ -165,7 +130,7 @@ const SalarySetup = () => {
                               )}
                             />
                           </TableCell>
-                          <TableCell className="border border-black py-[5px] max-w-[120px]">
+                          <TableCell className="border py-[5px]">
                             <FormField
                               control={control}
                               name={`allowances.${index}.total`}
@@ -183,14 +148,12 @@ const SalarySetup = () => {
                               )}
                             />
                           </TableCell>
-                          <TableCell className="border border-black py-[5px]">
+                          <TableCell className="border py-[5px]">
                             <FormField
                               control={control}
                               name={`allowances.${index}.ruleOver`}
-                              render={
-                                (
-                                  // { field }
-                                ) => (
+                              render={() => (
+                                // { field }
                                 <FormItem>
                                   <Controller
                                     control={control}
@@ -212,8 +175,8 @@ const SalarySetup = () => {
                                 </FormItem>
                               )}
                             />
-                          </TableCell>
-                          <TableCell className="border border-black py-[5px] max-w-[120px]">
+                          </TableCell> */}
+                          <TableCell className="border py-[5px]">
                             <FormField
                               control={control}
                               name={`allowances.${index}.comments`}
@@ -230,51 +193,51 @@ const SalarySetup = () => {
                         </TableRow>
                       );
                     })}
-                    <TableRow className="border border-black bg-gray-100">
-                      <TableCell className="font-bold border border-black py-[5px]"></TableCell>
-                      <TableCell className="font-bold border border-black py-[5px]">
+                    <TableRow className="border bg-gray-100">
+                      <TableCell className="font-bold border py-2"></TableCell>
+                      <TableCell className="font-bold border py-2">
                         Sub Total
                       </TableCell>
-                      <TableCell className="font-bold border border-black py-[5px] text-right">
+                      <TableCell className="font-bold border py-2 text-right">
                         {salarySetupData.totals.subTotal}
                       </TableCell>
-                      <TableCell className="font-bold border border-black py-[5px] text-right">
+                      {/* <TableCell className="font-bold border py-2 text-right">
                         {salarySetupData.totals.arrear}
                       </TableCell>
-                      <TableCell className="font-bold border border-black py-[5px] text-right">
+                      <TableCell className="font-bold border py-2 text-right">
                         {salarySetupData.totals.netTotal}
                       </TableCell>
-                      <TableCell className="font-bold border border-black py-[5px]"></TableCell>
+                      <TableCell className="font-bold border py-2"></TableCell> */}
 
-                      <TableCell className="font-bold border border-black py-[5px]"></TableCell>
+                      <TableCell className="font-bold border py-2"></TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
 
-                <Table className="border border-black mt-6">
-                  <TableHeader className="border border-black ">
-                    <TableRow className="border border-black h-0 bg-primary hover:bg-primary hover:text-white">
+                <Table className="border mt-6">
+                  <TableHeader className="border">
+                    <TableRow className="border h-0">
                       {deductionsHeadings.map((heading, index) => (
                         <TableHead
                           key={index}
-                          className="border border-black py-[5px] h-0 text-center text-white"
+                          className="border py-2 h-0 text-center text-black bg-gray-100"
                         >
                           {heading}
                         </TableHead>
                       ))}
                     </TableRow>
                   </TableHeader>
-                  <TableBody className="border border-black">
+                  <TableBody className="border">
                     {salarySetupData.deductions.map((deduction, index) => {
                       return (
-                        <TableRow className="border border-black " key={index}>
-                          <TableCell className="border border-black py-[5px]">
+                        <TableRow className="border " key={index}>
+                          <TableCell className="border py-[5px]">
                             {deduction.no}
                           </TableCell>
-                          <TableCell className="border border-black py-[5px]">
+                          <TableCell className="border py-[5px] w-1/3">
                             {deduction.name}
                           </TableCell>
-                          <TableCell className="border border-black py-[5px] max-w-[120px]">
+                          <TableCell className="border py-[5px]">
                             <FormField
                               control={control}
                               name={`deductions.${index}.currentAmount`}
@@ -292,7 +255,7 @@ const SalarySetup = () => {
                               )}
                             />
                           </TableCell>
-                          <TableCell className="border border-black py-[5px] max-w-[120px]">
+                          {/* <TableCell className="border py-[5px]">
                             <FormField
                               control={control}
                               name={`deductions.${index}.arrearAmount`}
@@ -310,7 +273,7 @@ const SalarySetup = () => {
                               )}
                             />
                           </TableCell>
-                          <TableCell className="border border-black py-[5px] max-w-[120px]">
+                          <TableCell className="border py-[5px]">
                             <FormField
                               control={control}
                               name={`deductions.${index}.total`}
@@ -328,13 +291,12 @@ const SalarySetup = () => {
                               )}
                             />
                           </TableCell>
-                          <TableCell className="border border-black py-[5px]">
+                          <TableCell className="border py-[5px]">
                             <FormField
                               control={control}
                               name={`deductions.${index}.ruleOver`}
-                              render={(
+                              render={() => (
                                 // { field }
-                              ) => (
                                 <FormItem>
                                   <Controller
                                     control={control}
@@ -356,8 +318,8 @@ const SalarySetup = () => {
                                 </FormItem>
                               )}
                             />
-                          </TableCell>
-                          <TableCell className="border border-black py-[5px] max-w-[120px]">
+                          </TableCell> */}
+                          <TableCell className="border py-[5px]">
                             <FormField
                               control={control}
                               name={`deductions.${index}.comments`}
@@ -374,40 +336,40 @@ const SalarySetup = () => {
                         </TableRow>
                       );
                     })}
-                    <TableRow className="border border-black bg-gray-100">
-                      <TableCell className="font-bold border border-black py-[5px]"></TableCell>
-                      <TableCell className="font-bold border border-black py-[5px]">
+                    <TableRow className="border bg-gray-100">
+                      <TableCell className="font-bold border py-2"></TableCell>
+                      <TableCell className="font-bold border py-2">
                         Sub Total
                       </TableCell>
-                      <TableCell className="font-bold border border-black py-[5px] text-right">
+                      <TableCell className="font-bold border py-2 text-right">
                         0
                       </TableCell>
-                      <TableCell className="font-bold border border-black py-[5px] text-right">
+                      {/* <TableCell className="font-bold border py-2 text-right">
                         0
                       </TableCell>
-                      <TableCell className="font-bold border border-black py-[5px] text-right">
+                      <TableCell className="font-bold border py-2 text-right">
                         0
                       </TableCell>
-                      <TableCell className="font-bold border border-black py-[5px]"></TableCell>
-                      <TableCell className="font-bold border border-black py-[5px]"></TableCell>
+                      <TableCell className="font-bold border py-2"></TableCell> */}
+                      <TableCell className="font-bold border py-2"></TableCell>
                     </TableRow>
 
-                    <TableRow className="border border-black">
-                      <TableCell className="font-bold border border-black py-[5px]"></TableCell>
-                      <TableCell className="font-bold border border-black py-[5px]">
+                    <TableRow className="border bg-gray-100">
+                      <TableCell className="font-bold border py-2"></TableCell>
+                      <TableCell className="font-bold border py-2">
                         Net Total
                       </TableCell>
-                      <TableCell className="font-bold border border-black py-[5px] text-right">
+                      <TableCell className="font-bold border py-2 text-right">
                         {salarySetupData.totals.subTotal}
                       </TableCell>
-                      <TableCell className="font-bold border border-black py-[5px] text-right">
+                      {/* <TableCell className="font-bold border py-2 text-right">
                         {salarySetupData.totals.arrear}
                       </TableCell>
-                      <TableCell className="font-bold border border-black py-[5px] text-right">
+                      <TableCell className="font-bold border py-2 text-right">
                         {salarySetupData.totals.netTotal}
                       </TableCell>
-                      <TableCell className="font-bold border border-black py-[5px]"></TableCell>
-                      <TableCell className="font-bold border border-black py-[5px]"></TableCell>
+                      <TableCell className="font-bold border py-2"></TableCell> */}
+                      <TableCell className="font-bold border py-2"></TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -430,9 +392,9 @@ const allowancesHeadings = [
   "No",
   "Allowance",
   "Current Amount",
-  "Arrear Amount",
-  "Total",
-  "Rule Over",
+  // "Arrear Amount",
+  // "Total",
+  // "Rule Over",
   "Comments",
 ];
 
@@ -440,84 +402,8 @@ const deductionsHeadings = [
   "No",
   "Deduction",
   "Current Amount",
-  "Arrear Amount",
-  "Total",
-  "Rule Over",
+  // "Arrear Amount",
+  // "Total",
+  // "Rule Over",
   "Comments",
 ];
-
-const salarySetupData = {
-  employee: {
-    name: "Professor Dr. Md. Arafat Baset",
-    designation: "Vice-Chancellor",
-    department: "Secretariat of the VC",
-    joiningDate: "23 Mar 2021",
-    employeeId: "11001",
-    basePay: "78000",
-    bankAccount: "01207429990",
-    date: "Sep 2024",
-  },
-  allowances: [
-    {
-      no: 1,
-      name: "Basic Pay",
-      currentAmount: "78000",
-      arrearAmount: "0",
-      total: "78000",
-      ruleOver: false,
-      comments: "Comment",
-    },
-    {
-      no: 2,
-      name: "Festival Allowance",
-      currentAmount: "0",
-      arrearAmount: "0",
-      total: "0",
-      ruleOver: false,
-      comments: "Comment",
-    },
-    {
-      no: 3,
-      name: "Personal Pay",
-      currentAmount: "0",
-      arrearAmount: "0",
-      total: "0",
-      ruleOver: false,
-      comments: "Comment",
-    },
-  ],
-  deductions: [
-    {
-      no: 1,
-      name: "PF Contribution",
-      currentAmount: "0",
-      arrearAmount: "0",
-      total: "0",
-      ruleOver: false,
-      comments: "Comment",
-    },
-    {
-      no: 2,
-      name: "Benevolent Fund",
-      currentAmount: "0",
-      arrearAmount: "0",
-      total: "0",
-      ruleOver: false,
-      comments: "Comment",
-    },
-    {
-      no: 3,
-      name: "Group Insurance Premium",
-      currentAmount: "0",
-      arrearAmount: "0",
-      total: "0",
-      ruleOver: false,
-      comments: "Comment",
-    },
-  ],
-  totals: {
-    subTotal: 12610,
-    netTotal: 12610,
-    arrear: "0",
-  },
-};
