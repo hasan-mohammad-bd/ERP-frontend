@@ -238,6 +238,12 @@ const hrmNavItems: NavItem[] = [
         href: "/hrm/overtime-policy",
         color: "text-sky-500",
       },
+      {
+        title: "Leave Policy",
+        icon: SquarePen,
+        href: "/hrm/leave-policy",
+        color: "text-sky-500",
+      },
     ],
   },
   {

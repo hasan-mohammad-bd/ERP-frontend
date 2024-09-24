@@ -31,6 +31,7 @@ import {
   SalaryCertificate,
   SalarySheet,
   SalarySetup,
+  LeavePolicy,
 } from "./components";
 
 // import AttendancePolicy from "@/pages/hrm/attendance-policy";
@@ -128,6 +129,11 @@ const hrmRoutes = {
     {
       path: "overtime-policy",
       element: withFallback(<OverTimePolicy />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "leave-policy",
+      element: withFallback(<LeavePolicy />),
       errorElement: withFallback(<ErrorPage />),
     },
     {

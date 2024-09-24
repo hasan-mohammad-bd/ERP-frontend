@@ -31,6 +31,9 @@ export const DeductionPolicy = lazy(
 export const OverTimePolicy = lazy(
   () => import("@/pages/hrm/policy/overtime-policy")
 );
+export const LeavePolicy = lazy(
+  () => import("@/pages/hrm/policy/leave-policy")
+);
 export const JobApply = lazy(() => import("@/pages/hrm/job-apply"));
 export const JobCandidate = lazy(() => import("@/pages/hrm/job-candidate"));
 export const JobPost = lazy(() => import("@/pages/hrm/job-post"));
