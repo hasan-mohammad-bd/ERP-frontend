@@ -54,6 +54,10 @@ export const SalarySetup = lazy(
   () => import("@/pages/hrm/salary/salary-setup")
 );
 
+export const SalarySheet = lazy(
+  () => import("@/pages/hrm/salary/salary-sheet")
+);
+
 // Accounts
 export const DashboardAccounts = lazy(
   () => import("@/pages/accounts/dashboard-accounts")

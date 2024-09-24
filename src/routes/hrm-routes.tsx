@@ -29,6 +29,7 @@ import {
   BankSalaryAdvice,
   SalaryBreakUp,
   SalaryCertificate,
+  SalarySheet,
   SalarySetup,
 } from "./components";
 
@@ -177,6 +178,11 @@ const hrmRoutes = {
     {
       path: "salary_breakup",
       element: withFallback(<SalaryBreakUp />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "salary-sheet",
+      element: withFallback(<SalarySheet />),
       errorElement: withFallback(<ErrorPage />),
     },
     {
