@@ -6,41 +6,13 @@ import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
 import { Modal } from "@/components/common/modal";
-import { useGetJobAppliesQuery } from "@/store/services/hrm/api/job-apply";
 import { attendanceColumns } from "./components/columns";
-
-// import { JobApplyColumn } from "@/lib/validators";
-
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
 import { AttendancePolicyForm } from "./components/add-leave-type-form";
-// import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
+import { useGetLeaveTypesQuery } from "@/store/services/hrm/api/leave-type";
 
-// const BULK_ACTIONS = [
-//   {
-//     label: "Update Status",
-//     value: "update-status",
-//   },
-//   {
-//     label: "Delete Selected",
-//     value: "delete-selected",
-//   },
-// ];
 
-const demoData = [
-  {
-    leave_name: "Eidul Adha",
-    short_code: "EAD",
-    maternity_leave: true,
-    unpaid_leave: true,
-  },
-  {
-    leave_name: "Eidul Fitr",
-    short_code: "EFD",
-    maternity_leave: true,
-    unpaid_leave: true,
-  },
-];
 
 const LeaveType = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,22 +21,20 @@ const LeaveType = () => {
     pageSize: 10,
   });
 
-  const { data, isLoading } = useGetJobAppliesQuery(
+  const { data, isLoading } = useGetLeaveTypesQuery(
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
 
-  // Set appropriate bulk action type here
-  // const [selectedBulkAction, setSelectedBulkAction] = useState<
-  //   BulkAction<JobApplyColumn>
-  // >({ action: "", payload: [] });
 
-  const jobApply = data?.data || [];
+
+  const leaveType = data?.data || [];
+  console.log(leaveType)
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
-  // console.log(departments);
+  
   if (isLoading) return <Loading />;
 
-  // console.log(selectedBulkAction); // you can see selected bulk action here
+
 
   return (
     <>
@@ -80,11 +50,11 @@ const LeaveType = () => {
             </Button>
           </div>
           <Separator />
-          {jobApply && (
+          {leaveType && (
             <div>
               <DataTable
                 columns={attendanceColumns}
-                data={demoData as any}
+                data={leaveType}
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}

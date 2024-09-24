@@ -10,95 +10,113 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import {
+  LeaveTypeFormValues,
+  LeaveTypeRow,
+  leaveTypeSchema,
+} from "@/lib/validators/hrm/leave";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  useCreateLeaveTypeMutation,
+  useUpdateLeaveTypeMutation,
+} from "@/store/services/hrm/api/leave-type";
+import { toast } from "sonner";
+import { ErrorResponse } from "@/types";
+import handleErrors from "@/lib/handle-errors";
+import { Loading } from "@/components/common/loading";
 
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
-// import { Switch } from "@/components/ui/switch";
 
-// interface AttendancePolicyFormValues {
-//   policy_name: string;
-//   in_time: string;
-//   working_hours: string;
-//   delay_buffer: string;
-//   ex_delay_buffer: string;
-//   break_time: string;
-//   effect_from: string;
-// }
 
-interface AddJobApplyFormProps {
+interface AddLeaveTypeProps {
   modalClose: () => void;
-  data?: any;
+  data?: LeaveTypeRow;
 }
 
 export function AttendancePolicyForm({
   modalClose,
   data: previousData,
-}: AddJobApplyFormProps) {
-  const form = useForm<any>({
+}: AddLeaveTypeProps) {
+  const [createLeaveTypePolicy, { isLoading }] = useCreateLeaveTypeMutation();
+  const [updateLeaveTypePolicy, { isLoading: updateLoading }] =
+    useUpdateLeaveTypeMutation();
+  const form = useForm<LeaveTypeFormValues>({
+    resolver: zodResolver(leaveTypeSchema),
     defaultValues: {
-      policy_name: "",
-      in_time: "",
-      working_hours: "",
-      delay_buffer: "",
-      ex_delay_buffer: "",
-      break_time: "",
-      effect_from: "",
+      name: previousData?.name || "",
+      short_code: previousData?.short_code || "",
+      maternity_leave: previousData?.maternity_leave || 0,
+      unpaid_leave: previousData?.unpaid_leave || 0,
     },
   });
 
-  async function onSubmit(data: any) {
-    console.log("Form Submitted:", data);
-    modalClose();
+  async function onSubmit(data: LeaveTypeFormValues) {
+    try {
+      if (previousData) {
+        await updateLeaveTypePolicy({
+          leaveTypeId: previousData.id,
+          updatedLeaveType: data,
+        }).unwrap();
+        toast.success("Policy updated successfully");
+        modalClose();
+      } else {
+        await createLeaveTypePolicy(data).unwrap();
+        toast.success("Policy created successfully");
+        modalClose();
+      }
+    } catch (error) {
+      console.log(error);
+      handleErrors(error as ErrorResponse);
+    }
   }
 
   return (
     <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            {/* Form Fields */}
+      {isLoading || updateLoading ? (
+        <div>
+          <Loading />
+        </div>
+      ) : (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
+              {/* Form Fields */}
 
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Leave Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        className=""
+                        placeholder="Enter Leave Name"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="short_code"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Short Code</FormLabel>
+                    <FormControl>
+                      <Input
+                        className=""
+                        placeholder="Enter Short Code"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
-              control={form.control}
-              name="leave_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Leave Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      className=""
-                      placeholder="Enter Leave Name"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="short_code"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Short Code</FormLabel>
-                  <FormControl>
-                    <Input
-                      className=""
-                      placeholder="Enter Short Code"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <FormField
               control={form.control}
               name="maternity_leave"
               render={({ field }) => (
@@ -109,16 +127,16 @@ export function AttendancePolicyForm({
                   <FormControl>
                     <Switch
                       className="!mt-0 "
-                      checked={field.value === true}
+                      checked={field.value === 1}
                       onCheckedChange={(checked: boolean) =>
-                        field.onChange(checked ? true : false)
+                        field.onChange(checked ? 1 : 0)
                       }
                     />
                   </FormControl>
                 </FormItem>
               )}
             />
-          <FormField
+            <FormField
               control={form.control}
               name="unpaid_leave"
               render={({ field }) => (
@@ -129,9 +147,9 @@ export function AttendancePolicyForm({
                   <FormControl>
                     <Switch
                       className="!mt-0 "
-                      checked={field.value === true}
+                      checked={field.value === 1}
                       onCheckedChange={(checked: boolean) =>
-                        field.onChange(checked ? true : false)
+                        field.onChange(checked ? 1 : 0)
                       }
                     />
                   </FormControl>
@@ -139,13 +157,14 @@ export function AttendancePolicyForm({
               )}
             />
 
-          <div className="text-right">
-            <Button variant="default" type="submit" className="w-fit mt-4">
-              {previousData ? "Update" : "Add"}
-            </Button>
-          </div>
-        </form>
-      </Form>
+            <div className="text-right">
+              <Button variant="default" type="submit" className="w-fit mt-4">
+                {previousData ? "Update" : "Add"}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      )}
     </>
   );
 }

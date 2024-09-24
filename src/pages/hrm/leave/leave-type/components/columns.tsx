@@ -1,9 +1,9 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
+import { LeaveTypeRow } from "@/lib/validators/hrm/leave";
 
-export const attendanceColumns: ColumnDef<AttendancePolicyRow>[] = [
+export const attendanceColumns: ColumnDef<LeaveTypeRow>[] = [
 	{
 		id: "select",
 		header: ({ table }) => (
@@ -29,7 +29,7 @@ export const attendanceColumns: ColumnDef<AttendancePolicyRow>[] = [
 		enableHiding: false,
 	},
 	{
-		accessorKey: "leave_name",
+		accessorKey: "name",
 		header: "Leave name",
 	},
 
@@ -40,11 +40,13 @@ export const attendanceColumns: ColumnDef<AttendancePolicyRow>[] = [
 	{
 		accessorKey: "maternity_leave",
 		header: "Maternity Leave",
+		cell: ({ row }) => row.original.maternity_leave ? "Yes" : "No",
 	},
 
 	{
 		accessorKey: "unpaid_leave",
 		header: "Unpaid Leave",
+		cell: ({ row }) => row.original.unpaid_leave ? "Yes" : "No",
 	},
 
 
