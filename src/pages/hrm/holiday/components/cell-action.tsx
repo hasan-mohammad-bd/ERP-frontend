@@ -11,9 +11,13 @@ import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { HolidayColumn } from "@/lib/validators";
 import { toast } from "sonner";
-import { AddRosterForm } from "./add-holiday-form";
+// import { AddHolidayForm } from "./add-holiday-form";
 import { Modal } from "@/components/common/modal";
 import { useRemoveHolidayMutation } from "@/store/services/hrm/api/holiday";
+import { UpdateHolidayForm } from "./update-holiday-form";
+// import { UpdateHolidayForm } from "./update-holiday-form";
+
+
 
 interface CellActionProps {
   data: HolidayColumn;
@@ -90,7 +94,7 @@ export function CellAction({ data }: CellActionProps) {
           isOpen={updateModalOpen}
           toggleModal={() => setUpdateModalOpen(false)}
         >
-          <AddRosterForm
+          <UpdateHolidayForm
             data={data}
             modalClose={() => setUpdateModalOpen(false)}
           />

@@ -72,6 +72,7 @@ export const entrySchema = z.object({
   date: z.string().date(),
   entry_number: z.string(),
   details: entryTypeSchema.array(),
+  holiday_name:z.string(),
   note: z.string(),
   file: z.string().optional().nullable(),
   files: files,

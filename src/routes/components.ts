@@ -7,6 +7,8 @@ export const Dashboard = lazy(() => import("@/pages/dashboard"));
 export const Department = lazy(() => import("@/pages/hrm/department"));
 export const Designation = lazy(() => import("@/pages/hrm/designation"));
 export const Employee = lazy(() => import("@/pages/hrm/employee"));
+export const Holiday = lazy(() => import("@/pages/hrm/holiday"));
+
 
 export const DailyAttendance = lazy(
   () => import("@/pages/hrm/daily-attendance")
@@ -21,7 +23,7 @@ export const EmployeeSalaryPayslip = lazy(
   () => import("@/pages/hrm/salary/employee-salary-payslip")
 );
 
-export const Holiday = lazy(() => import("@/pages/hrm/holiday"));
+
 export const AttendancePolicy = lazy(
   () => import("@/pages/hrm/policy/attendance-policy")
 );

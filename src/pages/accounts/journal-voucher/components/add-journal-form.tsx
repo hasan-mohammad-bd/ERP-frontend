@@ -204,6 +204,7 @@ export function AddJournalForm() {
         </div>
       ) : (
         <div>
+
           <div className="flex items-center justify-between mb-4">
             <Heading
               title={previousData ? "Edit Journal Entry" : "Add Journal Entry"}
@@ -215,7 +216,9 @@ export function AddJournalForm() {
             >
               Journal Voucher List
             </Button>
-          </div>
+           </div>
+
+
           <Card className="p-3">
             <Form {...form}>
               <form

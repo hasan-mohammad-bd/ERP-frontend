@@ -114,6 +114,8 @@ export function LeavePolicyFields({ form }: { form: any }) {
     return options;
   };
 
+  console.log(employeeSearchTerm)
+
   return (
     <Card className="max-w-4xl">
       {/* <CardHeader>
@@ -185,7 +187,7 @@ export function LeavePolicyFields({ form }: { form: any }) {
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                       mode="single"
-                      selected={fromDate}
+                      selected={fromDate ?? undefined} // Use undefined when fromDate is null
                       onSelect={(date) => {
                         handleFromDateSelect(date);
                         field.onChange(date); // Update form value
@@ -220,7 +222,7 @@ export function LeavePolicyFields({ form }: { form: any }) {
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                       mode="single"
-                      selected={toDate}
+                      selected={toDate ?? undefined} // Use undefined when toDate is null
                       onSelect={(date) => {
                         handleToDateSelect(date);
                         field.onChange(date); // Update form value

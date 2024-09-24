@@ -142,12 +142,7 @@ const hrmNavItems: NavItem[] = [
         href: "/hrm/roster-employee",
         color: "text-sky-500",
       },
-      {
-        title: "Holiday",
-        icon: Soup,
-        href: "/hrm/holidays",
-        color: "text-sky-500",
-      },
+
     ],
   },
 
@@ -269,6 +264,12 @@ const hrmNavItems: NavItem[] = [
         title: "Leave Group",
         icon: Clock,
         href: "/hrm/leave-group",
+        color: "text-sky-500",
+      },
+      {
+        title: "Holiday",
+        icon: Soup,
+        href: "/hrm/holidays",
         color: "text-sky-500",
       },
     ],
