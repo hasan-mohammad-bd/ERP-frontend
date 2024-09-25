@@ -6,7 +6,6 @@ import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
 import { Modal } from "@/components/common/modal";
-import { useGetJobAppliesQuery } from "@/store/services/hrm/api/job-apply";
 import { attendanceColumns } from "./components/columns";
 
 // import { JobApplyColumn } from "@/lib/validators";
@@ -14,33 +13,8 @@ import { attendanceColumns } from "./components/columns";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
 import { AttendancePolicyForm } from "./components/add-leave-group-form";
-// import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
+import { useGetLeaveGroupsQuery } from "@/store/services/hrm/api/leave-group";
 
-// const BULK_ACTIONS = [
-//   {
-//     label: "Update Status",
-//     value: "update-status",
-//   },
-//   {
-//     label: "Delete Selected",
-//     value: "delete-selected",
-//   },
-// ];
-
-const demoData = [
-  {
-    leave_group_name: "Eidul Adha",
-    number_of_leave_type: "10",
-    total_leave: "20",
-    employee_count: "5",
-  },
-  {
-    leave_group_name: "Eidul Adha",
-    number_of_leave_type: "10",
-    total_leave: "20",
-    employee_count: "5",
-  },
-];
 
 const LeaveGroup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,22 +23,19 @@ const LeaveGroup = () => {
     pageSize: 10,
   });
 
-  const { data, isLoading } = useGetJobAppliesQuery(
+  const { data, isLoading } = useGetLeaveGroupsQuery(
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
 
-  // Set appropriate bulk action type here
-  // const [selectedBulkAction, setSelectedBulkAction] = useState<
-  //   BulkAction<JobApplyColumn>
-  // >({ action: "", payload: [] });
 
-  const jobApply = data?.data || [];
+
+  const leaveGroup = data?.data || [];
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
-  // console.log(departments);
+
   if (isLoading) return <Loading />;
 
-  // console.log(selectedBulkAction); // you can see selected bulk action here
+
 
   return (
     <>
@@ -80,14 +51,14 @@ const LeaveGroup = () => {
             </Button>
           </div>
           <Separator />
-          {jobApply && (
+          {leaveGroup && (
             <div>
               <DataTable
                 columns={attendanceColumns}
-                data={demoData as any}
+                data={leaveGroup}
                 paginationInfo={paginationInfo}
-                pagination={pagination}
-                setPagination={setPagination}
+                pagination={paginationInfo && pagination}
+                setPagination={paginationInfo && setPagination}
               />
             </div>
           )}
