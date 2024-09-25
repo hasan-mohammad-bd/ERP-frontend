@@ -1,9 +1,8 @@
 // import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
-import { HolidayColumn } from "@/lib/validators";
 import { CellAction } from "./cell-action";
 
-export const otPolicyColumns: ColumnDef<HolidayColumn>[] = [
+export const otPolicyColumns: ColumnDef<any>[] = [
   // {
   // 	id: "select",
   // 	header: ({ table }) => (

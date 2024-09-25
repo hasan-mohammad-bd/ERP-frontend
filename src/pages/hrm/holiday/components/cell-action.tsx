@@ -9,18 +9,16 @@ import {
 
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
-import { HolidayColumn } from "@/lib/validators";
+
 import { toast } from "sonner";
 // import { AddHolidayForm } from "./add-holiday-form";
 import { Modal } from "@/components/common/modal";
 import { useRemoveHolidayMutation } from "@/store/services/hrm/api/holiday";
 import { UpdateHolidayForm } from "./update-holiday-form";
-// import { UpdateHolidayForm } from "./update-holiday-form";
-
-
+import { HolidayFormRows } from "@/lib/validators/hrm/holidays";
 
 interface CellActionProps {
-  data: HolidayColumn;
+  data: HolidayFormRows;
 }
 
 export function CellAction({ data }: CellActionProps) {
@@ -38,6 +36,8 @@ export function CellAction({ data }: CellActionProps) {
       console.log(error);
     }
   };
+
+  console.log(data);
 
   return (
     <div className="flex justify-center space-x-2">

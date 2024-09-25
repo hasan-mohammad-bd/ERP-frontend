@@ -65,7 +65,7 @@ export function AddRosterForm({
   });
 
   const isDateDisabled = (dateString : string) => {
-    return holidaysData.some((holiday) => holiday.date.date === dateString);
+    return holidaysData.some((holiday) => holiday.duration === dateString);
   };
 
   async function onSubmit(data: RosterFromValues) {

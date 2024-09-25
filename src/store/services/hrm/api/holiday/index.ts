@@ -1,17 +1,23 @@
-import { HolidayFromValues, type HolidayColumn } from "@/lib/validators";
 import { hrmApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
+import {
+  HolidayFormColumn,
+  HolidayFormValues,
+} from "@/lib/validators/hrm/holidays";
 
 const holidaysApi = hrmApi.injectEndpoints({
   endpoints: (build) => ({
     getHolidays: build.query<
-      { data: HolidayColumn[]; meta: PaginationInfo },
+      { data: HolidayFormColumn[]; meta: PaginationInfo },
       string
     >({
       query: (params) => `holidays?${params}`,
       providesTags: ["holidays"],
     }),
-    createHoliday: build.mutation<{ data: HolidayColumn }, HolidayFromValues>({
+    createHoliday: build.mutation<
+      { data: HolidayFormValues },
+      HolidayFormValues
+    >({
       query: (newHoliday) => ({
         url: `holidays`,
         method: "POST",
@@ -27,8 +33,8 @@ const holidaysApi = hrmApi.injectEndpoints({
       invalidatesTags: ["holidays"],
     }),
     updateHoliday: build.mutation<
-      { data: HolidayColumn },
-      { holidayId: number; updatedHoliday: HolidayFromValues }
+      { data: HolidayFormColumn },
+      { holidayId: number; updatedHoliday: HolidayFormColumn }
     >({
       query: ({ holidayId, updatedHoliday }) => ({
         url: `holidays/${holidayId}`,
