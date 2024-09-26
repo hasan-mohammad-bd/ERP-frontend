@@ -32,6 +32,13 @@ import {
 import { ErrorResponse } from "@/types";
 import handleErrors from "@/lib/handle-errors";
 import { Loading } from "@/components/common/loading";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const DAYS = [
   "Saturday",
@@ -41,6 +48,24 @@ const DAYS = [
   "Wednesday",
   "Thursday",
   "Friday",
+];
+
+const WORKING_TYPE_LIST = [
+  {
+    label: "Full Day",
+    value: "full_day",
+    id: 1,
+  },
+  {
+    label: "Half Day",
+    value: "half_day",
+    id: 2,
+  },
+  {
+    label: "Weekend",
+    value: "weekend",
+    id: 3,
+  },
 ];
 
 // interface AttendancePolicyFormValues {
@@ -83,11 +108,21 @@ export function AttendancePolicyForm({
       days: DAYS.map((day) => ({
         day: day,
         in_time: previousData?.days?.find((d) => d.day === day)?.in_time || "",
-        delay_buffer_time: previousData?.days?.find((d) => d.day === day) ?.delay_buffer_time || "",
-        ex_delay_buffer_time: previousData?.days?.find((d) => d.day === day)?.ex_delay_buffer_time || "",
-        break_time: previousData?.days?.find((d) => d.day === day)?.break_time || 0,
-        working_hour: previousData?.days?.find((d) => d.day === day)?.working_hour || 0,
-        out_time: previousData?.days?.find((d) => d.day === day)?.out_time || "",
+        delay_buffer_time:
+          previousData?.days?.find((d) => d.day === day)?.delay_buffer_time ||
+          "",
+        ex_delay_buffer_time:
+          previousData?.days?.find((d) => d.day === day)
+            ?.ex_delay_buffer_time || "",
+        break_time:
+          previousData?.days?.find((d) => d.day === day)?.break_time || 0,
+        working_hour:
+          previousData?.days?.find((d) => d.day === day)?.working_hour || 0,
+        out_time:
+          previousData?.days?.find((d) => d.day === day)?.out_time || "",
+        working_type:
+          previousData?.days?.find((d) => d.day === day)?.working_type ||
+          "full_day",
       })),
     },
   });
@@ -366,6 +401,7 @@ export function AttendancePolicyForm({
                       Working Hours (In Hours)
                     </TableCell>
                     <TableCell className="p-1 text-xs">Out Time</TableCell>
+                    <TableCell className="p-1 text-xs">Working Type</TableCell>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="divide-y">
@@ -436,7 +472,7 @@ export function AttendancePolicyForm({
                         </div>
                       </TableCell>
                       <TableCell className="p-1">
-                        <div className="flex-1">
+                        <div className="">
                           <FormField
                             control={form.control}
                             name={`days.${index}.ex_delay_buffer_time`}
@@ -458,7 +494,7 @@ export function AttendancePolicyForm({
                         </div>
                       </TableCell>
                       <TableCell className="p-1">
-                        <div className="flex-1">
+                        <div className="">
                           <FormField
                             control={form.control}
                             name={`days.${index}.break_time`}
@@ -521,6 +557,44 @@ export function AttendancePolicyForm({
                           )}
                         />
                       </TableCell>
+                      <div className="mr-1">
+                        <FormField
+                          control={form.control}
+                          name={`days.${index}.working_type`}
+                          render={({ field }) => (
+                            <FormItem className="p-1 text-xs h-7 w-[100px]">
+                              <Select
+                              
+                                onValueChange={field.onChange}
+                                defaultValue={
+                                  previousData?.days?.[index]?.working_type
+                                    ? String(
+                                        previousData.days[index].working_type
+                                      )
+                                    : "full_day" 
+                                }
+                              >
+                                <FormControl className="p-1 text-xs h-7 mt-[6px]">
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Full Time" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {WORKING_TYPE_LIST?.map((type) => (
+                                    <SelectItem
+                                      key={type.value}
+                                      value={String(type.value)}
+                                    >
+                                      {type.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
                     </TableRow>
                   ))}
                 </TableBody>

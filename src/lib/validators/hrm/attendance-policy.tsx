@@ -8,6 +8,7 @@ export const Days = z.object({
   break_time: z.coerce.number(),
   working_hour: z.coerce.number(),
   out_time: z.string(),
+  working_type: z.string(),
   // id: z.coerce.number().optional().nullable(),
 })
 
