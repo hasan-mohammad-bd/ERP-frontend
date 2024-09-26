@@ -1,5 +1,7 @@
 // Helper function to generate an array of dates between two dates
 
+import { format } from "date-fns";
+
 /**
  * The function `getDatesInRange` generates an array of dates within a specified range.
  * @param {Date} startDate - startDate is the beginning date of the range for which you want to
@@ -17,4 +19,9 @@ export const getDatesInRange = (startDate: Date, endDate: Date) => {
     currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
   }
   return dates;
+};
+
+export const DataFormate12Hours = (date: string) => {
+  const formattedDate = format(date, 'yyyy-MM-dd hh:mm a');
+  return formattedDate
 };

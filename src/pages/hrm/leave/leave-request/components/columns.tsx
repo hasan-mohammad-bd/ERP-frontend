@@ -1,9 +1,11 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
+import { LeaveRequestRow } from "@/lib/validators/hrm/leave";
+import { DataFormate12Hours } from "@/utils/format-dates";
 
-export const attendanceColumns: ColumnDef<AttendancePolicyRow>[] = [
+
+export const attendanceColumns: ColumnDef<LeaveRequestRow>[] = [
 	{
 		id: "select",
 		header: ({ table }) => (
@@ -28,26 +30,30 @@ export const attendanceColumns: ColumnDef<AttendancePolicyRow>[] = [
 		enableSorting: false,
 		enableHiding: false,
 	},
-	{
-		accessorKey: "date",
-		header: "Date",
-	},
+	// {
+	// 	accessorKey: "date",
+	// 	header: "Date",
+	// },
 
 	{
 		accessorKey: "name",
 		header: "Employee name",
+		cell: ({ row }) => row.original.employee.first_name + " " + row.original.employee.last_name
 	},
 	{
 		accessorKey: "leave_type",
 		header: "Leave type",
+		cell: ({ row }) => row.original.leave_type.name
 	},
 	{
-		accessorKey: "start_date",
+		accessorKey: "start_date_time",
 		header: "Start Date",
+		cell: ({ row }) => DataFormate12Hours(row.original.start_date_time)
 	},
 	{
-		accessorKey: "end_date",
+		accessorKey: "end_date_time",
 		header: "End Date",
+		cell: ({ row }) => DataFormate12Hours(row.original.end_date_time)
 	},
 	{
 		accessorKey: "status",

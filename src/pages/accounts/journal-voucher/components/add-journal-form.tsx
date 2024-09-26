@@ -52,9 +52,7 @@ import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 
 export function AddJournalForm() {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-
   const { id } = useParams();
-
   const [createEntry, { isLoading }] = useCreateEntryMutation();
   const [updateEntry, { isLoading: updateLoading }] = useUpdateEntryMutation();
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
@@ -63,7 +61,6 @@ export function AddJournalForm() {
     useGetSubAccountsQuery(`page=1&per_page=1000`);
   const { data: projects, isLoading: projectLoading } =
     useGetProjectsQuery(`per_page=1000&page=1`);
-
   const { data: journalById, refetch } = useGetEntryByIdQuery(`${id}`, {
     skip: !id,
   });
