@@ -24,8 +24,7 @@ interface FormValues {
   short_code: string;
   type: "Allowance" | "Deduction";
   sorting_index: number;
-  // note: string;
-  // is_default: "0" | "1"; // Enforcing type to be strictly "0" or "1"
+
 }
 
 type UpdateFormValues = {
@@ -38,11 +37,6 @@ type UpdateFormValues = {
   is_default: string; // Enforcing type to be strictly "0" or "1"
   sorting_index: number;
 };
-
-// interface AddSalaryBreakUpProps {
-//   modalClose: () => void;
-//   data?: HolidayFormRows;
-// }
 
 interface FormValuesColumn {
   name: string;
@@ -74,8 +68,6 @@ export function AddSalaryBreakupForm({
       short_code: previousData?.short_code || "",
       type: previousData?.type || "Allowance", // Default to "Allowance"
       sorting_index: previousData?.sorting_index,
-      // note: "",
-      // is_default: "0", // Default to "0" or "1" based on your UI logic
     },
   });
 
@@ -87,7 +79,6 @@ export function AddSalaryBreakupForm({
           short_code: data.short_code,
           type: data.type,
           sorting_index: data.sorting_index,
-          // is_default: data.is_default === "1" ? 1 as 1 : 0 as 0, // Ensure it is typed as 0 or 1
         };
         await updateSalaryCategory({
           salaryCategoriesId: previousData.id,
@@ -100,7 +91,6 @@ export function AddSalaryBreakupForm({
           name: data.name,
           short_code: data.short_code,
           type: data.type,
-          // is_default: data.is_default === "1" ? 1 as 1 : 0 as 0, // Ensure it is typed as 0 or 1
         };
         await createSalaryCategory(payload).unwrap();
         toast.success("Salary breakup created successfully!");
@@ -193,20 +183,7 @@ export function AddSalaryBreakupForm({
                 </FormItem>
               )}
             />
-            {/*
-          <FormField
-            control={form.control}
-            name="note"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Note</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter Note" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
+
 
             <div className="text-right">
               <Button variant="default" type="submit" className="w-full mt-4">

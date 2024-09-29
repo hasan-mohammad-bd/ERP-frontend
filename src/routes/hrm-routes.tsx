@@ -212,6 +212,7 @@ const hrmRoutes = {
       element: withFallback(<SalarySetup />),
       errorElement: withFallback(<ErrorPage />),
     },
+
   ],
 };
 
