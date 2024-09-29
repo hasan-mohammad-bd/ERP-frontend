@@ -6,43 +6,17 @@ import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
 import { Modal } from "@/components/common/modal";
-import { useGetJobAppliesQuery } from "@/store/services/hrm/api/job-apply";
-import { attendanceColumns } from "./components/columns";
 
-// import { JobApplyColumn } from "@/lib/validators";
+import { attendanceColumns } from "./components/columns";
 
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
-import { AttendancePolicyForm } from "./components/add-salary-breakup-form";
-// import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
+import { useGetSalaryCategoriesQuery } from "@/store/services/hrm/api/salary-categories";
+import { AddSalaryBreakupForm } from "./components/add-salary-breakup-form";
 
-// const BULK_ACTIONS = [
-//   {
-//     label: "Update Status",
-//     value: "update-status",
-//   },
-//   {
-//     label: "Delete Selected",
-//     value: "delete-selected",
-//   },
-// ];
 
-const demoData = [
-  {
-    salary_break_up_name: "Health",
-    id: 1,
-    short_code: "M",
-    type: "monthly",
-    note: "This is monthly salary",
-  },
-  {
-    salary_break_up_name: "Rent",
-    id: 2,
-    short_code: "M",
-    type: "monthly",
-    note: "This is monthly salary",
-  },
-];
+
+
 
 const SalaryBreakUp = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,22 +25,16 @@ const SalaryBreakUp = () => {
     pageSize: 10,
   });
 
-  const { data, isLoading } = useGetJobAppliesQuery(
+  const { data, isLoading } = useGetSalaryCategoriesQuery(
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
 
-  // Set appropriate bulk action type here
-  // const [selectedBulkAction, setSelectedBulkAction] = useState<
-  //   BulkAction<JobApplyColumn>
-  // >({ action: "", payload: [] });
-
-  const jobApply = data?.data || [];
+  const salaryCategoryData = data?.data || [];
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   // console.log(departments);
   if (isLoading) return <Loading />;
 
-  // console.log(selectedBulkAction); // you can see selected bulk action here
 
   return (
     <>
@@ -82,11 +50,11 @@ const SalaryBreakUp = () => {
             </Button>
           </div>
           <Separator />
-          {jobApply && (
+          {salaryCategoryData && (
             <div>
               <DataTable
                 columns={attendanceColumns}
-                data={demoData as any}
+                data={salaryCategoryData}
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}
@@ -103,7 +71,7 @@ const SalaryBreakUp = () => {
           toggleModal={() => setIsOpen(false)}
           className=""
         >
-          <AttendancePolicyForm modalClose={() => setIsOpen(false)} />
+          <AddSalaryBreakupForm modalClose={() => setIsOpen(false)} />
         </Modal>
       )}
     </>

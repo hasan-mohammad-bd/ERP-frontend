@@ -6,37 +6,39 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-import { Pencil, Trash2, ZoomIn } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
-
 import { Modal } from "@/components/common/modal";
-import ProductDetails from "./productDetails";
-import { useRemoveJobApplyMutation } from "@/store/services/hrm/api/job-apply";
-import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
-import { AttendancePolicyForm } from "./add-salary-breakup-form";
+import { AddSalaryBreakupForm } from "./add-salary-breakup-form";
+import { useRemoveSalaryCategoriesMutation } from "@/store/services/hrm/api/salary-categories";
+import { SalaryCategoriesFormRows } from "@/lib/validators/hrm/salary-categories";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
-interface CellActionProps {
-  data: AttendancePolicyRow;
+export interface CellActionProps {
+  data: SalaryCategoriesFormRows;
 }
 
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
-  const [deleteJobApply, { isLoading: deleteLoading }] =
-    useRemoveJobApplyMutation();
+  const [removeSalaryCategories, { isLoading: deleteLoading }] =
+    useRemoveSalaryCategoriesMutation();
 
-  const handleDepartmentDelete = async (id: number) => {
+  const handleSalaryCategoryDelete = async (id: number) => {
     try {
-      await deleteJobApply(id);
+      await removeSalaryCategories(id).unwrap();
       toast.success("Job deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
+
       console.log(error);
+      handleErrors(error as ErrorResponse)
     }
   };
+
+  const canDelete = data.is_default === 0;
 
   return (
     <div className="flex justify-center space-x-2">
@@ -48,8 +50,6 @@ export function CellAction({ data }: CellActionProps) {
               size="icon"
               className="hover:bg-secondary"
               onClick={() => setUpdateModalOpen(true)}
-
-              // onClick={() => toggleModal()}
             >
               <Pencil className="h-4 w-4 text-foreground" />
             </Button>
@@ -60,75 +60,72 @@ export function CellAction({ data }: CellActionProps) {
         </Tooltip>
       </TooltipProvider>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => {
-                setDetailsModalOpen(true);
-              }}
-            >
-              <ZoomIn className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Delete Requisition</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => {
-                setAlertModalOpen(true);
-              }}
-            >
-              <Trash2 className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Delete Requisition</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      {canDelete ? (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => setAlertModalOpen(true)}
+              >
+                <Trash2 className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Delete Requisition</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ) : (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                disabled
+              >
+                <Trash2 className="h-4 w-4 text-gray-400" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Cannot delete default category</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )}
 
       <AlertModal
         title="Are you sure?"
         description="This action cannot be undone."
-        name={data.policy_name}
+        name={data.name}
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
-        onConfirm={() => handleDepartmentDelete(data.id)}
+        onConfirm={() => handleSalaryCategoryDelete(data.id)}
         loading={deleteLoading}
       />
+
       {updateModalOpen && (
         <Modal
-          title="Update Job"
+          title="Update Salary BreakUp"
           isOpen={updateModalOpen}
           toggleModal={() => setUpdateModalOpen(false)}
-          className="w-[90%] max-w-6xl"
+          className="max-w-xl"
         >
-          <AttendancePolicyForm
-            data={data}
+          <AddSalaryBreakupForm
+            data={{
+              id: data.id,
+              name: data.name,
+              short_code: data.short_code || "", // Provide a default value
+              type: data.type,
+              is_default: data.is_default.toString(), // Ensure is_default is a string
+              sorting_index: data.sorting_index,
+            }}
             modalClose={() => setUpdateModalOpen(false)}
           />
-        </Modal>
-      )}
-      {detailsModalOpen && (
-        <Modal
-          title="Job Details"
-          isOpen={detailsModalOpen}
-          toggleModal={() => setDetailsModalOpen(false)}
-          className="w-[90%] max-w-6xl"
-        >
-          <ProductDetails data={data} />
         </Modal>
       )}
     </div>

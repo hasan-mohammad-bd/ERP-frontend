@@ -1,9 +1,10 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
+import { SalaryCategoriesFormRows } from "@/lib/validators/hrm/salary-categories";
+// import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
 
-export const attendanceColumns: ColumnDef<AttendancePolicyRow>[] = [
+export const attendanceColumns: ColumnDef<SalaryCategoriesFormRows>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -29,8 +30,8 @@ export const attendanceColumns: ColumnDef<AttendancePolicyRow>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "salary_break_up_name",
-    header: "Salary Breakup Name",
+    accessorKey: "name",
+    header: "Salary Category",
   },
 
   {
@@ -40,11 +41,6 @@ export const attendanceColumns: ColumnDef<AttendancePolicyRow>[] = [
   {
     accessorKey: "type",
     header: "Type",
-  },
-
-  {
-    accessorKey: "note",
-    header: "Note",
   },
 
   {

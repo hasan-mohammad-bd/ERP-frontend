@@ -36,7 +36,7 @@ const employeeGradeApi = hrmApi.injectEndpoints({
     updateEmployeeGrade: build.mutation<{ data: EmployeeGradeColumn }, { employeeGradeId: number, updatedEmployeeGrade: EmployeeGradeFromValues }>({
       query: ({ employeeGradeId, updatedEmployeeGrade }) => ({
         url: `employee-grades/${employeeGradeId}`, 
-        method: "PUT", 
+        method: "PUT",
         body: updatedEmployeeGrade,
       }),
       invalidatesTags: ["employee-grades"],
