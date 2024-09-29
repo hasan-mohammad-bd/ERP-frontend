@@ -8,7 +8,6 @@ import {
   EmployeeGrade,
   ErrorPage,
   DailyAttendance,
-
   DeductionPolicy,
   OverTimePolicy,
   AttendancePolicy,
@@ -35,13 +34,9 @@ import {
   LeavePolicy,
 } from "./components";
 
-
 import { AddHolidayForm } from "@/pages/hrm/holiday/components/add-holiday-form";
 
-
 // import AttendancePolicy from "@/pages/hrm/attendance-policy";
-
-
 
 const hrmRoutes = {
   path: "hrm/",
@@ -139,9 +134,7 @@ const hrmRoutes = {
           element: withFallback(<AddHolidayForm />),
           errorElement: <ErrorPage />,
         },
-
       ],
-
     },
 
     {
@@ -215,7 +208,7 @@ const hrmRoutes = {
       errorElement: withFallback(<ErrorPage />),
     },
     {
-      path: "salary-setup",
+      path: "salary-setup/:employye_id",
       element: withFallback(<SalarySetup />),
       errorElement: withFallback(<ErrorPage />),
     },

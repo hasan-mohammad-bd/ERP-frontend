@@ -95,12 +95,12 @@ const hrmNavItems: NavItem[] = [
         color: "text-sky-500",
         href: "/hrm/salary-sheet",
       },
-      {
-        title: "Salary Setup",
-        icon: CalendarCheck2,
-        color: "text-sky-500",
-        href: "/hrm/salary-setup",
-      },
+      // {
+      //   title: "Salary Setup",
+      //   icon: CalendarCheck2,
+      //   color: "text-sky-500",
+      //   href: "/hrm/salary-setup",
+      // },
     ],
   },
 
@@ -142,7 +142,6 @@ const hrmNavItems: NavItem[] = [
         href: "/hrm/roster-employee",
         color: "text-sky-500",
       },
-
     ],
   },
 
