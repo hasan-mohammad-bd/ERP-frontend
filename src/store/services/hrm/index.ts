@@ -51,6 +51,7 @@ export const hrmApi = createApi({
     "leaves",
     "salary-categories",
     "salary-settings",
+    "employee-attendance-policies"
   ],
   endpoints: () => ({}),
 });

@@ -122,7 +122,7 @@ const Employee = () => {
           className="!h-fit"
         >
           <AddAttendancePolicyMappingForm
-            payload={selectedBulkAction.payload as any}
+            payload={selectedBulkAction.payload as EmployeeColumn[]}
             modelClose={() =>
               setSelectedBulkAction({ action: "", payload: [] })
             }

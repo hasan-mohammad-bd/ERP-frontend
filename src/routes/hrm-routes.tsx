@@ -32,9 +32,11 @@ import {
   Holiday,
   SalarySetup,
   LeavePolicy,
+  AttendancePolicyMapping
 } from "./components";
 
 import { AddHolidayForm } from "@/pages/hrm/holiday/components/add-holiday-form";
+
 
 // import AttendancePolicy from "@/pages/hrm/attendance-policy";
 
@@ -175,6 +177,11 @@ const hrmRoutes = {
     {
       path: "attendance-policy",
       element: withFallback(<AttendancePolicy />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "attendance-policy-mapping",
+      element: withFallback(<AttendancePolicyMapping />),
       errorElement: withFallback(<ErrorPage />),
     },
     {

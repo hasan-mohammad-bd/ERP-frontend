@@ -255,11 +255,16 @@ const hrmNavItems: NavItem[] = [
         href: "/hrm/attendance-policy",
         color: "text-sky-500",
       },
-
       {
-        title: "Deduction Policy",
-        icon: SquarePen,
-        href: "/hrm/deduction-policy",
+        title: "Daily Attendance",
+        icon: CalendarCheck2,
+        color: "text-sky-500",
+        href: "/hrm/daily-attendance",
+      },
+      {
+        title: "Schedules",
+        icon: Clock,
+        href: "/hrm/schedules",
         color: "text-sky-500",
       },
       {
@@ -420,6 +425,79 @@ const hrmNavItems: NavItem[] = [
   },
 
 
+  {
+    title: "Policy",
+    icon: PlayIcon,
+    href: "/hrm",
+    color: "text-sky-500",
+    isChildren: true,
+    children: [
+      {
+        title: "Attendance Policy",
+        icon: PlayIcon,
+        href: "/hrm/attendance-policy",
+        color: "text-sky-500",
+      },
+      {
+        title: "Attendance Policy Mapping",
+        icon: PlayIcon,
+        href: "/hrm/attendance-policy-mapping",
+        color: "text-sky-500",
+      },
+
+      {
+        title: "Deduction Policy",
+        icon: SquarePen,
+        href: "/hrm/deduction-policy",
+        color: "text-sky-500",
+      },
+      {
+        title: "Over Time Policy",
+        icon: SquarePen,
+        href: "/hrm/overtime-policy",
+        color: "text-sky-500",
+      },
+      {
+        title: "Leave Policy",
+        icon: SquarePen,
+        href: "/hrm/leave-policy",
+        color: "text-sky-500",
+      },
+    ],
+  },
+  {
+    title: "Leave",
+    icon: Clock,
+    href: "/hrm",
+    color: "text-sky-500",
+    isChildren: true,
+    children: [
+      {
+        title: "Leave Request",
+        icon: Clock,
+        href: "/hrm/leave-request",
+        color: "text-sky-500",
+      },
+      {
+        title: "Leave Type",
+        icon: Clock,
+        href: "/hrm/leave-type",
+        color: "text-sky-500",
+      },
+      {
+        title: "Leave Group",
+        icon: Clock,
+        href: "/hrm/leave-group",
+        color: "text-sky-500",
+      },
+      {
+        title: "Holiday",
+        icon: Soup,
+        href: "/hrm/holidays",
+        color: "text-sky-500",
+      },
+    ],
+  },
 ];
 
 export default hrmNavItems;

@@ -1,90 +1,82 @@
-// import { zodResolver } from "@hookform/resolvers/zod";
-
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-// import { CardHeader, CardTitle } from "@/components/ui/card";
-// import { Textarea } from "@/components/ui/textarea";
-// import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-// import { Badge } from "@/components/ui/badge";
-import { EmployeeColumn } from "../validators";
+import { EmployeeColumn } from "@/lib/validators";
+import { useCreateEmployeeAttendancePolicyMutation } from "@/store/services/hrm/api/attendance-policy-mapping";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  employeeAttendancePolicyFormSchema,
+  EmployeeAttendancePolicyFormValues,
+} from "@/lib/validators/hrm/attendance-policy-mapping";
+import { useGetAttendancePoliciesQuery } from "@/store/services/hrm/api/attendance-policy";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance-policy";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import { Loading } from "@/components/common/loading";
+import { useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 interface AddAttendancePolicyMappingFormProps {
   payload?: EmployeeColumn[];
-  previousData?: any;
-  // jobData?: JobCandidateColumn;
   modelClose?: () => void;
 }
 
 export function AddAttendancePolicyMappingForm({
-  previousData,
   payload,
-  // data: skillData,
   modelClose,
 }: AddAttendancePolicyMappingFormProps) {
-  // const [createSkill, { isLoading }] = useCreateSkillMutation();
-  // const [updateSkill, { isLoading: updateLoading }] = useUpdateSkillMutation();
+  const [openFromDate, setOpenFromDate] = useState(false);
+  const [createEmployeeAttendancePolicy, { isLoading }] =
+    useCreateEmployeeAttendancePolicyMutation();
+  const [fromDate, setFromDate] = useState<Date | null | undefined>(null);
 
-  const form = useForm<any>({
-    // resolver: zodResolver(SkillFormSchema),
+  const navigate = useNavigate();
+
+  const { data, isLoading: isAttendancePolicyLoading } =
+    useGetAttendancePoliciesQuery(`per_page=1000&page=1`);
+
+  const attendancePolicyData = data?.data || [];
+
+  const form = useForm<EmployeeAttendancePolicyFormValues>({
+    resolver: zodResolver(employeeAttendancePolicyFormSchema),
     defaultValues: {
-      // model_type: "App\\Models\\Employee\\Employee",
-      // model_id: previousData?.id,
-      // name: skillData?.name || "",
-      // type: skillData?.type || "",
-      // start_date: skillData?.start_date || "",
-      // end_date: skillData?.end_date || "",
-      // description: skillData?.description || "",
-      // sorting_index: skillData?.sorting_index || 0,
-      /* 
-      institution: experienceData?.institution || "",
-      employment_status_id: experienceData?.employment_status?.id || 2,
-      start_date: experienceData?.start_date || "",
-      end_date: experienceData?.end_date || null,
-      description: experienceData?.description || "",
-      designation: experienceData?.designation || "",
-      sorting_index: experienceData?.sorting_index || 0, */
+      employee_ids: payload?.map((data) => data.id),
+      effective_date: new Date().toISOString().split("T")[0],
     },
   });
 
-	console.log(payload)
+  const handleFromDateSelect = (date: Date | undefined) => {
+    if (!date) return;
+    setFromDate(date);
+
+    form.setValue("effective_date", `${format(date, "yyyy-MM-dd")}`);
+    setOpenFromDate(false);
+  };
 
 
-  async function onSubmit(data: any) {
+
+  async function onSubmit(data: EmployeeAttendancePolicyFormValues) {
+    const formattedData: EmployeeAttendancePolicyFormValues = {
+      ...data,
+      employee_ids: payload?.map((data) => data.id) || [],
+    };
     try {
-      if (previousData) {
-        // await updateSkill({
-        // 	skillId: skillData?.id,
-        // 	updatedSkill: data,
-        // });
-				console.log(data)
-
-        toast.success("Skill updated successfully");
-        if (modelClose) {
-          modelClose();
-        }
-      } else {
-        // await createSkill(data);
-        toast.success("Skill created successfully");
-        // modalClose();
-        form.reset();
+      await createEmployeeAttendancePolicy(formattedData);
+      toast.success("Employee Attendance Policy created successfully");
+      if (modelClose) {
+        modelClose();
       }
+
+      navigate("/hrm/attendance-policy-mapping");
+
     } catch (error) {
       console.log(error);
     }
@@ -92,118 +84,79 @@ export function AddAttendancePolicyMappingForm({
 
   return (
     <>
-      {/* {isLoading || updateLoading ? (
-				<div className="h-[535px]">
-					<Loading />
-				</div>
-			) : ( */}
-      <div className="flex gap-x-4">
-        <div className={`${!previousData ? "w-full" : "w-1/2"} `}>
-          <Form {...form}>
-            {/* <div className="w-full space-y-1 p-2 max-h-28 overflow-y-auto">
-              {payload?.map((item) => (
-                <Badge className="mr-1" key={item.id}>
-                  {item.email}
-                </Badge>
-              ))}
-            </div> */}
-
-            <form onSubmit={form.handleSubmit(onSubmit)} className="">
-              <div className="grid grid-cols-1 gap-2">
-                {/* <FormField
-										control={form.control}
-										name="company_name"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Company Name</FormLabel>
-												<FormControl>
-													<Input
-														type="text"
-														placeholder="Enter institution"
-														{...field}
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/> */}
-
-                <FormField
-                  control={form.control}
-                  name="effective_date"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Effective Date</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="date"
-                          placeholder="Enter Start Date"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="job_post_id"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Attendance Policy</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        // defaultValue={
-                        //   previousData?.job_post?.id
-                        //     ? String(previousData?.job_post?.id)
-                        //     : undefined
-                        // }
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Attendance Policy" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {/* {jobPostLoading ? (
-                            <Loading />
-                          ) : (
-                            jobPostData?.map((jobPost: JobPostColumn) => ( */}
-                          <SelectItem
-                            value="1"
-                            // key={jobPost.id}
-                            // value={String(jobPost.id)}
-                          >
-                            Attendance Policy 1
-                          </SelectItem>
-                          <SelectItem
-                            value="2"
-                            // key={jobPost.id}
-                            // value={String(jobPost.id)}
-                          >
-                            Attendance Policy 2
-                          </SelectItem>
-                          {/* ))
-                          )} */}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div>
-                <Button variant="default" type="submit" className="w-full mt-4">
-                  {previousData ? "Update" : "Add"}
-                </Button>
-              </div>
-            </form>
-          </Form>
+      {isLoading ? (
+        <div className="h-[535px]">
+          <Loading />
         </div>
-      </div>
-      {/* )} */}
+      ) : (
+        <div className="flex gap-x-4">
+          <div className={` w-full `}>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="">
+                <div className="grid grid-cols-1 gap-2">
+                  <div className="w-full">
+                    <FormSearchSelect<AttendancePolicyRow>
+                      loading={isAttendancePolicyLoading}
+                      data={attendancePolicyData}
+                      displayField="name"
+                      valueField="id"
+                      form={form}
+                      name="attendance_policy_id"
+                      title="Attendance Policy"
+                      className="w-[460px]"
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="effective_date"
+                    render={() => (
+                      <FormItem>
+                        <FormLabel>Effective Date</FormLabel>
+                        <Popover
+                          open={openFromDate}
+                          onOpenChange={setOpenFromDate}
+                        >
+                          <PopoverTrigger asChild className="">
+                            <Button
+                              variant={"outline"}
+                              className={`w-full justify-start text-left font-normal ${
+                                !fromDate && "text-muted-foreground"
+                              }`}
+                            >
+                              {fromDate
+                                ? format(fromDate, "PP")
+                                : "Pick a date"}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={fromDate ?? undefined}
+                              onSelect={handleFromDateSelect}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div>
+                  <Button
+                    variant="default"
+                    type="submit"
+                    className="w-full mt-4"
+                  >
+                    Save
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </div>
+        </div>
+      )}
     </>
   );
 }

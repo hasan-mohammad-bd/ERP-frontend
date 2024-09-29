@@ -52,7 +52,7 @@ const LeaveRequest = () => {
                 columns={attendanceColumns}
                 data={jobRequestData}
                 paginationInfo={paginationInfo}
-                pagination={pagination}
+                pagination={pagination }
                 setPagination={setPagination}
               />
             </div>

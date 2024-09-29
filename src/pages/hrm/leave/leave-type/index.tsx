@@ -56,8 +56,8 @@ const LeaveType = () => {
                 columns={attendanceColumns}
                 data={leaveType}
                 paginationInfo={paginationInfo}
-                pagination={pagination}
-                setPagination={setPagination}
+                pagination={paginationInfo && pagination}
+                setPagination={paginationInfo && setPagination}
               />
             </div>
           )}

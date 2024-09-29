@@ -104,3 +104,7 @@ export const AttendancesList = lazy(
 export const SalaryBreakUp = lazy(
   () => import("@/pages/hrm/salary/salary-breakup")
 );
+
+export const AttendancePolicyMapping = lazy(
+  () => import("@/pages/hrm/attendance-policy-mapping")
+);
