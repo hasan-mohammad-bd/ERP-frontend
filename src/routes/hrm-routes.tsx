@@ -32,7 +32,8 @@ import {
   Holiday,
   SalarySetup,
   LeavePolicy,
-  AttendancePolicyMapping
+  AttendancePolicyMapping,
+  NotFoundPage
 } from "./components";
 
 import { AddHolidayForm } from "@/pages/hrm/holiday/components/add-holiday-form";
@@ -219,6 +220,10 @@ const hrmRoutes = {
       element: withFallback(<SalarySetup />),
       errorElement: withFallback(<ErrorPage />),
     },
+    {
+      path: "*",
+      element: withFallback(<NotFoundPage />),
+    }
 
   ],
 };

@@ -45,6 +45,10 @@ export const attendanceColumns: ColumnDef<EmployeeAttendancePolicyRow>[] = [
     cell: ({ row }) =>
       row.original.employee.first_name + " " + row.original.employee.last_name,
   },
+  // {
+  //   header: "Department",
+  //   cell: ({ row }) => row.original.employee.department?.name,
+  // },
 
   {
     id: "actions",

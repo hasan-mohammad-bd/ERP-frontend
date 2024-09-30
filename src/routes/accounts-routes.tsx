@@ -11,6 +11,7 @@ import {
   PaymentVoucher,
   ContraVoucher,
   DashboardAccounts,
+  NotFoundPage,
 } from "./components";
 import { AddJournalForm } from "@/pages/accounts/journal-voucher/components/add-journal-form";
 import { AddReceiptForm } from "@/pages/accounts/receipt-voucher/components/add-receipt-form";
@@ -269,6 +270,10 @@ const accountsRoutes = {
         },
       ],
     },
+    {
+      path: "*",
+      element: withFallback(<NotFoundPage />),
+    }
   ],
 };
 

@@ -3,6 +3,8 @@ import { lazy } from "react";
 export const Layout = lazy(() => import("@/layout"));
 export const ErrorPage = lazy(() => import("@/pages/ErrorPage"));
 export const Dashboard = lazy(() => import("@/pages/dashboard"));
+export const NotFoundPage = lazy(() => import("@/pages/not-found"));
+
 // HRM
 export const Department = lazy(() => import("@/pages/hrm/department"));
 export const Designation = lazy(() => import("@/pages/hrm/designation"));

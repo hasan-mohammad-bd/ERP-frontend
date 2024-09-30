@@ -4,8 +4,7 @@ import webRoutes from "./web-routes";
 import accountsRoutes from "./accounts-routes";
 import hrmRoutes from "./hrm-routes";
 import withFallback from "@/utils/with-fallback";
-import { ErrorPage, Lobby, LoginScreen } from "./components";
-import NotFoundPage from "@/pages/NotFoundPage";
+import { ErrorPage, Lobby, LoginScreen, NotFoundPage } from "./components";
 
 
 const router = createBrowserRouter([
@@ -30,7 +29,6 @@ const router = createBrowserRouter([
         path: "*",
         element: withFallback(<NotFoundPage />),
       }
-
     ],
   },
 ]);

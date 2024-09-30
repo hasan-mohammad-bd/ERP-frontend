@@ -32,7 +32,7 @@ export default function AttendanceInformation({
   }
 
   return (
-    <div className="w-full p-6 space-y-4">
+    <div className="w-full py-6 space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="font-semibold text-gray-800">ATTENDANCE INFORMATION</h2>
         <Button className="bg-sky-500 hover:bg-sky-600">

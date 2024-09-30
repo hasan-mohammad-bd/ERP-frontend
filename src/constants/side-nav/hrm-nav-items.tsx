@@ -23,11 +23,7 @@ import {
   UserRoundSearch,
   Users,
   Vote,
-
 } from "lucide-react";
-
-
-
 
 const hrmNavItems: NavItem[] = [
   {
@@ -64,8 +60,6 @@ const hrmNavItems: NavItem[] = [
       },
     ],
   },
-
-
 
   {
     title: "Attendance",
@@ -105,10 +99,14 @@ const hrmNavItems: NavItem[] = [
         href: "/hrm/roster-employee",
         color: "text-sky-500",
       },
-
+      {
+        title: "Attendance PM",
+        icon: PlayIcon,
+        href: "/hrm/attendance-policy-mapping",
+        color: "text-sky-500",
+      },
     ],
   },
-
 
   {
     title: "Leave",
@@ -143,7 +141,6 @@ const hrmNavItems: NavItem[] = [
       },
     ],
   },
-
 
   {
     title: "Salary",
@@ -183,68 +180,26 @@ const hrmNavItems: NavItem[] = [
         color: "text-sky-500",
         href: "/hrm/salary-sheet",
       },
-      {
-        title: "Salary Setup",
-        icon: CalendarCheck2,
-        color: "text-sky-500",
-        href: "/hrm/salary-setup",
-      },
-
     ],
   },
 
   {
     title: "Provident Fund",
     icon: Captions,
-    href: "",
+    href: "/hrm/new-route",
     color: "text-sky-500",
-    // isChildren: true,
-    // children: [
-    //   {
-    //     title: "Provident Fund-1",
-    //     icon: Building,
-    //     href: "/hrm/departments",
-    //     color: "text-sky-500",
-    //   },
-    //   {
-    //     title: "Provident Fund-2",
-    //     icon: FileBadge2,
-    //     href: "/hrm/designations",
-    //     color: "text-sky-500",
-    //   },
-
-    // ],
   },
-
 
   {
     title: "Tax",
     icon: ClipboardType,
-    href: "",
+    href: "/hrm/new-route",
     color: "text-sky-500",
-    // isChildren: true,
-    // children: [
-    //   {
-    //     title: "Home Tax",
-    //     icon: Building,
-    //     href: "/hrm/departments",
-    //     color: "text-sky-500",
-    //   },
-    //   {
-    //     title: "Car Tax",
-    //     icon: FileBadge2,
-    //     href: "/hrm/designations",
-    //     color: "text-sky-500",
-    //   },
-
-    // ],
   },
-
-
 
   {
     title: "Policies",
-    icon:  Vote,
+    icon: Vote,
     href: "/hrm",
     color: "text-sky-500",
     isChildren: true,
@@ -256,15 +211,9 @@ const hrmNavItems: NavItem[] = [
         color: "text-sky-500",
       },
       {
-        title: "Daily Attendance",
-        icon: CalendarCheck2,
-        color: "text-sky-500",
-        href: "/hrm/daily-attendance",
-      },
-      {
-        title: "Schedules",
-        icon: Clock,
-        href: "/hrm/schedules",
+        title: "Leave Policy",
+        icon: SquarePen,
+        href: "/hrm/leave-policy",
         color: "text-sky-500",
       },
       {
@@ -274,93 +223,27 @@ const hrmNavItems: NavItem[] = [
         color: "text-sky-500",
       },
       {
-        title: "Leave Policy",
+        title: "Deduction Policy",
         icon: SquarePen,
-        href: "/hrm/leave-policy",
+        href: "/hrm/deduction-policy",
         color: "text-sky-500",
       },
     ],
   },
 
-
-
   {
     title: "Recruitment",
     icon: UserRoundSearch,
-    href: "",
+    href: "hrm/new-route",
     color: "text-sky-500",
-    // isChildren: true,
-    // children: [
-    //   {
-    //     title: "Recruitment1",
-    //     icon: PlayIcon,
-    //     href: "/hrm/attendance-policy",
-    //     color: "text-sky-500",
-    //   },
-
-    //   {
-    //     title: "Recruitment2",
-    //     icon: SquarePen,
-    //     href: "/hrm/deduction-policy",
-    //     color: "text-sky-500",
-    //   },
-
-    // ],
   },
-
-
 
   {
     title: "Reports",
     icon: NotebookText,
-    href: "",
+    href: "hrm/new-route",
     color: "text-sky-500",
-    // isChildren: true,
-    // children: [
-    //   {
-    //     title: "Reports1",
-    //     icon: PlayIcon,
-    //     href: "/hrm/attendance-policy",
-    //     color: "text-sky-500",
-    //   },
-
-    //   {
-    //     title: "Reports2",
-    //     icon: SquarePen,
-    //     href: "/hrm/deduction-policy",
-    //     color: "text-sky-500",
-    //   },
-
-    // ],
   },
-
-
-  {
-    title: "HRM Setting",
-    icon: Settings,
-    href: "",
-    color: "text-sky-500",
-    // isChildren: true,
-    // children: [
-    //   {
-    //     title: "Setting1",
-    //     icon: PlayIcon,
-    //     href: "/hrm/attendance-policy",
-    //     color: "text-sky-500",
-    //   },
-
-    //   {
-    //     title: "Setting2",
-    //     icon: SquarePen,
-    //     href: "/hrm/deduction-policy",
-    //     color: "text-sky-500",
-    //   },
-
-    // ],
-  },
-
-
-
 
   {
     title: "Catalog",
@@ -423,80 +306,12 @@ const hrmNavItems: NavItem[] = [
       },
     ],
   },
-
-
+  
   {
-    title: "Policy",
-    icon: PlayIcon,
-    href: "/hrm",
+    title: "HRM Setting",
+    icon: Settings,
+    href: "hrm/new-route",
     color: "text-sky-500",
-    isChildren: true,
-    children: [
-      {
-        title: "Attendance Policy",
-        icon: PlayIcon,
-        href: "/hrm/attendance-policy",
-        color: "text-sky-500",
-      },
-      {
-        title: "Attendance Policy Mapping",
-        icon: PlayIcon,
-        href: "/hrm/attendance-policy-mapping",
-        color: "text-sky-500",
-      },
-
-      {
-        title: "Deduction Policy",
-        icon: SquarePen,
-        href: "/hrm/deduction-policy",
-        color: "text-sky-500",
-      },
-      {
-        title: "Over Time Policy",
-        icon: SquarePen,
-        href: "/hrm/overtime-policy",
-        color: "text-sky-500",
-      },
-      {
-        title: "Leave Policy",
-        icon: SquarePen,
-        href: "/hrm/leave-policy",
-        color: "text-sky-500",
-      },
-    ],
-  },
-  {
-    title: "Leave",
-    icon: Clock,
-    href: "/hrm",
-    color: "text-sky-500",
-    isChildren: true,
-    children: [
-      {
-        title: "Leave Request",
-        icon: Clock,
-        href: "/hrm/leave-request",
-        color: "text-sky-500",
-      },
-      {
-        title: "Leave Type",
-        icon: Clock,
-        href: "/hrm/leave-type",
-        color: "text-sky-500",
-      },
-      {
-        title: "Leave Group",
-        icon: Clock,
-        href: "/hrm/leave-group",
-        color: "text-sky-500",
-      },
-      {
-        title: "Holiday",
-        icon: Soup,
-        href: "/hrm/holidays",
-        color: "text-sky-500",
-      },
-    ],
   },
 ];
 

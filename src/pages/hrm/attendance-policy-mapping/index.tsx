@@ -38,7 +38,7 @@ const AttendancePolicyMapping = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="Leave Type"
+              title="Manage Employee Attendance Policy"
               description="Manage job apply for you business"
             />
             <Button onClick={() => navigate("/hrm/employees-list")} size={"sm"}>
