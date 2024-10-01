@@ -52,7 +52,9 @@ import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 
 export function AddJournalForm() {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+
   const { id } = useParams();
+
   const [createEntry, { isLoading }] = useCreateEntryMutation();
   const [updateEntry, { isLoading: updateLoading }] = useUpdateEntryMutation();
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
@@ -61,6 +63,7 @@ export function AddJournalForm() {
     useGetSubAccountsQuery(`page=1&per_page=1000`);
   const { data: projects, isLoading: projectLoading } =
     useGetProjectsQuery(`per_page=1000&page=1`);
+
   const { data: journalById, refetch } = useGetEntryByIdQuery(`${id}`, {
     skip: !id,
   });
@@ -201,7 +204,6 @@ export function AddJournalForm() {
         </div>
       ) : (
         <div>
-
           <div className="flex items-center justify-between mb-4">
             <Heading
               title={previousData ? "Edit Journal Entry" : "Add Journal Entry"}
@@ -213,9 +215,7 @@ export function AddJournalForm() {
             >
               Journal Voucher List
             </Button>
-           </div>
-
-
+          </div>
           <Card className="p-3">
             <Form {...form}>
               <form
