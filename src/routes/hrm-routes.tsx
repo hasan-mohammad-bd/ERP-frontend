@@ -37,6 +37,7 @@ import {
 } from "./components";
 
 import { AddHolidayForm } from "@/pages/hrm/holiday/components/add-holiday-form";
+import EstimateSalary from "@/pages/hrm/estimate-salary";
 
 
 // import AttendancePolicy from "@/pages/hrm/attendance-policy";
@@ -223,7 +224,15 @@ const hrmRoutes = {
     {
       path: "*",
       element: withFallback(<NotFoundPage />),
+    },
+
+
+    {
+      path: "estimate-salary",
+      element: withFallback(<EstimateSalary />),
+      errorElement: withFallback(<ErrorPage />),
     }
+
 
   ],
 };
