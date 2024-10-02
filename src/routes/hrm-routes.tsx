@@ -1,6 +1,6 @@
 import withFallback from "@/utils/with-fallback";
 import {
-  Dashboard,
+
   Department,
   Designation,
   Employee,
@@ -33,11 +33,13 @@ import {
   SalarySetup,
   LeavePolicy,
   AttendancePolicyMapping,
-  NotFoundPage
+  NotFoundPage,
+  HRMDashboard
 } from "./components";
 
 import { AddHolidayForm } from "@/pages/hrm/holiday/components/add-holiday-form";
 import EstimateSalary from "@/pages/hrm/estimate-salary";
+
 
 
 // import AttendancePolicy from "@/pages/hrm/attendance-policy";
@@ -48,7 +50,7 @@ const hrmRoutes = {
   children: [
     {
       index: true,
-      element: withFallback(<Dashboard title="HRM" />),
+      element: withFallback(<HRMDashboard/>),
       errorElement: withFallback(<ErrorPage />),
     },
 
