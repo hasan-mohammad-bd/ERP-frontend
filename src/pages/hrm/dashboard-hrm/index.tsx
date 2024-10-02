@@ -25,6 +25,7 @@ import Voucher from "./voucher-list";
 import { useGetDashboardSummariesQuery } from "@/store/services/accounts/api/general-ledger copy";
 import { BarChartComponent } from "./bar-chart";
 import { TotalEmployeeChart } from "./total-employee-chart";
+import { EmployeeBranch } from "./employee-branch";
 
 const HRMDashboard = () => {
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
@@ -128,7 +129,7 @@ const HRMDashboard = () => {
               </div>
               <div className="">
                 <div className="">
-                  <Chart chartData={chartData} />
+                <EmployeeBranch />
                 </div>
                 <div className="mt-3">
                   <Voucher />
