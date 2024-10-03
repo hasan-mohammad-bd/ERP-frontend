@@ -6,15 +6,15 @@
 import { Card } from "@/components/ui/card";
 
 // import { ChevronRight } from "lucide-react";
-import EmployeeServiceLifeTable from "./components/employee-service-life-table";
 
-interface Props {
-  title: string;
-  data: any;
-  subjectOn ?: string;
+import EmployeeByList from "./components/employee-by-list";
+interface Props  {
+  title: string
+  data: any
+  subject: string
 }
 
-const EmployeeServiceLife = ({title, data, subjectOn}: Props ) => {
+const EmployeeBy = ({title, data, subject}: Props ) => {
   // const [isOpen, setIsOpen] = useState(false);
   // const navigate = useNavigate();
 
@@ -38,11 +38,11 @@ const EmployeeServiceLife = ({title, data, subjectOn}: Props ) => {
         </div>
 
         <div>
-          <EmployeeServiceLifeTable data={data} subjectOn={subjectOn} />
+          <EmployeeByList data={data} subject={subject} />
         </div>
       </Card>
     </>
   );
 };
 
-export default EmployeeServiceLife;
+export default EmployeeBy;

@@ -1,4 +1,4 @@
-import { CardHeader, CardContent, Card } from "@/components/ui/card";
+import {  Card } from "@/components/ui/card";
 // import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 
@@ -21,11 +21,148 @@ import { DatePickerWithRange } from "@/components/common/tool-bar/tool-bar-items
 import React from "react";
 import { format } from "date-fns";
 // import { Chart } from "./chart";
-import Voucher from "./voucher-list";
+// import Voucher from "./voucher-list";
 import { useGetDashboardSummariesQuery } from "@/store/services/accounts/api/general-ledger copy";
-import { BarChartComponent } from "./bar-chart";
+// import { BarChartComponent } from "./bar-chart";
 import { TotalEmployeeChart } from "./total-employee-chart";
 import { EmployeeBranch } from "./employee-branch";
+// import EmployeeServiceLife from "./employee-service-life";
+import EmployeeBy from "./employee-by";
+import { RangeBarChart } from "./range-bar-chart";
+
+
+const employeeData = [
+  {
+    id: 1,
+    employee_name: "John Doe",
+    image:
+      "https://plus.unsplash.com/premium_photo-1674854858248-8987c02e74cf?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    department: "IT",
+    designation: "Software Engineer",
+    age: "70",
+    gender: "Male",
+    leave: true,
+    organization: "One Tech",
+  },
+  {
+    id: 2,
+    employee_name: "Rahana Rahaman",
+    designation: "Manager",
+    image:
+      "https://images.unsplash.com/photo-1664575602554-2087b04935a5?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    department: "Accounts",
+    age: "25",
+    gender: "Female",
+    leave: true,
+    organization: "Opportunity",
+  },
+  {
+    id: 3,
+    employee_name: "Bathon Khan",
+    designation: "Manager",
+    image:
+      "https://images.unsplash.com/photo-1464863979621-258859e62245?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    department: "IT",
+    age: "21",
+    gender: "Female",
+    leave: true,
+    organization: "One Lead",
+  },
+  {
+    id: 4,
+    employee_name: "Mike Smith",
+    designation: "Manager",
+    image:
+      "https://plus.unsplash.com/premium_photo-1671656349218-5218444643d8?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    department: "Development",
+    age: "30",
+    gender: "Male",
+    leave: true,
+    organization: "One Mood",
+  },
+  {
+    id: 5,
+    employee_name: "Jasika Khan",
+    designation: "Front-end Developer",
+    image:
+      "https://plus.unsplash.com/premium_photo-1670884442192-7b58d513cd55?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    department: "IT",
+    age: "30",
+    gender: "Female",
+    leave: false,
+    organization: "One Restaurant",
+  },
+  {
+    id: 6,
+    employee_name: "Orange Qube",
+    designation: "Manager",
+    image:
+      "https://plus.unsplash.com/premium_photo-1669879825881-6d4e4bde67d5?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    department: "IT",
+    age: "32",
+    gender: "Male",
+    leave: true,
+    organization: "One Restaurant",
+  },
+  {
+    id: 7,
+    employee_name: "Halana Omar",
+    designation: "Dev ops Engineer",
+    image:
+      "https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    department: "Design",
+    age: "22",
+    gender: "Female",
+    leave: true,
+    organization: "One Tech",
+  },
+];
+
+const employeeGenderData = [
+  {
+    id: 1,
+    gender: "Male",
+    total_employee: 22,
+  },
+  {
+    id: 2,
+    gender: "Female",
+    total_employee: 10,
+  },
+];
+
+const employeeServiceLifeData = [
+  {
+    id: 1,
+    total_employee: 4,
+    years: "10+ years",
+    age: "60 + ages",
+  },
+  {
+    id: 2,
+    total_employee: 8,
+    years: "5-10 years",
+    age: "40 - 60 ages",
+  },
+  {
+    id: 3,
+    total_employee: 16,
+    years: "2-5 years",
+    age: "20 - 40 ages",
+  },
+  {
+    id: 4,
+    total_employee: 20,
+    years: "0-2 years",
+    age: "10 - 20 ages",
+  },
+  {
+    id: 5,
+    total_employee: 9,
+    years: "Less than 1 year",
+    age: "Less than 10 ages",
+  },
+];
 
 const HRMDashboard = () => {
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
@@ -42,7 +179,7 @@ const HRMDashboard = () => {
     }`
   );
 
-  const chartData = data?.data || [];
+  // const chartData = data?.data || [];
 
   return (
     <div className="flex h-full flex-col">
@@ -115,25 +252,73 @@ const HRMDashboard = () => {
             </Card>
             <div className="grid grid-cols-3 gap-3">
               <div className="pb-3">
-                <TotalEmployeeChart/>
+                <TotalEmployeeChart />
 
-                <Card className="mt-3">
+                {/* <Card className="mt-3">
                   <CardHeader>
                     <h2 className="text-md ">Sales per month</h2>
                   </CardHeader>
                   <CardContent className="pl-2">
                     <BarChartComponent chartData={chartData} />
-                    {/* <Overview /> */}
+                   
                   </CardContent>
-                </Card>
+                </Card> */}
+                <div className="mt-3">
+                  <EmployeeBy
+                    title="Employee By Department"
+                    subject="department"
+                    data={employeeData}
+                  />
+                </div>
+
               </div>
               <div className="">
                 <div className="">
-                <EmployeeBranch />
+                  <EmployeeBranch />
+                </div>
+                {/* <div className="mt-3">
+                  <Voucher />
+                </div> */}
+                <div className="mt-3">
+                  <EmployeeBy
+                    title="Employee By Organization"
+                    subject="organization"
+                    data={employeeData}
+                  />
+                </div>
+              </div>
+              <div>
+                {/* <EmployeeServiceLife
+                  title="Employee Service Life"
+                  subjectOn="years"
+                  data={employeeServiceLifeData}
+                /> */}
+                <div className="mt-3">
+                  <RangeBarChart title="Employee Service Life" dataKey_1="years" chartData={employeeServiceLifeData}/>
                 </div>
                 <div className="mt-3">
-                  <Voucher />
+                  <RangeBarChart title="Employee Buy Age" dataKey_1="age" chartData={employeeServiceLifeData}/>
                 </div>
+                <div className="mt-3">
+                  <RangeBarChart title="Employee Buy Gender" dataKey_1="gender" chartData={employeeGenderData}/>
+                </div>
+
+                {/* <div className="mt-3">
+                  <EmployeeServiceLife
+                    title="Employee By Age"
+                    subjectOn="age"
+                    data={employeeServiceLifeData}
+                  />
+                </div>
+                <div className="mt-3">
+                  <EmployeeServiceLife
+                    title="Employee By Gender"
+                    subjectOn="gender"
+                    data={employeeGenderData}
+                  />
+                </div> */}
+
+
               </div>
             </div>
           </TabsContent>
