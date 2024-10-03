@@ -21,8 +21,8 @@ jobs:
       - name: Deploy to Amarsolution.xyz VPS via SSH
         uses: appleboy/ssh-action@v0.1.8
         with:
-          host: 51.79.158.38
-          username: ubuntu
+          host: amarsolution.xyz
+          username: akaarit
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ./akaar-erp-frontend;
