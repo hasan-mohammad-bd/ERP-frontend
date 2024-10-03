@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:dist/assets/circle-dollar-sign-99e33294.js
 import{c}from"./index-3f8f5d35.js";/**
-========
-import{c}from"./index-9b71b1d1.js";/**
->>>>>>>> main:dist/assets/circle-dollar-sign-216ad1a6.js
  * @license lucide-react v0.356.0 - ISC
  *
  * This source code is licensed under the ISC license.

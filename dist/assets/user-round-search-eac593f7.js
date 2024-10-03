@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:dist/assets/user-round-search-eac593f7.js
 import{c as e}from"./index-3f8f5d35.js";/**
-========
-import{c as e}from"./index-9b71b1d1.js";/**
->>>>>>>> main:dist/assets/user-round-search-53a335ad.js
  * @license lucide-react v0.356.0 - ISC
  *
  * This source code is licensed under the ISC license.

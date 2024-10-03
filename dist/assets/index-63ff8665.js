@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:dist/assets/index-63ff8665.js
 import{c as t,s as d,a as e,L as l,K as m}from"./index-3f8f5d35.js";import{s as c,U as r,T as i,m as h}from"./theme-toggle-072f122e.js";import"./avatar-d775c095.js";/**
-========
-import{c as t,s as d,a as e,L as l,K as m}from"./index-9b71b1d1.js";import{s as c,U as r,T as i,m as h}from"./theme-toggle-874bcad7.js";import"./avatar-ae327428.js";/**
->>>>>>>> main:dist/assets/index-edb24ad9.js
  * @license lucide-react v0.356.0 - ISC
  *
  * This source code is licensed under the ISC license.
