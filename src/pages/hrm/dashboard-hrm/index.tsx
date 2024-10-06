@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { Card } from "@/components/ui/card";
-=======
-import {  Card } from "@/components/ui/card";
->>>>>>> main
 // import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 
@@ -33,12 +29,8 @@ import { EmployeeBranch } from "./employee-branch";
 // import EmployeeServiceLife from "./employee-service-life";
 import EmployeeBy from "./employee-by";
 import { RangeBarChart } from "./range-bar-chart";
-<<<<<<< HEAD
 import ByOrgDept from "./by-org-dept";
 import Announcement from "./announcement";
-=======
-
->>>>>>> main
 
 const employeeData = [
   {
@@ -172,7 +164,6 @@ const employeeServiceLifeData = [
     age: "Less than 10 ages",
   },
 ];
-<<<<<<< HEAD
 
 const employeeByDeptOrganization = [
   {
@@ -233,8 +224,6 @@ const announcementData = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, assumenda.",
   },
 ]
-=======
->>>>>>> main
 
 const HRMDashboard = () => {
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
