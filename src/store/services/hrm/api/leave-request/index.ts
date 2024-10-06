@@ -1,4 +1,4 @@
-import {  LeaveRequestRow } from "@/lib/validators/hrm/leave";
+import { LeaveRequestRow, LeaveStatusFormValues } from "@/lib/validators/hrm/leave";
 import { hrmApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
 
@@ -11,10 +11,7 @@ const leaveRequestApi = hrmApi.injectEndpoints({
       query: (params) => `leaves?${params}`,
       providesTags: ["leaves"],
     }),
-    createLeaveRequest: build.mutation<
-      { data: LeaveRequestRow },
-      FormData
-    >({
+    createLeaveRequest: build.mutation<{ data: LeaveRequestRow }, FormData>({
       query: (newLeaveRequest) => ({
         url: `leaves`,
         method: "POST",
@@ -22,6 +19,18 @@ const leaveRequestApi = hrmApi.injectEndpoints({
       }),
       invalidatesTags: ["leaves"],
     }),
+    changeLeaveStatus: build.mutation<
+      { data: LeaveRequestRow },
+      LeaveStatusFormValues
+    >({
+      query: (newAttendancePolicy) => ({
+        url: `leaves/status-update`, 
+        method: "POST",
+        body: newAttendancePolicy,
+      }),
+      invalidatesTags: ["change-leave-status", "leaves"],
+    }),
+
     removeLeaveRequest: build.mutation<DeleteResponse, number>({
       query: (leaveRequestId) => ({
         url: `leaves/${leaveRequestId}`,
@@ -31,7 +40,7 @@ const leaveRequestApi = hrmApi.injectEndpoints({
     }),
     updateLeaveRequest: build.mutation<
       { data: LeaveRequestRow },
-      { leaveRequestId: number, updatedLeaveRequest: FormData }
+      { leaveRequestId: number; updatedLeaveRequest: FormData }
     >({
       query: ({ leaveRequestId, updatedLeaveRequest }) => ({
         url: `leaves/${leaveRequestId}`,
@@ -47,6 +56,7 @@ const leaveRequestApi = hrmApi.injectEndpoints({
 export const {
   useGetLeaveRequestsQuery,
   useCreateLeaveRequestMutation,
+  useChangeLeaveStatusMutation, 
   useRemoveLeaveRequestMutation,
   useUpdateLeaveRequestMutation,
 } = leaveRequestApi;

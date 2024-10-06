@@ -11,9 +11,16 @@ import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
 import { AttendancePolicyForm } from "./components/add-leave-request-form";
 import { useGetLeaveRequestsQuery } from "@/store/services/hrm/api/leave-request";
+import { LeaveRequestRow } from "@/lib/validators/hrm/leave";
+import { BulkAction } from "@/components/ui/data-table/data-table-bulk-actions";
+import { LeaveStatusChangeForm } from "./components/leave-status-change";
 
-
-
+const BULK_ACTIONS = [
+  {
+    label: "Change Leave Status",
+    value: "change-leave-status",
+  },
+];
 
 const LeaveRequest = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,15 +29,20 @@ const LeaveRequest = () => {
     pageSize: 10,
   });
 
+  const [selectedBulkAction, setSelectedBulkAction] = useState<
+  BulkAction<LeaveRequestRow>
+>({ action: "", payload: [] });
+
   const { data, isLoading, refetch } = useGetLeaveRequestsQuery(
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
-
 
   const jobRequestData = data?.data || [];
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   if (isLoading) return <Loading />;
+
+
 
   return (
     <>
@@ -52,8 +64,10 @@ const LeaveRequest = () => {
                 columns={attendanceColumns}
                 data={jobRequestData}
                 paginationInfo={paginationInfo}
-                pagination={pagination }
+                pagination={pagination}
                 setPagination={setPagination}
+                bulkActions={BULK_ACTIONS}
+                onBulkSelectChange={setSelectedBulkAction}
               />
             </div>
           )}
@@ -67,7 +81,27 @@ const LeaveRequest = () => {
           toggleModal={() => setIsOpen(false)}
           className="w-3/5 max-w-3xl"
         >
-          <AttendancePolicyForm refetch={refetch} modalClose={() => setIsOpen(false)} />
+          <AttendancePolicyForm
+            refetch={refetch}
+            modalClose={() => setIsOpen(false)}
+          />
+        </Modal>
+      )}
+
+      {selectedBulkAction.action === "change-leave-status" && (
+        <Modal
+          title="Change Leave Status"
+          toggleModal={() => setSelectedBulkAction({ action: "", payload: [] })}
+          isOpen={selectedBulkAction.action === "change-leave-status"}
+          className="!h-fit"
+        >
+          
+          <LeaveStatusChangeForm
+            payload={selectedBulkAction.payload as LeaveRequestRow[]}
+            modelClose={() =>
+              setSelectedBulkAction({ action: "", payload: [] })
+            }
+          />
         </Modal>
       )}
     </>

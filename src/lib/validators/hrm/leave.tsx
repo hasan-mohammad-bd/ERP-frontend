@@ -90,3 +90,14 @@ export const leaveRequestRow = leaveRequestSchema.extend({
 });
 
 export type LeaveRequestRow = z.infer<typeof leaveRequestRow>;
+
+
+// leave Status Change
+
+
+export const leaveStatusChangeSchema = z.object({
+  ids: z.array(z.coerce.number()),
+  status: z.string(),
+})
+
+export type LeaveStatusFormValues = z.infer<typeof leaveStatusChangeSchema>;
