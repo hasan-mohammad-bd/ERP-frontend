@@ -55,6 +55,7 @@ interface DataTableProps<TData, TValue> {
   startDate?: Date | null;
   endDate?: Date | null;
   className?: string | null;
+  children?: React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({
@@ -68,6 +69,7 @@ export function DataTable<TData, TValue>({
   className,
   onBulkSelectChange,
   reportFormate,
+  children,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -215,6 +217,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+      {children}
       {!noPagination && <DataTablePagination table={table} />}
     </Card>
   );

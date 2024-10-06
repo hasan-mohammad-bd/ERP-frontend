@@ -16,10 +16,13 @@ import ReportsToolBar from "@/components/common/tool-bar/reports-tool-bar";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { format } from "date-fns";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
+import { Card } from "@/components/ui/card";
 
 const GeneralLedger = () => {
   // const [isOpen, setIsOpen] = useState(false);
-  const [projectFiltered, setProjectFiltered] = React.useState<number | null>(null);
+  const [projectFiltered, setProjectFiltered] = React.useState<number | null>(
+    null
+  );
   const [filtered, setFiltered] = React.useState<number | null>(null);
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
@@ -53,6 +56,9 @@ const GeneralLedger = () => {
   const ledgerAccountData = ledgerAccount?.data || [];
 
   const generalLedger = data?.data || [];
+  const summery = data?.summery;
+
+  console.log(summery);
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
   if (isLoading) return <Loading />;
@@ -75,7 +81,7 @@ const GeneralLedger = () => {
         <div className="flex-1 space-y-4">
           <Separator />
           {generalLedger && (
-            <div className="w-2/3 mx-auto">
+            <Card className="w-2/3 mx-auto">
               <DataTable
                 columns={generalLedgerColumns}
                 data={generalLedger}
@@ -89,8 +95,21 @@ const GeneralLedger = () => {
                   company: "Akaar IT",
                   reportType: "General Ledger",
                 }}
-              />
-            </div>
+              >
+                <div className="grid grid-cols-7 items-center justify-end bg-gray-100 rounded-lg py-3">
+                  <span className="font-bold text-sm col-span-5 text-right mr-10">
+                    Total
+                  </span>
+                  <span className="font-bold text-sm">
+                    {summery?.dr_amount.toLocaleString("en-IN")}
+                  </span>
+                  <span className="font-bold text-sm">
+                    {summery?.cr_amount.toLocaleString("en-IN")}
+                  </span>
+                  <span></span>
+                </div>
+              </DataTable>
+            </Card>
           )}
         </div>
       </div>

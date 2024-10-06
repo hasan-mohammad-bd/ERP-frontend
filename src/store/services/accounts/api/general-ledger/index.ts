@@ -6,7 +6,7 @@ import { DetailedGeneralLedgerRow, GeneralLedgerRow, SummeryRow } from "@/lib/va
 const generalLedgerApi = accountApi.injectEndpoints({
 	endpoints: (build) => ({
 		getGeneralLedgers: build.query<
-			{ data: GeneralLedgerRow[]; meta: PaginationInfo },
+			{ data: GeneralLedgerRow[]; meta: PaginationInfo, summery: SummeryRow },
 			string
 		>({
 			query: (params) => `reports/general-ledger?${params}`,
