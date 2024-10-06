@@ -96,18 +96,18 @@ const GeneralLedger = () => {
                   reportType: "General Ledger",
                 }}
               >
-                <div className="grid grid-cols-7 items-center justify-end bg-gray-100 rounded-lg py-3">
+{/*                 <div className="grid grid-cols-7 items-center justify-end bg-gray-100 rounded-lg py-3">
                   <span className="font-bold text-sm col-span-5 text-right mr-10">
                     Total
                   </span>
                   <span className="font-bold text-sm">
-                    {summery?.dr_amount.toLocaleString("en-IN")}
-                  </span>
-                  <span className="font-bold text-sm">
                     {summery?.cr_amount.toLocaleString("en-IN")}
                   </span>
+                  <span className="font-bold text-sm">
+                    {summery?.dr_amount.toLocaleString("en-IN")}
+                  </span>
                   <span></span>
-                </div>
+                </div> */}
               </DataTable>
             </Card>
           )}
