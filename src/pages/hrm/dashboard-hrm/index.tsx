@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Card } from "@/components/ui/card";
+=======
+import {  Card } from "@/components/ui/card";
+>>>>>>> main
 // import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 
@@ -29,8 +33,12 @@ import { EmployeeBranch } from "./employee-branch";
 // import EmployeeServiceLife from "./employee-service-life";
 import EmployeeBy from "./employee-by";
 import { RangeBarChart } from "./range-bar-chart";
+<<<<<<< HEAD
 import ByOrgDept from "./by-org-dept";
 import Announcement from "./announcement";
+=======
+
+>>>>>>> main
 
 const employeeData = [
   {
@@ -164,6 +172,7 @@ const employeeServiceLifeData = [
     age: "Less than 10 ages",
   },
 ];
+<<<<<<< HEAD
 
 const employeeByDeptOrganization = [
   {
@@ -224,6 +233,8 @@ const announcementData = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, assumenda.",
   },
 ]
+=======
+>>>>>>> main
 
 const HRMDashboard = () => {
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
@@ -326,6 +337,7 @@ const HRMDashboard = () => {
                 </Card> */}
                 <div className="mt-3">
                   <EmployeeBy
+<<<<<<< HEAD
                     title="Employee on Leave"
                     subject="department"
                     data={employeeData}
@@ -334,6 +346,9 @@ const HRMDashboard = () => {
                 <div className="mt-3">
                   <EmployeeBy
                     title="Upcoming Birthday"
+=======
+                    title="Employee By Department"
+>>>>>>> main
                     subject="department"
                     data={employeeData}
                   />
@@ -347,12 +362,17 @@ const HRMDashboard = () => {
                 {/* <div className="mt-3">
                   <Voucher />
                 </div> */}
+<<<<<<< HEAD
                 {/* <div className="mt-3">
+=======
+                <div className="mt-3">
+>>>>>>> main
                   <EmployeeBy
                     title="Employee By Organization"
                     subject="organization"
                     data={employeeData}
                   />
+<<<<<<< HEAD
                 </div> */}
                 <div className="mt-3">
                   <ByOrgDept
@@ -405,6 +425,24 @@ const HRMDashboard = () => {
                     subject="department"
                     data={employeeData}
                   />
+=======
+                </div>
+              </div>
+              <div>
+                {/* <EmployeeServiceLife
+                  title="Employee Service Life"
+                  subjectOn="years"
+                  data={employeeServiceLifeData}
+                /> */}
+                <div className="mt-3">
+                  <RangeBarChart title="Employee Service Life" dataKey_1="years" chartData={employeeServiceLifeData}/>
+                </div>
+                <div className="mt-3">
+                  <RangeBarChart title="Employee Buy Age" dataKey_1="age" chartData={employeeServiceLifeData}/>
+                </div>
+                <div className="mt-3">
+                  <RangeBarChart title="Employee Buy Gender" dataKey_1="gender" chartData={employeeGenderData}/>
+>>>>>>> main
                 </div>
 
                 {/* <div className="mt-3">
@@ -421,6 +459,11 @@ const HRMDashboard = () => {
                     data={employeeGenderData}
                   />
                 </div> */}
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> main
               </div>
             </div>
           </TabsContent>
