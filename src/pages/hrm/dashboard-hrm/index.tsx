@@ -1,4 +1,4 @@
-import {  Card } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 // import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 
@@ -29,7 +29,8 @@ import { EmployeeBranch } from "./employee-branch";
 // import EmployeeServiceLife from "./employee-service-life";
 import EmployeeBy from "./employee-by";
 import { RangeBarChart } from "./range-bar-chart";
-
+import ByOrgDept from "./by-org-dept";
+import Announcement from "./announcement";
 
 const employeeData = [
   {
@@ -164,6 +165,66 @@ const employeeServiceLifeData = [
   },
 ];
 
+const employeeByDeptOrganization = [
+  {
+    id: 1,
+    total_employee: 22,
+    department: "HR",
+    organization: "One Lead",
+    image:
+      "https://www.logomaker.com/wpstatic/uploads/2015/06/Logo-Samples2-33-min.jpg",
+  },
+  {
+    id: 2,
+    total_employee: 10,
+    department: "IT",
+    organization: "One Mood",
+    image:
+      "https://www.logomaker.com/wpstatic/uploads/2015/06/Logo-Samples2-36-min.jpg",
+  },
+  {
+    id: 3,
+    total_employee: 16,
+    department: "Development",
+    organization: "One Restaurant",
+    image:
+      "https://www.logomaker.com/wpstatic/uploads/2015/06/Logo-Samples2-04-min.jpg",
+  },
+  {
+    id: 4,
+    total_employee: 20,
+    department: "Design",
+    organization: "One Tech",
+    image:
+      "https://www.logomaker.com/wpstatic/uploads/2015/06/Logo-Samples2-38-min.jpg",
+  },
+];
+
+const announcementData = [
+  {
+    id: 1,
+    title: "HRM Announcement",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, assumenda.",
+      date: "2022-01-01",
+  },
+  {
+    id: 2,
+    title: "Holiday Announcement",
+    date: "2022-01-01",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, assumenda.",
+      
+  },
+  {
+    id: 3,
+    title: "Salary Announcement",
+    date: "2022-01-01",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, assumenda.",
+  },
+]
+
 const HRMDashboard = () => {
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
@@ -265,7 +326,14 @@ const HRMDashboard = () => {
                 </Card> */}
                 <div className="mt-3">
                   <EmployeeBy
-                    title="Employee By Department"
+                    title="Employee on Leave"
+                    subject="department"
+                    data={employeeData}
+                  />
+                </div>
+                <div className="mt-3">
+                  <EmployeeBy
+                    title="Upcoming Birthday"
                     subject="department"
                     data={employeeData}
                   />
@@ -279,12 +347,29 @@ const HRMDashboard = () => {
                 {/* <div className="mt-3">
                   <Voucher />
                 </div> */}
-                <div className="mt-3">
+                {/* <div className="mt-3">
                   <EmployeeBy
                     title="Employee By Organization"
                     subject="organization"
                     data={employeeData}
                   />
+                </div> */}
+                <div className="mt-3">
+                  <ByOrgDept
+                    title="Employee By Department"
+                    data={employeeByDeptOrganization}
+                    subject="department"
+                  />
+                </div>
+                <div className="mt-3">
+                  <ByOrgDept
+                    title="Employee By Organization"
+                    data={employeeByDeptOrganization}
+                    subject="organization"
+                  />
+                </div>
+                <div className="mt-3">
+                    <Announcement title="Announcement" data={announcementData}/>
                 </div>
               </div>
               <div>
@@ -294,13 +379,32 @@ const HRMDashboard = () => {
                   data={employeeServiceLifeData}
                 /> */}
                 <div className="mt-3">
-                  <RangeBarChart title="Employee Service Life" dataKey_1="years" chartData={employeeServiceLifeData}/>
+                  <RangeBarChart
+                    title="Employee Service Life"
+                    dataKey_1="years"
+                    chartData={employeeServiceLifeData}
+                  />
                 </div>
                 <div className="mt-3">
-                  <RangeBarChart title="Employee Buy Age" dataKey_1="age" chartData={employeeServiceLifeData}/>
+                  <RangeBarChart
+                    title="Employee Buy Age"
+                    dataKey_1="age"
+                    chartData={employeeServiceLifeData}
+                  />
                 </div>
                 <div className="mt-3">
-                  <RangeBarChart title="Employee Buy Gender" dataKey_1="gender" chartData={employeeGenderData}/>
+                  <RangeBarChart
+                    title="Employee Buy Gender"
+                    dataKey_1="gender"
+                    chartData={employeeGenderData}
+                  />
+                </div>
+                <div className="mt-3">
+                  <EmployeeBy
+                    title="Work Anniversary"
+                    subject="department"
+                    data={employeeData}
+                  />
                 </div>
 
                 {/* <div className="mt-3">
@@ -317,8 +421,6 @@ const HRMDashboard = () => {
                     data={employeeGenderData}
                   />
                 </div> */}
-
-
               </div>
             </div>
           </TabsContent>
