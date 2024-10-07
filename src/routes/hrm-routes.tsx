@@ -34,11 +34,13 @@ import {
   LeavePolicy,
   AttendancePolicyMapping,
   NotFoundPage,
-  HRMDashboard
+  HRMDashboard,
+  LeaveSummary,
 } from "./components";
 
 import { AddHolidayForm } from "@/pages/hrm/holiday/components/add-holiday-form";
 import EstimateSalary from "@/pages/hrm/estimate-salary";
+
 
 
 
@@ -118,6 +120,7 @@ const hrmRoutes = {
       path: "rosters",
       element: withFallback(<Roster />),
       errorElement: withFallback(<ErrorPage />),
+
     },
     {
       path: "roster-employee",
@@ -232,6 +235,11 @@ const hrmRoutes = {
     {
       path: "estimate-salary",
       element: withFallback(<EstimateSalary />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "hrm/leave-summary",
+      element: withFallback(<LeaveSummary />),
       errorElement: withFallback(<ErrorPage />),
     }
 

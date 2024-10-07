@@ -193,7 +193,6 @@ const hrmNavItems: NavItem[] = [
         color: "text-sky-500",
         href: "/hrm/estimate-salary",
       },
-
     ],
   },
 
@@ -255,8 +254,18 @@ const hrmNavItems: NavItem[] = [
   {
     title: "Reports",
     icon: NotebookText,
-    href: "hrm/new-route",
+    href: "/hrm",
     color: "text-sky-500",
+    isChildren: true,
+
+    children: [
+      {
+        title: "Leave Summary",
+        icon: UserRoundSearch,
+        href: "hrm/leave-summary",
+        color: "text-sky-500",
+      },
+    ],
   },
 
   {
@@ -320,7 +329,7 @@ const hrmNavItems: NavItem[] = [
       },
     ],
   },
-  
+
   {
     title: "HRM Setting",
     icon: Settings,

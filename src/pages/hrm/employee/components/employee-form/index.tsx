@@ -71,6 +71,8 @@ import { AddSkillForm } from "./add-skill";
 import { AddNomineeForm } from "./add-nominee";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
+import { useGetLeaveGroupsQuery } from "@/store/services/hrm/api/leave-group";
+import { LeaveGroupRow } from "@/lib/validators/hrm/leave";
 
 interface EmployeeFormProps {
 	modalClose: () => void;
@@ -120,6 +122,12 @@ export function EmployeeForm({
 		useGetBloodGroupsQuery();
 	const { data: roles, isLoading: roleLoading } = useGetRolesQuery();
 
+	const { data:LeaveGroup, isLoading: LeaveGroupLoading } = useGetLeaveGroupsQuery(
+    `per_page=10&page=1`
+  );
+
+  const leaveGroupData = LeaveGroup?.data || [];
+
 	const locationData = locations?.data || [];
 	const religionData = religions?.data || [];
 	const genderData = genders?.data || [];
@@ -162,6 +170,7 @@ export function EmployeeForm({
 			religion_id: previousData?.religion_id || 1,
 			blood_group_id: previousData?.blood_group_id || 1,
 			role_id: previousData?.role_id || 1,
+			leave_group_id: previousData?.leave_group_id || 1,
 
 			//additional info
 
@@ -966,6 +975,45 @@ export function EmployeeForm({
 																				value={String(role.id)}
 																			>
 																				{role.name}
+																			</SelectItem>
+																		))
+																	)}
+																</SelectContent>
+															</Select>
+															<FormMessage />
+														</FormItem>
+													)}
+												/>
+												<FormField
+													control={form.control}
+													name="leave_group_id"
+													render={({ field }) => (
+														<FormItem>
+															<FormLabel>Leave Group</FormLabel>
+
+															<Select
+																onValueChange={field.onChange}
+																defaultValue={
+																	previousData?.leave_group_id
+																		? String(previousData.leave_group_id)
+																		: undefined
+																}
+															>
+																<FormControl>
+																	<SelectTrigger>
+																		<SelectValue placeholder="Select Leave Group" />
+																	</SelectTrigger>
+																</FormControl>
+																<SelectContent>
+																	{LeaveGroupLoading ? (
+																		<Loading />
+																	) : (
+																		leaveGroupData?.map((group: LeaveGroupRow) => (
+																			<SelectItem
+																				key={group.id}
+																				value={String(group.id)}
+																			>
+																				{group.name}
 																			</SelectItem>
 																		))
 																	)}

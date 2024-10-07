@@ -921,6 +921,7 @@ export type NomineeColumn = z.infer<typeof nomineeColumn>;
 
 export const EmployeeFormSchema = z.object({
   employee_unique_id: z.string(),
+  leave_group_id: z.coerce.number(),
   card_id: z.string().optional().nullable(),
   machine_id: z.string().optional().nullable(),
   first_name: z.string({
@@ -1083,6 +1084,7 @@ export type EmployeeUpdateFormValues = z.infer<typeof EmployeeUpdateSchema>;
 
 export const employeeColumn = z.object({
   id: z.coerce.number(),
+  leave_group_id: z.coerce.number(),
   first_name: z.string(),
   last_name: z.string(),
   email: z.string(),

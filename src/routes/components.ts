@@ -112,3 +112,5 @@ export const AttendancePolicyMapping = lazy(
 );
 
 export const HRMDashboard = lazy(() => import("@/pages/hrm/dashboard-hrm"));
+
+export const LeaveSummary = lazy(() => import("@/pages/hrm/reports/leave-reports/leave-summary"));
