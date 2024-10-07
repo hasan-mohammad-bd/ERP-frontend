@@ -33,6 +33,7 @@ import { BulkAction, BulkActionItem } from "./data-table-bulk-actions";
 import { PaginationInfo } from "@/types";
 import { Card } from "../card";
 import { format } from "date-fns";
+import { cn } from "@/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -191,9 +192,7 @@ export function DataTable<TData, TValue>({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
-                      className={`${
-                        reportFormate ? "py-2" : className || "py-0"
-                      }`}
+                      className={cn(reportFormate ? "py-2" : `py-0`, className)}
                       key={cell.id}
                     >
                       {flexRender(

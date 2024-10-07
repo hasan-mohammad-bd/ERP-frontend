@@ -32,10 +32,10 @@ const jobApplyApi = hrmApi.injectEndpoints({
     }),
     removeJobApply: build.mutation<DeleteResponse, number>({
       query: (jobApplyId) => ({
-        url: `job-applies/${jobApplyId}`, 
+        url: `job-applies/${jobApplyId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["job-applies"], 
+      invalidatesTags: ["job-applies"],
     }),
     updateJobApply: build.mutation<{ data: JobApplyColumn }, { jobApplyId: number, updatedJobApply: JobApplyFormValues }>({
       query: ({ jobApplyId, updatedJobApply }) => ({
@@ -53,6 +53,6 @@ export const {
   useGetJobAppliesQuery, 
   useGetJobApplyStatusDataQuery,
   useCreateJobApplyMutation, 
-  useRemoveJobApplyMutation, 
+  useRemoveJobApplyMutation,
   useUpdateJobApplyMutation 
 } = jobApplyApi;

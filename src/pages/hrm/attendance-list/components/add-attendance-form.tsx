@@ -8,79 +8,74 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { DepartmentColumn } from "@/lib/validators";
 import { useForm } from "react-hook-form";
-
 import { DateTimePicker } from "@/components/ui/dayTimePicker";
 import MultipleSelector, { Option } from "@/components/ui/multiSelectSearch";
 import { Textarea } from "@/components/ui/textarea";
-import { AttendanceFormValues } from "@/lib/validators/hrm/attendance.vatidator";
 import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
+import {
+  useCreateAttendanceCheckInMutation,
+  useCreateAttendanceCheckOutMutation,
+} from "@/store/services/hrm/api/attendance-list"; // Import both mutations
 import { useState } from "react";
 import { Tab } from "..";
+import { attendanceCheckInFormValues } from "@/lib/validators/hrm/attendance-list";
+import { EmployeeColumn } from "@/lib/validators";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
+import { toast } from "sonner";
+// import { toast } from "react-toastify"; // If using toast for notifications
 
 interface AddAttendanceFormProps {
-  data?: DepartmentColumn;
   tab: Tab;
   modalClose: () => void;
 }
 
-export function AddAttendanceForm({
-  // data: previousData,
-  tab,
-  modalClose,
-}: AddAttendanceFormProps) {
+export function AddAttendanceForm({ tab, modalClose }: AddAttendanceFormProps) {
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const [employeeSearchTerm, setEmployeeSearchTerm] = useState("");
-  const [date, setDate] = useState<Date>();
 
   const { data: employeeList, isLoading: isLoadingEmployee } =
     useGetEmployeesQuery(`per_page=15&page=1&search=${employeeSearchTerm}`);
 
+  const [createAttendanceCheckIn, { isLoading: isSubmittingCheckIn }] =
+    useCreateAttendanceCheckInMutation(); // Check-in mutation
+
+  const [createAttendanceCheckOut, { isLoading: isSubmittingCheckOut }] =
+    useCreateAttendanceCheckOutMutation(); // Check-out mutation
+
+  const form = useForm<attendanceCheckInFormValues>({
+    defaultValues: {},
+  });
+
   const handleSearch = async (query: string): Promise<Option[]> => {
     setEmployeeSearchTerm(query);
 
-    // Transform the API response to match the Option interface
     const options =
-      employeeList?.data?.map((item: any) => ({
+      employeeList?.data?.map((item: EmployeeColumn) => ({
         value: String(item.id),
-        label:
-          item.first_name + " " + item.last_name + "" + "(" + item.id + ")",
+        label: item.first_name + " " + item.last_name + " (" + item.id + ")",
       })) || [];
 
     return options;
   };
-  const form = useForm<AttendanceFormValues>({
-    // resolver: zodResolver(AttendanceFormSchema),
-    defaultValues: {},
-  });
 
-  async function onSubmit(data: any) {
-    const payload = {
-      ...data,
-      attendance_type: tab,
+  const onSubmit = async (data: attendanceCheckInFormValues) => {
+    try {
+      if (tab === "check-in") {
+        await createAttendanceCheckIn(data).unwrap(); // Call check-in mutation
+        toast.success("CheckIn created successfully!");
+      } else {
+        await createAttendanceCheckOut(data).unwrap(); // Call check-out mutation
+        toast.success("CheckOut created successfully!");
+      }
 
-    };
-    modalClose();
-
-    console.log("🚀 ~ onSubmit ~ data:", payload);
-
-    // try {
-    //   if (previousData) {
-    //     await updateDepartment({
-
-    //       departmentId: previousData.id,
-    //       updatedDepartment: data,
-    //     });
-    //     toast.success("Department updated successfully");
-    //   } else {
-    //     await createDepartment(data);
-    //     toast.success("Department created successfully");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  }
+      modalClose();
+    } catch (error) {
+      console.error("Error recording attendance:", error);
+      handleErrors(error as ErrorResponse);
+    }
+  };
 
   return (
     <>
@@ -107,7 +102,6 @@ export function AddAttendanceForm({
                       onSearch={handleSearch}
                       onChange={(options) => {
                         setSelectedOptions(options);
-                        // Update the form field value with the selected option values
                         field.onChange(
                           options.map((option) => parseInt(option.value))
                         );
@@ -128,17 +122,13 @@ export function AddAttendanceForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Punch Time</FormLabel>
-                  <FormControl>
+                  <FormControl className="">
                     <DateTimePicker
                       {...field}
-                      // {...form.register("date_time")}
-                      value={date}
-                      onChange={(date) => {
-                        field.onChange(date);
-                        setDate(date);
-                      }}
+                      displayFormat={{ hour12: "yyyy/MM/dd h:mm a" }}
+                      value={field.value}
+                      onChange={field.onChange}
                       granularity="minute"
-                      // displayFormat={{ hour12: "hh:mm A" }}
                       hourCycle={12}
                     />
                   </FormControl>
@@ -146,7 +136,6 @@ export function AddAttendanceForm({
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="note"
@@ -154,10 +143,7 @@ export function AddAttendanceForm({
                 <FormItem>
                   <FormLabel>Note</FormLabel>
                   <FormControl>
-                    <Textarea
-                      {...form.register("note")}
-                      // {...field}
-                    />
+                    <Textarea {...form.register("note")} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -168,8 +154,13 @@ export function AddAttendanceForm({
                 variant={tab === "check-in" ? "default" : "destructive"}
                 type="submit"
                 className="w-full mt-4"
+                disabled={isSubmittingCheckIn || isSubmittingCheckOut}
               >
-                {tab === "check-in" ? "Check In" : "Check Out"}
+                {isSubmittingCheckIn || isSubmittingCheckOut
+                  ? "Submitting..."
+                  : tab === "check-in"
+                  ? "Check In"
+                  : "Check Out"}
               </Button>
             </div>
           </form>

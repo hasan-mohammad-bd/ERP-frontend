@@ -1,79 +1,35 @@
-import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
-import { CellAction } from "./cell-action";
-import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance.vatidator";
+import { AttendanceRow } from "@/lib/validators/hrm/attendance-list";
+import { getFormattedDateTime } from "@/utils/format-dates";
 
-export const attendanceColumns: ColumnDef<AttendancePolicyRow>[] = [
-	{
-		id: "select",
-		header: ({ table }) => (
-			<Checkbox
-				checked={
-					table.getIsAllPageRowsSelected() ||
-					(table.getIsSomePageRowsSelected() && "indeterminate")
-				}
-				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-				aria-label="Select all"
-				className="translate-y-[2px]"
-			/>
-		),
-		cell: ({ row }) => (
-			<Checkbox
-				checked={row.getIsSelected()}
-				onCheckedChange={(value) => row.toggleSelected(!!value)}
-				aria-label="Select row"
-				className="translate-y-[2px]"
-			/>
-		),
-		enableSorting: false,
-		enableHiding: false,
-	},
-	{
-		accessorKey: "employee_id",
-		header: "Employee ID",
-	},
+export const attendanceColumns: ColumnDef<AttendanceRow>[] = [
+  {
+    accessorKey: "employee.name",
+    header: "Employee Name",
+  },
+  {
+    accessorKey: "employee.department.name",
+    header: "Department",
+  },
+  {
+    accessorKey: "employee.designation.name",
+    header: "Designation",
+  },
 
-	{
-		accessorKey: "employee_name",
-		header: "Employee Name",
-	},
-	{
-		accessorKey: "department",
-		header: "Department",
-	},
-	{
-		accessorKey: "branch",
-		header: "Branch",
-	},
-	{
-		accessorKey: "date",
-		header: "Date",
-	},
-	{
-		accessorKey: "day",
-		header: "Day",
-	},
-	{
-		accessorKey: "out_time",
-		header: "Out Time",
-	},
-	{
-		accessorKey: "status",
-		header: "Status",
-	},
-
-	// {
-	// 	accessorKey: "employee_count",
-	// 	header: "Employee Count",
-	// },
-
-
-
-
-	{
-		id: "actions",
-		header: () => <div className="text-center">Actions</div>,
-		enableSorting: false,
-		cell: ({ row }) => <CellAction data={row.original} />,
-	},
+  {
+    accessorKey: "check_in",
+    header: "Check In",
+    cell: ({ row }) =>
+      row.original.check_in && getFormattedDateTime(row.original?.check_in),
+  },
+  {
+    accessorKey: "check_out",
+    header: "Check out",
+    cell: ({ row }) =>
+      row.original.check_out && getFormattedDateTime(row.original?.check_out),
+  },
+  {
+    accessorKey: "note",
+    header: "Note",
+  },
 ];

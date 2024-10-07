@@ -2,7 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { LeaveRequestRow } from "@/lib/validators/hrm/leave";
-import { DataFormate12Hours } from "@/utils/format-dates";
+import { getFormattedDateTime } from "@/utils/format-dates";
 
 
 export const attendanceColumns: ColumnDef<LeaveRequestRow>[] = [
@@ -48,20 +48,17 @@ export const attendanceColumns: ColumnDef<LeaveRequestRow>[] = [
 	{
 		accessorKey: "start_date_time",
 		header: "Start Date",
-		cell: ({ row }) => DataFormate12Hours(row.original.start_date_time)
+		cell: ({ row }) => getFormattedDateTime(row.original.start_date_time)
 	},
 	{
 		accessorKey: "end_date_time",
 		header: "End Date",
-		cell: ({ row }) => DataFormate12Hours(row.original.end_date_time)
+		cell: ({ row }) => getFormattedDateTime(row.original.end_date_time)
 	},
 	{
 		accessorKey: "status",
 		header: "Status",
 	},
-
-
-
 	{
 		id: "actions",
 		header: () => <div className="text-center">Actions</div>,

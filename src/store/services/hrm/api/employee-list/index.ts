@@ -48,6 +48,7 @@ const employeeApi = hrmApi.injectEndpoints({
 
 export const {
   useGetEmployeesQuery,
+  useLazyGetEmployeesQuery,
   useCreateEmployeeMutation,
   useRemoveEmployeeMutation,
   useUpdateEmployeeMutation
