@@ -20,6 +20,7 @@ interface SearchSelectProps<T> {
   onSelect: (item: T) => void;
   placeholder?: string;
   noItemText?: string;
+  className?: string;
 }
 
 const SearchSelect = <T extends object>({
@@ -30,6 +31,7 @@ const SearchSelect = <T extends object>({
   onSelect,
   placeholder = "Select an item...",
   noItemText = "No items found.",
+  className
 }: SearchSelectProps<T>) => {
   const [open, setOpen] = useState(false);
 
@@ -46,13 +48,13 @@ const SearchSelect = <T extends object>({
           size={"sm"}
           role="combobox"
           aria-expanded={open}
-          className="w-[230px] justify-between"
+          className={cn("w-[212px] justify-between", className)}
         >
           {value ? value[labelKey]?.toString() : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent  className="max-w-[230px] p-0">
+      <PopoverContent  className={cn("max-w-fit w-[212px] p-0", className)}>
         <Command>
           <CommandInput placeholder={`Search ${placeholder.toLowerCase()}`} />
           <CommandList>
