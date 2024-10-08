@@ -12,6 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -96,9 +97,22 @@ export function AddReceiptForm() {
         type: previousData?.type || "Receipt Voucher",
         date: previousData?.date,
         entry_number: previousData?.entry_number || "",
-        details: previousData?.details || [
-          { dr_amount: 0, cr_amount: 0 },
-          { dr_amount: 0, cr_amount: 0 },
+        details: previousData.details.map((detail) => ({
+          ledger_account_id: detail.ledger_account_id.toString(),
+          cr_amount: detail.cr_amount,
+          dr_amount: detail.dr_amount,
+          note: detail.note,
+        })) || [
+          {
+            dr_amount: 0,
+            cr_amount: 0,
+            cost_centers: [],
+          },
+          {
+            dr_amount: 0,
+            cr_amount: 0,
+            cost_centers: [],
+          },
         ],
         note: previousData?.note || "",
       });
@@ -255,6 +269,21 @@ export function AddReceiptForm() {
                         />
 
                         <div className="w-[200px]">
+                        <FormSearchSelect<LedgerRow>
+                          loading={ledgerAccountLoading}
+                          data={ledgerAccountData.filter(
+                            (ledgerAccount: LedgerRow) =>
+                              ledgerAccount.nature === "Cash" ||
+                              ledgerAccount.nature ===
+                                "Bank Accounts"
+                          )}
+                          displayField="name"
+                          valueField="id"
+                          form={form}
+                          name={`details.0.ledger_account_id`}
+                          title="Credit Account Head"
+                          className="w-[250px]"
+                        />
                           <FormField
                             control={form.control}
                             name={`details.0.ledger_account_id`}
@@ -347,7 +376,22 @@ export function AddReceiptForm() {
                         }`}
                       >
                         <div className={`w-[250px]`}>
-                          <FormField
+                        <FormSearchSelect<LedgerRow>
+                          loading={ledgerAccountLoading}
+                          data={ledgerAccountData.filter(
+                            (ledgerAccount: LedgerRow) =>
+                              ledgerAccount.nature !== "Cash" &&
+                              ledgerAccount.nature !==
+                                "Bank Accounts"
+                          )}
+                          displayField="name"
+                          valueField="id"
+                          form={form}
+                          name={`details.${index}.ledger_account_id`}
+                          title={index === 1 ? "Debit Account Head" : undefined}
+                          className="w-[250px]"
+                        />
+                          {/* <FormField
                             control={form.control}
                             name={`details.${index}.ledger_account_id`}
                             render={({ field }) => (
@@ -401,7 +445,7 @@ export function AddReceiptForm() {
                                 <FormMessage />
                               </FormItem>
                             )}
-                          />
+                          /> */}
                         </div>
                         <div className="w-[250px]">
                           <FormField
@@ -572,7 +616,7 @@ export function AddReceiptForm() {
                     append({
                       dr_amount: 0,
                       cr_amount: 0,
-                      ledger_account_id: 0,
+                      ledger_account_id: "",
                       sub_account_id: null,
                       note: "",
                     })
