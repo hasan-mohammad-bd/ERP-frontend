@@ -8,15 +8,15 @@ export const NotFoundPage = lazy(() => import("@/pages/not-found"));
 // HRM
 export const Department = lazy(() => import("@/pages/hrm/department"));
 export const Designation = lazy(() => import("@/pages/hrm/designation"));
-export const Employee = lazy(() => import("@/pages/hrm/employee"));
+export const Employee = lazy(() => import("@/pages/hrm/employee/employee-list"));
 export const Holiday = lazy(() => import("@/pages/hrm/holiday"));
 
 
 export const DailyAttendance = lazy(
   () => import("@/pages/hrm/daily-attendance")
 );
-export const EmployeeClass = lazy(() => import("@/pages/hrm/employee-class"));
-export const EmployeeGrade = lazy(() => import("@/pages/hrm/employee-grade"));
+export const EmployeeClass = lazy(() => import("@/pages/hrm/employee/employee-class"));
+export const EmployeeGrade = lazy(() => import("@/pages/hrm/employee/employee-grade"));
 
 // export const EmployeeSalary = lazy(
 //   () => import("@/pages/hrm/add-employee-salary")
