@@ -19,27 +19,26 @@ import { UseFormReturn } from "react-hook-form";
 
 const items = [
   {
-    id: "delay_consider",
-    label: "Consider delay duration",
+    id: "underwork_consider",
+    label: "Consider underwork policy",
   },
   {
-    id: "delay_deduct_salary",
+    id: "underwork_deduct_salary",
     label: "Deduct from salary? (Otherwise from leave)",
   },
   {
-    id: "delay_deduct_gross_salary",
+    id: "underwork_deduct_gross_salary",
     label: "Deduct from gross salary? (Otherwise from basic)",
   },
 ] as const;
 
-export function DelayPolicy({ form }: { form: UseFormReturn }) {
+export function UnderworkPolicy({ form }: { form: UseFormReturn }) {
   return (
     <Card className="w-full h-full">
       <CardHeader>
-        <CardTitle>Delay Policy</CardTitle>
-        {/* <CardDescription>Deploy your new project in one-click.</CardDescription> */}
+        <CardTitle>Underwork Policy</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4">
         <FormField
           control={form.control}
           name="items"
@@ -60,6 +59,7 @@ export function DelayPolicy({ form }: { form: UseFormReturn }) {
                           <Checkbox
                             checked={field.value?.includes(item.id)}
                             onCheckedChange={(checked) => {
+                              // If checked, add the item id to the items array, otherwise remove it
                               return checked
                                 ? field.onChange([...field.value, item.id])
                                 : field.onChange(
@@ -85,13 +85,13 @@ export function DelayPolicy({ form }: { form: UseFormReturn }) {
 
         <FormField
           control={form.control}
-          name="delay_leave_type_id"
+          name="underwork_leave_type_id"
           render={({ field }) => (
             <FormItem className="w-[300px]">
               <FormLabel>Leave type</FormLabel>
               <Select
-                onValueChange={(value) => field.onChange(Number(value))} // Convert string to number
-                value={field.value && String(field.value)} // Ensure value is a string for rendering
+                onValueChange={(value) => field.onChange(Number(value))}
+                value={field.value && String(field.value)}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -108,27 +108,11 @@ export function DelayPolicy({ form }: { form: UseFormReturn }) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="delay_consecutive"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value === 1}
-                  onCheckedChange={(checked) => field.onChange(checked ? 1 : 0)}
-                />
-              </FormControl>
-              <FormLabel>Consider consecutive delay?</FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
         <div className="flex gap-20">
           <FormField
             control={form.control}
-            name="delay_consider_days"
+            name="underwork_consider_hours"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Number delay to consider</FormLabel>
@@ -151,7 +135,7 @@ export function DelayPolicy({ form }: { form: UseFormReturn }) {
 
           <FormField
             control={form.control}
-            name="delay_adjust_days"
+            name="underwork_adjust_days"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Days(s) adjust for delay</FormLabel>
