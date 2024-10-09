@@ -143,6 +143,9 @@ importers:
       react-hook-form:
         specifier: ^7.51.3
         version: 7.52.2(react@18.3.1)
+      react-number-format:
+        specifier: ^5.4.2
+        version: 5.4.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-redux:
         specifier: ^9.1.0
         version: 9.1.2(@types/react@18.3.4)(react@18.3.1)(redux@5.0.1)
@@ -2537,6 +2540,12 @@ packages:
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+
+  react-number-format@5.4.2:
+    resolution: {integrity: sha512-cg//jVdS49PYDgmcYoBnMMHl4XNTMuV723ZnHD2aXYtWWWqbVF3hjQ8iB+UZEuXapLbeA8P8H+1o6ZB1lcw3vg==}
+    peerDependencies:
+      react: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
 
   react-onclickoutside@6.13.1:
     resolution: {integrity: sha512-LdrrxK/Yh9zbBQdFbMTXPp3dTSN9B+9YJQucdDu3JNKRrbdU+H+/TVONJoWtOwy4II8Sqf1y/DTI6w/vGPYW0w==}
@@ -5489,6 +5498,11 @@ snapshots:
       react: 18.3.1
 
   react-is@16.13.1: {}
+
+  react-number-format@5.4.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   react-onclickoutside@6.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:

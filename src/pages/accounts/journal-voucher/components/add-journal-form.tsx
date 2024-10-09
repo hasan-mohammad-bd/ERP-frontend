@@ -2,6 +2,7 @@ import { Heading } from "@/components/common/heading";
 import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+// import NumberFormat, { NumericFormat } from "react-number-format";
 import {
   Form,
   FormControl,
@@ -314,7 +315,7 @@ export function AddJournalForm() {
                   <Card key={field.id} className="p-3">
                     <div className="flex w-full gap-x-3">
                       <div className="w-[250px]">
-                      <FormSearchSelect<LedgerRow>
+                        <FormSearchSelect<LedgerRow>
                           loading={ledgerAccountLoading}
                           data={ledgerAccountData}
                           displayField="name"
@@ -391,7 +392,7 @@ export function AddJournalForm() {
                         )}
                       </div>
 
-                      <div className="max-w-[180px]">
+                      <div className="max-w-[180px] relative">
                         <FormField
                           control={form.control}
                           name={`details.${index}.dr_amount`}
@@ -409,7 +410,8 @@ export function AddJournalForm() {
                               </FormLabel>
                               <FormControl>
                                 <Input
-                                step="any"
+                                  className="color-red"
+                                  step="any"
                                   disabled={
                                     form.watch(`details.${index}.cr_amount`) > 0
                                   }
@@ -420,6 +422,20 @@ export function AddJournalForm() {
                                 />
                               </FormControl>
                               <FormMessage />
+{/*                               <NumericFormat
+                                value={form.watch(`details.${index}.dr_amount`)}
+                                thousandsGroupStyle="lakh"
+                                thousandSeparator=","
+                                displayType="text"
+                                className="absolute right-0 top-0"
+                                onValueChange={(values) => {
+                                  const { value } = values;
+                                  form.setValue(
+                                    `details.${index}.dr_amount`,
+                                    value
+                                  );
+                                }}
+                              /> */}
                             </FormItem>
                           )}
                         />
@@ -435,6 +451,7 @@ export function AddJournalForm() {
                           </>
                         )}
                       </div>
+
                       <div className="max-w-[180px]">
                         <FormField
                           control={form.control}
@@ -451,7 +468,7 @@ export function AddJournalForm() {
                               </FormLabel>
                               <FormControl>
                                 <Input
-                                step="any"
+                                  step="any"
                                   disabled={
                                     form.watch(`details.${index}.dr_amount`) > 0
                                   }
