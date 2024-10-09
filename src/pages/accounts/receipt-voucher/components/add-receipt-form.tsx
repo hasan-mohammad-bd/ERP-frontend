@@ -12,6 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -72,9 +73,9 @@ export function AddReceiptForm() {
   // const [totalDrAmount, setTotalDrAmount] = useState(0);
   const [totalCrAmount, setTotalCrAmount] = useState(0);
 
-  const [selectedLedgerAccounts, setSelectedLedgerAccounts] = useState<
-    number[]
-  >([]);
+  // const [selectedLedgerAccounts, setSelectedLedgerAccounts] = useState<
+  //   number[]
+  // >([]);
   const form = useForm<EntryFromValues>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
@@ -96,11 +97,25 @@ export function AddReceiptForm() {
         type: previousData?.type || "Receipt Voucher",
         date: previousData?.date,
         entry_number: previousData?.entry_number || "",
-        details: previousData?.details || [
-          { dr_amount: 0, cr_amount: 0 },
-          { dr_amount: 0, cr_amount: 0 },
+        details: previousData.details.map((detail) => ({
+          ledger_account_id: detail.ledger_account_id.toString(),
+          cr_amount: detail.cr_amount,
+          dr_amount: detail.dr_amount,
+          note: detail.note,
+        })) || [
+          {
+            dr_amount: 0,
+            cr_amount: 0,
+            cost_centers: [],
+          },
+          {
+            dr_amount: 0,
+            cr_amount: 0,
+            cost_centers: [],
+          },
         ],
         note: previousData?.note || "",
+        project_id: previousData.project?.id?.toString() || null,
       });
     }
   }, [previousData, form]);
@@ -116,10 +131,7 @@ export function AddReceiptForm() {
   });
 
   useEffect(() => {
-    /* const totalDr = details.reduce(
-      (sum, detail) => sum + Number(detail.dr_amount || 0),
-      0
-    ); */
+
     const totalCr = details.reduce(
       (sum, detail) => sum + Number(detail.cr_amount || 0),
       0
@@ -128,12 +140,6 @@ export function AddReceiptForm() {
     setTotalCrAmount(totalCr);
   }, [details]);
 
-  useEffect(() => {
-    const selectedAccounts = details.map((detail) =>
-      Number(detail.ledger_account_id)
-    );
-    setSelectedLedgerAccounts(selectedAccounts);
-  }, [details]);
 
   async function onSubmit(data: EntryFromValues) {
     const updateData = {
@@ -255,7 +261,22 @@ export function AddReceiptForm() {
                         />
 
                         <div className="w-[200px]">
-                          <FormField
+                        <FormSearchSelect<LedgerRow>
+                          loading={ledgerAccountLoading}
+                          data={ledgerAccountData.filter(
+                            (ledgerAccount: LedgerRow) =>
+                              ledgerAccount.nature === "Cash" ||
+                              ledgerAccount.nature ===
+                                "Bank Accounts"
+                          )}
+                          displayField="name"
+                          valueField="id"
+                          form={form}
+                          name={`details.0.ledger_account_id`}
+                          title="Debit Account Head"
+                          className="w-[190px]"
+                        />
+                          {/* <FormField
                             control={form.control}
                             name={`details.0.ledger_account_id`}
                             render={({ field }) => (
@@ -305,7 +326,7 @@ export function AddReceiptForm() {
                                 <FormMessage />
                               </FormItem>
                             )}
-                          />
+                          /> */}
                         </div>
                       </div>
                     </div>
@@ -347,7 +368,22 @@ export function AddReceiptForm() {
                         }`}
                       >
                         <div className={`w-[250px]`}>
-                          <FormField
+                        <FormSearchSelect<LedgerRow>
+                          loading={ledgerAccountLoading}
+                          data={ledgerAccountData.filter(
+                            (ledgerAccount: LedgerRow) =>
+                              ledgerAccount.nature !== "Cash" &&
+                              ledgerAccount.nature !==
+                                "Bank Accounts"
+                          )}
+                          displayField="name"
+                          valueField="id"
+                          form={form}
+                          name={`details.${index}.ledger_account_id`}
+                          title={index === 1 ? "Credit Account Head" : undefined}
+                          className="w-[250px]"
+                        />
+                          {/* <FormField
                             control={form.control}
                             name={`details.${index}.ledger_account_id`}
                             render={({ field }) => (
@@ -401,7 +437,7 @@ export function AddReceiptForm() {
                                 <FormMessage />
                               </FormItem>
                             )}
-                          />
+                          /> */}
                         </div>
                         <div className="w-[250px]">
                           <FormField
@@ -543,10 +579,10 @@ export function AddReceiptForm() {
                             onClick={() => {
                               remove(index);
                               const updatedAccounts = [
-                                ...selectedLedgerAccounts,
+                                ...ledgerAccountData,
                               ];
                               updatedAccounts.splice(index, 1);
-                              setSelectedLedgerAccounts(updatedAccounts);
+                             
                             }}
                           >
                             <Trash2 size={16} color="red" className="" />
@@ -555,14 +591,7 @@ export function AddReceiptForm() {
                       </div>
                     )
                 )}
-                {/*                         <div className="text-end mt-4">
-              <div>
-                <p className="text-sm ">Total Debit: {totalDrAmount}</p>
-              </div>
-              <div className="">
-                <p className="text-sm ">Total Credit: {totalCrAmount}</p>
-              </div>
-            </div> */}
+
 
                 <Button
                   variant="outline"
@@ -572,7 +601,7 @@ export function AddReceiptForm() {
                     append({
                       dr_amount: 0,
                       cr_amount: 0,
-                      ledger_account_id: 0,
+                      ledger_account_id: "",
                       sub_account_id: null,
                       note: "",
                     })

@@ -66,7 +66,7 @@ export function AddBudgetForm() {
     skip: !id,
   });
   const { data: projects, isLoading: projectLoading } =
-  useGetProjectsQuery(`per_page=1000&page=1`);
+    useGetProjectsQuery(`per_page=1000&page=1`);
 
   const previousData = openingBalanceById?.data;
   console.log("🚀 ~ AddOpeningBalanceForm ~ previousData:", previousData);
@@ -78,8 +78,6 @@ export function AddBudgetForm() {
     "page=1&per_page=1000"
   );
   const locationData = location?.data || [];
-
-
 
   const ledgerAccountData = ledgerAccount?.data || [];
   // const subAccountData = subAccounts?.data || [];
@@ -95,8 +93,8 @@ export function AddBudgetForm() {
       name: "",
       start_date: new Date().toString(),
       end_date: new Date().toString(),
-      project_id: null || undefined,
-      location_id: null || undefined,
+      // project_id: "",
+      // location_id: null || undefined,
       details: [
         { dr_amount: 0, cr_amount: 0 },
         { dr_amount: 0, cr_amount: 0 },
@@ -112,15 +110,18 @@ export function AddBudgetForm() {
         name: previousData?.name || "",
         start_date: previousData?.start_date || new Date().toString(),
         end_date: previousData?.end_date || new Date().toString(),
-        project_id: previousData?.project?.id || null,
         location_id: previousData?.location?.id || null,
-        details: previousData?.details || [
+        details: previousData.details.map((detail) => ({
+          ledger_account_id: detail.ledger_account_id.toString(),
+          cr_amount: detail.cr_amount,
+          dr_amount: detail.dr_amount,
+          note: detail.note,
+        }))  || [
           { dr_amount: 0, cr_amount: 0 },
           { dr_amount: 0, cr_amount: 0 },
         ],
         note: previousData.note || "",
-
-
+        project_id: previousData.project?.id?.toString() || null,
       });
     }
   }, [previousData, form]);
@@ -275,7 +276,7 @@ export function AddBudgetForm() {
                           form={form}
                           name="project_id"
                           title="Project"
-                          className="w-[250px]"
+                          className="w-[230px]"
                         />
                       </div>
                       <div className="w-[250px]">
@@ -343,7 +344,17 @@ export function AddBudgetForm() {
                 {fields.map((field, index) => (
                   <div key={field.id} className="flex w-full gap-x-3">
                     <div className="w-[250px]">
-                      <FormField
+                      <FormSearchSelect<LedgerRow>
+                        loading={ledgerAccountLoading}
+                        data={ledgerAccountData}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name={`details.${index}.ledger_account_id`}
+                        title={index === 0 ? "ledger account" : undefined}
+                        className="w-[250px]"
+                      />
+{/*                       <FormField
                         control={form.control}
                         name={`details.${index}.ledger_account_id`}
                         render={({ field }) => (
@@ -393,7 +404,7 @@ export function AddBudgetForm() {
                             <FormMessage />
                           </FormItem>
                         )}
-                      />
+                      /> */}
                     </div>
 
                     <div className="flex-1">
@@ -435,7 +446,7 @@ export function AddBudgetForm() {
                             </FormLabel>
                             <FormControl>
                               <Input
-                              step="any"
+                                step="any"
                                 disabled={
                                   form.watch(`details.${index}.cr_amount`) > 0
                                 }
@@ -472,7 +483,7 @@ export function AddBudgetForm() {
                             </FormLabel>
                             <FormControl>
                               <Input
-                              step="any"
+                                step="any"
                                 disabled={
                                   form.watch(`details.${index}.dr_amount`) > 0
                                 }
@@ -535,7 +546,7 @@ export function AddBudgetForm() {
                     append({
                       dr_amount: 0,
                       cr_amount: 0,
-                      ledger_account_id: 0,
+                      ledger_account_id: "",
                       // sub_account_id: null,
                       note: "",
                     })

@@ -112,7 +112,12 @@ export function AddJournalForm() {
         type: previousData.type || "Journal Voucher",
         date: previousData.date || new Date().toISOString(),
         entry_number: previousData.entry_number || "",
-        details: previousData.details || [
+        details: previousData.details.map((detail) => ({
+          ledger_account_id: detail.ledger_account_id.toString(),
+          cr_amount: detail.cr_amount,
+          dr_amount: detail.dr_amount,
+          note: detail.note,
+        })) || [
           {
             dr_amount: 0,
             cr_amount: 0,
@@ -309,55 +314,15 @@ export function AddJournalForm() {
                   <Card key={field.id} className="p-3">
                     <div className="flex w-full gap-x-3">
                       <div className="w-[250px]">
-                        <FormField
-                          control={form.control}
+                      <FormSearchSelect<LedgerRow>
+                          loading={ledgerAccountLoading}
+                          data={ledgerAccountData}
+                          displayField="name"
+                          valueField="id"
+                          form={form}
                           name={`details.${index}.ledger_account_id`}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>
-                                {index === 0 && (
-                                  <>
-                                    Ledger Account{" "}
-                                    <span className="text-red-500">*</span>
-                                  </>
-                                )}
-                              </FormLabel>
-                              <Select
-                                onValueChange={(value) => {
-                                  field.onChange(value);
-                                  const updatedAccounts = [
-                                    ...selectedLedgerAccounts,
-                                  ];
-                                  updatedAccounts[index] = Number(value);
-                                  setSelectedLedgerAccounts(updatedAccounts);
-                                }}
-                                value={(field.value || "").toString()}
-                              >
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select Ledger Account" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  {ledgerAccountLoading ? (
-                                    <Loading />
-                                  ) : (
-                                    ledgerAccountData.map(
-                                      (ledgerAccount: LedgerRow) => (
-                                        <SelectItem
-                                          key={ledgerAccount.id}
-                                          value={String(ledgerAccount.id)}
-                                        >
-                                          {ledgerAccount.name}
-                                        </SelectItem>
-                                      )
-                                    )
-                                  )}
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
+                          title={index === 0 ? "ledger account" : undefined}
+                          className="w-[250px]"
                         />
                       </div>
                       <div className="w-[250px]">
@@ -650,7 +615,7 @@ export function AddJournalForm() {
                     append({
                       dr_amount: 0,
                       cr_amount: 0,
-                      ledger_account_id: 0,
+                      ledger_account_id: "",
                       sub_account_id: null,
                       note: "",
                       // cost_centers: [{ cost_center_id: 0, amount: 0 }],

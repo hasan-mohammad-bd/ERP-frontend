@@ -11,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -83,9 +84,7 @@ export function AddOpeningBalanceForm() {
   const subAccountData = subAccounts?.data || [];
   const navigate = useNavigate();
 
-  const [selectedLedgerAccounts, setSelectedLedgerAccounts] = useState<
-    number[]
-  >([]);
+
 
   const form = useForm<OpeningBalanceFromValues>({
     resolver: zodResolver(openingBalanceSchema),
@@ -108,13 +107,19 @@ export function AddOpeningBalanceForm() {
         type: previousData.type || "Opening balance",
         date: previousData.date || new Date().toISOString(),
         // entry_number: previousData.entry_number || "",
-        details: previousData.details || [
+        details:previousData.details.map((detail) => ({
+          ledger_account_id: detail.ledger_account_id.toString(),
+          cr_amount: detail.cr_amount,
+          dr_amount: detail.dr_amount,
+          note: detail.note,
+        }))  || [
           { dr_amount: 0, cr_amount: 0 },
           { dr_amount: 0, cr_amount: 0 },
         ],
         note: previousData.note || "",
 
         location_id: previousData.location.id,
+        
       });
     }
   }, [previousData, form]);
@@ -145,12 +150,7 @@ export function AddOpeningBalanceForm() {
     setTotalCrAmount(totalCr);
   }, [details]);
 
-  useEffect(() => {
-    const selectedAccounts = details.map((detail) =>
-      Number(detail.ledger_account_id)
-    );
-    setSelectedLedgerAccounts(selectedAccounts);
-  }, [details]);
+
 
   async function onSubmit(data: OpeningBalanceFromValues) {
     console.log("button clicked");
@@ -312,57 +312,17 @@ export function AddOpeningBalanceForm() {
                 {fields.map((field, index) => (
                   <div key={field.id} className="flex w-full gap-x-3">
                     <div className="w-[250px]">
-                      <FormField
-                        control={form.control}
-                        name={`details.${index}.ledger_account_id`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>
-                              {index === 0 && "Ledger Account"}
-                            </FormLabel>
-                            <Select
-                              onValueChange={(value) => {
-                                field.onChange(value);
-                                const updatedAccounts = [
-                                  ...selectedLedgerAccounts,
-                                ];
-                                updatedAccounts[index] = Number(value);
-                                setSelectedLedgerAccounts(updatedAccounts);
-                              }}
-                              value={(field.value || "").toString()}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select Ledger Account" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {ledgerAccountLoading ? (
-                                  <Loading />
-                                ) : (
-                                  ledgerAccountData
-                                    .filter(
-                                      (ledgerAccount: LedgerRow) =>
-                                        !selectedLedgerAccounts.includes(
-                                          ledgerAccount.id
-                                        ) ||
-                                        ledgerAccount.id === Number(field.value)
-                                    )
-                                    .map((ledgerAccount: LedgerRow) => (
-                                      <SelectItem
-                                        key={ledgerAccount.id}
-                                        value={String(ledgerAccount.id)}
-                                      >
-                                        {ledgerAccount.name}
-                                      </SelectItem>
-                                    ))
-                                )}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                    <FormSearchSelect<LedgerRow>
+                          loading={ledgerAccountLoading}
+                          data={ledgerAccountData}
+                          displayField="name"
+                          valueField="id"
+                          form={form}
+                          name={`details.${index}.ledger_account_id`}
+                          title={index === 0 ? "ledger account" : undefined}
+                          className="w-[250px]"
+                        />
+
                     </div>
                     <div className="w-[250px]">
                       <FormField
@@ -514,9 +474,9 @@ export function AddOpeningBalanceForm() {
                         className=""
                         onClick={() => {
                           remove(index);
-                          const updatedAccounts = [...selectedLedgerAccounts];
+                          const updatedAccounts = [...ledgerAccountData];
                           updatedAccounts.splice(index, 1);
-                          setSelectedLedgerAccounts(updatedAccounts);
+                        
                         }}
                       >
                         <Trash2 size={16} color="red" className="" />
@@ -524,14 +484,7 @@ export function AddOpeningBalanceForm() {
                     </FormItem>
                   </div>
                 ))}
-                {/*             <div className="text-end mt-4">
-              <div>
-                <p className="text-sm ">Total Debit: {totalDrAmount}</p>
-              </div>
-              <div className="">
-                <p className="text-sm ">Total Credit: {totalCrAmount}</p>
-              </div>
-            </div> */}
+
 
                 <Button
                   variant="outline"
@@ -541,7 +494,7 @@ export function AddOpeningBalanceForm() {
                     append({
                       dr_amount: 0,
                       cr_amount: 0,
-                      ledger_account_id: 0,
+                      ledger_account_id: "",
                       sub_account_id: null,
                       note: "",
                     })

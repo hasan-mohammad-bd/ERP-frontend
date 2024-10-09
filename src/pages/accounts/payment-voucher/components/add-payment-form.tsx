@@ -12,6 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -73,9 +74,9 @@ export function AddPaymentForm() {
 
   const previousData = paymentById?.data;
 
-  const [selectedLedgerAccounts, setSelectedLedgerAccounts] = useState<
-    number[]
-  >([]);
+  // const [selectedLedgerAccounts, setSelectedLedgerAccounts] = useState<
+  //   number[]
+  // >([]);
   const form = useForm<EntryFromValues>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
@@ -87,20 +88,27 @@ export function AddPaymentForm() {
         { dr_amount: 0, cr_amount: 0 },
       ],
       note: "",
+      project_id: null,
     },
   });
 
   useEffect(() => {
     if (previousData) {
+      console.log("🚀 ~ previousData", previousData);
       form.reset({
+        project_id: previousData?.project?.id.toString() || null,
         type: previousData?.type || "Payment Voucher",
         date: previousData?.date || new Date().toDateString(),
         entry_number: previousData?.entry_number || "",
-        details: previousData?.details || [
-          { dr_amount: 0, cr_amount: 0 },
-          { dr_amount: 0, cr_amount: 0 },
-        ],
+        details: previousData.details.map((detail) => ({
+          ledger_account_id: detail.ledger_account_id.toString(),
+          cr_amount: detail.cr_amount,
+          dr_amount: detail.dr_amount,
+          note: detail.note,
+        })) ,
         note: previousData?.note || "",
+        
+        
       });
     }
   }, [previousData, form]);
@@ -115,6 +123,8 @@ export function AddPaymentForm() {
     name: "details",
   });
 
+  console.log(form.watch("details"), "details");
+
   useEffect(() => {
     const totalDr = details.reduce(
       (sum, detail) => sum + Number(detail.dr_amount),
@@ -128,13 +138,13 @@ export function AddPaymentForm() {
     // setTotalCrAmount(totalCr);
   }, [details]);
 
-  useEffect(() => {
+/*   useEffect(() => {
     const selectedAccounts = details.map((detail) =>
       Number(detail.ledger_account_id)
     );
     setSelectedLedgerAccounts(selectedAccounts);
   }, [details]);
-
+ */
   async function onSubmit(data: EntryFromValues) {
     const updateData = {
       ...data,
@@ -255,57 +265,21 @@ export function AddPaymentForm() {
                         />
 
                         <div className="w-[200px]">
-                          <FormField
-                            control={form.control}
-                            name={`details.0.ledger_account_id`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>
-                                  Credit Account Head{" "}
-                                  <span className="text-red-500">*</span>
-                                </FormLabel>
-                                <Select
-                                  onValueChange={(value) => {
-                                    field.onChange(value);
-                                    const updatedAccounts = [
-                                      ...selectedLedgerAccounts,
-                                    ];
-                                    updatedAccounts[0] = Number(value);
-                                    setSelectedLedgerAccounts(updatedAccounts);
-                                  }}
-                                  value={(field.value || "").toString()}
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Ledger Account" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {ledgerAccountLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      ledgerAccountData
-                                        .filter(
-                                          (ledgerAccount: LedgerRow) =>
-                                            ledgerAccount.nature === "Cash" ||
-                                            ledgerAccount.nature ===
-                                              "Bank Accounts"
-                                        )
-                                        .map((ledgerAccount: LedgerRow) => (
-                                          <SelectItem
-                                            key={ledgerAccount.id}
-                                            value={String(ledgerAccount.id)}
-                                          >
-                                            {ledgerAccount.name}
-                                          </SelectItem>
-                                        ))
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+                        <FormSearchSelect<LedgerRow>
+                          loading={ledgerAccountLoading}
+                          data={ledgerAccountData.filter(
+                            (ledgerAccount: LedgerRow) =>
+                              ledgerAccount.nature === "Cash" ||
+                              ledgerAccount.nature ===
+                                "Bank Accounts"
+                          )}
+                          displayField="name"
+                          valueField="id"
+                          form={form}
+                          name={`details.0.ledger_account_id`}
+                          title="Credit Account Head"
+                          className="w-[190px]"
+                        />
                         </div>
                       </div>
                     </div>
@@ -349,61 +323,22 @@ export function AddPaymentForm() {
                         }`}
                       >
                         <div className={`w-[250px]`}>
-                          <FormField
-                            control={form.control}
-                            name={`details.${index}.ledger_account_id`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>
-                                  {index === 1 && (
-                                    <>
-                                      Debit Account Head{" "}
-                                      <span className="text-red-500">*</span>
-                                    </>
-                                  )}
-                                </FormLabel>
-                                <Select
-                                  onValueChange={(value) => {
-                                    field.onChange(value);
-                                    const updatedAccounts = [
-                                      ...selectedLedgerAccounts,
-                                    ];
-                                    updatedAccounts[index] = Number(value);
-                                    setSelectedLedgerAccounts(updatedAccounts);
-                                  }}
-                                  value={(field.value || "").toString()}
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Ledger Account" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {ledgerAccountLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      ledgerAccountData
-                                        .filter(
-                                          (ledgerAccount: LedgerRow) =>
-                                            ledgerAccount.nature !== "Cash" &&
-                                            ledgerAccount.nature !==
-                                              "Bank Accounts"
-                                        )
-                                        .map((ledgerAccount: LedgerRow) => (
-                                          <SelectItem
-                                            key={ledgerAccount.id}
-                                            value={String(ledgerAccount.id)}
-                                          >
-                                            {ledgerAccount.name}
-                                          </SelectItem>
-                                        ))
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
+                        <FormSearchSelect<LedgerRow>
+                          loading={ledgerAccountLoading}
+                          data={ledgerAccountData.filter(
+                              (ledgerAccount: LedgerRow) =>
+                                ledgerAccount.nature !== "Cash" &&
+                                ledgerAccount.nature !==
+                                  "Bank Accounts"
                             )}
-                          />
+                          displayField="name"
+                          valueField="id"
+                          form={form}
+                          name={`details.${index}.ledger_account_id`}
+                          title={index === 1 ? "Debit Account Head" : undefined}
+                          className="w-[250px]"
+                        />
+
                         </div>
                         <div className="w-[250px]">
                           <FormField
@@ -517,10 +452,10 @@ export function AddPaymentForm() {
                             onClick={() => {
                               remove(index);
                               const updatedAccounts = [
-                                ...selectedLedgerAccounts,
+                                ...ledgerAccountData,
                               ];
                               updatedAccounts.splice(index, 1);
-                              setSelectedLedgerAccounts(updatedAccounts);
+                              // setSelectedLedgerAccounts(updatedAccounts);
                             }}
                           >
                             <Trash2 size={16} color="red" className="" />
@@ -547,7 +482,7 @@ export function AddPaymentForm() {
                     append({
                       dr_amount: 0,
                       cr_amount: 0,
-                      ledger_account_id: 0,
+                      ledger_account_id: "",
                       sub_account_id: null,
                       note: "",
                     })
