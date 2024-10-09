@@ -410,7 +410,6 @@ export function AddJournalForm() {
                                 )}
                               </FormLabel>
                               <FormControl>
-<<<<<<< HEAD
                               <InputNumberFormat
                                     locales="en-IN"
                                     className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
@@ -424,9 +423,6 @@ export function AddJournalForm() {
                                     placeholder="Debit amount"
                                   />
 {/*                                 <Input
-=======
-                                <Input
->>>>>>> main
                                   className="color-red"
                                   step="any"
                                   disabled={
@@ -484,7 +480,6 @@ export function AddJournalForm() {
                                 )}
                               </FormLabel>
                               <FormControl>
-<<<<<<< HEAD
                               <InputNumberFormat
                                     locales="en-IN"
                                     className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
@@ -501,9 +496,6 @@ export function AddJournalForm() {
 
                                   />
 {/*                                 <Input
-=======
-                                <Input
->>>>>>> main
                                   step="any"
                                   disabled={
                                     form.watch(`details.${index}.dr_amount`) > 0
