@@ -262,7 +262,13 @@ const hrmNavItems: NavItem[] = [
       {
         title: "Leave Summary",
         icon: UserRoundSearch,
-        href: "hrm/leave-summary",
+        href: "leave-summary",
+        color: "text-sky-500",
+      },
+      {
+        title: "Leave Balance",
+        icon: UserRoundSearch,
+        href: "leave-balance",
         color: "text-sky-500",
       },
     ],

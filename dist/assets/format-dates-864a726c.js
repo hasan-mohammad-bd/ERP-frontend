@@ -1,1 +1,0 @@
-import{A as n}from"./index-05f4ac9e.js";const s=(e,a)=>{const r=[],t=new Date(e);for(;t<=a;)r.push(new Date(t)),t.setDate(t.getDate()+1);return r},m=e=>n(e,"yyyy-MM-dd hh:mm a");export{m as a,s as g};
