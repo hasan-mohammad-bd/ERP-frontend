@@ -27,7 +27,7 @@ import { Loading } from "../../common/loading";
 // Define the types for your props
 interface FormSearchSelectProps<T> {
   name: string;
-  title?: string;
+  title?: string ;
   data: T[];
   loading?: boolean;
   className?: string;

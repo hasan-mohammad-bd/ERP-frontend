@@ -14,10 +14,10 @@ import { useState } from "react";
 
 interface SearchSelectProps<T> {
   items: T[];
-  value: T | undefined;
+  value?: T | undefined;
   labelKey: keyof T;
   valueKey: keyof T;
-  onSelect: (item: T) => void;
+  onSelect?: (item: T) => void;
   placeholder?: string;
   noItemText?: string;
   className?: string;
@@ -28,7 +28,7 @@ const SearchSelect = <T extends object>({
   value,
   labelKey,
   valueKey,
-  onSelect,
+  onSelect=() => {},
   placeholder = "Select an item...",
   noItemText = "No items found.",
   className
@@ -36,7 +36,7 @@ const SearchSelect = <T extends object>({
   const [open, setOpen] = useState(false);
 
   const handleSelect = (item: T) => {
-    onSelect(item);
+     onSelect(item);
     setOpen(false); // Close popover after selection
   };
 

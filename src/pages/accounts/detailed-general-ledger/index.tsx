@@ -11,18 +11,21 @@ import { Button } from "@/components/ui/button";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
 import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
+import { LedgerRow, SubAccountRow } from "@/lib/validators/accounts";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
 
 const DetailedGeneralLedger = () => {
   // const [isOpen, setIsOpen] = useState(false);
-  const [projectFiltered, setProjectFiltered] = React.useState<number | null>(
-    null
-  );
-  const [contactFiltered, setContactFiltered] = React.useState<number | null>(null);
+  const [project, setProject] = React.useState<ProjectRow | undefined>();
+  // const [contactFiltered, setContactFiltered] = React.useState<number | null>(null);
+  const [contact, setContact] = React.useState<SubAccountRow | undefined>();
 
-  console.log(projectFiltered, "projectFiltered");
+  // console.log(projectFiltered, "projectFiltered");
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
-  const [filtered, setFiltered] = React.useState<number | null>(null);
+  // const [filtered, setFiltered] = React.useState<number | null>(null);
+    
+  const [account, setAccount] = React.useState<LedgerRow | undefined>();
 
   const param = useParams();
 
@@ -35,7 +38,7 @@ const DetailedGeneralLedger = () => {
   const { data, isLoading } = useGetDetailGeneralLedgersQuery(
     `start_date=${formateStartDate ? formateStartDate : ""}&end_date=${
       formateEndDate ? formateEndDate : ""
-    }&ledger_account_id=${param.ledgerId || filtered || ""}&project_id=${projectFiltered || ""}&sub_account_id=${contactFiltered || ""}`
+    }&ledger_account_id=${param.ledgerId || account?.id || ""}&project_id=${project?.id || ""}&sub_account_id=${contact?.id || ""}`
   );
 
 
@@ -79,9 +82,13 @@ const DetailedGeneralLedger = () => {
           setStartDate={setStartDate}
           setEndDate={setEndDate}
           filterProp={{
-            setFiltered,
-            setProjectFiltered,
-            setContactFiltered,
+            account,
+            setAccount,
+            project,
+            setProject,
+            contact,
+            setContact,
+            // setContactFiltered,
             arrayItems: ledgerAccountData,
             loadingData: ledgerAccountLoading,
             arrayItemsTwo: projectData,

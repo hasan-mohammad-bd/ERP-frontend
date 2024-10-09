@@ -12,6 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -71,9 +72,7 @@ export function AddContraForm() {
   // const [totalDrAmount, setTotalDrAmount] = useState(0);
   const [totalCrAmount, setTotalCrAmount] = useState(0);
 
-  const [selectedLedgerAccounts, setSelectedLedgerAccounts] = useState<
-    number[]
-  >([]);
+
   const form = useForm<EntryFromValues>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
@@ -95,13 +94,18 @@ export function AddContraForm() {
         type: previousData?.type || "Contra Voucher",
         date: previousData?.date || new Date().toISOString(),
         entry_number: previousData?.entry_number || "",
-        details: previousData?.details || [
+        details: previousData.details.map((detail) => ({
+          ledger_account_id: detail.ledger_account_id.toString(),
+          cr_amount: detail.cr_amount,
+          dr_amount: detail.dr_amount,
+          note: detail.note,
+        })) || [
           { dr_amount: 0, cr_amount: 0 },
           { dr_amount: 0, cr_amount: 0 },
         ],
         note: previousData?.note || "",
         file: previousData?.file || "",
-        project_id: previousData?.project_id || null,
+        project_id: previousData.project?.id?.toString() || null,
       });
     }
   }, [form, previousData]);
@@ -129,12 +133,7 @@ export function AddContraForm() {
     setTotalCrAmount(totalCr);
   }, [details]);
 
-  useEffect(() => {
-    const selectedAccounts = details.map((detail) =>
-      Number(detail.ledger_account_id)
-    );
-    setSelectedLedgerAccounts(selectedAccounts);
-  }, [details]);
+
 
   async function onSubmit(data: EntryFromValues) {
     const updateData = {
@@ -256,7 +255,21 @@ export function AddContraForm() {
                         />
 
                         <div className="w-[200px]">
-                          <FormField
+                          <FormSearchSelect<LedgerRow>
+                            loading={ledgerAccountLoading}
+                            data={ledgerAccountData.filter(
+                              (ledgerAccount: LedgerRow) =>
+                                ledgerAccount.nature === "Cash" ||
+                                ledgerAccount.nature === "Bank Accounts"
+                            )}
+                            displayField="name"
+                            valueField="id"
+                            form={form}
+                            name={`details.0.ledger_account_id`}
+                            title="Debit Account Head"
+                            className="w-[190px]"
+                          />
+                          {/*                           <FormField
                             control={form.control}
                             name={`details.0.ledger_account_id`}
                             render={({ field }) => (
@@ -306,7 +319,7 @@ export function AddContraForm() {
                                 <FormMessage />
                               </FormItem>
                             )}
-                          />
+                          /> */}
                         </div>
                       </div>
                     </div>
@@ -345,7 +358,21 @@ export function AddContraForm() {
                     className={`flex w-full gap-x-3 ${index === 0 && "hidden"}`}
                   >
                     <div className={`w-[250px]`}>
-                      <FormField
+                      <FormSearchSelect<LedgerRow>
+                        loading={ledgerAccountLoading}
+                        data={ledgerAccountData.filter(
+                          (ledgerAccount: LedgerRow) =>
+                            ledgerAccount.nature === "Cash" ||
+                            ledgerAccount.nature === "Bank Accounts"
+                        )}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name={`details.${index}.ledger_account_id`}
+                        title={index === 1 ? "Credit Account Head" : undefined}
+                        className="w-[250px]"
+                      />
+{/*                       <FormField
                         control={form.control}
                         name={`details.${index}.ledger_account_id`}
                         render={({ field }) => (
@@ -398,7 +425,7 @@ export function AddContraForm() {
                             <FormMessage />
                           </FormItem>
                         )}
-                      />
+                      /> */}
                     </div>
                     <div className="w-[250px]">
                       <FormField
@@ -474,7 +501,7 @@ export function AddContraForm() {
                             </FormLabel>
                             <FormControl>
                               <Input
-                              step="any"
+                                step="any"
                                 disabled={
                                   form.watch(`details.${index}.dr_amount`) > 0
                                 }
@@ -511,9 +538,9 @@ export function AddContraForm() {
                         className=""
                         onClick={() => {
                           remove(index);
-                          const updatedAccounts = [...selectedLedgerAccounts];
+                          const updatedAccounts = [...ledgerAccountData];
                           updatedAccounts.splice(index, 1);
-                          setSelectedLedgerAccounts(updatedAccounts);
+                          
                         }}
                       >
                         <Trash2 size={16} color="red" className="" />
@@ -530,7 +557,7 @@ export function AddContraForm() {
                     append({
                       dr_amount: 0,
                       cr_amount: 0,
-                      ledger_account_id: 0,
+                      ledger_account_id: "",
                       sub_account_id: null,
                       note: "",
                     })

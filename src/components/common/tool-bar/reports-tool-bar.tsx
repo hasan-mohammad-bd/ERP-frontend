@@ -3,6 +3,8 @@ import { DatePickerWithRange } from "./tool-bar-items/date-range-picker";
 import ItemFilter from "./tool-bar-items/item-filter";
 import { Button } from "@/components/ui/button";
 import { File, Sheet } from "lucide-react";
+import { LedgerRow, SubAccountRow } from "@/lib/validators/accounts";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
 
 interface ReportsToolBarProps {
   // startDate: string;
@@ -11,16 +13,20 @@ interface ReportsToolBarProps {
   setEndDate?: (value: Date | null) => void;
   setItem?: (value: object[]) => void
   filterProp?: {
-    setFiltered?: (value: number | null) => void;
-    setProjectFiltered?: (value: number | null) => void
-    setContactFiltered?: (value: number | null) => void
-    arrayItems?: object[]
+    setAccount: (account: LedgerRow ) => void;
+    account?: LedgerRow | undefined;
+    project?: ProjectRow | undefined;
+    setProject?: (project: ProjectRow) => void;
+    contact?: SubAccountRow | undefined;
+    setContact?: (contact: SubAccountRow) => void;
+    arrayItems?: LedgerRow[]
     loadingData?: boolean
-    arrayItemsTwo?: object[]
+    arrayItemsTwo?: ProjectRow[]
     loadingDataTwo?: boolean
-    arrayItemsThree?: object[]
+    arrayItemsThree?: SubAccountRow[]
     loadingDataThree?: boolean
     detailedGeneralLedger?: boolean
+    
   }
 
   children?: React.ReactNode

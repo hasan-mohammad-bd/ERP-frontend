@@ -23,25 +23,10 @@ export const userRow = z.object({
 });
 
 export const entryTypeSchema = z.object({
-  ledger_account_id: z
-    .union([
-      z
-        .string()
-        .refine((val) => val.trim() !== "", { message: "Account is required." }) 
-        .refine((val) => !isNaN(Number(val)), {
-          message: "Account is required.",
-        })
-        .transform((val) => Number(val))
-        .refine((val) => val !== 0, {
-          message: "Account is required",
-        }),
-      z.number().refine((val) => val !== 0, {
-        message: "Account is required",
-      }),
-    ])
-    .refine((val) => !isNaN(val), {
-      message: "Account is required.",
-    }),
+  ledger_account_id: z.string().refine(val => !isNaN(Number(val)), {
+    message: "Account is required.",
+  }),
+
   account: z
     .object({ name: z.string(), code: z.string() })
     .optional()

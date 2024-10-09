@@ -10,11 +10,13 @@ import { format } from "date-fns";
 import { useGetTrialBalancesQuery } from "@/store/services/accounts/api/trial-balance.ts";
 import TrialBalanceTable from "./components/trial-balance-table";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
+import { LedgerRow } from "@/lib/validators/accounts";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
 
 const TrialBalance = () => {
   // const [isOpen, setIsOpen] = useState(false);
-  const [projectFiltered, setProjectFiltered] = React.useState<number | null>(null);
-  const [filtered, setFiltered] = React.useState<number | null>(null);
+  const [project, setProject] = React.useState<ProjectRow | undefined>();
+  const [account, setAccount] = React.useState<LedgerRow | undefined>();
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
 
@@ -27,8 +29,8 @@ const TrialBalance = () => {
   const { data, isLoading } = useGetTrialBalancesQuery(
     `start_date=${formateStartDate ? formateStartDate : ""}&end_date=${
       formateEndDate ? formateEndDate : ""
-    }&ledger_account_id=${filtered ? filtered : ""}&project_id=${
-      projectFiltered ? projectFiltered : ""
+    }&ledger_account_id=${account?.id ? account?.id : ""}&project_id=${
+      project?.id ? project?.id : ""
     }`
   );
 
@@ -57,8 +59,10 @@ const projectData = projects?.data || [];
           setStartDate={setStartDate}
           setEndDate={setEndDate}
           filterProp={{
-            setFiltered,
-            setProjectFiltered,
+            account,
+            setAccount,
+            project,
+            setProject,
             arrayItems: ledgerAccountData,
             loadingData: ledgerAccountLoading,
             arrayItemsTwo: projectData,
