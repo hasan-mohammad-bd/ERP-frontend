@@ -46,6 +46,7 @@ import { useEffect, useState } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { InputNumberFormat } from "@react-input/number-format";
 
 export function AddContraForm() {
   const { id } = useParams();
@@ -71,7 +72,6 @@ export function AddContraForm() {
 
   // const [totalDrAmount, setTotalDrAmount] = useState(0);
   const [totalCrAmount, setTotalCrAmount] = useState(0);
-
 
   const form = useForm<EntryFromValues>({
     resolver: zodResolver(entrySchema),
@@ -132,8 +132,6 @@ export function AddContraForm() {
     // setTotalDrAmount(totalDr);
     setTotalCrAmount(totalCr);
   }, [details]);
-
-
 
   async function onSubmit(data: EntryFromValues) {
     const updateData = {
@@ -372,7 +370,7 @@ export function AddContraForm() {
                         title={index === 1 ? "Credit Account Head" : undefined}
                         className="w-[250px]"
                       />
-{/*                       <FormField
+                      {/*                       <FormField
                         control={form.control}
                         name={`details.${index}.ledger_account_id`}
                         render={({ field }) => (
@@ -500,15 +498,14 @@ export function AddContraForm() {
                               )}
                             </FormLabel>
                             <FormControl>
-                              <Input
-                                step="any"
-                                disabled={
-                                  form.watch(`details.${index}.dr_amount`) > 0
+                              <InputNumberFormat
+                                locales="en-IN"
+                                className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                onChange={(event) =>
+                                  field.onChange(
+                                    event.target.value.replace(/,/g, "")
+                                  )
                                 }
-                                type="number"
-                                min={0}
-                                placeholder="Credit amount"
-                                {...field}
                               />
                             </FormControl>
                             <FormMessage />
@@ -540,7 +537,6 @@ export function AddContraForm() {
                           remove(index);
                           const updatedAccounts = [...ledgerAccountData];
                           updatedAccounts.splice(index, 1);
-                          
                         }}
                       >
                         <Trash2 size={16} color="red" className="" />

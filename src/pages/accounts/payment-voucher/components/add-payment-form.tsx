@@ -4,6 +4,7 @@ import { Heading } from "@/components/common/heading";
 import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { InputNumberFormat } from '@react-input/number-format';
 import {
   Form,
   FormControl,
@@ -416,13 +417,20 @@ export function AddPaymentForm() {
                                   )}
                                 </FormLabel>
                                 <FormControl>
-                                  <Input
+                                <InputNumberFormat
+                                    locales="en-IN"
+                                    className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                    onChange={(event) =>
+                                      field.onChange(event.target.value.replace(/,/g, ""))
+                                    } 
+                                  />
+                                  {/* <Input
                                    step="any"
                                     type="number"
                                     min={0}
                                     placeholder="Credit amount"
                                     {...field}
-                                  />
+                                  /> */}
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
