@@ -10,11 +10,13 @@ import ReportsToolBar from "@/components/common/tool-bar/reports-tool-bar";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { format } from "date-fns";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
+import { LedgerRow } from "@/lib/validators/accounts";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
 
 const Transaction = () => {
   // const [isOpen, setIsOpen] = useState(false);
-  const [filtered, setFiltered] = React.useState<number | null>(null);
-  const [projectFiltered, setProjectFiltered] = React.useState<number | null>(null);
+  const [account, setAccount] = React.useState<LedgerRow | undefined>();
+  const [project, setProject] = React.useState<ProjectRow | undefined>();
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
   const [pagination, setPagination] = React.useState<PaginationState>({
@@ -31,8 +33,8 @@ const Transaction = () => {
   const { data, isLoading } = useGetDetailGeneralLedgersQuery(
     `start_date=${formateStartDate ? formateStartDate : ""}&end_date=${
       formateEndDate ? formateEndDate : ""
-    }&ledger_account_id=${filtered ? filtered : ""}&project_id=${
-      projectFiltered ? projectFiltered : ""
+    }&ledger_account_id=${account?.id ? account?.id : ""}&project_id=${
+      project?.id ? project?.id : ""
     }`
   );
 
@@ -61,8 +63,10 @@ const Transaction = () => {
           setStartDate={setStartDate}
           setEndDate={setEndDate}
           filterProp={{
-            setFiltered,
-            setProjectFiltered,
+            account,
+            setAccount,
+            project,
+            setProject,
             arrayItems: ledgerAccountData,
             loadingData: ledgerAccountLoading,
             arrayItemsTwo: projectData,

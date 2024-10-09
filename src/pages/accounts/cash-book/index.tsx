@@ -11,21 +11,20 @@ import { format } from "date-fns";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
 import { useGetEntriesQuery } from "@/store/services/accounts/api/entries";
 import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
-import DropdownSelect from "@/components/common/dropdown-select";
 import VOUCHER_TYPES from "@/constants/voucher-types";
+import { LedgerRow } from "@/lib/validators/accounts";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
+import SearchSelect from "@/components/common/search-select";
+import { LocationColumn } from "@/lib/validators";
 
 const CashBook = () => {
   // const [isOpen, setIsOpen] = useState(false);
-  const [filtered, setFiltered] = React.useState<number | null>(null);
-  const [projectFiltered, setProjectFiltered] = React.useState<number | null>(
-    null
-  );
+  const [account, setAccount] = React.useState<LedgerRow | undefined>();
+  const [project, setProject] = React.useState<ProjectRow | undefined>();
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
-  const [locationFiltered, setLocationFiltered] = React.useState<string | null>(
-    null
-  );
-  const [voucherType, setVoucherType] = React.useState<string | null>(null);
+  const [location, setLocation] = React.useState<LocationColumn | undefined>();
+  const [voucherType, setVoucherType] = React.useState<{type: string, title: string} | undefined>();
 
   // Filters
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
@@ -44,10 +43,8 @@ const CashBook = () => {
   );
   const formateEndDate = format(endDate ? endDate : new Date(), "yyyy-MM-dd");
 
-  const { data: location, isLoading: locationLoading } = useGetLocationsQuery(
-    "page=1&per_page=1000"
-  );
-  const locationData = location?.data || [];
+  const { data: locations } = useGetLocationsQuery("page=1&per_page=1000");
+  const locationData = locations?.data || [];
 
   // Pagination Control
   const [pagination, setPagination] = React.useState<PaginationState>({
@@ -58,10 +55,10 @@ const CashBook = () => {
   const { data, isLoading } = useGetEntriesQuery(
     `start_date=${formateStartDate ? formateStartDate : ""}&end_date=${
       formateEndDate ? formateEndDate : ""
-    }&ledger_account_id=${filtered ? filtered : ""}&project_id=${
-      projectFiltered ? projectFiltered : ""
-    }&location_id=${locationFiltered ? locationFiltered : ""}&type=${
-      voucherType ? voucherType : ""
+    }&ledger_account_id=${account?.id ? account.id : ""}&project_id=${
+      project?.id ? project?.id : ""
+    }&location_id=${location?.id ? location?.id : ""}&type=${
+      voucherType?.type ? voucherType?.type : ""
     }&page=${pagination.pageIndex + 1}&per_page=${pagination.pageSize}`
   );
 
@@ -77,8 +74,10 @@ const CashBook = () => {
           setStartDate={setStartDate}
           setEndDate={setEndDate}
           filterProp={{
-            setFiltered,
-            setProjectFiltered,
+            account,
+            setAccount,
+            project,
+            setProject,
             arrayItems: ledgerAccountData,
             loadingData: ledgerAccountLoading,
             arrayItemsTwo: projectData,
@@ -86,23 +85,31 @@ const CashBook = () => {
           }}
         >
           <div>
-            <DropdownSelect
-              items={locationData}
-              loadingData={locationLoading}
-              itemValueKey="id"
-              itemLabelKey="name"
+            <SearchSelect
+              items={locationData || []}
+              labelKey="name"
+              valueKey="id"
+              value={location}
               placeholder="Select Location"
-              setSelected={setLocationFiltered}
+              onSelect={setLocation}
             />
           </div>
           <div>
-            <DropdownSelect
+            {/* <DropdownSelect
               items={VOUCHER_TYPES}
               loadingData={false}
               itemValueKey="type"
               itemLabelKey="title"
               placeholder="Select Type"
               setSelected={setVoucherType}
+            /> */}
+            <SearchSelect
+              items={VOUCHER_TYPES || []}
+              labelKey="title"
+              valueKey="type"
+              value={voucherType}
+              placeholder="Select ledger account"
+              onSelect={setVoucherType}
             />
           </div>
         </ReportsToolBar>
@@ -116,7 +123,6 @@ const CashBook = () => {
                 paginationInfo={paginationInfo}
                 pagination={paginationInfo && pagination}
                 setPagination={paginationInfo && setPagination}
-                // noPagination={true}
                 reportFormate={{
                   startDate,
                   endDate,

@@ -17,13 +17,14 @@ import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-
 import { format } from "date-fns";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
 import { Card } from "@/components/ui/card";
+import { LedgerRow } from "@/lib/validators/accounts";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
 
 const GeneralLedger = () => {
   // const [isOpen, setIsOpen] = useState(false);
-  const [projectFiltered, setProjectFiltered] = React.useState<number | null>(
-    null
-  );
-  const [filtered, setFiltered] = React.useState<number | null>(null);
+  
+  const [project, setProject] = React.useState<ProjectRow | undefined>();
+  const [account, setAccount] = React.useState<LedgerRow | undefined>();
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
   const [pagination, setPagination] = React.useState<PaginationState>({
@@ -40,8 +41,8 @@ const GeneralLedger = () => {
   const { data, isLoading } = useGetGeneralLedgersQuery(
     `start_date=${formateStartDate ? formateStartDate : ""}&end_date=${
       formateEndDate ? formateEndDate : ""
-    }&ledger_account_id=${filtered ? filtered : ""}&project_id=${
-      projectFiltered ? projectFiltered : ""
+    }&ledger_account_id=${account?.id ? account?.id : ""}&project_id=${
+      project?.id ? project?.id : ""
     }`
   );
 
@@ -51,14 +52,25 @@ const GeneralLedger = () => {
   const { data: projects, isLoading: projectsLoading } =
     useGetProjectsQuery(`page=1&per_page=1000`);
 
+
   const projectData = projects?.data || [];
-
   const ledgerAccountData = ledgerAccount?.data || [];
-
   const generalLedger = data?.data || [];
   const summery = data?.summery;
 
+  // useEffect(() => {
+  //   if (param.ledgerId) {
+  //    const found = ledgerAccountData.find((item) => {
+  //      return item.id == Number(param.ledgerId)
+  //    })
+  //    setAccount(found);
+  //    console.log(found, "found");
+  //   }
+  // },[ledgerAccountData, param.ledgerId])
+
   console.log(summery);
+
+
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
   if (isLoading) return <Loading />;
@@ -70,8 +82,12 @@ const GeneralLedger = () => {
           setStartDate={setStartDate}
           setEndDate={setEndDate}
           filterProp={{
-            setFiltered,
-            setProjectFiltered,
+            setAccount,
+            account,
+            project,
+            setProject,
+            // setProjectFiltered,
+
             arrayItems: ledgerAccountData,
             loadingData: ledgerAccountLoading,
             arrayItemsTwo: projectData,
@@ -96,7 +112,7 @@ const GeneralLedger = () => {
                   reportType: "General Ledger",
                 }}
               >
-{/*                 <div className="grid grid-cols-7 items-center justify-end bg-gray-100 rounded-lg py-3">
+                {/*                 <div className="grid grid-cols-7 items-center justify-end bg-gray-100 rounded-lg py-3">
                   <span className="font-bold text-sm col-span-5 text-right mr-10">
                     Total
                   </span>

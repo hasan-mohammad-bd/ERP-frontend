@@ -9,11 +9,13 @@ import { format } from "date-fns";
 import { useGetBalanceSheetsQuery } from "@/store/services/accounts/api/balance-sheet.ts";
 import BalanceSheetTable from "./components/balance-sheet-table";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
+import { LedgerRow } from "@/lib/validators/accounts";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
 
 const BalanceSheet = () => {
   // const [isOpen, setIsOpen] = useState(false);
-  const [projectFiltered, setProjectFiltered] = React.useState<number | null>(null);
-  const [filtered, setFiltered] = React.useState<number | null>(null);
+  const [project, setProject] = React.useState<ProjectRow | undefined>();
+  const [account, setAccount] = React.useState<LedgerRow | undefined>();
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
 
@@ -26,8 +28,8 @@ const BalanceSheet = () => {
   const { data, isLoading } = useGetBalanceSheetsQuery(
     `start_date=${formateStartDate ? formateStartDate : ""}&end_date=${
       formateEndDate ? formateEndDate : ""
-    }&ledger_account_id=${filtered ? filtered : ""}&project_id=${
-      projectFiltered ? projectFiltered : ""
+    }&ledger_account_id=${account?.id ? account.id : ""}&project_id=${
+      project?.id ? project?.id : ""
     }`
   );
 
@@ -59,8 +61,10 @@ const projectData = projects?.data || [];
           setStartDate={setStartDate}
           setEndDate={setEndDate}
           filterProp={{
-            setFiltered,
-            setProjectFiltered,
+            setAccount,
+            account,
+            project,
+            setProject,
             arrayItems: ledgerAccountData,
             loadingData: ledgerAccountLoading,
             arrayItemsTwo: projectData,
