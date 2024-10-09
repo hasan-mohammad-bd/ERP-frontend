@@ -40,6 +40,7 @@ import {
 
 import { AddHolidayForm } from "@/pages/hrm/holiday/components/add-holiday-form";
 import EstimateSalary from "@/pages/hrm/estimate-salary";
+import LeaveBalance from "@/pages/hrm/reports/leave-reports/leave-balance";
 
 
 
@@ -238,10 +239,15 @@ const hrmRoutes = {
       errorElement: withFallback(<ErrorPage />),
     },
     {
-      path: "hrm/leave-summary",
+      path: "leave-summary",
       element: withFallback(<LeaveSummary />),
       errorElement: withFallback(<ErrorPage />),
-    }
+    },
+    {
+      path: "leave-balance",
+      element: withFallback(<LeaveBalance />),
+      errorElement: withFallback(<ErrorPage />),
+    },
 
 
   ],

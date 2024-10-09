@@ -73,6 +73,10 @@ export function AddContraForm() {
   // const [totalDrAmount, setTotalDrAmount] = useState(0);
   const [totalCrAmount, setTotalCrAmount] = useState(0);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
   const form = useForm<EntryFromValues>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
@@ -133,6 +137,11 @@ export function AddContraForm() {
     setTotalCrAmount(totalCr);
   }, [details]);
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> main
   async function onSubmit(data: EntryFromValues) {
     const updateData = {
       ...data,
@@ -370,7 +379,11 @@ export function AddContraForm() {
                         title={index === 1 ? "Credit Account Head" : undefined}
                         className="w-[250px]"
                       />
+<<<<<<< HEAD
                       {/*                       <FormField
+=======
+{/*                       <FormField
+>>>>>>> main
                         control={form.control}
                         name={`details.${index}.ledger_account_id`}
                         render={({ field }) => (
@@ -498,6 +511,7 @@ export function AddContraForm() {
                               )}
                             </FormLabel>
                             <FormControl>
+<<<<<<< HEAD
                               <InputNumberFormat
                                 locales="en-IN"
                                 className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
@@ -505,6 +519,12 @@ export function AddContraForm() {
                                   field.onChange(
                                     event.target.value.replace(/,/g, "")
                                   )
+=======
+                              <Input
+                                step="any"
+                                disabled={
+                                  form.watch(`details.${index}.dr_amount`) > 0
+>>>>>>> main
                                 }
                               />
                             </FormControl>
@@ -537,6 +557,10 @@ export function AddContraForm() {
                           remove(index);
                           const updatedAccounts = [...ledgerAccountData];
                           updatedAccounts.splice(index, 1);
+<<<<<<< HEAD
+=======
+                          
+>>>>>>> main
                         }}
                       >
                         <Trash2 size={16} color="red" className="" />

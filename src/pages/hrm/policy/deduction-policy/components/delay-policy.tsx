@@ -15,25 +15,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { UseFormReturn } from "react-hook-form";
 
 const items = [
   {
-    id: "consider-delay-duration",
+    id: "delay_consider",
     label: "Consider delay duration",
   },
   {
-    id: "deduct-from-salary",
+    id: "delay_deduct_salary",
     label: "Deduct from salary? (Otherwise from leave)",
   },
   {
-    id: "applications",
+    id: "delay_deduct_gross_salary",
     label: "Deduct from gross salary? (Otherwise from basic)",
   },
 ] as const;
 
-export function DelayPolicy({ form }: { form: any }) {
+export function DelayPolicy({ form }: { form: UseFormReturn }) {
   return (
-    <Card className="w-[750px]">
+    <Card className="w-full h-full">
       <CardHeader>
         <CardTitle>Delay Policy</CardTitle>
         {/* <CardDescription>Deploy your new project in one-click.</CardDescription> */}
@@ -63,7 +64,7 @@ export function DelayPolicy({ form }: { form: any }) {
                                 ? field.onChange([...field.value, item.id])
                                 : field.onChange(
                                     field.value?.filter(
-                                      (value: any) => value !== item.id
+                                      (value: string) => value !== item.id
                                     )
                                   );
                             }}
@@ -81,22 +82,26 @@ export function DelayPolicy({ form }: { form: any }) {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
-          name="leave_type"
+          name="delay_leave_type_id"
           render={({ field }) => (
             <FormItem className="w-[300px]">
               <FormLabel>Leave type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                onValueChange={(value) => field.onChange(Number(value))} // Convert string to number
+                value={field.value && String(field.value)} // Ensure value is a string for rendering
+              >
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select leave type" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="annual_leave">Annual Leave</SelectItem>
-                  <SelectItem value="sick_leave">Sick Leave</SelectItem>
-                  <SelectItem value="casual_leave">Casual Leave</SelectItem>
+                  <SelectItem value="1">Annual Leave</SelectItem>
+                  <SelectItem value="2">Sick Leave</SelectItem>
+                  <SelectItem value="3">Casual Leave</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -105,26 +110,25 @@ export function DelayPolicy({ form }: { form: any }) {
         />
         <FormField
           control={form.control}
-          name="mobile"
+          name="delay_consecutive"
           render={({ field }) => (
             <FormItem className="flex flex-row items-start space-x-3 space-y-0">
               <FormControl>
                 <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
+                  checked={field.value === 1}
+                  onCheckedChange={(checked) => field.onChange(checked ? 1 : 0)}
                 />
               </FormControl>
-
-              <FormLabel>
-                Consider consecutive delay?
-              </FormLabel>
+              <FormLabel>Consider consecutive delay?</FormLabel>
+              <FormMessage />
             </FormItem>
           )}
         />
+
         <div className="flex gap-20">
           <FormField
             control={form.control}
-            name="username"
+            name="delay_consider_days"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Number delay to consider</FormLabel>
@@ -134,15 +138,20 @@ export function DelayPolicy({ form }: { form: any }) {
                     className="w-32"
                     placeholder="Enter days"
                     {...field}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      field.onChange(value ? Number(value) : undefined);
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
-            name="username"
+            name="delay_adjust_days"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Days(s) adjust for delay</FormLabel>
@@ -152,6 +161,10 @@ export function DelayPolicy({ form }: { form: any }) {
                     className="w-32"
                     placeholder="Enter days"
                     {...field}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      field.onChange(value ? Number(value) : undefined);
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
