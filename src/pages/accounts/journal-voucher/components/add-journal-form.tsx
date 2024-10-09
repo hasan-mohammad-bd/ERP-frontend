@@ -50,6 +50,7 @@ import handleErrors from "@/lib/handle-errors";
 import { ProjectRow } from "@/lib/validators/accounts/projects";
 import { ErrorResponse } from "@/types";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import { InputNumberFormat } from '@react-input/number-format';
 
 export function AddJournalForm() {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -409,7 +410,19 @@ export function AddJournalForm() {
                                 )}
                               </FormLabel>
                               <FormControl>
-                                <Input
+                              <InputNumberFormat
+                                    locales="en-IN"
+                                    className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                    onChange={(event) =>
+                                      field.onChange(event.target.value.replace(/,/g, ""))
+                                    } 
+                                    disabled={
+                                      form.watch(`details.${index}.cr_amount`) > 0
+                                    }
+                                    min={0}
+                                    placeholder="Debit amount"
+                                  />
+{/*                                 <Input
                                   className="color-red"
                                   step="any"
                                   disabled={
@@ -419,7 +432,7 @@ export function AddJournalForm() {
                                   type="number"
                                   placeholder="Debit amount"
                                   {...field}
-                                />
+                                /> */}
                               </FormControl>
                               <FormMessage />
 {/*                               <NumericFormat
@@ -467,7 +480,22 @@ export function AddJournalForm() {
                                 )}
                               </FormLabel>
                               <FormControl>
-                                <Input
+                              <InputNumberFormat
+                                    locales="en-IN"
+                                    className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                    onChange={(event) =>
+                                      field.onChange(event.target.value.replace(/,/g, ""))
+                                    } 
+                                    
+                                    disabled={
+                                      form.watch(`details.${index}.dr_amount`) > 0
+                                    }
+                                    type="number"
+                                    min={0}
+                                    placeholder="Credit amount"
+
+                                  />
+{/*                                 <Input
                                   step="any"
                                   disabled={
                                     form.watch(`details.${index}.dr_amount`) > 0
@@ -476,7 +504,7 @@ export function AddJournalForm() {
                                   min={0}
                                   placeholder="Credit amount"
                                   {...field}
-                                />
+                                /> */}
                               </FormControl>
                               <FormMessage />
                             </FormItem>
