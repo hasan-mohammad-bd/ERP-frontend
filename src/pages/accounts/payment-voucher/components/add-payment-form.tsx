@@ -423,6 +423,7 @@ export function AddPaymentForm() {
                                     onChange={(event) =>
                                       field.onChange(event.target.value.replace(/,/g, ""))
                                     } 
+                                    defaultValue={previousData?.details?.[index].dr_amount? previousData.details[index].dr_amount : 0}
                                   />
                                   {/* <Input
                                    step="any"

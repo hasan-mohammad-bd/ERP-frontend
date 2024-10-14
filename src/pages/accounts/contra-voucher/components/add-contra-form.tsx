@@ -51,8 +51,6 @@ import { InputNumberFormat } from "@react-input/number-format";
 export function AddContraForm() {
   const { id } = useParams();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  console.log("🚀 ~ AddJournalForm ~ uploadedFiles:", uploadedFiles);
-
   const [createEntry, { isLoading }] = useCreateEntryMutation();
   const [updateEntry, { isLoading: updateLoading }] = useUpdateEntryMutation();
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
@@ -506,6 +504,7 @@ export function AddContraForm() {
                                     event.target.value.replace(/,/g, "")
                                   )
                                 }
+                                defaultValue={previousData?.details[index].cr_amount ? previousData?.details[index].cr_amount : 0}
                               />
                             </FormControl>
                             <FormMessage />

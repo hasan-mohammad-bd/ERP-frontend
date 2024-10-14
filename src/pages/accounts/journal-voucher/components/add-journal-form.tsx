@@ -50,7 +50,7 @@ import handleErrors from "@/lib/handle-errors";
 import { ProjectRow } from "@/lib/validators/accounts/projects";
 import { ErrorResponse } from "@/types";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
-import { InputNumberFormat } from '@react-input/number-format';
+import { InputNumberFormat } from "@react-input/number-format";
 
 export function AddJournalForm() {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -107,6 +107,9 @@ export function AddJournalForm() {
       file: "",
     },
   });
+  // useEffect(() => {
+  //   form.setValue("details", previousData?.details || []);
+  // }, [previousData?.details, form]);
 
   useEffect(() => {
     if (previousData) {
@@ -410,45 +413,23 @@ export function AddJournalForm() {
                                 )}
                               </FormLabel>
                               <FormControl>
-                              <InputNumberFormat
-                                    locales="en-IN"
-                                    className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
-                                    onChange={(event) =>
-                                      field.onChange(event.target.value.replace(/,/g, ""))
-                                    } 
-                                    disabled={
-                                      form.watch(`details.${index}.cr_amount`) > 0
-                                    }
-                                    min={0}
-                                    placeholder="Debit amount"
-                                  />
-{/*                                 <Input
-                                  className="color-red"
-                                  step="any"
+                                <InputNumberFormat
+                                  locales="en-IN"
+                                  className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                  onChange={(event) =>
+                                    field.onChange(
+                                      event.target.value.replace(/,/g, "")
+                                    )
+                                  }
                                   disabled={
                                     form.watch(`details.${index}.cr_amount`) > 0
                                   }
+                                  defaultValue={previousData?.details[index].dr_amount ? previousData?.details?.[index]?.dr_amount : 0}
                                   min={0}
-                                  type="number"
                                   placeholder="Debit amount"
-                                  {...field}
-                                /> */}
+                                />
                               </FormControl>
                               <FormMessage />
-{/*                               <NumericFormat
-                                value={form.watch(`details.${index}.dr_amount`)}
-                                thousandsGroupStyle="lakh"
-                                thousandSeparator=","
-                                displayType="text"
-                                className="absolute right-0 top-0"
-                                onValueChange={(values) => {
-                                  const { value } = values;
-                                  form.setValue(
-                                    `details.${index}.dr_amount`,
-                                    value
-                                  );
-                                }}
-                              /> */}
                             </FormItem>
                           )}
                         />
@@ -480,31 +461,21 @@ export function AddJournalForm() {
                                 )}
                               </FormLabel>
                               <FormControl>
-                              <InputNumberFormat
-                                    locales="en-IN"
-                                    className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
-                                    onChange={(event) =>
-                                      field.onChange(event.target.value.replace(/,/g, ""))
-                                    } 
-                                    
-                                    disabled={
-                                      form.watch(`details.${index}.dr_amount`) > 0
-                                    }
-                                    type="number"
-                                    min={0}
-                                    placeholder="Credit amount"
-
-                                  />
-{/*                                 <Input
-                                  step="any"
+                                <InputNumberFormat
+                                  locales="en-IN"
+                                  className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                  onChange={(event) =>
+                                    field.onChange(
+                                      event.target.value.replace(/,/g, "")
+                                    )
+                                  }
                                   disabled={
                                     form.watch(`details.${index}.dr_amount`) > 0
                                   }
-                                  type="number"
+                                  defaultValue={previousData?.details[index].cr_amount ? previousData?.details?.[index]?.cr_amount : 0}
                                   min={0}
                                   placeholder="Credit amount"
-                                  {...field}
-                                /> */}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>

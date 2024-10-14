@@ -546,6 +546,7 @@ export function AddReceiptForm() {
                                     onChange={(event) =>
                                       field.onChange(event.target.value.replace(/,/g, ""))
                                     } 
+                                    defaultValue={previousData?.details[index]?.cr_amount? previousData?.details[index]?.cr_amount : 0}
                                   />
                                 </FormControl>
                                 <FormMessage />
