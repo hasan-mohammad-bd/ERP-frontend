@@ -504,7 +504,7 @@ export function AddContraForm() {
                                     event.target.value.replace(/,/g, "")
                                   )
                                 }
-                                defaultValue={previousData?.details[index].cr_amount ? previousData?.details[index].cr_amount : 0}
+                                defaultValue={previousData?.details[index]?.cr_amount ? previousData?.details[index].cr_amount : 0}
                               />
                             </FormControl>
                             <FormMessage />

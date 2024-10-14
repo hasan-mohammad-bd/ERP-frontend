@@ -47,6 +47,7 @@ import { useEffect, useState } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { InputNumberFormat } from "@react-input/number-format";
 
 export function AddBudgetForm() {
   const { id } = useParams();
@@ -436,30 +437,42 @@ export function AddBudgetForm() {
                     </div>
 
                     <div className="max-w-[180px]">
-                      <FormField
-                        control={form.control}
-                        name={`details.${index}.dr_amount`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>
-                              {index === 0 && "Debit Amount"}
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                step="any"
-                                disabled={
-                                  form.watch(`details.${index}.cr_amount`) > 0
-                                }
-                                min={0}
-                                type="number"
-                                placeholder="Debit amount"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                    <FormField
+                          control={form.control}
+                          name={`details.${index}.dr_amount`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>
+                                {index === 0 && (
+                                  <>
+                                    Debit Amount{" "}
+                                    <span>
+                                      <span className="text-red-500">*</span>
+                                    </span>
+                                  </>
+                                )}
+                              </FormLabel>
+                              <FormControl>
+                                <InputNumberFormat
+                                  locales="en-IN"
+                                  className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                  onChange={(event) =>
+                                    field.onChange(
+                                      event.target.value.replace(/,/g, "")
+                                    )
+                                  }
+                                  disabled={
+                                    form.watch(`details.${index}.cr_amount`) > 0
+                                  }
+                                  defaultValue={previousData?.details[index]?.dr_amount ? previousData?.details?.[index]?.dr_amount : 0}
+                                  min={0}
+                                  placeholder="Debit amount"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                       {index === lastIndex && (
                         <>
                           <p className="text-sm mt-2 whitespace-nowrap">
@@ -473,30 +486,40 @@ export function AddBudgetForm() {
                       )}
                     </div>
                     <div className="max-w-[180px]">
-                      <FormField
-                        control={form.control}
-                        name={`details.${index}.cr_amount`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>
-                              {index === 0 && "Credit Amount"}
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                step="any"
-                                disabled={
-                                  form.watch(`details.${index}.dr_amount`) > 0
-                                }
-                                type="number"
-                                min={0}
-                                placeholder="Credit amount"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                    <FormField
+                          control={form.control}
+                          name={`details.${index}.cr_amount`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>
+                                {index === 0 && (
+                                  <>
+                                    Credit Amount{" "}
+                                    <span className="text-red-500">*</span>
+                                  </>
+                                )}
+                              </FormLabel>
+                              <FormControl>
+                                <InputNumberFormat
+                                  locales="en-IN"
+                                  className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                  onChange={(event) =>
+                                    field.onChange(
+                                      event.target.value.replace(/,/g, "")
+                                    )
+                                  }
+                                  disabled={
+                                    form.watch(`details.${index}.dr_amount`) > 0
+                                  }
+                                  defaultValue={previousData?.details[index]?.cr_amount ? previousData?.details?.[index]?.cr_amount : 0}
+                                  min={0}
+                                  placeholder="Credit amount"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                       {index === lastIndex && (
                         <>
                           <p className="text-sm mt-2 whitespace-nowrap">
