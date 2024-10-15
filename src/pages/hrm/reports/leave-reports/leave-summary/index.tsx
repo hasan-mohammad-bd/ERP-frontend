@@ -6,6 +6,7 @@ import LeaveSummaryTable from "./components/leave-summary-table";
 import { useState } from "react";
 import { Paginator } from "@/components/common/paginator";
 import PrintPDFWrapper from "@/components/common";
+import { Card } from "@/components/ui/card";
 
 const LeaveSummary = () => {
   const [page, setPage] = useState(1); // Default current page
@@ -24,7 +25,7 @@ const LeaveSummary = () => {
 
   return (
     <>
-      <div className="">
+      <Card>
         <PrintPDFWrapper className="space-y-4" fileName="leave-summary-report">
           <div className="flex-1 space-y-4 my-4">
             <div className="text-center  ">
@@ -38,17 +39,17 @@ const LeaveSummary = () => {
               leaveTypeSummary={leavesTypeSummary}
             />
           ) : null}
-          {paginationInfo && (
-            <Paginator
-              className="print:hidden hide-in-pdf"
-              meta={paginationInfo} // Pagination information
-              dataCount={leaveSummary.length} // Total number of data is shown in the paginator
-              onPageChange={setPage} // Function to handle page change event
-              onPageSizeChange={setPageSize} // Function to handle page size change event
-            />
-          )}
         </PrintPDFWrapper>
-      </div>
+        {paginationInfo && (
+          <Paginator
+            className="print:hidden hide-in-pdf px-4 pb-4" // optional
+            meta={paginationInfo} // Pagination information
+            dataCount={leaveSummary.length} // Total number of data is shown in the paginator
+            onPageChange={setPage} // Function to handle page change event
+            onPageSizeChange={setPageSize} // Function to handle page size change event
+          />
+        )}
+      </Card>
     </>
   );
 };
