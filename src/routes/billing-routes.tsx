@@ -1,11 +1,9 @@
 import withFallback from "@/utils/with-fallback";
 import {
-
   // DashboardAccounts,
   ErrorPage,
   Layout,
   NotFoundPage,
-
 } from "./components";
 import Customers from "@/pages/billing/customer";
 import Supplier from "@/pages/billing/supplier";
@@ -14,11 +12,8 @@ import Category from "@/pages/billing/category";
 import SubCategory from "@/pages/billing/sub-category";
 import ClassCategory from "@/pages/billing/child-category";
 import Brand from "@/pages/billing/brand";
-
-
-
-
-
+import ItemAddForm from "@/pages/billing/items/add-item";
+import ItemList from "@/pages/billing/items/items-list";
 
 const billingRoutes = {
   path: "billing/",
@@ -72,9 +67,30 @@ const billingRoutes = {
     },
 
     {
+      path: "items",
+      errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<ItemList />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "add",
+          element: withFallback(<ItemAddForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<ItemAddForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+      ],
+    },
+    {
       path: "*",
       element: withFallback(<NotFoundPage />),
-    }
+    },
   ],
 };
 

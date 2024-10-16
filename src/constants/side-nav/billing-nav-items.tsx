@@ -62,6 +62,13 @@ const billingNavItems: NavItem[] = [
         href: "/billing/brand",
       },
 
+      {
+        title: "Items",
+        icon: PlayIcon,
+        color: "text-sky-500",
+        href: "/billing/items",
+      },
+
 
     ],
   },
