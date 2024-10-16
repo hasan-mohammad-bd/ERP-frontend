@@ -6,17 +6,13 @@ const leaveGroupApi = hrmApi.injectEndpoints({
   endpoints: (build) => ({
     getLeaveBalance: build.query<
       { data: LeaveBalanceColumn[]; meta: PaginationInfo },
-      { page: number; per_page: number } // Accept page and per_page as params
+      string 
     >({
-      query: ({ page, per_page }) => ({
-        url: `leave-reports/balance`,
-        params: {
-          page,
-          per_page,
-        },
-      }),
+      query: (params) => `leave-reports/balance?${params}`,
       providesTags: ["leave-balance"],
     }),
+   
+
   }),
   overrideExisting: false,
 });

@@ -30,7 +30,7 @@ const LeaveSummaryTable = ({ tableData, leaveTypeSummary }: Props) => {
             <TableHead>Employee Id</TableHead>
             <TableHead>Employee Name</TableHead>
             {leaveTypeSummary?.map((leave: LeaveTypeSummaryRow) => (
-              <TableHead key={leave?.id}>{leave.name} Taken</TableHead>
+              <TableHead key={leave?.leave_type_id}>{leave.leave_type_name} Taken</TableHead>
             ))}
             <TableHead>Total Leave Taken</TableHead>
           </TableRow>
@@ -65,16 +65,16 @@ const LeaveSummaryTable = ({ tableData, leaveTypeSummary }: Props) => {
                 </TableCell>
               </TableRow>
             ))}
-          {/* <TableRow>
+          <TableRow>
             <TableCell colSpan={2}>Total</TableCell>
             {leaveTypeSummary &&
               leaveTypeSummary.map((item) => (
-                <TableCell className="" key={item.id}>
+                <TableCell className="" key={item.leave_type_id}>
                   {item.total_days} {item.total_days > 1 ? "days" : "day"}
                   {item.total_hours > 0 ? ` (${item.total_hours} hours)` : ""}
                 </TableCell>
               ))}
-          </TableRow> */}
+          </TableRow>
         </TableBody>
 
         <TableFooter></TableFooter>

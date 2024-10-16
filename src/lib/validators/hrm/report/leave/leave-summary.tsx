@@ -42,8 +42,8 @@ export type LeaveSummaryRow = z.infer<typeof leaveSummaryRow>
 
 
 export const leaveTypeSummaryRow = z.object({
-  id: z.coerce.number(),
-  name: z.string(),
+  leave_type_id: z.coerce.number(),
+  leave_type_name: z.string(),
   total_days: z.coerce.number(),
   total_hours: z.coerce.number()
 

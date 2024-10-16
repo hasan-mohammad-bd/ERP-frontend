@@ -266,6 +266,12 @@ const hrmNavItems: NavItem[] = [
         color: "text-sky-500",
       },
       {
+        title: "Leave Usages",
+        icon: UserRoundSearch,
+        href: "leave-usages",
+        color: "text-sky-500",
+      },
+      {
         title: "Leave Balance",
         icon: UserRoundSearch,
         href: "leave-balance",

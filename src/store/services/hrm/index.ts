@@ -60,7 +60,8 @@ export const hrmApi = createApi({
     "attendance-check-out",
     "attendance-list",
     "leave-balance",
-    "leave-summary"
+    "leave-summary",
+    "leave-usage"
   ],
   endpoints: () => ({}),
 });
