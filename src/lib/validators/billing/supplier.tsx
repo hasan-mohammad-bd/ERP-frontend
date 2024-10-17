@@ -1,31 +1,3 @@
-// import { z } from "zod";
-
-
-// export const supplierSchema = z.object({
-//   name: z.string().min(2, {
-//     message: "Name must be at least 2 characters.",
-//   }),
-
-// });
-
-// export type SupplierFormValues = z.infer<typeof supplierSchema>;
-
-// export const supplierRow = supplierSchema.extend({
-//   id: z.coerce
-//     .number()
-//     .int()
-//     .min(0, {
-//       message: "Id must be at least 0.",
-//     })
-//     .max(9999, {
-//       message: "Id must be at most 9999.",
-//     }),
-// });
-
-// export type SupplierRow = z.infer<typeof supplierRow>;
-
-
-
 import { z } from "zod";
 
 export const supplierSchema = z.object({

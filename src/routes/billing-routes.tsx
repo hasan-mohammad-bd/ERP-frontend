@@ -16,6 +16,7 @@ import PurchaseOrder from "@/pages/billing/purchase-order";
 import { AddPurchaseOrderForm } from "@/pages/billing/purchase-order/components/add-purchase-order-form"
 import ItemAddForm from "@/pages/billing/items/add-item";
 import ItemList from "@/pages/billing/items/items-list";
+import Expenses from "@/pages/billing/expenses";
 import PurchaseReceive from "@/pages/billing/purchase-receive";
 import { AddPurchaseReceiveForm } from "@/pages/billing/purchase-receive/components/add-purchase-recieve-form";
 import Customers from "@/pages/billing/customer";
@@ -42,6 +43,13 @@ const billingRoutes = {
       element: withFallback(<Supplier />),
       errorElement: withFallback(<ErrorPage />),
     },
+
+    {
+      path: "expenses",
+      element: withFallback(<Expenses />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
 
     {
       path: "unit",
