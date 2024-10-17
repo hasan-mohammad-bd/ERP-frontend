@@ -10,9 +10,9 @@ import { PaginationInfo } from "@/types";
 import { Separator } from "@/components/ui/separator";
 import ListSkeleton from "@/components/common/ListSkeleton";
 import { Modal } from "@/components/common/modal";
-import { AddCategoryForm } from "./components/add-category-form";
+import { AddUnitForm } from "./components/add-unit-form";
 
-const Category = () => {
+const Units = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
@@ -33,11 +33,11 @@ const Category = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="All Category"
+              title="All Units"
               description="Manage all items for you business"
             />
             <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Category
+              <Plus className="mr-2 h-4 w-4" /> Add Unit
             </Button>
           </div>
           <Separator />
@@ -57,16 +57,16 @@ const Category = () => {
       </div>
       {isOpen && (
         <Modal
-          title="Add Category"
+          title="Add Unit"
           isOpen={isOpen}
           toggleModal={() => setIsOpen(false)}
           className="w-[420px]"
         >
-          <AddCategoryForm modalClose={() => setIsOpen(false)} />
+          <AddUnitForm modalClose={() => setIsOpen(false)} />
         </Modal>
       )}
     </>
   );
 };
 
-export default Category;
+export default Units;

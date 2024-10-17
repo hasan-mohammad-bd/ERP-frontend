@@ -7,7 +7,7 @@ import {
 } from "./components";
 
 import Supplier from "@/pages/billing/supplier";
-import Unit from "@/pages/billing/unit";
+import Units from "@/pages/billing/units";
 import Category from "@/pages/billing/category";
 import SubCategory from "@/pages/billing/sub-category";
 import ClassCategory from "@/pages/billing/child-category";
@@ -52,8 +52,8 @@ const billingRoutes = {
 
 
     {
-      path: "unit",
-      element: withFallback(<Unit />),
+      path: "units",
+      element: withFallback(<Units />),
       errorElement: withFallback(<ErrorPage />),
     },
 

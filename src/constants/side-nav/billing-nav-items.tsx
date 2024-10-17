@@ -28,10 +28,10 @@ const billingNavItems: NavItem[] = [
     isChildren: true,
     children: [
       {
-        title: "Unit",
+        title: "Units",
         icon: PlayIcon,
         color: "text-sky-500",
-        href: "/billing/unit",
+        href: "/billing/units",
       },
 
       {
