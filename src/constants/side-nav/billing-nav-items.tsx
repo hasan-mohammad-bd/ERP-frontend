@@ -175,6 +175,12 @@ const billingNavItems: NavItem[] = [
         href: "/billing/debit-note",
         color: "text-sky-500",
       },
+      {
+        title: "Purchase Orders",
+        icon: Soup,
+        href: "/billing/purchase-orders",
+        color: "text-sky-500",
+      }
     ],
   },
 

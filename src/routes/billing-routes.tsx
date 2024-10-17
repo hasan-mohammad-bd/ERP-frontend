@@ -12,6 +12,8 @@ import Category from "@/pages/billing/category";
 import SubCategory from "@/pages/billing/sub-category";
 import ClassCategory from "@/pages/billing/child-category";
 import Brand from "@/pages/billing/brand";
+import PurchaseOrder from "@/pages/billing/purchase-order";
+import { AddPurchaseOrderForm } from "@/pages/billing/purchase-order/components/add-purchase-order-form"
 import ItemAddForm from "@/pages/billing/items/add-item";
 import ItemList from "@/pages/billing/items/items-list";
 
@@ -64,6 +66,22 @@ const billingRoutes = {
       path: "Brand",
       element: withFallback(<Brand />),
       errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "purchase-orders/",
+      errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<PurchaseOrder />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "add",
+          element: withFallback(<AddPurchaseOrderForm />),
+          errorElement: withFallback(<ErrorPage />),
+        }
+      ]
     },
 
     {
