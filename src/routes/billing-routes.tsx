@@ -16,6 +16,8 @@ import PurchaseOrder from "@/pages/billing/purchase-order";
 import { AddPurchaseOrderForm } from "@/pages/billing/purchase-order/components/add-purchase-order-form"
 import ItemAddForm from "@/pages/billing/items/add-item";
 import ItemList from "@/pages/billing/items/items-list";
+import PurchaseReceive from "@/pages/billing/purchase-receive";
+import { AddPurchaseReceiveForm } from "@/pages/billing/purchase-receive/components/add-purchase-recieve-form";
 
 const billingRoutes = {
   path: "billing/",
@@ -79,6 +81,22 @@ const billingRoutes = {
         {
           path: "add",
           element: withFallback(<AddPurchaseOrderForm />),
+          errorElement: withFallback(<ErrorPage />),
+        }
+      ]
+    },
+    {
+      path: "purchase-receive",
+      errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<PurchaseReceive />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "add",
+          element: withFallback(<AddPurchaseReceiveForm />),
           errorElement: withFallback(<ErrorPage />),
         }
       ]
