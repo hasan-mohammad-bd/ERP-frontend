@@ -56,7 +56,7 @@ const data = [
 ];
 
 
-const Customers = () => {
+const Invoice = () => {
   // const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   // const [pagination, setPagination] = React.useState<PaginationState>({
@@ -81,14 +81,14 @@ const Customers = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="Customer List"
+              title="Invoice List"
               description="Manage your sub accounts for you business"
             />
             <Button
-              onClick={() => navigate("/billing/customer/add")}
+              onClick={() => navigate("/billing/invoice/add")}
               size={"sm"}
             >
-              <Plus className="mr-2 h-4 w-4" /> Add Customer
+              <Plus className="mr-2 h-4 w-4" /> Add Invoice
             </Button>
           </div>
           <Separator />
@@ -110,4 +110,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Invoice;

@@ -5,7 +5,7 @@ import {
   Layout,
   NotFoundPage,
 } from "./components";
-import Customers from "@/pages/billing/customer";
+
 import Supplier from "@/pages/billing/supplier";
 import Unit from "@/pages/billing/unit";
 import Category from "@/pages/billing/category";
@@ -18,6 +18,9 @@ import ItemAddForm from "@/pages/billing/items/add-item";
 import ItemList from "@/pages/billing/items/items-list";
 import PurchaseReceive from "@/pages/billing/purchase-receive";
 import { AddPurchaseReceiveForm } from "@/pages/billing/purchase-receive/components/add-purchase-recieve-form";
+import Customers from "@/pages/billing/customer";
+import Quotes from "@/pages/billing/quotes";
+import Invoice from "@/pages/billing/invoice";
 
 const billingRoutes = {
   path: "billing/",
@@ -101,6 +104,22 @@ const billingRoutes = {
         }
       ]
     },
+    {
+      path: "purchase-receive",
+      errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<PurchaseReceive />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "add",
+          element: withFallback(<AddPurchaseReceiveForm />),
+          errorElement: withFallback(<ErrorPage />),
+        }
+      ]
+    },
 
     {
       path: "items",
@@ -123,6 +142,17 @@ const billingRoutes = {
         },
       ],
     },
+    {
+      path: "quotes",
+      element: withFallback(<Quotes />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "invoices",
+      element: withFallback(<Invoice />),
+      errorElement: withFallback(<ErrorPage />),
+    }
+    ,
     {
       path: "*",
       element: withFallback(<NotFoundPage />),
