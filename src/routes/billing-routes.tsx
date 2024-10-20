@@ -6,7 +6,7 @@ import {
   NotFoundPage,
 } from "./components";
 
-import Supplier from "@/pages/billing/supplier";
+
 import Units from "@/pages/billing/units";
 import Category from "@/pages/billing/category";
 import SubCategory from "@/pages/billing/sub-category";
@@ -16,12 +16,17 @@ import PurchaseOrder from "@/pages/billing/purchase-order";
 import { AddPurchaseOrderForm } from "@/pages/billing/purchase-order/components/add-purchase-order-form"
 import ItemAddForm from "@/pages/billing/items/add-item";
 import ItemList from "@/pages/billing/items/items-list";
-import Expenses from "@/pages/billing/expenses";
 import PurchaseReceive from "@/pages/billing/purchase-receive";
 import { AddPurchaseReceiveForm } from "@/pages/billing/purchase-receive/components/add-purchase-recieve-form";
 import Customers from "@/pages/billing/customer";
 import Quotes from "@/pages/billing/quotes";
 import Invoice from "@/pages/billing/invoice";
+import SupplierList from "@/pages/billing/supplier/supplier-list";
+import { AddSupplierForm } from "@/pages/billing/supplier/add-supplier/components/add-supplier-form";
+import Supplier from "@/pages/billing/supplier/add-supplier";
+import ExpensesList from "@/pages/billing/expenses/expenses-list";
+import Expenses from "@/pages/billing/expenses/add-expenses";
+import AddExpensesForm from "@/pages/billing/expenses/add-expenses/components/add-expenses-form";
 
 const billingRoutes = {
   path: "billing/",
@@ -40,15 +45,65 @@ const billingRoutes = {
 
     {
       path: "supplier",
-      element: withFallback(<Supplier />),
       errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<SupplierList />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "add",
+          element: withFallback(<Supplier />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<AddSupplierForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+      ],
     },
+
 
     {
       path: "expenses",
       element: withFallback(<Expenses />),
       errorElement: withFallback(<ErrorPage />),
     },
+
+
+
+    {
+      path: "expenses",
+      errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<ExpensesList />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "add",
+          element: withFallback(<Expenses />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<AddExpensesForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+      ],
+    },
+
+
+
+
+
+
+
+
+
 
 
     {

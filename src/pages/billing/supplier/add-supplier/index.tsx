@@ -1,8 +1,12 @@
 import { Heading } from "@/components/common/heading";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { AddSupplierForm } from "./components/add-supplier-form";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 const Supplier = () => {
+  const navigate = useNavigate();
   // const [isOpen, setIsOpen] = useState(false);
   //   const [pagination, setPagination] = React.useState<PaginationState>({
   //     pageIndex: 0,
@@ -26,25 +30,17 @@ const Supplier = () => {
           <div className="flex items-center justify-between">
             <Heading
               title="Supplier"
-              description="Manage job apply for you business"
+              description="Manage all items for you business"
             />
+            <Button onClick={() => navigate("/billing/supplier")} size={"sm"}>
+              <ArrowLeft className="mr-2 h-4 w-4" /> Back To All Supplier
+            </Button>
           </div>
           <Separator />
-          {/* {leaveType && (
-            <div>
-              <DataTable
-                columns={attendanceColumns}
-                data={leaveType}
-                paginationInfo={paginationInfo}
-                pagination={paginationInfo && pagination}
-                setPagination={paginationInfo && setPagination}
-              />
-            </div>
-          )} */}
+
+          <AddSupplierForm />
         </div>
       </div>
-
-      <AddSupplierForm />
     </>
   );
 };

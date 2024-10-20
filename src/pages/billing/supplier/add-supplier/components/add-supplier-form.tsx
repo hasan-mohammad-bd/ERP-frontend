@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useForm, useFieldArray  } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import {
   Card,
   CardContent,
@@ -27,51 +27,40 @@ import {
   supplierSchema,
 } from "@/lib/validators/billing/supplier";
 import { useState } from "react";
-import { Plus,Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 //    import { Input } from "@/components/ui/input";
 
 // import { zodResolver } from "@hookform/resolvers/zod";
 
 // import { Plus,  } from "lucide-react"; // For icons
 
-
-
-
-
-
 export function AddSupplierForm() {
+  // const form = useForm<SupplierFormValues>({
+  //     resolver: zodResolver(supplierSchema),
+  //     defaultValues: {
+  //       suppliers: [{ name: "", email: "", mobile_number: "", note: "" }], // Start with one supplier
+  //     },
+  //   });
 
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
-    // const form = useForm<SupplierFormValues>({
-    //     resolver: zodResolver(supplierSchema),
-    //     defaultValues: {
-    //       suppliers: [{ name: "", email: "", mobile_number: "", note: "" }], // Start with one supplier
-    //     },
-    //   });
-
-
-
-    const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-
-    console.log(uploadedFiles)
+  console.log(uploadedFiles);
 
   const form = useForm<SupplierFormValues>({
     resolver: zodResolver(supplierSchema),
     defaultValues: {
-        suppliers: [{ name: "", email: "", mobile_number: "", note: "" }], // Start with one supplier
-      },
+      suppliers: [{ name: "", email: "", mobile_number: "", note: "" }], // Start with one supplier
+    },
     //  defaultValues: {
     //    name: previousData?.name || "",
     //    short_code: previousData?.short_code || "",
     //  },
   });
 
-  
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "suppliers", // Field name in the schema
   });
-
 
   async function onSubmit() {
     // try {
@@ -302,134 +291,128 @@ export function AddSupplierForm() {
             </Card>
           </TabsContent>
 
-
-
-
           {/* contact person */}
           <TabsContent value="contact_person">
-        <Card>
-          <CardHeader>
-            <CardTitle>Contact Supplier</CardTitle>
-            {/* <CardDescription>Manage your supplier contacts here.</CardDescription> */}
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {fields.map((field, index) => (
-              <div className="flex gap-4" key={field.id}>
-                {/* Name field */}
-                <FormField
-                  control={form.control}
-                //   name={`suppliers.${index}.name`} // Reference to the dynamic field
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Enter name"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+            <Card>
+              <CardHeader>
+                <CardTitle>Contact Supplier</CardTitle>
+                {/* <CardDescription>Manage your supplier contacts here.</CardDescription> */}
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {fields.map((field, index) => (
+                  <div className="flex gap-4" key={field.id}>
+                    {/* Name field */}
+                    <FormField
+                      control={form.control}
+                      //   name={`suppliers.${index}.name`} // Reference to the dynamic field
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              placeholder="Enter name"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                {/* Email field */}
-                <FormField
-                  control={form.control}
-                //   name={`suppliers.${index}.email`}
-                 name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email Address</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="Enter email address"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    {/* Email field */}
+                    <FormField
+                      control={form.control}
+                      //   name={`suppliers.${index}.email`}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email Address</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="email"
+                              placeholder="Enter email address"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                {/* Mobile number field */}
-                <FormField
-                  control={form.control}
-                //   name={`suppliers.${index}.mobile_number`}
-                  name="mobile_number"
+                    {/* Mobile number field */}
+                    <FormField
+                      control={form.control}
+                      //   name={`suppliers.${index}.mobile_number`}
+                      name="mobile_number"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Mobile number</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              placeholder="Enter mobile number"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Mobile number</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Enter mobile number"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    {/* Note field */}
+                    <FormField
+                      control={form.control}
+                      //   name={`suppliers.${index}.note`}
+                      name="note"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Note</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              placeholder="Enter your note"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                {/* Note field */}
-                <FormField
-                  control={form.control}
-                //   name={`suppliers.${index}.note`}
-                name="note"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Note</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Enter your note"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Delete button */}
-                {index >= 0 && (
-                  <div className="flex items-center mt-8">
-                    <Button
-                      variant="outline"
-                      className="text-red-600"
-                      type="button"
-                      onClick={() => remove(index)} // Remove the field
-                    >
-                      <Trash2 size={16} />
-                    </Button>
+                    {/* Delete button */}
+                    {index >= 0 && (
+                      <div className="flex items-center mt-8">
+                        <Button
+                          variant="outline"
+                          className="text-red-600"
+                          type="button"
+                          onClick={() => remove(index)} // Remove the field
+                        >
+                          <Trash2 size={16} />
+                        </Button>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            ))}
+                ))}
 
-            {/* Add Supplier button */}
-            <Button
-              variant="outline"
-              className="border border-dashed border-gray-700 w-full"
-              type="button"
-              onClick={() =>
-                append({ name: "", email: "", mobile_number: "", note: "" })
-              } // Append a new supplier field set
-            >
-              <Plus size={16} /> <span className="ml-2">Add Supplier</span>
-            </Button>
-          </CardContent>
-        </Card>
-      </TabsContent>
+                {/* Add Supplier button */}
+                <Button
+                  variant="outline"
+                  className="border border-dashed border-gray-700 w-full"
+                  type="button"
+                  onClick={() =>
+                    append({ name: "", email: "", mobile_number: "", note: "" })
+                  } // Append a new supplier field set
+                >
+                  <Plus size={16} /> <span className="ml-2">Add Supplier</span>
+                </Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-
-
-        {/* Attachment */}
+          {/* Attachment */}
           <TabsContent value="attachment">
             <Card>
               <CardHeader>

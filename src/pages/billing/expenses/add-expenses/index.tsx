@@ -1,10 +1,12 @@
 import { Heading } from "@/components/common/heading";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import AddExpensesForm from "./components/add-expenses-form";
-
-
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 const Expenses = () => {
+  const navigate = useNavigate();
   // const [isOpen, setIsOpen] = useState(false);
   //   const [pagination, setPagination] = React.useState<PaginationState>({
   //     pageIndex: 0,
@@ -30,19 +32,12 @@ const Expenses = () => {
               title="Expenses"
               description="Manage job apply for you business"
             />
+            <Button onClick={() => navigate("/billing/expenses")} size={"sm"}>
+              <ArrowLeft className="mr-2 h-4 w-4" /> Back To All Expenses
+            </Button>
           </div>
           <Separator />
-          {/* {leaveType && (
-            <div>
-              <DataTable
-                columns={attendanceColumns}
-                data={leaveType}
-                paginationInfo={paginationInfo}
-                pagination={paginationInfo && pagination}
-                setPagination={paginationInfo && setPagination}
-              />
-            </div>
-          )} */}
+          
         </div>
       </div>
 
