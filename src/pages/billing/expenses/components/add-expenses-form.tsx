@@ -149,7 +149,7 @@ const AddExpensesForm = () => {
                 key={field.id}
               >
                 {/* Replace Expense Category with FormSearchSelect */}
-                <div className="w-full">
+                <div className={`${index === 0 ? "-translate-y-0" : "-translate-y-[8px]"}   w-full`}>
                 {index === 0 && <FormLabel>Expenses Category</FormLabel>}{" "}
                   <FormSearchSelect
                     loading={false} // Assuming no loading state is needed here for now
