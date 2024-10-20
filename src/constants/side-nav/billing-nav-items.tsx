@@ -108,7 +108,7 @@ const billingNavItems: NavItem[] = [
       {
         title: "Payment Received",
         icon: Soup,
-        href: "/billing/payment-received",
+        href: "/billing/payments-received",
         color: "text-sky-500",
       },
       {
@@ -179,6 +179,12 @@ const billingNavItems: NavItem[] = [
         title: "Purchase Orders",
         icon: Soup,
         href: "/billing/purchase-orders",
+        color: "text-sky-500",
+      },
+      {
+        title: "Manage Purchase",
+        icon: Soup,
+        href: "/billing/manage-purchase",
         color: "text-sky-500",
       },
       {

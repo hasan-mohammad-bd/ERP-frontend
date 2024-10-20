@@ -9,7 +9,7 @@ import { DataTable } from "@/components/ui/data-table/data-table";
 // import { PaginationState } from "@tanstack/react-table";
 
 import { useNavigate } from "react-router-dom";
-import { quotesColumns } from "./components/columns";
+import { salesReceiptColumns } from "./components/columns";
 
 
 const data = [
@@ -56,7 +56,7 @@ const data = [
 ];
 
 
-const Quotes = () => {
+const CreditNotes = () => {
   // const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   // const [pagination, setPagination] = React.useState<PaginationState>({
@@ -81,21 +81,21 @@ const Quotes = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="Quotes"
-              description="Manage your sub accounts for you business"
+              title="Credit Notes"
+              description="Manage your credit notes for you business"
             />
             <Button
-              onClick={() => navigate("/billing/quotes/add")}
+              onClick={() => navigate("/billing/credit-notes/add")}
               size={"sm"}
             >
-              <Plus className="mr-2 h-4 w-4" /> Add Quotes
+              <Plus className="mr-2 h-4 w-4" /> Add Credit Note
             </Button>
           </div>
           <Separator />
           {data && (
             <div>
               <DataTable
-                columns={quotesColumns}
+                columns={salesReceiptColumns}
                 data={data}
                 // paginationInfo={paginationInfo}
                 // pagination={paginationInfo && pagination}
@@ -110,4 +110,4 @@ const Quotes = () => {
   );
 };
 
-export default Quotes;
+export default CreditNotes;

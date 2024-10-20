@@ -3,7 +3,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { FormatIndianCurrency } from "@/utils/indian-formate";
 
-export const quotesColumns: ColumnDef<any>[] = [
+export const salesReceiptColumns: ColumnDef<any>[] = [
   {
     id: "select",
     header: ({ table }) => (
