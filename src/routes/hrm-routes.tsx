@@ -43,6 +43,7 @@ import EstimateSalary from "@/pages/hrm/estimate-salary";
 import LeaveBalance from "@/pages/hrm/reports/leave-reports/leave-balance";
 import LeaveUsagesReport from "@/pages/hrm/reports/leave-reports/leave-usages";
 import LeaveTrend from "@/pages/hrm/reports/leave-reports/leave-trend";
+import LeaveTypeSummary from "@/pages/hrm/reports/leave-reports/leave-type-summary";
 
 
 
@@ -208,6 +209,12 @@ const hrmRoutes = {
     {
       path: "leave-trend",
       element: withFallback(<LeaveTrend />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "leave-type-summary",
+      element: withFallback(<LeaveTypeSummary />),
       errorElement: withFallback(<ErrorPage />),
     },
 

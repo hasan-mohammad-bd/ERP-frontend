@@ -2,27 +2,30 @@ import { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 
-import { PaginationInfo } from "@/types"; // Assuming you have a PaginationInfo type like in CheckBooks
+import { PaginationInfo } from "@/types";
 
 import PrintPDFWrapper from "@/components/common";
 import { Card } from "@/components/ui/card";
-import { Paginator } from "@/components/common/paginator";
-import LeaveTrendTable from "./components/leave-trend-table";
-import { useGetLeaveTrendQuery } from "@/store/services/hrm/api/leave-trend";
 
-const LeaveTrend = () => {
+import LeaveTypeSummaryTable from "./components/leave-type-summery-table";
+import { useGetLeaveTypeSummaryQuery } from "@/store/services/hrm/api/leave-type-summary";
+import { Paginator } from "@/components/common/paginator";
+
+const LeaveTypeSummary = () => {
   // State for pagination
   const [page, setPage] = useState(1); // Default current page
   const [pageSize, setPageSize] = useState(10); // Number of items per page
 
-  // Fetch leave Trend data with pagination
-  const { data, isLoading } = useGetLeaveTrendQuery(
+  console.log("pageSize",pageSize)
+
+  // Fetch leave type summary data with pagination
+  const { data, isLoading } = useGetLeaveTypeSummaryQuery(
     `per_page=${pageSize}&page=${page}`
   );
 
-  console.log("trend",data)
+   console.log("summary",data)
 
-  // Extract the leave Trend data and pagination info
+  // Extract the leave type summary data and pagination info
   const fetchedData = data?.data || [];
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
@@ -32,17 +35,19 @@ const LeaveTrend = () => {
   return (
     <>
       <Card>
-        <PrintPDFWrapper className="space-y-4" fileName="leave-trend-report">
+        <PrintPDFWrapper className="space-y-4" fileName="leave-type-summary">
           <div className="flex-1 space-y-4 my-4">
             <div className="text-center  ">
               <h2>Akaar IT</h2>
-              <h3 className="text-xl">Leave Trend Report</h3>
+              <h3 className="text-xl">Leave Type Summary</h3>
             </div>
           </div>
           <div className="flex-1 space-y-4 w-full mx-auto">
             <Separator />
 
-            {fetchedData ? <LeaveTrendTable tableData={fetchedData} /> : null}
+            {fetchedData ? (
+              <LeaveTypeSummaryTable tableData={fetchedData} />
+            ) : null}
           </div>
         </PrintPDFWrapper>
         {paginationInfo && (
@@ -55,10 +60,8 @@ const LeaveTrend = () => {
           />
         )}
       </Card>
-
-     
     </>
   );
 };
 
-export default LeaveTrend;
+export default LeaveTypeSummary;

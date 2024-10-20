@@ -283,6 +283,12 @@ const hrmNavItems: NavItem[] = [
         href: "leave-trend",
         color: "text-sky-500",
       },
+      {
+        title: "Leave Type Summary",
+        icon: UserRoundSearch,
+        href: "leave-type-summary",
+        color: "text-sky-500",
+      },
     ],
   },
 
