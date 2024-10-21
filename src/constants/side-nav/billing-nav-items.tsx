@@ -192,7 +192,8 @@ const billingNavItems: NavItem[] = [
         icon: Soup,
         href: "/billing/purchase-receive",
         color: "text-sky-500",
-      }
+      },
+
     ],
   },
 

@@ -39,6 +39,8 @@ import AddExpensesForm from "@/pages/billing/expenses/add-expenses/components/ad
 import SubCategory from "@/pages/billing/sub-category";
 import Customers from "@/pages/billing/customers/customer-list";
 import { AddCustomerForm } from "@/pages/billing/customers/add-customer/components/add-supplier-form";
+import ManagePurchase from "@/pages/billing/manage-purchase";
+import { AddManagePurchase } from "@/pages/billing/manage-purchase/components/add-manage-purchase-form";
 
 const billingRoutes = {
   path: "billing/",
@@ -210,22 +212,22 @@ const billingRoutes = {
       ],
     },
 
-    // {
-    //   path: "manage-purchase",
-    //   errorElement: withFallback(<ErrorPage />),
-    //   children: [
-    //     {
-    //       index: true,
-    //       element: withFallback(<ManagePurchase />),
-    //       errorElement: withFallback(<ErrorPage />),
-    //     },
-    //     {
-    //       path: "add",
-    //       element: withFallback(<AddManagePurchase />),
-    //       errorElement: withFallback(<ErrorPage />),
-    //     }
-    //   ]
-    // },
+    {
+      path: "manage-purchase",
+      errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<ManagePurchase />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "add",
+          element: withFallback(<AddManagePurchase />),
+          errorElement: withFallback(<ErrorPage />),
+        }
+      ]
+    },
 
     {
       path: "items",
