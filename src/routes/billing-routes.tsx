@@ -41,6 +41,9 @@ import Customers from "@/pages/billing/customers/customer-list";
 import { AddCustomerForm } from "@/pages/billing/customers/add-customer/components/add-supplier-form";
 import ManagePurchase from "@/pages/billing/manage-purchase";
 import { AddManagePurchase } from "@/pages/billing/manage-purchase/components/add-manage-purchase-form";
+import MadePayment from "@/pages/billing/made-payment";
+import { AddMadePaymentForm } from "@/pages/billing/made-payment/components/add-purchase-recieve-form";
+
 
 const billingRoutes = {
   path: "billing/",
@@ -348,6 +351,23 @@ const billingRoutes = {
         {
           path: "add",
           element: withFallback(<AddCreditNotes />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+      ],
+    },
+    {
+      path: "made-payment",
+      // element: withFallback(<Invoice />),
+      errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<MadePayment />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "add",
+          element: withFallback(<AddMadePaymentForm />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],

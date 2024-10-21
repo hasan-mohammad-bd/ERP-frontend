@@ -193,6 +193,12 @@ const billingNavItems: NavItem[] = [
         href: "/billing/purchase-receive",
         color: "text-sky-500",
       },
+      {
+        title: "Payment Made",
+        icon: Soup,
+        href: "/billing/made-payment",
+        color: "text-sky-500",
+      },
 
     ],
   },
@@ -264,7 +270,7 @@ const billingNavItems: NavItem[] = [
   },
 
   {
-    title: "billing Setting",
+    title: "Billing Setting",
     icon: Settings,
     href: "billing/new-route",
     color: "text-sky-500",
