@@ -14,44 +14,36 @@ import { quotesColumns } from "./components/columns";
 
 const data = [
   {
-    sl: 1,
     date: "2024-10-01",
-    deliveryDate: "2024-10-05",
-    poInvoiceNo: "INV-12345",
-    businessBranch: "Main Branch",
-    suppliers: "Supplier A",
-    amount: 5000.00,
-    action: "Delivered"
+    quoteNumber: "Q-12345",
+    referenceNumber: "REF-001",
+    customerName: "Customer A",
+    status: "Confirmed",
+    amount: 5000.00
   },
   {
-    sl: 2,
     date: "2024-10-03",
-    deliveryDate: "2024-10-08",
-    poInvoiceNo: "INV-12346",
-    businessBranch: "Branch B",
-    suppliers: "Supplier B",
-    amount: 7500.00,
-    action: "Pending"
+    quoteNumber: "Q-12346",
+    referenceNumber: "REF-002",
+    customerName: "Customer B",
+    status: "Pending",
+    amount: 7500.00
   },
   {
-    sl: 3,
     date: "2024-10-06",
-    deliveryDate: "2024-10-10",
-    poInvoiceNo: "INV-12347",
-    businessBranch: "Main Branch",
-    suppliers: "Supplier C",
-    amount: 3200.00,
-    action: "Delivered"
+    quoteNumber: "Q-12347",
+    referenceNumber: "REF-003",
+    customerName: "Customer C",
+    status: "Confirmed",
+    amount: 3200.00
   },
   {
-    sl: 4,
     date: "2024-10-09",
-    deliveryDate: "2024-10-13",
-    poInvoiceNo: "INV-12348",
-    businessBranch: "Branch C",
-    suppliers: "Supplier D",
-    amount: 6000.00,
-    action: "Pending"
+    quoteNumber: "Q-12348",
+    referenceNumber: "REF-004",
+    customerName: "Customer D",
+    status: "Pending",
+    amount: 6000.00
   }
 ];
 

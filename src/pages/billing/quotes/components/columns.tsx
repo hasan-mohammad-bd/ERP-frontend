@@ -29,28 +29,24 @@ export const quotesColumns: ColumnDef<any>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "sl",
-    header: "Sl",
-  },
-  {
     accessorKey: "date",
     header: "Date",
   },
   {
-    accessorKey: "deliveryDate",
-    header: "Delivery Date",
+    accessorKey: "quoteNumber",
+    header: "Quote Number",
   },
   {
-    accessorKey: "poInvoiceNo",
-    header: "P.O. Invoice No",
+    accessorKey: "referenceNumber",
+    header: "Reference Number",
   },
   {
-    accessorKey: "businessBranch",
-    header: "Business Branch",
+    accessorKey: "customerName",
+    header: "Customer Name",
   },
   {
-    accessorKey: "suppliers",
-    header: "Suppliers",
+    accessorKey: "status",
+    header: "Status",
   },
   {
     accessorKey: "amount",

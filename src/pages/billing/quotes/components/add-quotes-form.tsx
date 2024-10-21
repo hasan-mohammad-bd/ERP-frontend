@@ -99,10 +99,7 @@ export function AddQuoteForm() {
             title={"Add Quote"}
             description="Manage your sub accounts for you business"
           />
-          <Button
-            onClick={() => navigate("/billing/quotes")}
-            size={"sm"}
-          >
+          <Button onClick={() => navigate("/billing/quotes")} size={"sm"}>
             Quotes List
           </Button>
         </div>
@@ -166,7 +163,7 @@ export function AddQuoteForm() {
                       </FormItem>
                     )}
                   />
-{/*                   <FormField
+                  {/*                   <FormField
                     control={form.control}
                     name="poDate"
                     render={({ field }) => (
@@ -297,26 +294,37 @@ export function AddQuoteForm() {
                   />
                   <FormField
                     control={form.control}
-                    name="note"
+                    name="subject"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Subject</FormLabel>
                         <FormControl>
-                          <Textarea
-                            placeholder="Type Subject."
-                            {...field}
-                          />
+                          <Input placeholder="Type Subject." {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  {/* <FormField
+                  <FormField
+                    control={form.control}
+                    name="note"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Customer Note</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="Type Subject." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
                     control={form.control}
                     name="termsAndConditions"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Add terms and conditions</FormLabel>
+                        <FormLabel>Terms and conditions</FormLabel>
                         <FormControl>
                           <Textarea
                             placeholder="Type terms and conditions."
@@ -326,7 +334,7 @@ export function AddQuoteForm() {
                         <FormMessage />
                       </FormItem>
                     )}
-                  /> */}
+                  />
                   <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
                     <FileUpload
@@ -347,7 +355,13 @@ export function AddQuoteForm() {
               <Calculation />
             </div>
             <div className="text-right">
-              <Button onClick={()=>navigate("/billing/quotes")} className="mr-2" variant="primary">Cancel</Button>
+              <Button
+                onClick={() => navigate("/billing/quotes")}
+                className="mr-2"
+                variant="primary"
+              >
+                Cancel
+              </Button>
               <Button variant="default" type="submit" className="w-fit mt-4">
                 Add
               </Button>

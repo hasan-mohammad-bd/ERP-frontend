@@ -14,46 +14,47 @@ import { salesReceiptColumns } from "./components/columns";
 
 const data = [
   {
-    sl: 1,
     date: "2024-10-01",
-    deliveryDate: "2024-10-05",
-    poInvoiceNo: "INV-12345",
-    businessBranch: "Main Branch",
-    suppliers: "Supplier A",
-    amount: 5000.00,
-    action: "Delivered"
+    paymentNo: "INV-12345",
+    referenceNumber: "REF-1",
+    customerName: "Supplier A",
+    invoiceNo: "INV-12345",
+    mode: "Delivered",
+    amount: "5000.00",
+    unusedAmount: "500.00"
   },
   {
-    sl: 2,
     date: "2024-10-03",
-    deliveryDate: "2024-10-08",
-    poInvoiceNo: "INV-12346",
-    businessBranch: "Branch B",
-    suppliers: "Supplier B",
-    amount: 7500.00,
-    action: "Pending"
+    paymentNo: "INV-12346",
+    referenceNumber: "REF-2",
+    customerName: "Supplier B",
+    invoiceNo: "INV-12346",
+    mode: "Pending",
+    amount: "7500.00",
+    unusedAmount: "750.00"
   },
   {
-    sl: 3,
     date: "2024-10-06",
-    deliveryDate: "2024-10-10",
-    poInvoiceNo: "INV-12347",
-    businessBranch: "Main Branch",
-    suppliers: "Supplier C",
-    amount: 3200.00,
-    action: "Delivered"
+    paymentNo: "INV-12347",
+    referenceNumber: "REF-3",
+    customerName: "Supplier C",
+    invoiceNo: "INV-12347",
+    mode: "Delivered",
+    amount: "3200.00",
+    unusedAmount: "320.00"
   },
   {
-    sl: 4,
     date: "2024-10-09",
-    deliveryDate: "2024-10-13",
-    poInvoiceNo: "INV-12348",
-    businessBranch: "Branch C",
-    suppliers: "Supplier D",
-    amount: 6000.00,
-    action: "Pending"
+    paymentNo: "INV-12348",
+    referenceNumber: "REF-4",
+    customerName: "Supplier D",
+    invoiceNo: "INV-12348",
+    mode: "Pending",
+    amount: "6000.00",
+    unusedAmount: "600.00"
   }
-];
+]
+
 
 
 const PaymentsReceived = () => {

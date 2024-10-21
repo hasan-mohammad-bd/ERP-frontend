@@ -29,33 +29,37 @@ export const salesReceiptColumns: ColumnDef<any>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "sl",
-    header: "Sl",
+    accessorKey: "receiptDate",
+    header: "Receipt Date",
   },
   {
-    accessorKey: "date",
-    header: "Date",
+    accessorKey: "salesReceiptNumber",
+    header: "Sales Receipt#",
   },
   {
-    accessorKey: "deliveryDate",
-    header: "Delivery Date",
+    accessorKey: "reference",
+    header: "Reference",
   },
   {
-    accessorKey: "poInvoiceNo",
-    header: "P.O. Invoice No",
+    accessorKey: "customerName",
+    header: "Customer Name",
   },
   {
-    accessorKey: "businessBranch",
-    header: "Business Branch",
+    accessorKey: "paymentMode",
+    header: "Payment Mode",
   },
   {
-    accessorKey: "suppliers",
-    header: "Suppliers",
+    accessorKey: "status",
+    header: "Status",
   },
   {
     accessorKey: "amount",
     header: "Amount",
     cell: ({ row }) => <FormatIndianCurrency amount={row.original.amount as number} />,
+  },
+  {
+    accessorKey: "createdBy",
+    header: "Created By",
   },
   {
     id: "actions",

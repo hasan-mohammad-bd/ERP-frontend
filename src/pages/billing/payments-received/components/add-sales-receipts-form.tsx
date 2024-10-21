@@ -34,6 +34,7 @@ import FileUpload from "@/components/common/file-uploader";
 import Calculation from "./calculation";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Invoices from "./invoices";
+import { Textarea } from "@/components/ui/textarea";
 
 const suppliers = [
   { id: "1", name: "Acme Corp" },
@@ -495,19 +496,19 @@ export function AddPaymentReceivedFrom() {
                       </FormItem>
                     )}
                   /> */}
-                  {/*                   <FormField
+                  <FormField
                     control={form.control}
                     name="note"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Subject</FormLabel>
+                        <FormLabel>Notes</FormLabel>
                         <FormControl>
                           <Textarea placeholder="Type Subject." {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
-                  /> */}
+                  />
                   {/* <FormField
                     control={form.control}
                     name="termsAndConditions"
@@ -538,7 +539,7 @@ export function AddPaymentReceivedFrom() {
             {/* product Search */}
             <Card className="mb-4">
               {/* <SearchProduct /> */}
-              <Invoices/>
+              <Invoices />
             </Card>
             {/* calculation */}
             <div className="flex justify-end">

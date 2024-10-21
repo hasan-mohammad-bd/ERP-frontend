@@ -29,33 +29,30 @@ export const salesReceiptColumns: ColumnDef<any>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "sl",
-    header: "Sl",
+    accessorKey: "paymentNo", // Change this to match your data structure
+    header: "Payment No",
   },
   {
     accessorKey: "date",
     header: "Date",
   },
   {
-    accessorKey: "deliveryDate",
-    header: "Delivery Date",
+    accessorKey: "mode",
+    header: "Mode", // Assuming 'mode' is a relevant column
   },
   {
-    accessorKey: "poInvoiceNo",
-    header: "P.O. Invoice No",
-  },
-  {
-    accessorKey: "businessBranch",
-    header: "Business Branch",
-  },
-  {
-    accessorKey: "suppliers",
-    header: "Suppliers",
+    accessorKey: "customerName",
+    header: "Customer Name", // Adjusted to match your data
   },
   {
     accessorKey: "amount",
     header: "Amount",
-    cell: ({ row }) => <FormatIndianCurrency amount={row.original.amount as number} />,
+    cell: ({ row }) => <FormatIndianCurrency amount={parseFloat(row.original.amount)} />, // Ensure the amount is parsed as a number
+  },
+  {
+    accessorKey: "unusedAmount",
+    header: "Unused Amount", // Optional: if you want to display this column
+    cell: ({ row }) => <FormatIndianCurrency amount={parseFloat(row.original.unusedAmount)} />, // Ensure the amount is parsed as a number
   },
   {
     id: "actions",

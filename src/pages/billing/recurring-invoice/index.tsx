@@ -12,48 +12,46 @@ import { useNavigate } from "react-router-dom";
 import { salesReceiptColumns } from "./components/columns";
 
 
+
 const data = [
   {
-    sl: 1,
-    date: "2024-10-01",
-    deliveryDate: "2024-10-05",
-    poInvoiceNo: "INV-12345",
-    businessBranch: "Main Branch",
-    suppliers: "Supplier A",
-    amount: 5000.00,
-    action: "Delivered"
+    customerName: "Supplier A",
+    profileName: "Profile 1",
+    frequency: "Monthly",
+    lastInvoiceDate: "2024-10-01",
+    nextInvoiceDate: "2024-11-01",
+    status: "Delivered",
+    amount: "5000.00"
   },
   {
-    sl: 2,
-    date: "2024-10-03",
-    deliveryDate: "2024-10-08",
-    poInvoiceNo: "INV-12346",
-    businessBranch: "Branch B",
-    suppliers: "Supplier B",
-    amount: 7500.00,
-    action: "Pending"
+    customerName: "Supplier B",
+    profileName: "Profile 2",
+    frequency: "Quarterly",
+    lastInvoiceDate: "2024-10-03",
+    nextInvoiceDate: "2024-01-03",
+    status: "Pending",
+    amount: "7500.00"
   },
   {
-    sl: 3,
-    date: "2024-10-06",
-    deliveryDate: "2024-10-10",
-    poInvoiceNo: "INV-12347",
-    businessBranch: "Main Branch",
-    suppliers: "Supplier C",
-    amount: 3200.00,
-    action: "Delivered"
+    customerName: "Supplier C",
+    profileName: "Profile 3",
+    frequency: "Annually",
+    lastInvoiceDate: "2024-10-06",
+    nextInvoiceDate: "2025-10-06",
+    status: "Delivered",
+    amount: "3200.00"
   },
   {
-    sl: 4,
-    date: "2024-10-09",
-    deliveryDate: "2024-10-13",
-    poInvoiceNo: "INV-12348",
-    businessBranch: "Branch C",
-    suppliers: "Supplier D",
-    amount: 6000.00,
-    action: "Pending"
+    customerName: "Supplier D",
+    profileName: "Profile 4",
+    frequency: "Monthly",
+    lastInvoiceDate: "2024-10-09",
+    nextInvoiceDate: "2024-11-09",
+    status: "Pending",
+    amount: "6000.00"
   }
-];
+]
+
 
 
 const RecurringInvoice = () => {

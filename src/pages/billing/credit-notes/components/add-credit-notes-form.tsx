@@ -42,8 +42,6 @@ const suppliers = [
   { id: "5", name: "Umbrella Corporation" },
 ];
 
-
-
 export function AddCreditNotes() {
   const navigate = useNavigate();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -63,35 +61,7 @@ export function AddCreditNotes() {
     supplier.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // to conduct search
 
-  /*   const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.forEach((file) => {
-      Papa.parse(file, {
-        complete: (result) => {
-          const newProducts: Product[] = result.data
-            .slice(1) // Skip header row
-            .map((row: any, index) => ({
-              id: (allProducts.length + index + 1).toString(),
-              name: row[0],
-              barcode: row[1],
-              stock: row[2],
-              purchasePrice: parseFloat(row[3]),
-              sellingPrice: parseFloat(row[4]),
-              ppp: parseFloat(row[5]),
-              pMrp: parseFloat(row[6]),
-              quantity: 1,
-              subTotal: parseFloat(row[4]), // Assuming selling price as initial subtotal
-              discount: 0,
-              total: parseFloat(row[4]) // Assuming selling price as initial total
-            }))
-          setAllProducts(prev => [...prev, ...newProducts])
-        },
-        header: true,
-        skipEmptyLines: true
-      })
-    })
-  }, [allProducts]) */
 
   return (
     <>
@@ -152,70 +122,7 @@ export function AddCreditNotes() {
                       </FormItem>
                     )}
                   />
-{/*                   <FormField
-                    control={form.control}
-                    name="poDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Credit Note </FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
-{/*                   <FormField
-                    control={form.control}
-                    name="poDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Order Name</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
-{/*                   <FormField
-                    control={form.control}
-                    name="supplierName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Time Period</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select day" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <Input
-                              placeholder="Search Day..."
-                              className="mb-2"
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                            <ScrollArea className="h-[200px]">
-                              {timePeriods.map((supplier) => (
-                                <SelectItem
-                                  key={supplier.id}
-                                  value={supplier.id}
-                                >
-                                  {supplier.label}
-                                </SelectItem>
-                              ))}
-                            </ScrollArea>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
+
                   <FormField
                     control={form.control}
                     name="poDate"
@@ -223,13 +130,13 @@ export function AddCreditNotes() {
                       <FormItem>
                         <FormLabel>Credit Note</FormLabel>
                         <FormControl>
-                          <Input placeholder={"CN-0001"}  {...field} />
+                          <Input placeholder={"CN-0001"} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                   <FormField
+                  <FormField
                     control={form.control}
                     name="reference"
                     render={({ field }) => (
@@ -255,7 +162,7 @@ export function AddCreditNotes() {
                       </FormItem>
                     )}
                   />
-                                    <FormField
+                  <FormField
                     control={form.control}
                     name="supplierName"
                     render={({ field }) => (
@@ -293,225 +200,7 @@ export function AddCreditNotes() {
                       </FormItem>
                     )}
                   />
-{/*                   <FormField
-                    control={form.control}
-                    name="poNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Sales Receipt </FormLabel>
-                        <FormControl>
-                          <Input placeholder="SR-0001" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
-                  {/*                   <FormField
-                    control={form.control}
-                    name="poNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Order Number</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter order number" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
-                  {/*                                     <FormField
-                    control={form.control}
-                    name="supplierName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Terms</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a Terms" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <Input
-                              placeholder="Search Terms..."
-                              className="mb-2"
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                            <ScrollArea className="h-[200px]">
-                              {filteredSuppliers.map((supplier) => (
-                                <SelectItem
-                                  key={supplier.id}
-                                  value={supplier.id}
-                                >
-                                  {supplier.name}
-                                </SelectItem>
-                              ))}
-                            </ScrollArea>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
 
-                  {/*                   <FormField
-                    control={form.control}
-                    name="reference"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Reference</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter reference" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="deliveryDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Quote Date</FormLabel>
-                        <FormControl>
-                          <Input type="date" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
-                  {/* <FormField
-                    control={form.control}
-                    name="supplierName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Payment Terms</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a Payment Terms" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <Input
-                              placeholder="Search Payment Terms..."
-                              className="mb-2"
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                            <ScrollArea className="h-[200px]">
-                              {paymentTerms.map((supplier) => (
-                                <SelectItem
-                                  key={supplier.id}
-                                  value={supplier.id}
-                                >
-                                  {supplier.label}
-                                </SelectItem>
-                              ))}
-                            </ScrollArea>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
-
-                  {/*                   <FormField
-                    control={form.control}
-                    name="paymentTerms"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Due Date</FormLabel>
-                        <FormControl>
-                          <Input type="date" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
-                  {/*                   <FormField
-                    control={form.control}
-                    name="paymentTerms"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Sales Person</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Payment Terms" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <Input
-                              placeholder="Search items..."
-                              className="mb-2"
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                            <ScrollArea className="h-[200px]">
-                              {filteredSuppliers.map((supplier) => (
-                                <SelectItem
-                                  key={supplier.id}
-                                  value={supplier.id}
-                                >
-                                  {supplier.name}
-                                </SelectItem>
-                              ))}
-                            </ScrollArea>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
-                  {/*                   <FormField
-                    control={form.control}
-                    name="paymentTerms"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Project Name</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Payment Terms" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <Input
-                              placeholder="Search Items"
-                              className="mb-2"
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                            <ScrollArea className="h-[200px]">
-                              {filteredSuppliers.map((supplier) => (
-                                <SelectItem
-                                  key={supplier.id}
-                                  value={supplier.id}
-                                >
-                                  {supplier.name}
-                                </SelectItem>
-                              ))}
-                            </ScrollArea>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
                   <FormField
                     control={form.control}
                     name="note"
@@ -520,6 +209,36 @@ export function AddCreditNotes() {
                         <FormLabel>Subject</FormLabel>
                         <FormControl>
                           <Textarea placeholder="Type Subject." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="note"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Customer Note</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="Type Subject." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="termsAndConditions"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Terms and conditions</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Type terms and conditions."
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

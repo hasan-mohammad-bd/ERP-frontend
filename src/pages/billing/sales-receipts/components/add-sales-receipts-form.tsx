@@ -33,6 +33,7 @@ import { useState } from "react";
 import SearchProduct from "./search-product";
 import FileUpload from "@/components/common/file-uploader";
 import Calculation from "./calculation";
+import { Textarea } from "@/components/ui/textarea";
 
 const suppliers = [
   { id: "1", name: "Acme Corp" },
@@ -262,7 +263,7 @@ export function AddSalesReceiptForm() {
                     name="supplierName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Sales Person</FormLabel>
+                        <FormLabel>Salesperson</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
@@ -295,7 +296,37 @@ export function AddSalesReceiptForm() {
                       </FormItem>
                     )}
                   />
-{/*                   <FormField
+                  <FormField
+                    control={form.control}
+                    name="note"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Custom Note</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="Type Subject." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="termsAndConditions"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Terms and conditions</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Type terms and conditions."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  {/*                   <FormField
                     control={form.control}
                     name="paymentTerms"
                     render={({ field }) => (
@@ -384,7 +415,7 @@ export function AddSalesReceiptForm() {
                       </FormItem>
                     )}
                   /> */}
-{/*                   <FormField
+                  {/*                   <FormField
                     control={form.control}
                     name="note"
                     render={({ field }) => (

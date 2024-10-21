@@ -59,9 +59,8 @@ const paymentTerms = [
   { id: "4", label: "Net 60" },
   { id: "5", label: "Due On Receipt" },
   { id: "6", label: "Due end of the month" },
-  { id: "7", label: "Due end of next month" }
+  { id: "7", label: "Due end of next month" },
 ];
-
 
 export function AddRecurringInvoice() {
   const navigate = useNavigate();
@@ -520,14 +519,44 @@ export function AddRecurringInvoice() {
                       </FormItem>
                     )}
                   /> */}
-                                    <FormField
+                  <FormField
                     control={form.control}
                     name="note"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Subject</FormLabel>
                         <FormControl>
+                          <Input placeholder="Type Subject." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="note"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Customer Note</FormLabel>
+                        <FormControl>
                           <Textarea placeholder="Type Subject." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="termsAndConditions"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Terms and conditions</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Type terms and conditions."
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

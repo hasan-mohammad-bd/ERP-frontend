@@ -18,7 +18,7 @@ import ItemAddForm from "@/pages/billing/items/add-item";
 import ItemList from "@/pages/billing/items/items-list";
 import PurchaseReceive from "@/pages/billing/purchase-receive";
 import { AddPurchaseReceiveForm } from "@/pages/billing/purchase-receive/components/add-purchase-recieve-form";
-import Customers from "@/pages/billing/customer";
+// import Customers from "@/pages/billing/customer";
 import { AddQuoteForm } from "@/pages/billing/quotes/components/add-quotes-form";
 import Quotes from "@/pages/billing/quotes";
 import Invoice from "@/pages/billing/invoices";
@@ -37,6 +37,9 @@ import Supplier from "@/pages/billing/supplier/add-supplier";
 import ExpensesList from "@/pages/billing/expenses/expenses-list";
 import Expenses from "@/pages/billing/expenses/add-expenses";
 import AddExpensesForm from "@/pages/billing/expenses/add-expenses/components/add-expenses-form";
+import Customers from "@/pages/billing/customers/customer-list";
+import { AddCustomerForm } from "@/pages/billing/customers/add-customer/components/add-supplier-form";
+
 
 
 const billingRoutes = {
@@ -50,8 +53,21 @@ const billingRoutes = {
 
     {
       path: "customers",
-      element: withFallback(<Customers />),
+      // element: withFallback(<Customers />),
       errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<Customers />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "add",
+          element: withFallback(<AddCustomerForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+
+      ]
     },
 
     {

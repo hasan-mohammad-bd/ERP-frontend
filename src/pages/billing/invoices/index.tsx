@@ -14,44 +14,44 @@ import {  invoiceColumns } from "./components/columns";
 
 const data = [
   {
-    sl: 1,
     date: "2024-10-01",
-    deliveryDate: "2024-10-05",
-    poInvoiceNo: "INV-12345",
-    businessBranch: "Main Branch",
-    suppliers: "Supplier A",
-    amount: 5000.00,
-    action: "Delivered"
+    invoiceNumber: "INV-2024-001",
+    orderNumber: "ORD-1001",
+    customerName: "Customer A",
+    status: "Paid",
+    dueDate: "2024-10-05",
+    amount: 1000.00,
+    balanceDue: 0.00
   },
   {
-    sl: 2,
+    date: "2024-10-02",
+    invoiceNumber: "INV-2024-002",
+    orderNumber: "ORD-1002",
+    customerName: "Customer B",
+    status: "Unpaid",
+    dueDate: "2024-10-10",
+    amount: 2500.00,
+    balanceDue: 2500.00
+  },
+  {
     date: "2024-10-03",
-    deliveryDate: "2024-10-08",
-    poInvoiceNo: "INV-12346",
-    businessBranch: "Branch B",
-    suppliers: "Supplier B",
-    amount: 7500.00,
-    action: "Pending"
+    invoiceNumber: "INV-2024-003",
+    orderNumber: "ORD-1003",
+    customerName: "Customer C",
+    status: "Partially Paid",
+    dueDate: "2024-10-07",
+    amount: 4000.00,
+    balanceDue: 1000.00
   },
   {
-    sl: 3,
-    date: "2024-10-06",
-    deliveryDate: "2024-10-10",
-    poInvoiceNo: "INV-12347",
-    businessBranch: "Main Branch",
-    suppliers: "Supplier C",
-    amount: 3200.00,
-    action: "Delivered"
-  },
-  {
-    sl: 4,
-    date: "2024-10-09",
-    deliveryDate: "2024-10-13",
-    poInvoiceNo: "INV-12348",
-    businessBranch: "Branch C",
-    suppliers: "Supplier D",
-    amount: 6000.00,
-    action: "Pending"
+    date: "2024-10-04",
+    invoiceNumber: "INV-2024-004",
+    orderNumber: "ORD-1004",
+    customerName: "Customer D",
+    status: "Paid",
+    dueDate: "2024-10-08",
+    amount: 500.00,
+    balanceDue: 0.00
   }
 ];
 

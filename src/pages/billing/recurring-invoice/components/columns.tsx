@@ -28,29 +28,30 @@ export const salesReceiptColumns: ColumnDef<any>[] = [
     enableSorting: false,
     enableHiding: false,
   },
+
   {
-    accessorKey: "sl",
-    header: "Sl",
+    accessorKey: "customerName",
+    header: "Customer Name",
   },
   {
-    accessorKey: "date",
-    header: "Date",
+    accessorKey: "profileName",
+    header: "Profile Name",
   },
   {
-    accessorKey: "deliveryDate",
-    header: "Delivery Date",
+    accessorKey: "frequency",
+    header: "Frequency",
   },
   {
-    accessorKey: "poInvoiceNo",
-    header: "P.O. Invoice No",
+    accessorKey: "lastInvoiceDate",
+    header: "Last Invoice Date",
   },
   {
-    accessorKey: "businessBranch",
-    header: "Business Branch",
+    accessorKey: "nextInvoiceDate",
+    header: "Next Invoice Date",
   },
   {
-    accessorKey: "suppliers",
-    header: "Suppliers",
+    accessorKey: "status",
+    header: "Status",
   },
   {
     accessorKey: "amount",

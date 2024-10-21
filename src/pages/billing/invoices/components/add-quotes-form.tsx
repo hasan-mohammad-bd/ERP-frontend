@@ -386,13 +386,46 @@ export function AddInvoiceForm() {
                   /> */}
                   <FormField
                     control={form.control}
-                    name="note"
+                    name="subject"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Subject</FormLabel>
                         <FormControl>
                           <Textarea
                             placeholder="Type Subject."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                                                      <FormField
+                    control={form.control}
+                    name="note"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Customer Note</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Type Subject."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="termsAndConditions"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Terms and conditions</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Type terms and conditions."
                             {...field}
                           />
                         </FormControl>

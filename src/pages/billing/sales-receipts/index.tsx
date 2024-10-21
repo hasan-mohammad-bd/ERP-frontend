@@ -14,46 +14,47 @@ import { salesReceiptColumns } from "./components/columns";
 
 const data = [
   {
-    sl: 1,
-    date: "2024-10-01",
-    deliveryDate: "2024-10-05",
-    poInvoiceNo: "INV-12345",
-    businessBranch: "Main Branch",
-    suppliers: "Supplier A",
-    amount: 5000.00,
-    action: "Delivered"
+    receiptDate: "2024-10-01",
+    salesReceiptNumber: "SR-2024-001",
+    reference: "REF-1001",
+    customerName: "Customer A",
+    paymentMode: "Credit Card",
+    status: "Paid",
+    amount: 1000.00,
+    createdBy: "Admin"
   },
   {
-    sl: 2,
-    date: "2024-10-03",
-    deliveryDate: "2024-10-08",
-    poInvoiceNo: "INV-12346",
-    businessBranch: "Branch B",
-    suppliers: "Supplier B",
-    amount: 7500.00,
-    action: "Pending"
+    receiptDate: "2024-10-02",
+    salesReceiptNumber: "SR-2024-002",
+    reference: "REF-1002",
+    customerName: "Customer B",
+    paymentMode: "Bank Transfer",
+    status: "Unpaid",
+    amount: 2500.00,
+    createdBy: "Admin"
   },
   {
-    sl: 3,
-    date: "2024-10-06",
-    deliveryDate: "2024-10-10",
-    poInvoiceNo: "INV-12347",
-    businessBranch: "Main Branch",
-    suppliers: "Supplier C",
-    amount: 3200.00,
-    action: "Delivered"
+    receiptDate: "2024-10-03",
+    salesReceiptNumber: "SR-2024-003",
+    reference: "REF-1003",
+    customerName: "Customer C",
+    paymentMode: "Cash",
+    status: "Partially Paid",
+    amount: 4000.00,
+    createdBy: "Admin"
   },
   {
-    sl: 4,
-    date: "2024-10-09",
-    deliveryDate: "2024-10-13",
-    poInvoiceNo: "INV-12348",
-    businessBranch: "Branch C",
-    suppliers: "Supplier D",
-    amount: 6000.00,
-    action: "Pending"
+    receiptDate: "2024-10-04",
+    salesReceiptNumber: "SR-2024-004",
+    reference: "REF-1004",
+    customerName: "Customer D",
+    paymentMode: "Credit Card",
+    status: "Paid",
+    amount: 500.00,
+    createdBy: "Admin"
   }
 ];
+
 
 
 const SalesReceipt = () => {
