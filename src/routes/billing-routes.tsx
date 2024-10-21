@@ -9,7 +9,6 @@ import {
 
 import Units from "@/pages/billing/units";
 import Category from "@/pages/billing/category";
-import SubCategory from "@/pages/billing/sub-category";
 import ClassCategory from "@/pages/billing/child-category";
 import Brand from "@/pages/billing/brand";
 import PurchaseOrder from "@/pages/billing/purchase-order";
@@ -37,10 +36,9 @@ import Supplier from "@/pages/billing/supplier/add-supplier";
 import ExpensesList from "@/pages/billing/expenses/expenses-list";
 import Expenses from "@/pages/billing/expenses/add-expenses";
 import AddExpensesForm from "@/pages/billing/expenses/add-expenses/components/add-expenses-form";
+import SubCategory from "@/pages/billing/sub-category";
 import Customers from "@/pages/billing/customers/customer-list";
 import { AddCustomerForm } from "@/pages/billing/customers/add-customer/components/add-supplier-form";
-
-
 
 const billingRoutes = {
   path: "billing/",
@@ -151,8 +149,9 @@ const billingRoutes = {
       errorElement: withFallback(<ErrorPage />),
     },
 
+
     {
-      path: "class-category",
+      path: "child-category",
       element: withFallback(<ClassCategory />),
       errorElement: withFallback(<ErrorPage />),
     },

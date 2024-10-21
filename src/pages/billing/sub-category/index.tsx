@@ -1,11 +1,17 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Modal } from "@/components/common/modal";
-import { AddSubCategoryForm } from "./components/add-sub-category-form";
 import { SubCategoryColumn } from "@/lib/validators/billing/category";
+import { AddSubCategoryForm } from "./components/add-sub-category-form";
+import { SubCategoryColumns } from "./components/column";
+import { DataTable } from "@/components/ui/data-table/data-table";
+import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
+import { PaginationState } from "@tanstack/react-table";
+import ListSkeleton from "@/components/common/ListSkeleton";
+import { PaginationInfo } from "@/types";
 
 const SubCategory = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,6 +29,19 @@ const SubCategory = () => {
   //   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   //   if (isLoading) return <Loading />;
+
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const { data, isLoading } = useGetEmployeesQuery(
+    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+  );
+
+  const employees = data?.data || [];
+
+  const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   const [selectedSubCategory, setSelectedSubCategory] = useState<
     SubCategoryColumn | undefined
@@ -42,17 +61,18 @@ const SubCategory = () => {
             </Button>
           </div>
           <Separator />
-          {/* {leaveType && (
+          {isLoading && <ListSkeleton />}
+          {employees && !isLoading && (
             <div>
               <DataTable
-                columns={attendanceColumns}
-                data={leaveType}
+                columns={SubCategoryColumns}
+                data={employees}
                 paginationInfo={paginationInfo}
-                pagination={paginationInfo && pagination}
-                setPagination={paginationInfo && setPagination}
+                pagination={pagination}
+                setPagination={setPagination}
               />
             </div>
-          )} */}
+          )}
         </div>
       </div>
 

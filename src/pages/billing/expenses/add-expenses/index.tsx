@@ -37,7 +37,7 @@ const Expenses = () => {
             </Button>
           </div>
           <Separator />
-          
+
         </div>
       </div>
 

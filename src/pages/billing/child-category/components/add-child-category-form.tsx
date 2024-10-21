@@ -20,7 +20,9 @@ import {
   useUpdateCategoryMutation,
 } from "@/store/services/billing/api/category";
 import {
+  CategoryColumn,
   CategoryFormValues,
+  CategoryRow,
   categorySchema,
   SubCategoryColumn,
 } from "@/lib/validators/billing/category";
@@ -31,20 +33,25 @@ type CreateCategoryPayload = CategoryFormValues & { categoryId?: number };
 
 type AddCategoryProps = {
   modalClose: () => void;
-  data?: SubCategoryColumn;
+  data?: CategoryRow;
+
+  selectedCategory: CategoryColumn | undefined;
+  setSelectedCategory: (cate: CategoryColumn) => void;
+
   selectedSubCategory: SubCategoryColumn | undefined;
-  setSelectedSubCategory: (dept: SubCategoryColumn) => void;
+  setSelectedSubCategory: (subCate: SubCategoryColumn) => void;
 };
 
-
-
-
-export function AddSubCategoryForm({
+export function AddClassCategoryForm({
   modalClose,
   data: previousData,
+
+  selectedCategory,
+  setSelectedCategory,
+
   selectedSubCategory,
   setSelectedSubCategory,
-}: AddCategoryProps,) {
+}: AddCategoryProps) {
   const categoryName = {
     data: [
       { id: 1, name: "Category-1" },
@@ -52,6 +59,16 @@ export function AddSubCategoryForm({
       { id: 3, name: "Category-3" },
       { id: 4, name: "Category-4" },
       { id: 5, name: "Category-5" },
+    ],
+  };
+
+  const subCategoryName = {
+    data: [
+      { id: 1, name: "Sub Category-1" },
+      { id: 2, name: "Sub Category-2" },
+      { id: 3, name: "Sub Category-3" },
+      { id: 4, name: "Sub Category-4" },
+      { id: 5, name: "Sub Category-5" },
     ],
   };
 
@@ -116,8 +133,23 @@ export function AddSubCategoryForm({
                   items={categoryName?.data || []}
                   labelKey="name"
                   valueKey="id"
-                  value={selectedSubCategory} // Bind selectedCategory state here
+                  value={selectedCategory} // Bind selectedCategory state here
                   placeholder="Select Category"
+                  onSelect={setSelectedCategory} // Set the selected category
+                  className=""
+                />
+              </div>
+
+              <div>
+                <p className="text-[14px] font-semibold mb-2">
+                  Select Sub Category
+                </p>
+                <SearchSelect
+                  items={subCategoryName?.data || []}
+                  labelKey="name"
+                  valueKey="id"
+                  value={selectedSubCategory} // Bind selectedCategory state here
+                  placeholder="Select Sub Category"
                   onSelect={setSelectedSubCategory} // Set the selected category
                   className=""
                 />
@@ -128,7 +160,7 @@ export function AddSubCategoryForm({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Subcategory Name</FormLabel>
+                    <FormLabel>Child Category Name</FormLabel>
                     <FormControl>
                       <Input
                         className=""

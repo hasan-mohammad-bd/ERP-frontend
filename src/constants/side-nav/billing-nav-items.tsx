@@ -49,10 +49,10 @@ const billingNavItems: NavItem[] = [
       },
 
       {
-        title: "Class Category",
+        title: "Child Category",
         icon: PlayIcon,
         color: "text-sky-500",
-        href: "/billing/class-category",
+        href: "/billing/child-category",
       },
 
       {
