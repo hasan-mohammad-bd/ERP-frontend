@@ -44,6 +44,7 @@ import LeaveBalance from "@/pages/hrm/reports/leave-reports/leave-balance";
 import LeaveUsagesReport from "@/pages/hrm/reports/leave-reports/leave-usages";
 import LeaveTrend from "@/pages/hrm/reports/leave-reports/leave-trend";
 import LeaveTypeSummary from "@/pages/hrm/reports/leave-reports/leave-type-summary";
+import { EmployeeForm } from "@/pages/hrm/employee/employee-list/components/employee-form";
 
 
 
@@ -61,9 +62,26 @@ const hrmRoutes = {
     },
 
     {
-      path: "employees-list",
-      element: withFallback(<Employee />),
+      path: "employees-list/",
+      // element: withFallback(<Employee />),
       errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<Employee />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "add",
+          element: withFallback(<EmployeeForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<EmployeeForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+      ]
     },
 
     //our(new) dev task

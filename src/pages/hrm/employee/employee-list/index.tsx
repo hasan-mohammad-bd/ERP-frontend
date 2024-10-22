@@ -17,6 +17,7 @@ import { AddAttendancePolicyMappingForm } from "./components/employee-form/add-a
 import { Separator } from "@/components/ui/separator";
 import EmployeeFilters from "./components/employee-filters";
 import ListSkeleton from "@/components/common/ListSkeleton";
+import { useNavigate } from "react-router-dom";
 
 const BULK_ACTIONS = [
   {
@@ -34,6 +35,7 @@ const BULK_ACTIONS = [
 ];
 
 const Employee = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [filterParams, setFilterParams] = useState("");
   const [pagination, setPagination] = React.useState<PaginationState>({
@@ -73,7 +75,7 @@ const Employee = () => {
               title="Employees"
               description="Manage employees for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
+            <Button onClick={(()=> navigate("/hrm/employees-list/add"))} size={"sm"}>
               <Plus className="mr-2 h-4 w-4" /> Add Employee
             </Button>
           </div>

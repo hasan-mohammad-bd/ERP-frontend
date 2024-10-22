@@ -282,6 +282,7 @@ export function AddExperienceForm({
 								<DataTable
 									columns={experienceColumns}
 									data={previousData?.experiences || []}
+									noPagination
 								/>
 							</div>
 						</div>

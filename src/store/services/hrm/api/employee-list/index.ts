@@ -16,6 +16,11 @@ const employeeApi = hrmApi.injectEndpoints({
       query: (params) => `employees?${params}`,
       providesTags: ["employees"],
     }),
+    getEmployeeById: build.query<{ data: EmployeeColumn;}, string>({
+      query: (params) => `employees/${params}`,
+    
+      providesTags: ["employees"],
+    }),
     createEmployee: build.mutation<
       { data: EmployeeColumn },
       EmployeeFormValues 
@@ -48,6 +53,7 @@ const employeeApi = hrmApi.injectEndpoints({
 
 export const {
   useGetEmployeesQuery,
+  useGetEmployeeByIdQuery,
   useLazyGetEmployeesQuery,
   useCreateEmployeeMutation,
   useRemoveEmployeeMutation,

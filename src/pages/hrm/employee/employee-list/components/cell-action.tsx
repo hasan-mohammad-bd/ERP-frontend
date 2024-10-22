@@ -66,7 +66,7 @@ export function CellAction({ data }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-              onClick={() => setUpdateModalOpen(true)}
+              onClick={() => navigate(`/hrm/employees-list/edit/${data.id}`)}
 
               // onClick={() => toggleModal()}
             >
