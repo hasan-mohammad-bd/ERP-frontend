@@ -1,8 +1,8 @@
-import { billingApi } from "../..";
+import {  inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
 import { BrandFormValues, BrandRow } from "@/lib/validators/billing/brand";
 
-const brandApi = billingApi.injectEndpoints({
+const brandApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
     getBrand: build.query<{ data: BrandRow[]; meta: PaginationInfo }, string>({
       query: (params) => `unit?${params}`,

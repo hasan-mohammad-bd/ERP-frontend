@@ -6,32 +6,33 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
-import { EmployeeColumn } from "@/lib/validators";
 import { toast } from "sonner";
-
-import { useNavigate } from "react-router-dom";
+import { CategoryFormValues } from "@/lib/validators/billing/category";
+import { Modal } from "@/components/common/modal";
+import { AddCategoryForm } from "./add-category-form";
+import { useRemoveCategoryMutation } from "@/store/services/billing/api/category";
 
 interface CellActionProps {
-  data: EmployeeColumn;
+  data: CategoryFormValues; // Data type as defined
 }
 
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const navigate = useNavigate();
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
-  const handleDepartmentDelete = async (id: number) => {
-    // try {
-    //   await deleteEmployee(id);
-    //   setAlertModalOpen(false);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  const [deleteDepartment, { isLoading: deleteLoading }] =
+    useRemoveCategoryMutation();
 
-    console.log(id);
-    toast.success("Item deleted successfully");
+  const handleCategoryDelete = async (id: number) => {
+    try {
+      await deleteDepartment(id);
+      toast.success("Category deleted successfully");
+      setAlertModalOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -43,15 +44,13 @@ export function CellAction({ data }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-              onClick={() => navigate(`/billing/items/edit/${data.id}`)}
-
-              // onClick={() => toggleModal()}
+              onClick={() => setUpdateModalOpen(true)}
             >
               <Pencil className="h-4 w-4 text-foreground" />
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Update Employee</p>
+            <p>Update Category</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -62,15 +61,13 @@ export function CellAction({ data }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-              onClick={() => {
-                setAlertModalOpen(true);
-              }}
+              onClick={() => setAlertModalOpen(true)}
             >
               <Trash2 className="h-4 w-4 text-foreground" />
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Delete employee</p>
+            <p>Delete Category</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -78,12 +75,25 @@ export function CellAction({ data }: CellActionProps) {
       <AlertModal
         title="Are you sure?"
         description="This action cannot be undone."
-        name={data.first_name}
+        name={data.name}
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
-        onConfirm={() => handleDepartmentDelete(data.id)}
-        loading={false}
+        onConfirm={() => handleCategoryDelete(data.id!)} // Use non-null assertion here
+        loading={deleteLoading}
       />
+      {updateModalOpen && (
+        <Modal
+          title="Update Category"
+          isOpen={updateModalOpen}
+          toggleModal={() => setUpdateModalOpen(false)}
+          className="w-3/5 max-w-3xl"
+        >
+          <AddCategoryForm
+            data={{ data, message: "Update category details" }} // Adjusted the structure here
+            modalClose={() => setUpdateModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

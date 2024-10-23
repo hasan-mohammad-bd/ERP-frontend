@@ -3,13 +3,14 @@ import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { DataTable } from "@/components/ui/data-table/data-table";
-import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
-import { unitColumns } from "./components/columns";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
 import { Separator } from "@/components/ui/separator";
 import ListSkeleton from "@/components/common/ListSkeleton";
 import { Modal } from "@/components/common/modal";
+
+import { useGetCategoryQuery } from "@/store/services/billing/api/category";
+import { categoryColumns } from "./components/columns";
 import { AddCategoryForm } from "./components/add-category-form";
 
 const Category = () => {
@@ -19,11 +20,12 @@ const Category = () => {
     pageSize: 10,
   });
 
-  const { data, isLoading } = useGetEmployeesQuery(
+  // Correct API call to get category data
+  const { data, isLoading } = useGetCategoryQuery(
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
 
-  const employees = data?.data || [];
+  const categories = data?.data || []; // Fallback to empty array if no data
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
@@ -33,8 +35,8 @@ const Category = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="All Category"
-              description="Manage all items for you business"
+              title="All Categories"
+              description="Manage all categories for your business"
             />
             <Button onClick={() => setIsOpen(true)} size={"sm"}>
               <Plus className="mr-2 h-4 w-4" /> Add Category
@@ -42,11 +44,11 @@ const Category = () => {
           </div>
           <Separator />
           {isLoading && <ListSkeleton />}
-          {employees && !isLoading && (
+          {categories.length > 0 && !isLoading && (
             <div>
               <DataTable
-                columns={unitColumns}
-                data={employees}
+                columns={categoryColumns} // Ensure the columns match your data structure
+                data={categories} // Pass the correct data to the DataTable
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}
@@ -55,12 +57,13 @@ const Category = () => {
           )}
         </div>
       </div>
+
       {isOpen && (
         <Modal
           title="Add Category"
           isOpen={isOpen}
           toggleModal={() => setIsOpen(false)}
-          className="w-[420px]"
+          className="w-[600px]"
         >
           <AddCategoryForm modalClose={() => setIsOpen(false)} />
         </Modal>

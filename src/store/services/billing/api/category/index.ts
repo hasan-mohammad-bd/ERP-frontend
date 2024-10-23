@@ -1,43 +1,47 @@
-
-import { billingApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
 
-import { CategoryFormValues, CategoryRow } from "@/lib/validators/billing/category";
+import {
+  CategoryFormValues,
+  CategoryRow,
+} from "@/lib/validators/billing/category";
+import { inventoryApi } from "../..";
 
-const categoryApi = billingApi.injectEndpoints({
+const categoryApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
     getCategory: build.query<
-      { data: CategoryRow[]; meta: PaginationInfo },
+      { data: CategoryFormValues[]; meta: PaginationInfo },
       string
     >({
-      query: (params) => `category?${params}`,
+      query: (params) => `categories?${params}`,
       providesTags: ["category"],
     }),
+
     createCategory: build.mutation<
-      { data: CategoryRow },
-      CategoryFormValues
+      { data: CategoryRow }, // Adjust the response type if necessary
+      FormData // Expect FormData here as well
     >({
-      query: (newCategory) => ({
-        url: `category`,
+      query: (formData) => ({
+        url: `categories`,
         method: "POST",
-        body: newCategory,
+        body: formData, // FormData is sent here
       }),
       invalidatesTags: ["category"],
     }),
+
     removeCategory: build.mutation<DeleteResponse, number>({
       query: (categoryId) => ({
-        url: `category/${categoryId}`,
+        url: `categories/${categoryId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["category"],
     }),
     updateCategory: build.mutation<
       { data: CategoryRow },
-      { categoryId: number, updatedCategory: CategoryFormValues }
+      { categoryId: number; updatedCategory: FormData }
     >({
       query: ({ categoryId, updatedCategory }) => ({
-        url: `category/${categoryId}`,
-        method: "PUT",
+        url: `categories/${categoryId}`,
+        method: "POST",
         body: updatedCategory,
       }),
       invalidatesTags: ["category"],
@@ -47,10 +51,8 @@ const categoryApi = billingApi.injectEndpoints({
 });
 
 export const {
- useGetCategoryQuery,
- useCreateCategoryMutation,
- useRemoveCategoryMutation,
- useUpdateCategoryMutation
-
-
+  useGetCategoryQuery,
+  useCreateCategoryMutation,
+  useRemoveCategoryMutation,
+  useUpdateCategoryMutation,
 } = categoryApi;
