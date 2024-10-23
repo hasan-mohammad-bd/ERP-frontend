@@ -1,1 +1,0 @@
-import{av as s}from"./index-1c1a7b38.js";const r=s.injectEndpoints({endpoints:e=>({getWorkplaces:e.query({query:()=>"workplaces",providesTags:["workplaces"]})}),overrideExisting:!1}),{useGetWorkplacesQuery:p}=r;export{p as u};

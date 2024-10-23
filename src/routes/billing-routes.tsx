@@ -43,6 +43,8 @@ import ManagePurchase from "@/pages/billing/manage-purchase";
 import { AddManagePurchase } from "@/pages/billing/manage-purchase/components/add-manage-purchase-form";
 import MadePayment from "@/pages/billing/made-payment";
 import { AddMadePaymentForm } from "@/pages/billing/made-payment/components/add-purchase-recieve-form";
+import MasterSales from "@/pages/billing/reports/master-sales-report";
+import ProductSales from "@/pages/billing/reports/product-wise-sales";
 
 
 const billingRoutes = {
@@ -372,6 +374,28 @@ const billingRoutes = {
         },
       ],
     },
+
+
+    {
+      path: "master-sales",
+      element: withFallback(<MasterSales />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+
+    {
+      path: "product-sales",
+      element: withFallback(<ProductSales />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+
+
+
+
+
+
+
     {
       path: "*",
       element: withFallback(<NotFoundPage />),
