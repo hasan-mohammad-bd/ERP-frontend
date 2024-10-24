@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { DataTable } from "@/components/ui/data-table/data-table";
 import { Modal } from "@/components/common/modal";
-import { EmployeeForm } from "./components/employee-form";
 import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
 import { employeeColumns } from "./components/columns";
 import { PaginationState } from "@tanstack/react-table";
@@ -17,6 +16,7 @@ import { AddAttendancePolicyMappingForm } from "./components/employee-form/add-a
 import { Separator } from "@/components/ui/separator";
 import EmployeeFilters from "./components/employee-filters";
 import ListSkeleton from "@/components/common/ListSkeleton";
+import { useNavigate } from "react-router-dom";
 
 const BULK_ACTIONS = [
   {
@@ -34,7 +34,7 @@ const BULK_ACTIONS = [
 ];
 
 const Employee = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   const [filterParams, setFilterParams] = useState("");
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
@@ -73,7 +73,7 @@ const Employee = () => {
               title="Employees"
               description="Manage employees for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
+            <Button onClick={(()=> navigate("/hrm/employees-list/add"))} size={"sm"}>
               <Plus className="mr-2 h-4 w-4" /> Add Employee
             </Button>
           </div>
@@ -95,14 +95,7 @@ const Employee = () => {
           )}
         </div>
       </div>
-      <Modal
-        title="Add Employee"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-        className="w-[90%] max-w-6xl"
-      >
-        <EmployeeForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+
 
       {/* Example uses with modal using selected bulk action  */}
       {selectedBulkAction.action === "enable-roster" && (

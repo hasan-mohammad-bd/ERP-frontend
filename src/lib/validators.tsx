@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+
 // Department Form validation
 export const DepartmentFormSchema = z.object({
   name: z
@@ -921,7 +922,7 @@ export type NomineeColumn = z.infer<typeof nomineeColumn>;
 
 export const EmployeeFormSchema = z.object({
   employee_unique_id: z.string(),
-  leave_group_id: z.coerce.number(),
+
   card_id: z.string().optional().nullable(),
   machine_id: z.string().optional().nullable(),
   first_name: z.string({
@@ -944,7 +945,7 @@ export const EmployeeFormSchema = z.object({
     .min(8, { message: "Password must be at least 8 characters long." })
     .optional()
     .nullable(),
-  role_id: z.coerce.number({
+  role_id: z.string({
     required_error: "Role ID is required.",
   }),
   joining_date: z.string().refine((value) => !isNaN(Date.parse(value)), {
@@ -955,37 +956,41 @@ export const EmployeeFormSchema = z.object({
     message: "Status must be either 'Active' or 'Inactive'.",
     required_error: "Status is required.",
   }),
-  location_id: z.coerce.number({
+  location_id: z.string({
     required_error: "Location ID is required.",
   }),
-  organization_id: z.coerce.number({
+  organization_id: z.string({
     required_error: "Organization ID is required.",
   }),
-  department_id: z.coerce.number({
+  department_id: z.string({
     required_error: "Department ID is required.",
   }),
-  designation_id: z.coerce.number({
+  designation_id: z.string({
     required_error: "Designation ID is required.",
   }),
-  work_place_id: z.coerce.number({
+  work_place_id: z.string({
     required_error: "Work place ID is required.",
   }),
-  section_id: z.coerce.number({
+  section_id: z.string({
     required_error: "Section ID is required.",
   }),
-  schedule_id: z.coerce.number({
+  schedule_id: z.string({
     required_error: "Schedule ID is required.",
   }),
-  employee_class_id: z.coerce.number({
+  employee_class_id: z.string({
     required_error: "Employee class ID is required.",
   }),
-  employee_grade_id: z.coerce.number({
+  employee_grade_id: z.string({
     required_error: "Employee grade ID is required.",
   }),
-  employment_status_id: z.coerce.number({
+  employment_status_id: z.string({
     required_error: "Employment status ID is required.",
   }),
-  reporting_to_id: z.coerce.number().optional().nullable(),
+
+  leave_group_id: z.string({
+    required_error: "Leave group ID is required.",
+  }),
+  reporting_to_id: z.string().optional().nullable(),
   sorting_index: z.coerce
     .number()
     .int()
@@ -997,13 +1002,13 @@ export const EmployeeFormSchema = z.object({
     })
     .optional()
     .nullable(),
-  gender_id: z.coerce.number({
+  gender_id: z.string({
     required_error: "Gender ID is required.",
   }),
-  religion_id: z.coerce.number({
+  religion_id: z.string({
     required_error: "Religion ID is required.",
   }),
-  blood_group_id: z.coerce.number({
+  blood_group_id: z.string({
     required_error: "Blood group ID is required.",
   }),
   fathers_name: z.string().optional().nullable(),
@@ -1084,7 +1089,9 @@ export type EmployeeUpdateFormValues = z.infer<typeof EmployeeUpdateSchema>;
 
 export const employeeColumn = z.object({
   id: z.coerce.number(),
-  leave_group_id: z.coerce.number(),
+  // leave_group_id: z.string(),
+  // leave_group: leaveGroupRow,
+  leave_group: z.object({name: z.string(), id: z.coerce.number()}),
   first_name: z.string(),
   last_name: z.string(),
   email: z.string(),
@@ -1094,10 +1101,13 @@ export const employeeColumn = z.object({
   is_head_of_dept: z.coerce.number(),
   status: z.enum(["Active", "Inactive"]),
   user_id: z.coerce.number().optional().nullable(),
+  user: z.object({
+    role: roleColumn
+  }),
   gender_id: z.coerce.number(),
   religion_id: z.coerce.number(),
   blood_group_id: z.coerce.number(),
-  location_id: z.coerce.number(),
+  location_id: z.string(),
   organization_id: z.coerce.number(),
   work_place_id: z.coerce.number(),
   department_id: z.coerce.number(),

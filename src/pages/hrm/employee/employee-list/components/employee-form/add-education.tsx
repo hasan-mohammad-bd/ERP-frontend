@@ -258,6 +258,7 @@ export function AddEducationForm({
 								<DataTable
 									columns={educationColumns}
 									data={previousData?.educations || []}
+									noPagination
 								/>
 							</div>
 						</div>
