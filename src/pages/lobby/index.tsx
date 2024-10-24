@@ -4,8 +4,8 @@ import { siteConfig } from "@/coonfig/site";
 import { ThemeToggle } from "@/layout/theme-toggle";
 import { UserNav } from "@/layout/user-nav";
 import { useAuth } from "@/store/hooks";
-import { Boxes } from "lucide-react";
 import { Link } from "react-router-dom";
+import logo from "@/assets/images/sticky-logo.png";
 
 const Lobby = () => {
 	const { user } = useAuth();
@@ -15,11 +15,13 @@ const Lobby = () => {
 				<Link
 					to={"/"}
 					className="hidden items-center justify-between gap-2 md:flex"
-				>
-					<Boxes className="h-6 w-6" />
-					<h1 className="text-lg font-semibold">{siteConfig.name}</h1>
+					>
+					<div className="h-9">
+						<img src={user?.organization?.logo || logo} alt="logo-image" className="h-full w-full" />
+					</div>
+					{/* <Boxes className="h-6 w-6" /> */}
+					<h1 className="text-lg font-semibold">{user?.organization?.name || siteConfig.name}</h1>
 				</Link>
-
 				<div className="ml-auto flex items-center space-x-4">
 					{user && <UserNav user={user} />}
 					<ThemeToggle />

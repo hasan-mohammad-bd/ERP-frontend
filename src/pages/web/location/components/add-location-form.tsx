@@ -25,6 +25,8 @@ import {
 } from "@/store/services/erp-main/api/location";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useGetOrganizationsQuery } from "@/store/services/erp-main/api/organization";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface AddLocationFormProps {
   modalClose: () => void;
@@ -58,15 +60,16 @@ export function AddLocationForm({
         await updatedLocation({
           locationId: previousData.id,
           updatedLocation: data,
-        });
+        }).unwrap();
         toast.success("Location updated successfully");
         modalClose();
       } else {
-        await createLocation(data);
+        await createLocation(data).unwrap();
         toast.success("Location created successfully");
         modalClose();
       }
     } catch (error) {
+      handleErrors(error as ErrorResponse);
       console.log(error);
     }
   }
