@@ -11,7 +11,7 @@ import { Pencil, Trash2, CircleDollarSign } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { EmployeeColumn } from "@/lib/validators";
 import { toast } from "sonner";
-import { EmployeeForm } from "./employee-form";
+// import { EmployeeForm } from "./employee-form";
 import { Modal } from "@/components/common/modal";
 import ProductDetails from "./productDetails";
 import { useRemoveEmployeeMutation } from "@/store/services/hrm/api/employee-list";
@@ -23,7 +23,7 @@ interface CellActionProps {
 
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  // const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -107,7 +107,7 @@ export function CellAction({ data }: CellActionProps) {
         onConfirm={() => handleDepartmentDelete(data.id)}
         loading={deleteLoading}
       />
-      {updateModalOpen && (
+      {/* {updateModalOpen && (
         <Modal
           title="Update Job"
           isOpen={updateModalOpen}
@@ -119,7 +119,7 @@ export function CellAction({ data }: CellActionProps) {
             modalClose={() => setUpdateModalOpen(false)}
           />
         </Modal>
-      )}
+      )} */}
       {/* <AddEducationForm jobData={data} /> */}
       {detailsModalOpen && (
         <Modal

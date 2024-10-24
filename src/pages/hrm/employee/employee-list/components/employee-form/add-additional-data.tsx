@@ -25,6 +25,7 @@ import { useUpdateEmployeeMutation } from "@/store/services/hrm/api/employee-lis
 
 import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useEffect } from "react";
 
 interface AddAdditionalInfoFormProps {
 	previousData?: EmployeeColumn;
@@ -39,7 +40,7 @@ export function AddAdditionalInfoForm({
 
 	const form = useForm<EmployeeFormValues>({
 		resolver: zodResolver(EmployeeFormSchema),
-		defaultValues: {
+		defaultValues: {/* 
 			card_id: previousData?.card_id || null,
 			machine_id: previousData?.machine_id || null,
 			is_head_of_dept: previousData?.is_head_of_dept || 0,
@@ -65,23 +66,48 @@ export function AddAdditionalInfoForm({
 			email: previousData?.email || "",
 			joining_date: previousData?.joining_date || "",
 			status: previousData?.status || "Active",
-			location_id: previousData?.location_id || 1,
-			organization_id: previousData?.organization_id || 1,
-			work_place_id: previousData?.work_place_id || 1,
-			department_id: previousData?.department_id || 1,
-			section_id: previousData?.section_id || 1,
-			designation_id: previousData?.designation_id || 1,
-			schedule_id: previousData?.schedule_id || 1,
-			employee_class_id: previousData?.employee_class_id || 1,
-			employee_grade_id: previousData?.employee_grade_id || 1,
-			employment_status_id: previousData?.employment_status_id || 1,
+			location_id: previousData?.location_id || undefined,
+			organization_id: previousData?.organization_id.toString() || undefined,
+			work_place_id: previousData?.work_place_id.toString() || undefined,
+			department_id: previousData?.department_id.toString() || undefined,
+			section_id: previousData?.section_id.toString() || undefined,
+			designation_id: previousData?.designation_id.toString() || undefined,
+			schedule_id: previousData?.schedule_id.toString() || undefined,
+			employee_class_id: previousData?.employee_class_id.toString() || undefined,
+			employee_grade_id: previousData?.employee_grade_id.toString() || undefined,
+			employment_status_id: previousData?.employment_status_id.toString() || undefined,
 			password: null,
-			gender_id: previousData?.gender_id || 1,
-			religion_id: previousData?.religion_id || 1,
-			blood_group_id: previousData?.blood_group_id || 1,
-			role_id: previousData?.role_id || 1,
-		},
+			gender_id: previousData?.gender_id.toString() || undefined,
+			religion_id: previousData?.religion_id.toString() || undefined,
+			blood_group_id: previousData?.blood_group_id.toString() || undefined,
+			role_id: previousData?.user.role.id.toString() || undefined,
+		 */},
 	});
+	useEffect(() => {
+    if (previousData) {
+      form.reset({
+        ...previousData,
+        reporting_to_id: previousData.reporting_to_id?.toString(),
+        location_id: previousData?.location?.id.toString(),
+        organization_id: previousData?.organization?.id.toString(),
+        work_place_id: previousData?.work_place?.id.toString(),
+        department_id: previousData?.department?.id.toString(),
+        section_id: previousData?.section?.id.toString(),
+        designation_id: previousData?.designation?.id.toString(),
+        schedule_id: previousData?.schedule?.id.toString(),
+        employee_class_id: previousData?.employee_class?.id.toString(),
+        employee_grade_id: previousData?.employee_grade?.id.toString(),
+        employment_status_id: previousData?.employment_status?.id.toString(),
+        gender_id: previousData?.gender?.id.toString(),
+        religion_id: previousData?.religion?.id.toString(),
+        blood_group_id: previousData?.blood_group?.id.toString(),
+        role_id: previousData?.user?.role?.id.toString(),
+        leave_group_id: previousData?.leave_group?.id?.toString(),
+			
+      });
+    }
+  }, [previousData, form]);
+	
 
 	// console.log(previousData)
 
@@ -248,7 +274,7 @@ export function AddAdditionalInfoForm({
 											<FormControl>
 												<RadioGroup
 													onValueChange={field.onChange}
-													defaultValue={field.value?.toString()}
+													defaultValue={previousData?.payment_type && previousData?.payment_type || "Cash"}
 													className="flex items-center space-y-0 space-x-3"
 												>
 													<FormItem className="space-y-0 space-x-2 flex items-center">
