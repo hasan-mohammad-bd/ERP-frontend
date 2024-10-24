@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { DataTable } from "@/components/ui/data-table/data-table";
 import { Modal } from "@/components/common/modal";
-import { EmployeeForm } from "./components/employee-form";
 import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
 import { employeeColumns } from "./components/columns";
 import { PaginationState } from "@tanstack/react-table";
@@ -36,7 +35,6 @@ const BULK_ACTIONS = [
 
 const Employee = () => {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
   const [filterParams, setFilterParams] = useState("");
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
@@ -97,14 +95,7 @@ const Employee = () => {
           )}
         </div>
       </div>
-      <Modal
-        title="Add Employee"
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-        className="w-[90%] max-w-6xl"
-      >
-        <EmployeeForm modalClose={() => setIsOpen(false)} />
-      </Modal>
+
 
       {/* Example uses with modal using selected bulk action  */}
       {selectedBulkAction.action === "enable-roster" && (
