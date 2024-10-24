@@ -12,6 +12,7 @@ import logo from "@/assets/images/sticky-logo.png";
 
 export default function Header() {
   const { user } = useAuth();
+
   return (
     <div className="supports-backdrop-blur:bg-background/60 fixed left-0 right-0 top-0 z-20 border-b bg-background/95 backdrop-blur">
       <div className="flex h-12 items-center px-4">
@@ -20,10 +21,10 @@ export default function Header() {
           className="hidden items-center justify-between gap-2 md:flex"
         >
           <div className="h-9">
-            <img src={logo} alt="logo-image" className="h-full w-full" />
+            <img src={user?.organization?.logo || logo} alt="logo-image" className="h-full w-full" />
           </div>
           {/* <Boxes className="h-6 w-6" /> */}
-          <h1 className="text-lg font-semibold">{siteConfig.name}</h1>
+          <h1 className="text-lg font-semibold">{user?.organization?.name || siteConfig.name}</h1>
         </Link>
         <MainNav className="mx-6" />
         {/* <ModuleSelector /> */}

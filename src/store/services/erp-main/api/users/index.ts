@@ -38,7 +38,7 @@ const userApi = authApi.injectEndpoints({
     updateUser: build.mutation<{ data: UsersRow }, { userId: number, updatedUser: FormData }>({
       query: ({ userId, updatedUser }) => ({
         url: `users/${userId}`, 
-        method: "POST", 
+        method: "POST",
         body: updatedUser,
       }),
       invalidatesTags: ["users"],
@@ -51,5 +51,5 @@ export const {
   useGetUsersQuery, 
   useCreateUserMutation, 
   useRemoveUserMutation, 
-  useUpdateUserMutation 
+  useUpdateUserMutation
 } = userApi;

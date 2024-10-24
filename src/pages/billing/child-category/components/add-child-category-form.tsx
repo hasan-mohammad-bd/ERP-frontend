@@ -11,25 +11,20 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import { ErrorResponse } from "@/types";
 import handleErrors from "@/lib/handle-errors";
-import { Loading } from "@/components/common/loading";
-import {
-  useCreateCategoryMutation,
-  useUpdateCategoryMutation,
-} from "@/store/services/billing/api/category";
-import {
-  CategoryColumn,
-  CategoryFormValues,
-  CategoryRow,
-  categorySchema,
-  SubCategoryColumn,
-} from "@/lib/validators/billing/category";
+// import { Loading } from "@/components/common/loading";
+// import {
+//   useCreateCategoryMutation,
+//   useUpdateCategoryMutation,
+// } from "@/store/services/billing/api/category";
+
 import SearchSelect from "@/components/common/search-select";
+import { CategoryColumn, CategoryFormValues, CategoryRow, categorySchema, SubCategoryColumn } from "@/lib/validators/billing/child-category";
 
 // Define a new type that includes categoryId
-type CreateCategoryPayload = CategoryFormValues & { categoryId?: number };
+// type CreateCategoryPayload = CategoryFormValues & { categoryId?: number };
 
 type AddCategoryProps = {
   modalClose: () => void;
@@ -77,9 +72,9 @@ export function AddClassCategoryForm({
   //   null
   // );
 
-  const [createCategory, { isLoading }] = useCreateCategoryMutation();
-  const [updateCategory, { isLoading: updateLoading }] =
-    useUpdateCategoryMutation();
+  // const [createCategory, { isLoading }] = useCreateCategoryMutation();
+  // const [updateCategory, { isLoading: updateLoading }] =
+  //   useUpdateCategoryMutation();
 
   const form = useForm<CategoryFormValues>({
     resolver: zodResolver(categorySchema),
@@ -88,23 +83,23 @@ export function AddClassCategoryForm({
     },
   });
 
-  async function onSubmit(data: CategoryFormValues) {
+  async function onSubmit() {
     try {
       if (previousData) {
-        await updateCategory({
-          categoryId: previousData.id,
-          updatedCategory: data,
-        }).unwrap();
-        toast.success("Category updated successfully");
+        // await updateCategory({
+        //   categoryId: previousData.id,
+        //   updatedCategory: data,
+        // }).unwrap();
+        // toast.success("Category updated successfully");
         modalClose();
       } else {
-        // Create a payload with the categoryId if selectedCategory exists
-        const payload: CreateCategoryPayload = {
-          ...data,
-          categoryId: selectedSubCategory?.id, // Add categoryId here
-        };
-        await createCategory(payload).unwrap();
-        toast.success("Category created successfully");
+        // // Create a payload with the categoryId if selectedCategory exists
+        // const payload: CreateCategoryPayload = {
+        //   ...data,
+        //   categoryId: selectedSubCategory?.id, // Add categoryId here
+        // };
+        // await createCategory(payload).unwrap();
+        // toast.success("Child Category created successfully");
         modalClose();
       }
     } catch (error) {
@@ -115,11 +110,11 @@ export function AddClassCategoryForm({
 
   return (
     <>
-      {isLoading || updateLoading ? (
+      {/* {isLoading || updateLoading ? (
         <div>
           <Loading />
         </div>
-      ) : (
+      ) : ( */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
@@ -181,7 +176,7 @@ export function AddClassCategoryForm({
             </div>
           </form>
         </Form>
-      )}
+      {/* )} */}
     </>
   );
 }

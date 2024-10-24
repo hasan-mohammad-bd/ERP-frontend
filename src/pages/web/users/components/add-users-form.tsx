@@ -41,6 +41,8 @@ import { Eye } from "lucide-react";
 import { EyeClosedIcon } from "@radix-ui/react-icons";
 import FileUploadSingle from "@/components/common/file-upload-single";
 import { serialize } from "object-to-formdata";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 // import { Switch } from "@/components/ui/switch";
 
@@ -110,15 +112,16 @@ export function AddUsers({ modalClose, rowData: previousData }: AddUsersProps) {
         await updateUser({
           userId: previousData.id,
           updatedUser: formDataForUpdate,
-        });
+        }).unwrap();
         toast.success("Contact updated successfully");
         modalClose();
       } else {
-        await createUser(formDataForCreate);
+        await createUser(formDataForCreate).unwrap();
         toast.success("Contact created successfully");
         modalClose();
       }
     } catch (error) {
+      handleErrors(error as ErrorResponse);
       console.log(error);
     }
   }

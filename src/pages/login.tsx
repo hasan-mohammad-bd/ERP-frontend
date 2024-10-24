@@ -106,14 +106,14 @@ export default function LoginScreen() {
 											Remember me
 										</label>
 									</div>
-									<div className="text-sm">
+									{/* <div className="text-sm">
 										<a
 											href="jajvascript:void(0);"
 											className="text-blue-600 hover:underline"
 										>
 											Forgot your password?
 										</a>
-									</div>
+									</div> */}
 								</div>
 								<div className="!mt-10">
 									<button
@@ -124,7 +124,7 @@ export default function LoginScreen() {
 										Log in
 									</button>
 								</div>
-								<p className="text-sm !mt-10 text-center">
+								{/* <p className="text-sm !mt-10 text-center">
 									Don't have an account{" "}
 									<a
 										href="javascript:void(0);"
@@ -132,7 +132,7 @@ export default function LoginScreen() {
 									>
 										Register here
 									</a>
-								</p>
+								</p> */}
 							</form>
 						</div>
 						<div className="lg:h-[400px] md:h-[300px] max-md:mt-10">

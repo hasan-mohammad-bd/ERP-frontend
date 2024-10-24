@@ -1,47 +1,29 @@
+
 import { z } from "zod";
 
-
+// Define the schema for the category data
 export const categorySchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
-
+  id: z.number().optional(), // Optional as it might not exist for new entries
+  name: z.string().min(1, "Category name is required"),
+  image: z.string().optional(), // Image is optional (can be URL or file)
+  description: z.string().optional(),
+  status: z.union([z.literal(1), z.literal(0)]).default(1), // Use 1 and 0 instead of strings
+  sorting_index: z.number().optional(),
+  parent_id: z.number().nullable().optional(),
 });
 
-export type CategoryFormValues = z.infer<typeof categorySchema>;
-
-export const categoryRow = categorySchema.extend({
-   id: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Id must be at least 0.",
-    })
-    .max(9999, {
-      message: "Id must be at most 9999.",
-    }),
+// Main schema for the form response
+export const categoryRowSchema = z.object({
+  data: categorySchema,
+  message: z.string(),
 });
 
-
-
-export const categoryColumn = z.object({
-  id: z.number(),
-  name: z.string(),
-  // sorting_index: z.coerce.number(),
-});
-
-export type CategoryColumn = z.infer<typeof categoryColumn>;
+// Infer types from the schemas
+export type CategoryFormValues = z.infer<typeof categorySchema>; // Form values type
+export type CategoryRow = z.infer<typeof categoryRowSchema>;
 
 
 
-export const subCategoryColumn = z.object({
-  id: z.number(),
-  name: z.string(),
-  // sorting_index: z.coerce.number(),
-});
-
-export type SubCategoryColumn = z.infer<typeof subCategoryColumn>;
 
 
 
-export type CategoryRow = z.infer<typeof categoryRow>;

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Modal } from "@/components/common/modal";
-import { SubCategoryColumn } from "@/lib/validators/billing/category";
+// import { SubCategoryColumn } from "@/lib/validators/billing/category";
 import { PaginationState } from "@tanstack/react-table";
 import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
 import { PaginationInfo } from "@/types";
@@ -12,6 +12,7 @@ import ListSkeleton from "@/components/common/ListSkeleton";
 import { DataTable } from "@/components/ui/data-table/data-table";
 import { ChildCategoryColumns } from "./components/column";
 import { AddClassCategoryForm } from "./components/add-child-category-form";
+import { SubCategoryColumn } from "@/lib/validators/billing/child-category";
 
 const ClassCategory = () => {
   const [isOpen, setIsOpen] = useState(false);

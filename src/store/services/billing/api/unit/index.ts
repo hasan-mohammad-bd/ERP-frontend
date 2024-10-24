@@ -1,9 +1,9 @@
 
-import { billingApi } from "../..";
+import { inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
 import { UnitFormValues, UnitRow } from "@/lib/validators/billing/unit";
 
-const unitApi = billingApi.injectEndpoints({
+const unitApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
     getUnit: build.query<
       { data: UnitRow[]; meta: PaginationInfo },

@@ -36,6 +36,8 @@ import SECTION_TYPES from "@/constants/section-types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PermissionItems from "./PermissionItems";
 import { Card } from "@/components/ui/card";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 // import { Switch } from "@/components/ui/switch";
 
@@ -83,18 +85,19 @@ export function AddUserRoleForm() {
         await updateRole({
           roleId: previousData.id,
           updatedRole: updatedData,
-        });
+        }).unwrap();
         toast.success("Contact updated successfully");
         // modalClose();
         navigate("/web/role");
         
       } else {
-        await createRole(updatedData);
+        await createRole(updatedData).unwrap();
         toast.success("Contact created successfully");
         // modalClose();
         navigate("/web/role");
       }
     } catch (error) {
+      handleErrors(error as ErrorResponse);
       console.log(error);
     }
   }

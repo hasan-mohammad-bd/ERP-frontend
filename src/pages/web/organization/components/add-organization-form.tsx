@@ -31,6 +31,8 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { serialize } from "object-to-formdata";
 import FileUploadSingle from "@/components/common/file-upload-single";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 // interface AddOrganizationFormProps {
 //   data?: OrganizationColumn;
@@ -43,7 +45,7 @@ export function AddOrganizationForm() {
 
   const { id } = useParams();
 
-  console.log(id);
+  // console.log(id);
   const { data } = useGetOrganizationByIdQuery(`${id}`);
   const [uploadedLogo, setUploadedLogo] = useState<File | null>(null);
   const [uploadedBanner, setUploadedBanner] = useState<File | null>(null);
@@ -200,17 +202,18 @@ export function AddOrganizationForm() {
         await updatedOrganization({
           organizationId: previousData.id,
           updatedOrganization: formDataForUpdate,
-        });
+        }).unwrap();
         toast.success("Organization updated successfully");
         // modalClose();
         navigate("/web/organizations");
       } else {
-        await createOrganization(formDataForCreate);
+        await createOrganization(formDataForCreate).unwrap();
         toast.success("Organization created successfully");
         // modalClose();
         navigate("/web/organizations");
       }
     } catch (error) {
+      handleErrors(error as ErrorResponse);
       console.log(error);
     }
   }
