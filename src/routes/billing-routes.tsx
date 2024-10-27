@@ -45,6 +45,14 @@ import MadePayment from "@/pages/billing/made-payment";
 import { AddMadePaymentForm } from "@/pages/billing/made-payment/components/add-purchase-recieve-form";
 import MasterSales from "@/pages/billing/reports/master-sales-report";
 import ProductSales from "@/pages/billing/reports/product-wise-sales";
+import PurchaseReport from "@/pages/billing/reports/purchase-report";
+import StockReport from "@/pages/billing/reports/stock-report";
+import CustomerReport from "@/pages/billing/reports/customer-report";
+import StockLedgerReport from "@/pages/billing/reports/stcok-ledger";
+import CustomerLedgerReport from "@/pages/billing/reports/customer-ledger";
+import DueReceiveableReport from "@/pages/billing/reports/due-receiveable-report";
+import DueReceivedReport from "@/pages/billing/reports/due-received-report";
+
 
 
 const billingRoutes = {
@@ -389,11 +397,47 @@ const billingRoutes = {
       errorElement: withFallback(<ErrorPage />),
     },
 
+    {
+      path: "purchase-report",
+      element: withFallback(<PurchaseReport />),
+      errorElement: withFallback(<ErrorPage />),
+    },
 
 
 
+    {
+      path: "stock-summary",
+      element: withFallback(<StockReport />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "stock-ledger",
+      element: withFallback(<StockLedgerReport />),
+      errorElement: withFallback(<ErrorPage />),
+    },
 
+    {
+      path: "customer-summary",
+      element: withFallback(<CustomerReport />),
+      errorElement: withFallback(<ErrorPage />),
+    },
 
+    {
+      path: "customer-ledger",
+      element: withFallback(<CustomerLedgerReport />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "due-receivable-report",
+      element: withFallback(<DueReceiveableReport />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "due-received-report",
+      element: withFallback(<DueReceivedReport />),
+      errorElement: withFallback(<ErrorPage />),
+    },
 
 
     {
