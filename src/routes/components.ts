@@ -50,7 +50,7 @@ export const VacancyRequisition = lazy(
 );
 export const LoginScreen = lazy(() => import("@/pages/login"));
 export const Lobby = lazy(() => import("@/pages/lobby"));
-export const PrivateOutlet = lazy(() => import("@/utils/private-outlet"));
+export const PrivateOutlet = lazy(() => import("@/lib/access-control/private-outlet"));
 export const BankSalaryAdvice = lazy(
   () => import("@/pages/hrm/salary/bank-salary-advice")
 );

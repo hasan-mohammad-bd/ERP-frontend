@@ -12,8 +12,8 @@ password: z.string()
 .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
 .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
 .regex(/[0-9]/, { message: "Password must contain at least one digit" })
-.regex(/[@$!%*?&#]/, { message: "Password must contain at least one special character (@$!%*?&#)" }),
-password_confirmation: z.string(),
+.regex(/[@$!%*?&#]/, { message: "Password must contain at least one special character (@$!%*?&#)" }).optional().nullable(),
+password_confirmation: z.string().optional().nullable(),
 
 organization_id: z.coerce.number().optional().nullable(),
 location_id: z.coerce.number().optional().nullable(),

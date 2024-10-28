@@ -1,6 +1,6 @@
 import router from "./routes";
 import { RouterProvider } from "react-router-dom";
-import PersistUser from "./utils/persist-user";
+import PersistUser from "./lib/access-control/persist-user";
 import { ThemeProvider } from "next-themes";
 
 function App() {

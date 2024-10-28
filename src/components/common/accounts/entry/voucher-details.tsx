@@ -45,15 +45,25 @@ const VoucherDetails = ({ data }: Props) => {
         <div className="p-7">
           <div className="grid grid-cols-4">
             <div className="w-[180px]">
-              <img src="/image/logo.png" alt="" />
+              {data.organization.logo && (
+                
+              <img src={data.organization.logo} alt="" />
+              )}
             </div>
             <div className="text-center col-span-2">
               <div className="font-bold text-center text-xl">
                 {data.organization.name}
               </div>
               <div className="text-sm w-full">
-                <div>Address: House 51C Road-13/B, Dhaka 1230</div>{" "}
-                <div className="mb-2">Phone: 01712345678</div>
+                <div>
+                  {/* Address: House 51C Road-13/B, Dhaka 1230 */}
+                  {data.organization.address}
+                </div>{" "}
+                <div className="mb-2">
+                  Phone:
+                  {/* 01712345678 */}
+                  {data.organization.phone}
+                </div>
               </div>
             </div>
           </div>
@@ -103,10 +113,10 @@ const VoucherDetails = ({ data }: Props) => {
                       Particulars
                     </TableHead> */}
 
-                      <TableHead className="border border-black py-[5px] h-0">
-                        Description
-                      </TableHead>
-      
+                    <TableHead className="border border-black py-[5px] h-0">
+                      Description
+                    </TableHead>
+
                     <TableHead className="border border-black py-[5px] h-0">
                       Debit
                     </TableHead>
@@ -137,10 +147,10 @@ const VoucherDetails = ({ data }: Props) => {
                           {data?.contact?.name}
                         </TableCell>
 
-                          <TableCell className="border border-black py-[5px]">
-                            {data.note}
-                          </TableCell>
-             
+                        <TableCell className="border border-black py-[5px]">
+                          {data.note}
+                        </TableCell>
+
                         <TableCell className="border border-black py-[5px]">
                           {data.dr_amount.toLocaleString("en-IN")}
                         </TableCell>
@@ -153,9 +163,9 @@ const VoucherDetails = ({ data }: Props) => {
 
                   <TableRow className="border border-black bg-gray-100">
                     <TableCell
-                    //dynamic colspan
+                      //dynamic colspan
                       colSpan={5}
-                      // colSpan={TableCell.length -3 } 
+                      // colSpan={TableCell.length -3 }
                       className="text-right font-bold border border-black py-[5px]"
                     >
                       Total

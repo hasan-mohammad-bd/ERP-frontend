@@ -33,6 +33,8 @@ import CashBook from "@/pages/accounts/cash-book";
 import Budget from "@/pages/accounts/budget";
 import { AddBudgetForm } from "@/pages/accounts/budget/components/add-budjet-form";
 import CheckBooks from "@/pages/accounts/check-books";
+import RoleAccessOutlet from "@/lib/access-control/role-access-outlet";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const accountsRoutes = {
   path: "accounts/",
@@ -40,16 +42,26 @@ const accountsRoutes = {
   children: [
     {
       index: true,
-      element: withFallback(<DashboardAccounts />),
+      element: withFallback(
+        <RoleAccess roles={["settings", "entries", "ledger-accounts", "reports"]} showUnauthorizedPage={true}>
+          <DashboardAccounts />
+        </RoleAccess>),
     },
     {
       path: "financial-year",
-      element: withFallback(<FinancialYears />),
+      element: withFallback(
+        <RoleAccess roles={["financial-years"]} showUnauthorizedPage={true}>
+          <FinancialYears />
+        </RoleAccess>),
       errorElement: withFallback(<ErrorPage />),
     },
     {
       path: "chart-of-accounts",
-      element: withFallback(<ChartOfAccounts />),
+      element: withFallback(
+        <RoleAccess roles={["ledger-groups", "ledger-accounts"]} showUnauthorizedPage={true}>
+          <ChartOfAccounts />
+        </RoleAccess>
+    ),
       errorElement: withFallback(<ErrorPage />),
     },
 
@@ -61,53 +73,80 @@ const accountsRoutes = {
 
     {
       path: "contact",
-      element: withFallback(<SubAccounts />),
+      element: withFallback(
+        <RoleAccess roles={["sub-accounts"]} showUnauthorizedPage={true}>
+          <SubAccounts />
+        </RoleAccess>),
       errorElement: withFallback(<ErrorPage />),
     },
     {
       path: "cost-categories",
-      element: withFallback(<CostCategories />),
+      element: withFallback(
+        <RoleAccess roles={["cost-categories"]} showUnauthorizedPage={true}>
+          <CostCategories />
+        </RoleAccess>),
       errorElement: withFallback(<ErrorPage />),
     },
     {
       path: "cost-centers",
-      element: withFallback(<CostCenters />),
+      element: withFallback(
+        <RoleAccess roles={["cost-centers"]} showUnauthorizedPage={true}>
+          <CostCenters />
+        </RoleAccess>),
       errorElement: <ErrorPage />,
     },
     {
       path: "check-books",
-      element: withFallback(<CheckBooks />),
+      element: withFallback(
+        <RoleAccess roles={["check-books"]} showUnauthorizedPage={true}>
+          <CheckBooks />
+        </RoleAccess>),
       errorElement: <ErrorPage />,
     },
     {
       path: "projects",
-      element: withFallback(<Projects />),
+      element: withFallback(
+        <RoleAccess roles={["projects"]} showUnauthorizedPage={true}>
+          <Projects />
+        </RoleAccess>),
       errorElement: <ErrorPage />,
     },
     {
       path: "accounts-settings",
-      element: withFallback(<AccountSettings />),
+      element: withFallback(
+        <RoleAccess roles={["settings"]} showUnauthorizedPage={true}>
+          <AccountSettings />
+        </RoleAccess>),
       errorElement: <ErrorPage />,
     },
     /*     , */
     {
       path: "opening-balance/",
-      // element: withFallback(<JournalVoucher />),
+      // element: <RoleAccessOutlet roles={["entries"]}  />,
       errorElement: <ErrorPage />,
       children: [
         {
           index: true,
-          element: withFallback(<OpeningBalance />),
+          element: withFallback(
+            <RoleAccess roles={["entries"]} showUnauthorizedPage={true}>
+              <OpeningBalance />
+            </RoleAccess>),
           errorElement: <ErrorPage />,
         },
         {
           path: "add",
-          element: withFallback(<AddOpeningBalanceForm />),
+          element: withFallback(
+            <RoleAccess roles={["entries.create"]} showUnauthorizedPage={true}>
+              <AddOpeningBalanceForm />
+            </RoleAccess>),
           errorElement: <ErrorPage />,
         },
         {
           path: "edit/:id",
-          element: withFallback(<AddOpeningBalanceForm />),
+          element: withFallback(
+            <RoleAccess roles={["entries.edit"]} showUnauthorizedPage={true}>
+              <AddOpeningBalanceForm />
+            </RoleAccess>),
           errorElement: <ErrorPage />,
         },
       ],
@@ -119,153 +158,236 @@ const accountsRoutes = {
       children: [
         {
           index: true,
-          element: withFallback(<Budget />),
+          element: withFallback(
+            <RoleAccess roles={["budgets", "entries"]} requireAll showUnauthorizedPage={true}>
+              <Budget />
+            </RoleAccess>),
           errorElement: <ErrorPage />,
         },
         {
           path: "add",
-          element: withFallback(<AddBudgetForm />),
+          element: withFallback(
+            <RoleAccess roles={["budgets.create"]} showUnauthorizedPage={true}>
+              <AddBudgetForm />
+            </RoleAccess>),
           errorElement: <ErrorPage />,
         },
         {
           path: "edit/:id",
-          element: withFallback(<AddBudgetForm />),
+          element: withFallback(
+            <RoleAccess roles={["budgets.edit"]} showUnauthorizedPage={true}>
+              <AddBudgetForm />
+            </RoleAccess>
+        ),
           errorElement: <ErrorPage />,
         },
       ],
     },
     {
       path: "journal-voucher/",
-      // element: withFallback(<JournalVoucher />),
+      // element: <RoleAccessOutlet roles={["entries"]}  />,
       errorElement: <ErrorPage />,
       children: [
         {
           index: true,
-          element: withFallback(<JournalVoucher />),
+          element: withFallback(
+            <RoleAccess roles={["entries"]} showUnauthorizedPage={true}>
+              <JournalVoucher />
+            </RoleAccess>),
           errorElement: <ErrorPage />,
         },
         {
           path: "add",
-          element: withFallback(<AddJournalForm />),
+          element: withFallback(
+            <RoleAccess roles={["entries.create"]} showUnauthorizedPage={true}>
+              <AddJournalForm />
+            </RoleAccess>
+        ),
           errorElement: <ErrorPage />,
         },
         {
           path: "edit/:id",
-          element: withFallback(<AddJournalForm />),
+          element: withFallback(
+            <RoleAccess roles={["entries.edit"]} showUnauthorizedPage={true}>
+              <AddJournalForm />
+            </RoleAccess>
+        ),
           errorElement: <ErrorPage />,
         },
       ],
     },
     {
       path: "receipt-voucher",
-      // element: withFallback(<ReceptVoucher />),
+      // element: <RoleAccessOutlet roles={["entries"]}  />,
       errorElement: <ErrorPage />,
       children: [
         {
           index: true,
-          element: withFallback(<ReceptVoucher />),
+          element: withFallback(
+            <RoleAccess roles={["entries"]} showUnauthorizedPage={true}>
+              <ReceptVoucher />
+            </RoleAccess>
+        ),
           errorElement: <ErrorPage />,
         },
         {
           path: "add",
-          element: withFallback(<AddReceiptForm />),
+          element: withFallback(
+            <RoleAccess roles={["entries.create"]} showUnauthorizedPage={true}>
+              <AddReceiptForm />
+            </RoleAccess>
+        ),
           errorElement: <ErrorPage />,
         },
         {
           path: "edit/:id",
-          element: withFallback(<AddReceiptForm />),
+          element: withFallback(
+            <RoleAccess roles={["entries.edit"]} showUnauthorizedPage={true}>
+              <AddReceiptForm />
+            </RoleAccess>
+        ),
           errorElement: <ErrorPage />,
         },
       ],
     },
     {
       path: "payment-voucher",
-      // element: withFallback(<PaymentVoucher />),
+      // element: <RoleAccessOutlet roles={["entries"]}  />,
       errorElement: <ErrorPage />,
       children: [
         {
           index: true,
-          element: withFallback(<PaymentVoucher />),
+          element: withFallback(
+            <RoleAccess roles={["entries"]} showUnauthorizedPage={true}>
+              <PaymentVoucher />
+            </RoleAccess>
+        ),
           errorElement: <ErrorPage />,
         },
         {
           path: "add",
-          element: withFallback(<AddPaymentForm />),
+          element: withFallback(
+            <RoleAccess roles={["entries.create"]} showUnauthorizedPage={true}>
+              <AddPaymentForm />
+            </RoleAccess>
+        ),
           errorElement: <ErrorPage />,
         },
         {
           path: "edit/:id",
-          element: withFallback(<AddPaymentForm />),
+          element: withFallback(
+            <RoleAccess roles={["entries.edit"]} showUnauthorizedPage={true}>
+              <AddPaymentForm />
+            </RoleAccess>),
           errorElement: <ErrorPage />,
         },
       ],
     },
     {
       path: "contra-voucher",
-      // element: withFallback(<ContraVoucher />),
+      // element: <RoleAccessOutlet roles={["entries"]}  />,
       errorElement: <ErrorPage />,
       children: [
         {
           index: true,
-          element: withFallback(<ContraVoucher />),
+          element: withFallback(
+            <RoleAccess roles={["entries"]} showUnauthorizedPage={true}>
+              <ContraVoucher />
+            </RoleAccess> ),
           errorElement: <ErrorPage />,
         },
         {
           path: "add",
-          element: withFallback(<AddContraForm />),
+          element: withFallback(
+            <RoleAccess roles={["entries.create"]} showUnauthorizedPage={true}>
+              <AddContraForm />
+            </RoleAccess>),
           errorElement: <ErrorPage />,
         },
         {
           path: "edit/:id",
-          element: withFallback(<AddContraForm />),
+          element: withFallback(
+            <RoleAccess roles={["entries.edit"]} showUnauthorizedPage={true}>
+              <AddContraForm />
+            </RoleAccess> ),
           errorElement: <ErrorPage />,
         },
       ],
     },
     {
       path: "reports/",
-      // element: withFallback(<Reports />),
+      element: <RoleAccessOutlet roles={["reports"]}  />,
       errorElement: <ErrorPage />,
       children: [
         {
           path: "general-ledger",
-          element: withFallback(<GeneralLedger />),
+          element: withFallback(
+            <RoleAccess roles={["reports.general.ledger"]} showUnauthorizedPage={true}>
+              <GeneralLedger />
+            </RoleAccess>
+        ),
           errorElement: <ErrorPage />,
         },
         {
           path: "transaction",
-          element: withFallback(<Transaction />),
+          element: withFallback(
+            <RoleAccess roles={["reports.transaction"]} showUnauthorizedPage={true}>
+              <Transaction />
+            </RoleAccess>
+        ),
           errorElement: <ErrorPage />,
         },
         {
           path: "cash-book",
-          element: withFallback(<CashBook />),
+          element: withFallback(
+            <RoleAccess roles={["reports.cash-book"]} showUnauthorizedPage={true}>
+              <CashBook />
+            </RoleAccess>),
           errorElement: <ErrorPage />,
         },
         {
           path: "trial-balance",
-          element: withFallback(<TrialBalance />),
+          element: withFallback(
+            <RoleAccess roles={["reports.trial.balance"]} showUnauthorizedPage={true}>
+              <TrialBalance />
+            </RoleAccess>
+        ),
           errorElement: <ErrorPage />,
         },
         {
           path: "income-statement",
-          element: withFallback(<IncomeStatement />),
+          element: withFallback(
+            <RoleAccess roles={["reports.income.statement"]} showUnauthorizedPage={true}>
+              <IncomeStatement />
+            </RoleAccess>
+        ),
           errorElement: <ErrorPage />,
         },
         {
           path: "balance-sheet",
-          element: withFallback(<BalanceSheet />),
+          element: withFallback(
+            <RoleAccess roles={["reports.balance.sheet"]} showUnauthorizedPage={true}>
+              <BalanceSheet />
+            </RoleAccess>
+          ),
           errorElement: <ErrorPage />,
         },
-
         {
           path: "detailed-general-ledger/:ledgerId",
-          element: withFallback(<DetailedGeneralLedger />),
+          element: withFallback(
+            <RoleAccess roles={["reports.detailed.ledger"]} showUnauthorizedPage={true}>
+              <DetailedGeneralLedger />
+            </RoleAccess>
+        ),
           errorElement: <ErrorPage />,
         },
         {
           path: "detailed-general-ledger",
-          element: withFallback(<DetailedGeneralLedger />),
+          element: withFallback(
+            <RoleAccess roles={["reports.detailed.ledger"]} showUnauthorizedPage={true}>
+              <DetailedGeneralLedger />
+            </RoleAccess>
+        ),
           errorElement: <ErrorPage />,
         },
       ],
@@ -273,7 +395,7 @@ const accountsRoutes = {
     {
       path: "*",
       element: withFallback(<NotFoundPage />),
-    }
+    },
   ],
 };
 
