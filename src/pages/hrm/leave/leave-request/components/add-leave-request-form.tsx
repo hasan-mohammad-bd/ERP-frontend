@@ -24,7 +24,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
+import { differenceInDays, format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
@@ -56,6 +56,12 @@ import {
 } from "@/components/ui/select";
 import { serialize } from "object-to-formdata";
 import { Loading } from "@/components/common/loading";
+import { useLazyGetLeaveSummaryQuery } from "@/store/services/hrm/api/report/leave/leave-summay";
+import { useDebounce } from "@/store/hooks/useDebounce";
+import { LeaveSummaryRow, LeaveTypes } from "@/lib/validators/hrm/report/leave/leave-summary";
+import EmployeeCombobox from "./server-search-select";
+import SearchSelect from "./server-search-select";
+import ServerSearchSelect from "./server-search-select";
 
 interface AddJobApplyFormProps {
   modalClose: () => void;
@@ -63,24 +69,28 @@ interface AddJobApplyFormProps {
   refetch?: () => void;
 }
 
+
 export function AttendancePolicyForm({
   modalClose,
   data: previousData,
   refetch,
 }: AddJobApplyFormProps) {
+  const [trigger, { data: searchResult }] = useLazyGetLeaveSummaryQuery();
   const [createLeaveRequestPolicy, { isLoading }] =
     useCreateLeaveRequestMutation();
   const [updateLeaveRequestPolicy, { isLoading: updateLoading }] =
     useUpdateLeaveRequestMutation();
-  const { data: employees, isLoading: employeeLoading } =
-    useGetEmployeesQuery(`page=1&per_page=1000`);
+  // const { data: employees, isLoading: employeeLoading } =
+  //   useGetEmployeesQuery(`page=1&per_page=1000`);
   const { data, isLoading: leaveTypeLoading } =
     useGetLeaveTypesQuery(`per_page=1000&page=1`);
 
+  // console.log(data)
+
   const leaveTypeData = data?.data || [];
 
-  const employeeData = employees?.data || [];
-  console.log(employeeData);
+  // console.log();
+  console.log(searchResult?.data);
 
   const form = useForm<LeaveRequestFormValues>({
     resolver: zodResolver(leaveRequestSchema),
@@ -104,6 +114,9 @@ export function AttendancePolicyForm({
   const [timeSchedule, setTimeSchedule] = useState(false);
   const [timeStart, setTimeStart] = useState(""); // New state for Time Start
   const [timeEnd, setTimeEnd] = useState(""); // New state for Time End
+  const [searchTerm, setSearchTerm] = useState<string>('');
+
+  console.log(searchTerm, "searchTerm");
 
   const status = ["Pending", "Canceled", "Approved", "Rejected"];
 
@@ -116,17 +129,31 @@ export function AttendancePolicyForm({
     }
   }, [previousData]);
 
-  console.log(timeStart);
+  
+
+
+
+  const searchResultData = searchResult?.data || [];
+
+  const employeeId = form.watch("employee_id");
+const foundEmployee = searchResultData.find(
+  (item) => item.id === Number(employeeId)
+)
+
+  const leaveTypeId = form.watch("leave_type_id");
+  const allowedLeaveType = foundEmployee?.leave_types.find((item) => item.id === Number(leaveTypeId));
+
+  
 
   const handleFromDateSelect = (date: Date | undefined) => {
     if (!date) return;
     setFromDate(date);
 
-    const validTimeStart = timeStart || "12:00";
+    const validTimeStart = timeStart && `${timeStart}:00` || foundEmployee?.schedule?.start_time ;
     console.log(validTimeStart, "validTimeStart");
     form.setValue(
       "start_date_time",
-      `${format(date, "yyyy-MM-dd")} ${validTimeStart}:00`
+      `${format(date, "yyyy-MM-dd")} ${validTimeStart}`
     );
     setOpenFromDate(false);
   };
@@ -135,33 +162,41 @@ export function AttendancePolicyForm({
     if (!date) return;
     setToDate(date);
 
-    const validTimeEnd = timeEnd || "23:59";
+    const validTimeEnd = timeEnd && `${timeEnd}:00` || foundEmployee?.schedule?.end_time ;
     form.setValue(
       "end_date_time",
-      `${format(date, "yyyy-MM-dd")} ${validTimeEnd}:00`
+      `${format(date, "yyyy-MM-dd")} ${validTimeEnd}`
     );
     setOpenToDate(false);
   };
 
   useEffect(() => {
     if (fromDate) {
-      const validTimeStart = timeStart || "12:00";
+      const validTimeStart = timeStart && `${timeStart}:00` || foundEmployee?.schedule?.start_time ;
       form.setValue(
         "start_date_time",
-        `${format(fromDate, "yyyy-MM-dd")} ${validTimeStart}:00`
+        `${format(fromDate, "yyyy-MM-dd")} ${validTimeStart}`
       );
     }
-  }, [timeStart, fromDate, form]);
+  }, [timeStart, fromDate, form, foundEmployee?.schedule?.start_time ]);
 
   useEffect(() => {
     if (toDate) {
-      const validTimeEnd = timeEnd || "23:59";
+      const validTimeEnd = timeEnd && `${timeEnd}:00` || foundEmployee?.schedule?.end_time ;
       form.setValue(
         "end_date_time",
-        `${format(toDate, "yyyy-MM-dd")} ${validTimeEnd}:00`
+        `${format(toDate, "yyyy-MM-dd")} ${validTimeEnd}`
       );
     }
-  }, [timeEnd, toDate, form]);
+  }, [timeEnd, toDate, form, foundEmployee?.schedule?.end_time ]);
+
+  const startDate = form.watch("start_date_time")
+const endDate = form.watch("end_date_time");
+console.log(startDate)
+
+  const totalLeaveDays = startDate && endDate ? differenceInDays(endDate.slice(0, 10), startDate.slice(0, 10)) : 0;
+
+ 
 
   async function onSubmit(data: LeaveRequestFormValues) {
     console.log(data);
@@ -191,8 +226,19 @@ export function AttendancePolicyForm({
       handleErrors(error as ErrorResponse);
     }
   }
+  const debouncedSearchText = useDebounce(searchTerm, 300);
 
-  console.log();
+  // Trigger server search when debounced text updates
+  useEffect(() => {
+    if (debouncedSearchText) {
+      trigger && trigger(`text=${debouncedSearchText}`);
+    }
+  }, [debouncedSearchText, trigger]);
+
+console.log(searchResultData, "searchResultData");
+
+
+
   return (
     <>
       {isLoading || updateLoading ? (
@@ -207,28 +253,50 @@ export function AttendancePolicyForm({
 
               <div className="flex items-center space-x-4">
                 <div className="w-full">
-                  <FormSearchSelect<EmployeeColumn>
-                    loading={employeeLoading}
-                    data={employeeData}
+                  {/* <SearchSelect
+                    data={searchResultData}
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                  /> */}
+                  <ServerSearchSelect<LeaveSummaryRow>
+                    data={searchResultData}
+                    displayField="first_name"
+                    valueField="id"
+                    form={form}
+                    name="employee_id"
+                    title="Employee"
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    // trigger={trigger}
+                    className="w-[360px]"
+
+                    
+                    />
+{/* 
+                  <FormSearchSelect<LeaveSummaryRow>
+                    data={searchResult?.data || []}
                     displayField="first_name"
                     valueField="id"
                     form={form}
                     name="employee_id"
                     title="Employee"
                     className="w-[460px]"
-                  />
+                  /> */}
                 </div>
-                <div className="w-full">
-                  <FormSearchSelect<LeaveTypeRow>
-                    loading={leaveTypeLoading}
-                    data={leaveTypeData}
+                <div className="w-full flex items-center">
+
+                  <FormSearchSelect<LeaveTypes>
+                    // loading={leaveTypeLoading}
+                    data={foundEmployee?.leave_types || []}
                     displayField="name"
                     valueField="id"
                     form={form}
                     name={`leave_type_id`}
-                    title="Leave Type"
+                    title={`Leave Type ${allowedLeaveType?.available?.total_days? `(Leave Left: ${allowedLeaveType?.available?.total_days}, ${allowedLeaveType?.available?.total_hours} )` : ""}` }
                     className="w-[290px]"
+                   
                   />
+
                 </div>
                 {previousData && (
                   <div className="w-full">
@@ -364,7 +432,11 @@ export function AttendancePolicyForm({
                               />
                             </PopoverContent>
                           </Popover>
-                          <FormMessage />
+                          <FormMessage > 
+                          {allowedLeaveType?.available && totalLeaveDays > allowedLeaveType.available.total_days && (
+  <span className="text-red-500">Total Leave Days Exceed</span>
+)}
+                             </FormMessage>
                         </FormItem>
                       )}
                     />
@@ -458,8 +530,9 @@ export function AttendancePolicyForm({
               </div>
             </div>
 
-            <div className="text-right">
-              <Button variant="default" type="submit" className="w-fit mt-4">
+            <div className="text-right flex items-center justify-end gap-x-3">
+
+              <Button disabled={!!(allowedLeaveType?.available.total_days && allowedLeaveType?.available.total_days <= 0) || !!(allowedLeaveType?.available && totalLeaveDays > allowedLeaveType.available.total_days)} variant="default" type="submit" className="w-fit mt-4">
                 {previousData ? "Update" : "Add"}
               </Button>
             </div>
