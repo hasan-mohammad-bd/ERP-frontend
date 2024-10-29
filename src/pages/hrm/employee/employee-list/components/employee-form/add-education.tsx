@@ -59,7 +59,7 @@ export function AddEducationForm({
 			start_date: educationData?.start_date || "",
 			end_date: educationData?.end_date || "",
 			grade: educationData?.grade || "",
-			sorting_index: educationData?.sorting_index || 0,
+			// sorting_index: educationData?.sorting_index || 0,
 		},
 	});
 
@@ -71,13 +71,13 @@ export function AddEducationForm({
 					updatedEducation: data,
 				});
 
-				toast.success("Job Post updated successfully");
+				toast.success("Education updated successfully");
 				if (modelClose) {
 					modelClose();
 				}
 			} else {
 				await createEducation(data);
-				toast.success("Job Post created successfully");
+				toast.success("Education created successfully");
 				// modalClose();
 				form.reset();
 			}
@@ -221,7 +221,7 @@ export function AddEducationForm({
 										)}
 									/>
 
-									<FormField
+{/* 									<FormField
 										control={form.control}
 										name="sorting_index"
 										render={({ field }) => (
@@ -237,7 +237,7 @@ export function AddEducationForm({
 												<FormMessage />
 											</FormItem>
 										)}
-									/>
+									/> */}
 								</div>
 
 								<div>
@@ -259,6 +259,9 @@ export function AddEducationForm({
 									columns={educationColumns}
 									data={previousData?.educations || []}
 									noPagination
+									noToolbar
+									
+									
 								/>
 							</div>
 						</div>

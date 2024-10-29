@@ -75,7 +75,7 @@ export function AddExperienceForm({
       end_date: experienceData?.end_date || null,
       description: experienceData?.description || "",
       designation: experienceData?.designation || "",
-      sorting_index: experienceData?.sorting_index || 0,
+      // sorting_index: experienceData?.sorting_index || 0,
     },
   });
 
@@ -248,7 +248,7 @@ export function AddExperienceForm({
                     )}
                   />
 
-                  <FormField
+{/*                   <FormField
                     control={form.control}
                     name="sorting_index"
                     render={({ field }) => (
@@ -264,7 +264,7 @@ export function AddExperienceForm({
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                  /> */}
                 </div>
 
                 <div>

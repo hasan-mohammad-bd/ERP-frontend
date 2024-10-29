@@ -64,6 +64,7 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
       relation: previousData?.employee_nominee?.relation || "",
       phone_number: previousData?.employee_nominee?.phone_number || "",
       // image: previousData?.employee_nominee?.image || "",
+      nid_number: previousData?.employee_nominee?.nid_number || "",
       present_address: {
         country_id: previousData?.employee_nominee?.present_address?.country?.id || 1,
         city_id: previousData?.employee_nominee?.present_address?.city?.id || 1,

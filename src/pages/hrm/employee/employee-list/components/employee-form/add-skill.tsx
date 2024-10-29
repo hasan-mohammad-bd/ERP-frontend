@@ -55,7 +55,7 @@ export function AddSkillForm({
       start_date: skillData?.start_date || "",
       end_date: skillData?.end_date || "",
       description: skillData?.description || "",
-      sorting_index: skillData?.sorting_index || 0,
+      // sorting_index: skillData?.sorting_index || 0,
 
       /* 
       institution: experienceData?.institution || "",
@@ -166,24 +166,6 @@ export function AddSkillForm({
                     )}
                   />
 
-                  <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description (optional)</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            // type="text"
-                            placeholder="Enter Description"
-                            value={field.value || ""}
-                            onChange={(e) => field.onChange(e.target.value)}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
 
                   <FormField
                     control={form.control}
@@ -220,8 +202,27 @@ export function AddSkillForm({
                       </FormItem>
                     )}
                   />
-
+                  
                   <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Description (optional)</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            // type="text"
+                            placeholder="Enter Description"
+                            value={field.value || ""}
+                            onChange={(e) => field.onChange(e.target.value)}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+{/*                   <FormField
                     control={form.control}
                     name="sorting_index"
                     render={({ field }) => (
@@ -237,7 +238,7 @@ export function AddSkillForm({
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                  /> */}
                 </div>
 
                 <div>
@@ -259,6 +260,7 @@ export function AddSkillForm({
                   columns={skillColumns}
                   data={previousData?.skills || []}
                   noPagination
+                  noToolbar
                 />
               </div>
             </div>

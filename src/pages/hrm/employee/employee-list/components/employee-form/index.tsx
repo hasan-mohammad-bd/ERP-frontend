@@ -1,4 +1,4 @@
-import { zodResolver } from "@hookform/resolvers/zod";
+// import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +17,7 @@ import {
   DesignationColumn,
   EmployeeClassColumn,
   // EmployeeColumn,
-  EmployeeFormSchema,
+  // EmployeeFormSchema,
   EmployeeFormValues,
   EmployeeGradeColumn,
   EmploymentStatusColumn,
@@ -30,8 +30,6 @@ import {
   WorkPlaceColumn,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
-
-
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -69,7 +67,7 @@ import { ErrorResponse } from "@/types";
 import { useGetLeaveGroupsQuery } from "@/store/services/hrm/api/leave-group";
 import { LeaveGroupRow } from "@/lib/validators/hrm/leave";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -83,6 +81,7 @@ import { EyeClosedIcon } from "@radix-ui/react-icons";
 import { Switch } from "@/components/ui/switch";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { GenderColumn } from "../validators";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 // interface EmployeeFormProps {
 // 	modalClose?: () => void;
@@ -155,7 +154,7 @@ export function EmployeeForm() {
   // const countryData = countries?.data || [];
 
   const form = useForm<EmployeeFormValues>({
-    resolver: zodResolver(EmployeeFormSchema),
+    // resolver: zodResolver(EmployeeFormSchema),
     defaultValues: {
       /*       employee_unique_id: previousData?.employee_unique_id || "",
       first_name: previousData?.first_name || "",
@@ -284,14 +283,14 @@ export function EmployeeForm() {
                 <CardContent className="space-y-2 pt-3">
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="">
-                      <div className="">
+                    <ScrollArea className=" h-[75vh] rounded-md border p-4">
                         <div className="w-1/4 mb-4 mr-3">
                           <FormField
                             control={form.control}
                             name="employee_unique_id"
                             render={({ field }) => (
                               <FormItem>
-                                {/* <FormLabel>Employee Unique Id</FormLabel> */}
+                                <FormLabel>Employee Unique Id</FormLabel>
                                 <FormControl>
                                   <Input
                                     type="text"
@@ -310,7 +309,7 @@ export function EmployeeForm() {
                             name="first_name"
                             render={({ field }) => (
                               <FormItem>
-                                {/* <FormLabel>First Name</FormLabel> */}
+                                <FormLabel>First Name</FormLabel>
                                 <FormControl>
                                   <Input
                                     type="text"
@@ -327,7 +326,7 @@ export function EmployeeForm() {
                             name="last_name"
                             render={({ field }) => (
                               <FormItem>
-                                {/* <FormLabel>Last Name (optional)</FormLabel> */}
+                                <FormLabel>Last Name (optional)</FormLabel>
                                 <FormControl>
                                   <Input
                                     type="text"
@@ -347,7 +346,7 @@ export function EmployeeForm() {
                             name="phone"
                             render={({ field }) => (
                               <FormItem>
-                                {/* <FormLabel>Phone</FormLabel> */}
+                                <FormLabel>Phone</FormLabel>
                                 <FormControl>
                                   <Input
                                     type="text"
@@ -365,7 +364,7 @@ export function EmployeeForm() {
                             name="corporate_phone"
                             render={({ field }) => (
                               <FormItem>
-                                {/* <FormLabel>Corporate Phone (optional)</FormLabel> */}
+                                <FormLabel>Corporate Phone (optional)</FormLabel>
                                 <FormControl>
                                   <Input
                                     type="text"
@@ -385,7 +384,7 @@ export function EmployeeForm() {
                             name="email"
                             render={({ field }) => (
                               <FormItem>
-                                {/* <FormLabel>Email</FormLabel> */}
+                                <FormLabel>Email</FormLabel>
                                 <FormControl>
                                   <Input
                                     type="email"
@@ -416,13 +415,13 @@ export function EmployeeForm() {
                             </FormItem>
                           )}
                         /> */}
-                        <div className="w-1/2 mb-4 grid grid-cols-2 gap-4">
+                        <div className="w-1/2 mb-4 flex items-baseline gap-4 ">
                           <FormField
                             control={form.control}
                             name="joining_date"
                             render={({ field }) => (
                               <FormItem className="flex flex-col w-full">
-                                {/* <FormLabel>Date of birth</FormLabel> */}
+                                <FormLabel className="mb-1">Joining Date</FormLabel>
                                 <Popover>
                                   <PopoverTrigger asChild>
                                     <FormControl>
@@ -471,41 +470,72 @@ export function EmployeeForm() {
                             )}
                           />
                           {!previousData && (
-                            <div className="relative">
+                            <div className="w-full">
                               <FormField
                                 control={form.control}
                                 name="password"
                                 render={({ field }) => (
                                   <FormItem>
-                                    {/* <FormLabel>Password</FormLabel> */}
-                                    <FormControl>
-                                      <Input
-                                        type={
-                                          isPasswordType ? "password" : "text"
+                                    <FormLabel>Password</FormLabel>
+                                    <div className="relative ">
+                                      <FormControl className="">
+                                        <Input
+                                          type={
+                                            isPasswordType ? "password" : "text"
+                                          }
+                                          placeholder="Password"
+                                          {...field}
+                                          value={field.value ?? ""}
+                                        />
+                                      </FormControl>
+                                      <span
+                                        className="cursor-pointer absolute bottom-1/2 translate-y-1/2 right-3"
+                                        onClick={() =>
+                                          setIsPasswordType((prev) => !prev)
                                         }
-                                        placeholder="Password"
-                                        {...field}
-                                        value={field.value ?? ""}
-                                      />
-                                    </FormControl>
+                                      >
+                                        {isPasswordType ? (
+                                          <Eye size={18} />
+                                        ) : (
+                                          <EyeClosedIcon />
+                                        )}
+                                      </span>
+                                    </div>
                                     <FormMessage />
+
+                                    
                                   </FormItem>
                                 )}
                               />
-                              <span
-                                className="cursor-pointer absolute bottom-1/2 translate-y-1/2 right-3"
-                                onClick={() =>
-                                  setIsPasswordType((prev) => !prev)
-                                }
-                              >
-                                {isPasswordType ? (
-                                  <Eye size={18} />
-                                ) : (
-                                  <EyeClosedIcon />
-                                )}
-                              </span>
                             </div>
                           )}
+
+                        </div>
+                        <div className="w-1/4 mb-4">
+                        <span className="text-sm">Status</span>
+                        <FormField
+                            control={form.control}
+                            name="status"
+                            render={({ field }) => (
+                              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm h-10 mt-2">
+                             
+                                <div className="space-y-0.5">
+                                  <FormLabel>Active</FormLabel>
+                                </div>
+                                <FormControl>
+                                  <Switch
+                                    className="!mt-0 "
+                                    checked={field.value === "Active"}
+                                    onCheckedChange={(checked: boolean) =>
+                                      field.onChange(
+                                        checked ? "Active" : "Inactive"
+                                      )
+                                    }
+                                  />
+                                </FormControl>
+                              </FormItem>
+                            )}
+                          />
                         </div>
                         {/* 
                                       <FormField
@@ -531,28 +561,7 @@ export function EmployeeForm() {
 
                         <div className="grid grid-cols-3 gap-4">
                           {" "}
-                          <FormField
-                            control={form.control}
-                            name="status"
-                            render={({ field }) => (
-                              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm h-10 mt-2">
-                                <div className="space-y-0.5">
-                                  <FormLabel>Active</FormLabel>
-                                </div>
-                                <FormControl>
-                                  <Switch
-                                    className="!mt-0 "
-                                    checked={field.value === "Active"}
-                                    onCheckedChange={(checked: boolean) =>
-                                      field.onChange(
-                                        checked ? "Active" : "Inactive"
-                                      )
-                                    }
-                                  />
-                                </FormControl>
-                              </FormItem>
-                            )}
-                          />
+
                           {/*                           <FormField
                             control={form.control}
                             name="status"
@@ -593,7 +602,7 @@ export function EmployeeForm() {
                             form={form}
                             name="location_id"
                             placeholder="Location"
-                            // title="Location"
+                            title="Location"
                             className="w-[330px]"
                           />
                           {/*                           <FormField
@@ -645,6 +654,7 @@ export function EmployeeForm() {
                             name="organization_id"
                             placeholder="Organization"
                             className="w-[330px]"
+                            title="Organization"
                           />
                           {/*                           <FormField
                             control={form.control}
@@ -697,6 +707,7 @@ export function EmployeeForm() {
                             name="work_place_id"
                             placeholder="Work Place"
                             className="w-[330px]"
+                            title="Work Place"
                           />
                           {/* 
                           <FormField
@@ -748,6 +759,7 @@ export function EmployeeForm() {
                             name="department_id"
                             placeholder="Department"
                             className="w-[330px]"
+                            title="Department"
                           />
                           {/*                           <FormField
                             control={form.control}
@@ -798,6 +810,7 @@ export function EmployeeForm() {
                             name="designation_id"
                             placeholder="Designation"
                             className="w-[330px]"
+                            title="Designation"
                           />
                           {/*                           <FormField
                             control={form.control}
@@ -848,6 +861,7 @@ export function EmployeeForm() {
                             name="section_id"
                             placeholder="Section"
                             className="w-[330px]"
+                            title="Section"
                           />
                           {/*                           <FormField
                             control={form.control}
@@ -898,6 +912,7 @@ export function EmployeeForm() {
                             name="schedule_id"
                             placeholder="Schedule"
                             className="w-[330px]"
+                            title="Schedule"
                           />
                           {/*                           <FormField
                             control={form.control}
@@ -948,6 +963,7 @@ export function EmployeeForm() {
                             name="employee_class_id"
                             placeholder="Employee Class"
                             className="w-[330px]"
+                            title="Employee Class"
                           />
                           {/*                           <FormField
                             control={form.control}
@@ -1001,6 +1017,7 @@ export function EmployeeForm() {
                             name="employee_grade_id"
                             placeholder="Employee Grade"
                             className="w-[330px]"
+                            title="Employee Grade"
                           />
                           {/*                           <FormField
                             control={form.control}
@@ -1053,6 +1070,7 @@ export function EmployeeForm() {
                             name="employment_status_id"
                             placeholder="Employment Status"
                             className="w-[330px]"
+                            title="Employment Status"
                           />
                           {/*                           <FormField
                             control={form.control}
@@ -1108,6 +1126,7 @@ export function EmployeeForm() {
                             name="blood_group_id"
                             placeholder="Blood Group"
                             className="w-[330px]"
+                            title="Blood Group"
                           />
                           {/*                           <FormField
                             control={form.control}
@@ -1158,6 +1177,7 @@ export function EmployeeForm() {
                             name="religion_id"
                             placeholder="Religion"
                             className="w-[330px]"
+                            title="Religion"
                           />
                           {/*                           <FormField
                             control={form.control}
@@ -1278,6 +1298,7 @@ export function EmployeeForm() {
                             name="gender_id"
                             placeholder="Gender"
                             className="w-[330px]"
+                            title="Gender"
                           />
                           {/*                           <FormField
                             control={form.control}
@@ -1329,6 +1350,7 @@ export function EmployeeForm() {
                             name="role_id"
                             placeholder="Role"
                             className="w-[330px]"
+                            title="Role"
                           />
                           {/*                           <FormField
                             control={form.control}
@@ -1378,6 +1400,7 @@ export function EmployeeForm() {
                             name="leave_group_id"
                             placeholder="Leave Group"
                             className="w-[330px]"
+                            title="Leave Group"
                           />
                           {/*                           <FormField
                             control={form.control}
@@ -1421,8 +1444,8 @@ export function EmployeeForm() {
                             )}
                           /> */}
                         </div>
-                      </div>
-                      <div className="mt-6 flex justify-end gap-4">
+                      </ScrollArea>
+                      <div className="mt-2 flex justify-end gap-4">
                         <Button
                           variant="default"
                           type="submit"

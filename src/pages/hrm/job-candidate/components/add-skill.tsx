@@ -65,7 +65,7 @@ export function AddSkillForm({
       start_date: skillData?.start_date || "",
       end_date: skillData?.end_date || "",
       description: skillData?.description || "",
-      sorting_index: skillData?.sorting_index || 0,
+      // sorting_index: skillData?.sorting_index || 0,
 
       /* 
       institution: experienceData?.institution || "",
@@ -231,7 +231,7 @@ export function AddSkillForm({
                     )}
                   />
 
-                  <FormField
+{/*                   <FormField
                     control={form.control}
                     name="sorting_index"
                     render={({ field }) => (
@@ -247,7 +247,7 @@ export function AddSkillForm({
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                  /> */}
                 </div>
 
                 <div>

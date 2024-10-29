@@ -57,6 +57,7 @@ interface DataTableProps<TData, TValue> {
   endDate?: Date | null;
   className?: string | null;
   children?: React.ReactNode;
+  noToolbar?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -70,6 +71,7 @@ export function DataTable<TData, TValue>({
   className,
   onBulkSelectChange,
   reportFormate,
+  noToolbar,
   children,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
@@ -78,6 +80,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  console.log(noToolbar);
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   // To Handle server side pagination
@@ -151,13 +154,17 @@ export function DataTable<TData, TValue>({
           </div>
         </div>
       ) : null}
-      {!reportFormate ? (
-        <DataTableToolbar
-          table={table}
-          bulkActions={bulkActions}
-          onBulkSelectChange={onBulkSelectChange}
-        />
-      ) : null}
+      {!noToolbar && (
+        <>
+          {!reportFormate ? (
+            <DataTableToolbar
+              table={table}
+              bulkActions={bulkActions}
+              onBulkSelectChange={onBulkSelectChange}
+            />
+          ) : null}
+        </>
+      )}
       <div className="rounded-md border">
         <Table>
           <TableHeader>

@@ -74,7 +74,7 @@ export function AddExperienceForm({
 			end_date: experienceData?.end_date || null,
 			description: experienceData?.description || "",
 			designation: experienceData?.designation || "",
-			sorting_index: experienceData?.sorting_index || 0,
+			// sorting_index: experienceData?.sorting_index || 0,
 		},
 	});
 
@@ -86,13 +86,13 @@ export function AddExperienceForm({
 					updatedExperience: data,
 				});
 
-				toast.success("Job Post updated successfully");
+				toast.success("Experience updated successfully");
 				if (modelClose) {
 					modelClose();
 				}
 			} else {
 				await createExperience(data);
-				toast.success("Job Post created successfully");
+				toast.success("Experience created successfully");
 				// modalClose();
 				form.reset();
 			}
@@ -245,7 +245,7 @@ export function AddExperienceForm({
 										)}
 									/>
 
-									<FormField
+{/* 									<FormField
 										control={form.control}
 										name="sorting_index"
 										render={({ field }) => (
@@ -261,7 +261,7 @@ export function AddExperienceForm({
 												<FormMessage />
 											</FormItem>
 										)}
-									/>
+									/> */}
 								</div>
 
 								<div>
@@ -283,6 +283,7 @@ export function AddExperienceForm({
 									columns={experienceColumns}
 									data={previousData?.experiences || []}
 									noPagination
+									noToolbar
 								/>
 							</div>
 						</div>

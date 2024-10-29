@@ -1,4 +1,4 @@
-import { zodResolver } from "@hookform/resolvers/zod";
+// import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
 	EmployeeColumn,
-	EmployeeFormSchema,
+	// EmployeeFormSchema,
 	EmployeeFormValues,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
@@ -39,7 +39,7 @@ export function AddAdditionalInfoForm({
 		useUpdateEmployeeMutation();
 
 	const form = useForm<EmployeeFormValues>({
-		resolver: zodResolver(EmployeeFormSchema),
+		// resolver: zodResolver(EmployeeFormSchema),
 		defaultValues: {/* 
 			card_id: previousData?.card_id || null,
 			machine_id: previousData?.machine_id || null,
@@ -137,7 +137,7 @@ export function AddAdditionalInfoForm({
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)} className="pt-4">
 							<div className="space-y-2 grid grid-cols-5 gap-3 items-end">
-								<FormField
+{/* 								<FormField
 									control={form.control}
 									name="sorting_index"
 									render={({ field }) => (
@@ -154,7 +154,7 @@ export function AddAdditionalInfoForm({
 											<FormMessage />
 										</FormItem>
 									)}
-								/>
+								/> */}
 								<FormField
 									control={form.control}
 									name="card_id"

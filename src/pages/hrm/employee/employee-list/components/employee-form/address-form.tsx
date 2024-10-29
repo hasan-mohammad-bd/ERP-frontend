@@ -84,10 +84,10 @@ export function AddressForm({
 					addressId: previousData?.id,
 					updatedAddress: data,
 				});
-				toast.success("Job Post updated successfully");
+				toast.success("Address updated successfully");
 			} else {
 				await createAddress(data);
-				toast.success("Job Post created successfully");
+				toast.success("Address created successfully");
 			}
 		} catch (error) {
 			console.log(error);

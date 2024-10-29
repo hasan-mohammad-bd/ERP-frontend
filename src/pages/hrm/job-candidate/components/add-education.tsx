@@ -59,7 +59,7 @@ export function AddEducationForm({
       start_date: educationData?.start_date || "",
       end_date: educationData?.end_date || "",
       grade: educationData?.grade || "",
-      sorting_index: educationData?.sorting_index || 0,
+      // sorting_index: educationData?.sorting_index || 0,
     },
   });
 
@@ -224,7 +224,7 @@ export function AddEducationForm({
                     )}
                   />
 
-                  <FormField
+{/*                   <FormField
                     control={form.control}
                     name="sorting_index"
                     render={({ field }) => (
@@ -240,7 +240,7 @@ export function AddEducationForm({
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                  /> */}
                 </div>
 
                 <div>
