@@ -29,6 +29,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
+import { toast } from "sonner";
 
 type EstimateSalarySearchToolbarProps = {
   onShowEstimateSalary: (salaryData: EstimateSalaryColumn[]) => void;
@@ -98,6 +99,7 @@ export default function EstimateSalarySearchToolbar({
       }
     } catch (error) {
       console.error("Failed to fetch salary estimate:", error);
+      handleErrors(error as ErrorResponse);
     }
   };
 
@@ -117,7 +119,7 @@ export default function EstimateSalarySearchToolbar({
         employee_ids: employeeIds,
         salary_month: salaryMonth,
       }).unwrap();
-
+      toast.success("Salary Generated Successfully");
       // Handle the response, potentially refreshing or showing a message
       console.log("Salary generated successfully:", response);
     } catch (error) {
