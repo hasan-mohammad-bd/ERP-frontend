@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import sideNavItems from "@/constants/side-nav";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector, useAuth } from "@/store/hooks";
 import { toggleSideBar } from "@/store/services/erp-main/slices/commonSlice";
 import { NavItem } from "@/types";
 import { cn } from "@/utils";
@@ -15,6 +15,7 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const dispatch = useAppDispatch();
+  const { user } = useAuth();
   const { isOpen } = useAppSelector((state) => state.common);
   const [status, setStatus] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,6 +39,25 @@ export default function Sidebar({ className }: SidebarProps) {
     }));
   };
 
+  // Filter items based on user roles
+  const filterByRole = (items: NavItem[]): NavItem[] => {
+    if (!user) return items;
+    const permissionSet = new Set(user.role.permissions);
+
+    return items.filter((item) => {
+      const hasAccess = item.permissions?.some((permission: string) =>
+        permissionSet.has(permission)
+      );
+
+      if (item.isChildren && item.children) {
+        item.children = filterByRole(item.children); // Recursively filter children
+        return item.children.length > 0 && hasAccess; // Only include if children exist and user has access
+      }
+
+      return hasAccess;
+    });
+  };
+
   // Menu Search Logic
   const filterItems = (items: NavItem[]) => {
     const copiedItems = deepCopy(items);
@@ -53,9 +73,14 @@ export default function Sidebar({ className }: SidebarProps) {
     });
   };
 
+  // const filteredNavItems = searchTerm
+  //   ? filterItems(moduleBaseNavItems)
+  //   : moduleBaseNavItems;
+
+  const filteredByRoleItems = filterByRole(moduleBaseNavItems);
   const filteredNavItems = searchTerm
-    ? filterItems(moduleBaseNavItems)
-    : moduleBaseNavItems;
+    ? filterItems(filteredByRoleItems)
+    : filteredByRoleItems;
 
   return (
     <nav

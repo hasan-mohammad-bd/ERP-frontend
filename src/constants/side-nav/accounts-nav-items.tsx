@@ -7,7 +7,7 @@ import {
   LayoutDashboard,
   MapPin,
   Settings,
-	SquarePlus,
+  SquarePlus,
 } from "lucide-react";
 
 const accountsNavItems: NavItem[] = [
@@ -16,6 +16,7 @@ const accountsNavItems: NavItem[] = [
     icon: LayoutDashboard,
     href: "/accounts",
     color: "text-sky-500",
+    permissions: ["settings", "entries", "ledger-accounts", "reports"],
   },
 
   {
@@ -23,6 +24,7 @@ const accountsNavItems: NavItem[] = [
     icon: Settings,
     href: "/accounts",
     color: "text-sky-500",
+    permissions: ["settings", "check-books", "ledger-accounts"],
     isChildren: true,
     children: [
       {
@@ -30,58 +32,66 @@ const accountsNavItems: NavItem[] = [
         icon: Clock,
         href: "/accounts/financial-year",
         color: "text-sky-500",
+        permissions: ["financial-years"],
       },
       {
         title: "Chart Of Account",
         icon: MapPin,
         href: "/accounts/chart-of-accounts",
         color: "text-sky-500",
+        permissions: ["ledger-groups", "ledger-accounts"],
       },
       {
         title: "Contact",
         icon: MapPin,
         href: "/accounts/contact",
         color: "text-sky-500",
+        permissions: ["sub-accounts"],
       },
       {
         title: "Cost Categories",
         icon: Construction,
         href: "/accounts/cost-categories",
         color: "text-sky-500",
+        permissions: ["cost-categories"],
       },
       {
         title: "Cost Centers",
         icon: Cone,
         href: "/accounts/cost-centers",
         color: "text-sky-500",
+        permissions: ["cost-centers"],
       },
       {
         title: "Check Books",
         icon: Cone,
         href: "/accounts/check-books",
         color: "text-sky-500",
+        permissions: ["check-books"],
       },
       {
         title: "Projects",
         icon: Cone,
         href: "/accounts/projects",
         color: "text-sky-500",
+        permissions: ["projects"],
       },
-			{
-				title: "Currency",
-				icon: Settings,
-				href: "/accounts/accounts-settings",
-				color: "text-sky-500",
-			},
+      {
+        title: "Currency",
+        icon: Settings,
+        href: "/accounts/accounts-settings",
+        color: "text-sky-500",
+        permissions: ["settings"],
+      },
     ],
   },
-
 
   {
     title: "Entries",
     icon: SquarePlus,
     href: "/accounts/entry",
     color: "text-sky-500",
+    permissions: ["entries"],
     isChildren: true,
     children: [
       {
@@ -89,44 +99,51 @@ const accountsNavItems: NavItem[] = [
         icon: Clock,
         href: "/accounts/opening-balance",
         color: "text-sky-500",
+        permissions: ["entries"],
       },
       {
         title: "Budget",
         icon: Clock,
         href: "/accounts/budget",
         color: "text-sky-500",
+        permissions: ["budgets"],
       },
       {
         title: "Journal Voucher",
         icon: Clock,
         href: "/accounts/journal-voucher",
         color: "text-sky-500",
+        permissions: ["entries"],
       },
       {
         title: "Receipt Voucher",
         icon: Clock,
         href: "/accounts/receipt-voucher",
         color: "text-sky-500",
+        permissions: ["entries"],
       },
       {
         title: "Payment Voucher",
         icon: Clock,
         href: "/accounts/payment-voucher",
         color: "text-sky-500",
+        permissions: ["entries"],
       },
       {
         title: "Contra Voucher",
         icon: Clock,
         href: "/accounts/contra-voucher",
         color: "text-sky-500",
+        permissions: ["entries"],
       },
     ],
   },
   {
     title: "Reports",
-    icon: BarChartBigIcon ,
+    icon: BarChartBigIcon,
     href: "/accounts/reports",
     color: "text-sky-500",
+    permissions: ["reports"],
     isChildren: true,
     children: [
       {
@@ -134,42 +151,49 @@ const accountsNavItems: NavItem[] = [
         icon: Clock,
         href: "/accounts/reports/cash-book",
         color: "text-sky-500",
+        permissions: ["reports.cash-book"],
       },
       {
         title: "Transaction",
         icon: Clock,
         href: "/accounts/reports/transaction",
         color: "text-sky-500",
+        permissions: ["reports.transaction"],
       },
       {
         title: "General Ledger",
         icon: Clock,
         href: "/accounts/reports/general-ledger",
         color: "text-sky-500",
+        permissions: ["reports.general.ledger"],
       },
       {
         title: "GL Details",
         icon: Clock,
         href: "/accounts/reports/detailed-general-ledger",
         color: "text-sky-500",
+        permissions: ["reports.detailed.ledger"],
       },
       {
         title: "Trail Balance",
         icon: Clock,
         href: "/accounts/reports/trial-balance",
         color: "text-sky-500",
+        permissions: ["reports.trial.balance"],
       },
       {
         title: "Income Statement",
         icon: Clock,
         href: "/accounts/reports/income-statement",
         color: "text-sky-500",
+        permissions: ["reports.income.statement"],
       },
       {
         title: "Balance Sheet",
         icon: Clock,
         href: "/accounts/reports/balance-sheet",
         color: "text-sky-500",
+        permissions: ["reports.balance.sheet"],
       },
       /* 			{
 				title: "Trial Balance",

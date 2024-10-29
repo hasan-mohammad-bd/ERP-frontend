@@ -8,6 +8,7 @@ export interface NavItem {
   color?: string;
   isChildren?: boolean;
   children?: NavItem[];
+  permissions?: string[];
 }
 
 export interface DeleteResponse {

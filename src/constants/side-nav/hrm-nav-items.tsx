@@ -31,12 +31,14 @@ const hrmNavItems: NavItem[] = [
     icon: LayoutDashboard,
     href: "/hrm",
     color: "text-sky-500",
+    permissions: ["hrm"],
   },
   {
     title: "Employee",
     icon: Users,
     href: "/hrm",
     color: "text-sky-500",
+    permissions: ["hrm"],
     isChildren: true,
     children: [
       {
@@ -44,6 +46,7 @@ const hrmNavItems: NavItem[] = [
         icon: BookOpenCheck,
         color: "text-sky-500",
         href: "/hrm/employees-list",
+        permissions: ["hrm"],
       },
 
       {
@@ -51,12 +54,14 @@ const hrmNavItems: NavItem[] = [
         icon: Fan,
         href: "/hrm/employee-classes",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Employee Grades",
         icon: Blinds,
         href: "/hrm/employee-grades",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
     ],
   },
@@ -66,6 +71,7 @@ const hrmNavItems: NavItem[] = [
     icon: CalendarCheck2,
     href: "/hrm",
     color: "text-sky-500",
+    permissions: ["hrm"],
     isChildren: true,
     children: [
       {
@@ -73,6 +79,7 @@ const hrmNavItems: NavItem[] = [
         icon: PlayIcon,
         href: "/hrm/attendances-list",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
 
       {
@@ -80,30 +87,35 @@ const hrmNavItems: NavItem[] = [
         icon: CalendarCheck2,
         color: "text-sky-500",
         href: "/hrm/daily-attendance",
+        permissions: ["hrm"],
       },
       {
         title: "Schedules",
         icon: Clock,
         href: "/hrm/schedules",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Roster",
         icon: ScrollText,
         href: "/hrm/rosters",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Roster Employee",
         icon: Soup,
         href: "/hrm/roster-employee",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Attendance PM",
         icon: PlayIcon,
         href: "/hrm/attendance-policy-mapping",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
     ],
   },
@@ -113,6 +125,7 @@ const hrmNavItems: NavItem[] = [
     icon: Clock,
     href: "/hrm",
     color: "text-sky-500",
+    permissions: ["hrm"],
     isChildren: true,
     children: [
       {
@@ -120,24 +133,28 @@ const hrmNavItems: NavItem[] = [
         icon: Clock,
         href: "/hrm/leave-request",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Leave Type",
         icon: Clock,
         href: "/hrm/leave-type",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Leave Group",
         icon: Clock,
         href: "/hrm/leave-group",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Holiday",
         icon: Soup,
         href: "/hrm/holidays",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
     ],
   },
@@ -147,6 +164,7 @@ const hrmNavItems: NavItem[] = [
     icon: CalendarCheck2,
     href: "/hrm",
     color: "text-sky-500",
+    permissions: ["hrm"],
     isChildren: true,
     children: [
       {
@@ -154,18 +172,21 @@ const hrmNavItems: NavItem[] = [
         icon: CalendarCheck2,
         color: "text-sky-500",
         href: "/hrm/employee-salary-payslip",
+        permissions: ["hrm"],
       },
       {
         title: "Bank Salary Advice",
         icon: CalendarCheck2,
         color: "text-sky-500",
         href: "/hrm/bank-salary-advice",
+        permissions: ["hrm"],
       },
       {
         title: "Salary Breakup",
         icon: CalendarCheck2,
         color: "text-sky-500",
         href: "/hrm/salary_breakup",
+        permissions: ["hrm"],
       },
 
       {
@@ -173,18 +194,21 @@ const hrmNavItems: NavItem[] = [
         icon: CalendarCheck2,
         color: "text-sky-500",
         href: "/hrm/salary-certificate",
+        permissions: ["hrm"],
       },
       {
         title: "Salary Sheet",
         icon: CalendarCheck2,
         color: "text-sky-500",
         href: "/hrm/salary-sheet",
+        permissions: ["hrm"],
       },
       {
         title: "Salary Setup",
         icon: CalendarCheck2,
         color: "text-sky-500",
         href: "/hrm/salary-setup",
+        permissions: ["hrm"],
       },
 
       {
@@ -192,6 +216,7 @@ const hrmNavItems: NavItem[] = [
         icon: CalendarCheck2,
         color: "text-sky-500",
         href: "/hrm/estimate-salary",
+        permissions: ["hrm"],
       },
     ],
   },
@@ -201,6 +226,7 @@ const hrmNavItems: NavItem[] = [
     icon: Captions,
     href: "/hrm/new-route",
     color: "text-sky-500",
+    permissions: ["hrm"],
   },
 
   {
@@ -208,6 +234,7 @@ const hrmNavItems: NavItem[] = [
     icon: ClipboardType,
     href: "/hrm/new-route",
     color: "text-sky-500",
+    permissions: ["hrm"],
   },
 
   {
@@ -215,6 +242,7 @@ const hrmNavItems: NavItem[] = [
     icon: Vote,
     href: "/hrm",
     color: "text-sky-500",
+    permissions: ["hrm"],
     isChildren: true,
     children: [
       {
@@ -222,24 +250,28 @@ const hrmNavItems: NavItem[] = [
         icon: PlayIcon,
         href: "/hrm/attendance-policy",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Leave Policy",
         icon: SquarePen,
         href: "/hrm/leave-policy",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Over Time Policy",
         icon: SquarePen,
         href: "/hrm/overtime-policy",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Deduction Policy",
         icon: SquarePen,
         href: "/hrm/deduction-policy",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
     ],
   },
@@ -249,6 +281,7 @@ const hrmNavItems: NavItem[] = [
     icon: UserRoundSearch,
     href: "hrm/new-route",
     color: "text-sky-500",
+    permissions: ["hrm"],
   },
 
   {
@@ -256,38 +289,43 @@ const hrmNavItems: NavItem[] = [
     icon: NotebookText,
     href: "/hrm",
     color: "text-sky-500",
+    permissions: ["hrm"],
     isChildren: true,
-
     children: [
       {
         title: "Leave Summary",
         icon: UserRoundSearch,
         href: "leave-summary",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Leave Usages",
         icon: UserRoundSearch,
         href: "leave-usages",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Leave Balance",
         icon: UserRoundSearch,
         href: "leave-balance",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Leave Trend",
         icon: UserRoundSearch,
         href: "leave-trend",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Leave Type Summary",
         icon: UserRoundSearch,
         href: "leave-type-summary",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
     ],
   },
@@ -297,6 +335,7 @@ const hrmNavItems: NavItem[] = [
     icon: Captions,
     href: "/hrm",
     color: "text-sky-500",
+    permissions: ["hrm"],
     isChildren: true,
     children: [
       {
@@ -304,18 +343,21 @@ const hrmNavItems: NavItem[] = [
         icon: Building,
         href: "/hrm/departments",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Designations",
         icon: FileBadge2,
         href: "/hrm/designations",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Sections",
         icon: AlignEndVertical,
         href: "/hrm/sections",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
     ],
   },
@@ -325,6 +367,7 @@ const hrmNavItems: NavItem[] = [
     href: "/hrm",
     icon: BriefcaseBusiness,
     color: "text-sky-500",
+    permissions: ["hrm"],
     isChildren: true,
     children: [
       {
@@ -332,24 +375,28 @@ const hrmNavItems: NavItem[] = [
         icon: Disc,
         href: "/hrm/vacancy-requisitions",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Job Posts",
         icon: SquarePen,
         href: "/hrm/job-posts",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Job Candidates",
         icon: UserRoundCog,
         href: "/hrm/job-candidates",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
       {
         title: "Job Apply",
         icon: BriefcaseBusiness,
         href: "/hrm/job-apply",
         color: "text-sky-500",
+        permissions: ["hrm"],
       },
     ],
   },
@@ -359,6 +406,7 @@ const hrmNavItems: NavItem[] = [
     icon: Settings,
     href: "hrm/new-route",
     color: "text-sky-500",
+    permissions: ["hrm"],
   },
 ];
 

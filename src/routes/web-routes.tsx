@@ -10,6 +10,7 @@ import { AddOrganizationForm } from "@/pages/web/organization/components/add-org
 import UserRole from "@/pages/web/user-role";
 import Users from "@/pages/web/users";
 import { AddUserRoleForm } from "@/pages/web/user-role/components/add-user-role-form";
+import RoleAccess from "@/lib/access-control/role-access";
 
 
 const webRoutes = {
@@ -18,7 +19,11 @@ const webRoutes = {
 	children: [
 		{
 			index: true,
-			element: withFallback(<Dashboard title="Web" />),
+			element: withFallback(
+				<RoleAccess roles={["web", "organizations", "users", "locations", "roles"]} showUnauthorizedPage={true}>
+					<Dashboard title="Web" />
+				</RoleAccess>
+		),
 			errorElement: withFallback(<ErrorPage />),
 		},
 		{
@@ -27,24 +32,37 @@ const webRoutes = {
 			children: [
 				{
 					index: true,
-					element: withFallback(<Organization />),
+					element: withFallback(
+						<RoleAccess roles={["organizations"]} showUnauthorizedPage={true}>
+							<Organization />
+						</RoleAccess>),
 					errorElement: withFallback(<ErrorPage />),
 				},
 				{
 					path: "add",
-					element: withFallback(<AddOrganizationForm />),
+					element: withFallback(
+						<RoleAccess roles={["organizations.create"]} showUnauthorizedPage={true}>
+							<AddOrganizationForm />
+						</RoleAccess>
+				),
 					errorElement: withFallback(<ErrorPage />),
 				},
 				{
 					path: "edit/:id",
-					element: withFallback(<AddOrganizationForm />),
+					element: withFallback(
+						<RoleAccess roles={["organizations.edit"]} showUnauthorizedPage={true}>
+							<AddOrganizationForm />
+						</RoleAccess>),
 					errorElement: withFallback(<ErrorPage />),
 				}
 			]
 		},
 		{
 			path: "locations",
-			element: withFallback(<Location />),
+			element: withFallback(
+			<RoleAccess roles={["locations"]} showUnauthorizedPage={true}>
+				<Location />
+			</RoleAccess>),
 			errorElement: withFallback(<ErrorPage />),
 		},
 		{
@@ -54,24 +72,36 @@ const webRoutes = {
 			children: [
 				{
 					index: true,
-					element: withFallback(<UserRole />),
+					element: withFallback(
+						<RoleAccess roles={["roles"]} showUnauthorizedPage={true}>
+							<UserRole />
+						</RoleAccess>),
 					errorElement: withFallback(<ErrorPage />), 
 				},
 				{
 					path: "add",
-					element: withFallback(<AddUserRoleForm />),
+					element: withFallback(
+						<RoleAccess roles={["roles.create"]} showUnauthorizedPage={true}>
+							<AddUserRoleForm />
+						</RoleAccess>),
 					errorElement: withFallback(<ErrorPage />),
 				},
 				{
 					path: "edit/:id",
-					element: withFallback(<AddUserRoleForm />),
+					element: withFallback(
+					<RoleAccess roles={["roles.edit"]} showUnauthorizedPage={true}>
+						<AddUserRoleForm />
+					</RoleAccess>),
 					errorElement: withFallback(<ErrorPage />),
 				}
 			]
 		},
 		{
 			path: "users",
-			element: withFallback(<Users />),
+			element: withFallback(
+			<RoleAccess roles={["users"]} showUnauthorizedPage={true}>
+				<Users />
+			</RoleAccess>),
 			errorElement: withFallback(<ErrorPage />),
 		},
 	],

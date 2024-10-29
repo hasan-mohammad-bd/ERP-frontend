@@ -1,6 +1,5 @@
 import { Card } from "@/components/ui/card";
 import { mainNavItems } from "@/constants/main-nav";
-import { siteConfig } from "@/coonfig/site";
 import { ThemeToggle } from "@/layout/theme-toggle";
 import { UserNav } from "@/layout/user-nav";
 import { useAuth } from "@/store/hooks";
@@ -20,7 +19,7 @@ const Lobby = () => {
 						<img src={user?.organization?.logo || logo} alt="logo-image" className="h-full w-full" />
 					</div>
 					{/* <Boxes className="h-6 w-6" /> */}
-					<h1 className="text-lg font-semibold">{user?.organization?.name || siteConfig.name}</h1>
+					{/* <h1 className="text-lg font-semibold">{user?.organization?.name || siteConfig.name}</h1> */}
 				</Link>
 				<div className="ml-auto flex items-center space-x-4">
 					{user && <UserNav user={user} />}

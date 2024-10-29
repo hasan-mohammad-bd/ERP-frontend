@@ -7,7 +7,6 @@ import { UserNav } from "./user-nav";
 import { MainNav } from "./main-nav";
 import { useAuth } from "@/store/hooks";
 import { ThemeToggle } from "./theme-toggle";
-import { siteConfig } from "@/coonfig/site";
 import logo from "@/assets/images/sticky-logo.png";
 
 export default function Header() {
@@ -24,7 +23,7 @@ export default function Header() {
             <img src={user?.organization?.logo || logo} alt="logo-image" className="h-full w-full" />
           </div>
           {/* <Boxes className="h-6 w-6" /> */}
-          <h1 className="text-lg font-semibold">{user?.organization?.name || siteConfig.name}</h1>
+          {/* <h1 className="text-lg font-semibold">{user?.organization?.name || siteConfig.name}</h1> */}
         </Link>
         <MainNav className="mx-6" />
         {/* <ModuleSelector /> */}

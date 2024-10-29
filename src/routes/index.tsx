@@ -1,4 +1,4 @@
-import PrivateOutlet from "@/utils/private-outlet";
+import PrivateOutlet from "@/lib/access-control/private-outlet";
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 import webRoutes from "./web-routes";
 import accountsRoutes from "./accounts-routes";
