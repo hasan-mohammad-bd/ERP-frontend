@@ -19,4 +19,5 @@ const leaveSummaryApi = hrmApi.injectEndpoints({
 
 export const {
   useGetLeaveSummaryQuery,
+  useLazyGetLeaveSummaryQuery
 } = leaveSummaryApi; 

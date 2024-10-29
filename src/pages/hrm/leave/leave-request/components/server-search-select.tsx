@@ -21,10 +21,9 @@ import {
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/utils";
-import { useState } from "react";
-import { Loading } from "../../common/loading";
+import {  useState, useMemo } from "react";
 
-// Define the types for your props
+
 interface FormSearchSelectProps<T> {
   name: string;
   title?: string ;
@@ -36,31 +35,43 @@ interface FormSearchSelectProps<T> {
   displayField: keyof T;
   form: any;
   placeholder?: string;
-  disabled?: any
+  searchTerm?: string;
+  setSearchTerm?: (value: string) => void;
+  trigger?: (value: string) => void;
 }
 
-const FormSearchSelect = <T extends Record<string, any>>({
+const ServerSearchSelect = <T extends Record<string, any>>({
   form,
   name,
   title,
   data,
-  loading,
   className,
   valueField,
   displayField,
   placeholder = "Select an option",
-
+  searchTerm,
+  setSearchTerm,
+  // trigger
 }: FormSearchSelectProps<T>) => {
   const [open, setOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  // const handleOpenChange = (isOpen: boolean) => {
+  //   setOpen(isOpen);
+  //   if (isOpen && setSearchTerm) {
+  //     setSearchTerm(""); // Clear search term when dropdown is opened
+  //   }
+  // };
 
-  // Filter the data based on the search query
-  const filteredData = data.filter((item) =>
-    String(item[displayField]).toLowerCase().includes(searchQuery.toLowerCase())
+
+  // Real-time filtering for displaying results immediately
+  const filteredData = useMemo(
+    () => data.filter((item) =>
+      String(item[displayField]).toLowerCase().includes(searchTerm?.toLowerCase() || "")
+    ),
+    [data, displayField, searchTerm]
   );
 
   return (
-    <FormField
+<FormField
       control={form.control}
       name={name}
       render={({ field }) => {
@@ -69,9 +80,9 @@ const FormSearchSelect = <T extends Record<string, any>>({
         );
 
         return (
-          <FormItem   className={cn("w-full")}>
+          <FormItem className={cn("w-full")}>
             <FormLabel>{title}</FormLabel>
-            <Popover open={open} onOpenChange={setOpen} modal={true}>
+            <Popover open={open} onOpenChange={setOpen} modal={true} >
               <PopoverTrigger asChild>
                 <FormControl>
                   <Button
@@ -93,22 +104,21 @@ const FormSearchSelect = <T extends Record<string, any>>({
                 <Command>
                   <CommandInput
                     placeholder="Search..."
-                    value={searchQuery}
-                    onValueChange={setSearchQuery}
-                   
+                    value={searchTerm}
+                    onValueChange={setSearchTerm}
                   />
                   <CommandList>
-                    <CommandEmpty>No results found.</CommandEmpty>
-                    <CommandGroup>
-                      {loading ? (
-                        <Loading />
-                      ) : (
-                        filteredData.map((item, index) => (
+                    {filteredData.length === 0 ? (
+                      <CommandEmpty>No results found.</CommandEmpty>
+                    ) : (
+                      <CommandGroup>
+                        {filteredData.map((item, index) => (
                           <CommandItem
                             key={index}
                             onSelect={() => {
                               field.onChange(String(item[valueField]));
                               setOpen(false);
+                              
                             }}
                           >
                             <Check
@@ -121,9 +131,9 @@ const FormSearchSelect = <T extends Record<string, any>>({
                             />
                             {String(item[displayField])}
                           </CommandItem>
-                        ))
-                      )}
-                    </CommandGroup>
+                        ))}
+                      </CommandGroup>
+                    )}
                   </CommandList>
                 </Command>
               </PopoverContent>
@@ -136,4 +146,4 @@ const FormSearchSelect = <T extends Record<string, any>>({
   );
 };
 
-export default FormSearchSelect;
+export default ServerSearchSelect;
