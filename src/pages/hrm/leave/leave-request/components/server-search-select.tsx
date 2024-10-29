@@ -21,8 +21,8 @@ import {
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/utils";
-import { useEffect, useState, useMemo } from "react";
-import { useDebounce } from "@/store/hooks/useDebounce";
+import {  useState, useMemo } from "react";
+
 
 interface FormSearchSelectProps<T> {
   name: string;
@@ -54,12 +54,12 @@ const ServerSearchSelect = <T extends Record<string, any>>({
   // trigger
 }: FormSearchSelectProps<T>) => {
   const [open, setOpen] = useState(false);
-  const handleOpenChange = (isOpen: boolean) => {
-    setOpen(isOpen);
-    if (isOpen && setSearchTerm) {
-      setSearchTerm(""); // Clear search term when dropdown is opened
-    }
-  };
+  // const handleOpenChange = (isOpen: boolean) => {
+  //   setOpen(isOpen);
+  //   if (isOpen && setSearchTerm) {
+  //     setSearchTerm(""); // Clear search term when dropdown is opened
+  //   }
+  // };
 
 
   // Real-time filtering for displaying results immediately
@@ -82,7 +82,7 @@ const ServerSearchSelect = <T extends Record<string, any>>({
         return (
           <FormItem className={cn("w-full")}>
             <FormLabel>{title}</FormLabel>
-            <Popover open={open} onOpenChange={handleOpenChange} modal={true}>
+            <Popover open={open} onOpenChange={setOpen} modal={true} >
               <PopoverTrigger asChild>
                 <FormControl>
                   <Button
@@ -118,7 +118,7 @@ const ServerSearchSelect = <T extends Record<string, any>>({
                             onSelect={() => {
                               field.onChange(String(item[valueField]));
                               setOpen(false);
-                              if (setSearchTerm) setSearchTerm(""); // Clear search term on selection
+                              
                             }}
                           >
                             <Check
