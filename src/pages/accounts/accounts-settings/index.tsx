@@ -12,6 +12,7 @@ import { useGetAccountsSettingsQuery } from "@/store/services/accounts/api/accou
 import { CurrencyRow } from "@/lib/validators/accounts";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const AccountSettings = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,19 +31,19 @@ const AccountSettings = () => {
               title=" Accounts Settings"
               description="Manage your sub accounts for you business"
             />
-
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Update Accounts Settings
-            </Button>
+            <RoleAccess roles={["settings.edit"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Update Accounts Settings
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
 
           {accountsSettings && (
             <div className="">
               <div>
-                
-                  <h3 className="font-semibold text-lg mb-3">Currencies</h3>
-         
+                <h3 className="font-semibold text-lg mb-3">Currencies</h3>
+
                 <div className="grid grid-cols-4 gap-4">
                   <Card>
                     <div className="p-4 ">
@@ -99,7 +100,10 @@ const AccountSettings = () => {
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}
       >
-        <UpdateAccountsSettingForm rowData={accountsSettings} modalClose={() => setIsOpen(false)} />
+        <UpdateAccountsSettingForm
+          rowData={accountsSettings}
+          modalClose={() => setIsOpen(false)}
+        />
       </Modal>
     </>
   );

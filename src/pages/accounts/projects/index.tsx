@@ -11,6 +11,7 @@ import { PaginationInfo } from "@/types";
 import { PaginationState } from "@tanstack/react-table";
 import { subAccountColumns } from "./components/columns";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const Projects = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,9 +37,11 @@ const Projects = () => {
               title="Projects"
               description="Manage your sub accounts for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Project
-            </Button>
+            <RoleAccess roles={["projects.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Project
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {costCategory && (

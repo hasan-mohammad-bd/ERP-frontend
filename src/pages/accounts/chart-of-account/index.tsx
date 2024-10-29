@@ -11,6 +11,7 @@ import { useState } from "react";
 import { Modal } from "@/components/common/modal";
 import { AddLedgerGroupForm } from "./components/add-ledger-group-form";
 import { AddLedgerForm } from "./components/add-ledger-form";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const ChartOfAccounts = () => {
   const { data, isLoading } = useGetLedgerGroupsQuery();
@@ -29,12 +30,16 @@ const ChartOfAccounts = () => {
           description="Manage Chart of account for you business"
         />
         <div className="flex space-x-2 items-center">
-          <Button onClick={() => setLedgerGroupModalOpen(true)} size={"sm"}>
-            <Plus className="mr-2 h-4 w-4" /> Add Group
-          </Button>
-          <Button onClick={() => setLedgerModalOpen(true)} size={"sm"}>
-            <Plus className="mr-2 h-4 w-4" /> Add Account
-          </Button>
+          <RoleAccess roles={["ledger-groups.create"]}>
+            <Button onClick={() => setLedgerGroupModalOpen(true)} size={"sm"}>
+              <Plus className="mr-2 h-4 w-4" /> Add Group
+            </Button>
+          </RoleAccess>
+          <RoleAccess roles={["ledger-accounts.create"]}>
+            <Button onClick={() => setLedgerModalOpen(true)} size={"sm"}>
+              <Plus className="mr-2 h-4 w-4" /> Add Account
+            </Button>
+          </RoleAccess>
         </div>
       </div>
       <Separator />

@@ -1,14 +1,14 @@
 import { NavItem } from "@/types";
-import { LayoutDashboard, MapPin, RollerCoaster, Store, Users } from "lucide-react";
+import { MapPin, RollerCoaster, Store, Users } from "lucide-react";
 
 const webNavItems: NavItem[] = [
-	{
-		title: "Dashboard",
-		icon: LayoutDashboard,
-		href: "/web",
-		color: "text-sky-500",
-		permissions: ["web", "organizations", "users", "locations", "roles"],
-	},
+	// {
+	// 	title: "Dashboard",
+	// 	icon: LayoutDashboard,
+	// 	href: "/web",
+	// 	color: "text-sky-500",
+	// 	permissions: ["web", "organizations", "users", "locations", "roles"],
+	// },
 	{
 		title: "Organizations",
 		icon: Store,

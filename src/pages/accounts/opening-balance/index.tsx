@@ -10,6 +10,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { subAccountColumns } from "./components/columns";
 import { useNavigate } from "react-router-dom";
 import { useGetEntriesQuery } from "@/store/services/accounts/api/entries";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const OpeningBalance = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +24,6 @@ const OpeningBalance = () => {
       pagination.pageIndex + 1
     }&type=opening balance`
   );
-
 
   const openingBalance = data?.data || [];
 
@@ -39,12 +39,14 @@ const OpeningBalance = () => {
               title="Opening Balance"
               description="Manage your sub accounts for you business"
             />
-            <Button
-              onClick={() => navigate("/accounts/opening-balance/add")}
-              size={"sm"}
-            >
-              <Plus className="mr-2 h-4 w-4" /> Add Opening Balance
-            </Button>
+            <RoleAccess roles={["entries.create"]}>
+              <Button
+                onClick={() => navigate("/accounts/opening-balance/add")}
+                size={"sm"}
+              >
+                <Plus className="mr-2 h-4 w-4" /> Add Opening Balance
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {openingBalance && (
@@ -60,7 +62,7 @@ const OpeningBalance = () => {
           )}
         </div>
       </div>
-{/*       <Modal
+      {/*       <Modal
         title="Add Journal Entry"
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}

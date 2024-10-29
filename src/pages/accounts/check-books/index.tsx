@@ -11,6 +11,7 @@ import { PaginationInfo } from "@/types";
 import { PaginationState } from "@tanstack/react-table";
 import { subAccountColumns } from "./components/columns";
 import { useGetCheckBooksQuery } from "@/store/services/accounts/api/check-books";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const CheckBooks = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,9 +39,11 @@ const CheckBooks = () => {
               title="Check Books"
               description="Manage your sub accounts for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Check Book
-            </Button>
+            <RoleAccess roles={["check-books.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Check Book
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {checkBooks && (

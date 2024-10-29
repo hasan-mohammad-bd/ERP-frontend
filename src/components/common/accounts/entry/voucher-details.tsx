@@ -46,8 +46,7 @@ const VoucherDetails = ({ data }: Props) => {
           <div className="grid grid-cols-4">
             <div className="w-[180px]">
               {data.organization.logo && (
-                
-              <img src={data.organization.logo} alt="" />
+                <img src={data.organization.logo} alt="" />
               )}
             </div>
             <div className="text-center col-span-2">

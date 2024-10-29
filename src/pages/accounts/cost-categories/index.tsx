@@ -11,6 +11,7 @@ import { PaginationInfo } from "@/types";
 import { PaginationState } from "@tanstack/react-table";
 import { subAccountColumns } from "./components/columns";
 import { useGetCostCategoriesQuery } from "@/store/services/accounts/api/cost-category";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const CostCategories = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,9 +37,11 @@ const CostCategories = () => {
               title="Cost Categories"
               description="Manage your sub accounts for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Cost Category
-            </Button>
+            <RoleAccess roles={["cost-categories.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Cost Category
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {costCategory && (

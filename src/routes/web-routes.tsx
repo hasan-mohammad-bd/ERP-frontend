@@ -4,13 +4,14 @@ import {
 	Layout,
 	Organization,
 	Location,
-	Dashboard,
+	// Dashboard,
 } from "./components";
 import { AddOrganizationForm } from "@/pages/web/organization/components/add-organization-form";
 import UserRole from "@/pages/web/user-role";
 import Users from "@/pages/web/users";
 import { AddUserRoleForm } from "@/pages/web/user-role/components/add-user-role-form";
 import RoleAccess from "@/lib/access-control/role-access";
+import { Navigate } from "react-router-dom";
 
 
 const webRoutes = {
@@ -19,11 +20,11 @@ const webRoutes = {
 	children: [
 		{
 			index: true,
-			element: withFallback(
-				<RoleAccess roles={["web", "organizations", "users", "locations", "roles"]} showUnauthorizedPage={true}>
-					<Dashboard title="Web" />
-				</RoleAccess>
-		),
+			// element: withFallback(
+			// 	<RoleAccess roles={["web", "organizations", "users", "locations", "roles"]} showUnauthorizedPage={true}>
+			// 		<Dashboard title="Web" />
+			// 	</RoleAccess>),
+			element: <Navigate to="organizations" />,
 			errorElement: withFallback(<ErrorPage />),
 		},
 		{

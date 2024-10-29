@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { useRemoveLedgerGroupMutation } from "@/store/services/accounts/api/ledger-group";
 import { ErrorResponse } from "@/types";
 import handleErrors from "@/lib/handle-errors";
+import RoleAccess from "@/lib/access-control/role-access";
 
 interface ChartOfAccountItemProps {
   group: LedgerGroupRow;
@@ -56,7 +57,7 @@ const ChartOfAccountChild = ({
   const [deleteGroup, { isLoading: deleteGroupLoading }] =
     useRemoveLedgerGroupMutation();
 
-  const hanldeAccountDelete = async (id: number) => {
+  const handleAccountDelete = async (id: number) => {
     try {
       await deleteAccount(id).unwrap();
       toast.success("Account deleted successfully");
@@ -66,7 +67,7 @@ const ChartOfAccountChild = ({
       console.log(error);
     }
   };
-  const hanldeGroupDelete = async (id: number) => {
+  const handleGroupDelete = async (id: number) => {
     try {
       await deleteGroup(id).unwrap();
       toast.success("Account deleted successfully");
@@ -82,39 +83,47 @@ const ChartOfAccountChild = ({
       <TableRow>
         <TableCell className="py-2.5 col-span-2 w-2/3 font-medium">
           <TooltipProvider>
-            <Tooltip>
+            <Tooltip delayDuration={100}>
               <TooltipTrigger asChild>
                 <span>
                   {indent}
                   {item.name}
                 </span>
               </TooltipTrigger>
-              <TooltipContent>
-                <div className="flex items-center gap-1">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="hover:bg-secondary"
-                    onClick={() => {
-                      setEditGroupModalOpen(item.id);
-                      setGroupData(item);
-                    }}
-                  >
-                    <Pencil className="h-4 w-4 text-foreground" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="hover:bg-secondary"
-                    onClick={() => {
-                      setGroupAlertModalOpen(item.id);
-                      setGroupData(item);
-                    }}
-                  >
-                    <Trash2 className="h-4 w-4 text-foreground" />
-                  </Button>
-                </div>
-              </TooltipContent>
+              <RoleAccess
+                roles={["ledger-groups.edit", "ledger-groups.delete"]}
+              >
+                <TooltipContent>
+                  <div className="flex items-center gap-1">
+                    <RoleAccess roles={["ledger-groups.edit"]}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="hover:bg-secondary"
+                        onClick={() => {
+                          setEditGroupModalOpen(item.id);
+                          setGroupData(item);
+                        }}
+                      >
+                        <Pencil className="h-4 w-4 text-foreground" />
+                      </Button>
+                    </RoleAccess>
+                    <RoleAccess roles={["ledger-groups.delete"]}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="hover:bg-secondary"
+                        onClick={() => {
+                          setGroupAlertModalOpen(item.id);
+                          setGroupData(item);
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4 text-foreground" />
+                      </Button>
+                    </RoleAccess>
+                  </div>
+                </TooltipContent>
+              </RoleAccess>
             </Tooltip>
           </TooltipProvider>
         </TableCell>
@@ -132,7 +141,7 @@ const ChartOfAccountChild = ({
             <TableCell className="py-0 col-span-2 w-2/3">
               <div className="py-2.5 col-span-2 w-2/3 font-medium">
                 <TooltipProvider>
-                  <Tooltip>
+                  <Tooltip delayDuration={100}>
                     <TooltipTrigger asChild>
                       <Link
                         className={buttonVariants({
@@ -146,32 +155,40 @@ const ChartOfAccountChild = ({
                         {ledger.name}
                       </Link>
                     </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="flex items-center gap-1">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="hover:bg-secondary"
-                          onClick={() => {
-                            setEditAccountModalOpen(ledger.id);
-                            setAccountData(ledger);
-                          }}
-                        >
-                          <Pencil className="h-4 w-4 text-foreground" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="hover:bg-secondary"
-                          onClick={() => {
-                            setAlertModalOpen(ledger.id);
-                            setAccountData(ledger);
-                          }}
-                        >
-                          <Trash2 className="h-4 w-4 text-foreground" />
-                        </Button>
-                      </div>
-                    </TooltipContent>
+                    <RoleAccess
+                      roles={["ledger-accounts.edit", "ledger-accounts.delete"]}
+                    >
+                      <TooltipContent>
+                        <div className="flex items-center gap-1">
+                          <RoleAccess roles={["ledger-accounts.edit"]}>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="hover:bg-secondary"
+                              onClick={() => {
+                                setEditAccountModalOpen(ledger.id);
+                                setAccountData(ledger);
+                              }}
+                            >
+                              <Pencil className="h-4 w-4 text-foreground" />
+                            </Button>
+                          </RoleAccess>
+                          <RoleAccess roles={["ledger-accounts.delete"]}>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="hover:bg-secondary"
+                              onClick={() => {
+                                setAlertModalOpen(ledger.id);
+                                setAccountData(ledger);
+                              }}
+                            >
+                              <Trash2 className="h-4 w-4 text-foreground" />
+                            </Button>
+                          </RoleAccess>
+                        </div>
+                      </TooltipContent>
+                    </RoleAccess>
                   </Tooltip>
                 </TooltipProvider>
               </div>
@@ -198,7 +215,7 @@ const ChartOfAccountChild = ({
                 name={accountData?.name}
                 isOpen={alertModalOpen === ledger?.id}
                 onClose={() => setAlertModalOpen(null)}
-                onConfirm={() => hanldeAccountDelete(accountData?.id)}
+                onConfirm={() => handleAccountDelete(accountData?.id)}
                 loading={deleteLoading}
               />
             </TableCell>
@@ -245,7 +262,7 @@ const ChartOfAccountChild = ({
         name={groupData?.name}
         isOpen={item?.id === groupAlertModalOpen}
         onClose={() => setGroupAlertModalOpen(null)}
-        onConfirm={() => hanldeGroupDelete(groupData?.id)}
+        onConfirm={() => handleGroupDelete(groupData?.id)}
         loading={deleteGroupLoading}
       />
     </React.Fragment>

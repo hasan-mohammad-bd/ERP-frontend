@@ -12,6 +12,7 @@ import { PaginationInfo } from "@/types";
 import { PaginationState } from "@tanstack/react-table";
 import { useGetFinancialYearsQuery } from "@/store/services/accounts/api/financial-year";
 import { financialYearColumns } from "./components/columns";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const FinancialYears = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,9 +38,11 @@ const FinancialYears = () => {
               title="Financial Year"
               description="Manage financial year for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Financial Year
-            </Button>
+            <RoleAccess roles={["financial-years.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Financial Year
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {financialYear && (

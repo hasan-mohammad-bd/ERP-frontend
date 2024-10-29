@@ -12,6 +12,7 @@ import { PaginationInfo } from "@/types";
 import { PaginationState } from "@tanstack/react-table";
 import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
 import { subAccountColumns } from "./components/columns";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const SubAccounts = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,9 +38,11 @@ const SubAccounts = () => {
               title="Contact"
               description="Manage your sub accounts for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Contact
-            </Button>
+            <RoleAccess roles={["sub-accounts.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Contact
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {financialYear && (
