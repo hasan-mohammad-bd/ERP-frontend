@@ -1,6 +1,267 @@
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Card, CardContent } from "@/components/ui/card";
+// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+// import { Checkbox } from "@/components/ui/checkbox";
+// import {
+//   FormControl,
+//   FormField,
+//   FormItem,
+//   FormLabel,
+//   FormMessage,
+// } from "@/components/ui/form";
+// import { UseFormReturn } from "react-hook-form";
+// import MultipleSelector, { Option } from "@/components/ui/multiSelectSearch";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
+
+// const items = [
+//   { id: "foreign_leave_allowed", label: "Is Foreign Leave Allowed" },
+//   { id: "multiple_application", label: "Allow Multiple Application?" },
+//   {
+//     id: "responsibility_reliever",
+//     label: "Allow Responsibility reliever on leave?",
+//   },
+//   {
+//     id: "multiple_approver_hierarchy",
+//     label: "Is exist Multiple Approver Hierarchy",
+//   },
+//   {
+//     id: "extra_day_compensation_eligible",
+//     label: "Enable Extra day compensation",
+//   },
+//   { id: "allows_half_day_leave", label: "Allow Half day leave?" },
+//   {
+//     id: "allows_multiple_visits_same_date",
+//     label: "Allow Multiple visit on same date?",
+//   },
+//   { id: "can_approver_change", label: "Can change approver" },
+//   {
+//     id: "notify_approver",
+//     label:
+//       "Will other approvers be notified on full approval or rejection of an application?",
+//   },
+//   {
+//     id: "extra_day_salary",
+//     label: "Other than leave, compensate extra days with salary",
+//   },
+// ] as const;
+
+// const attendanceFlag = [
+//   { id: 1, value: "Visit", label: "Visit" },
+//   { id: 2, value: "Leave", label: "Leave" },
+//   { id: 3, value: "Holiday", label: "Holiday" },
+//   { id: 4, value: "Weekend", label: "Weekend" },
+// ];
+
+// const months = [
+//   { value: "1", label: "January" },
+//   { value: "2", label: "February" },
+//   { value: "3", label: "March" },
+//   { value: "4", label: "April" },
+//   { value: "5", label: "May" },
+//   { value: "6", label: "June" },
+//   { value: "7", label: "July" },
+//   { value: "8", label: "August" },
+//   { value: "9", label: "September" },
+//   { value: "10", label: "October" },
+//   { value: "11", label: "November" },
+//   { value: "12", label: "December" },
+// ];
+
+// export function LeavePolicyFields({ form }: { form: UseFormReturn }) {
+//   // const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
+
+//   // console.log(selectedOptions);
+
+//   const handleSearch = async (query: string): Promise<Option[]> => {
+//     return attendanceFlag
+//       .filter((item) => item.label.toLowerCase().includes(query.toLowerCase()))
+//       .map((item) => ({
+//         // id:item.id,
+//         value: String(item.value), // Ensure all values are strings for consistency
+//         label: item.label,
+//       }));
+//   };
+
+//   return (
+//     <Card className="w-full h-full ">
+//       <CardHeader>
+//         <CardTitle>Leave Policy</CardTitle>
+//       </CardHeader>
+//       <CardContent className="space-y-4">
+//         {/* Render checkbox items */}
+//         <FormField
+//           control={form.control}
+//           name="items"
+//           render={() => (
+//             <FormItem>
+//               {items.map((item) => (
+//                 <FormField
+//                   key={item.id}
+//                   control={form.control}
+//                   name="items"
+//                   render={({ field }) => {
+//                     return (
+//                       <FormItem
+//                         key={item.id}
+//                         className="flex flex-row items-start space-x-3 space-y-0"
+//                       >
+//                         <FormControl>
+//                           <Checkbox
+//                             checked={field.value?.includes(item.id)}
+//                             onCheckedChange={(checked) => {
+//                               return checked
+//                                 ? field.onChange([...field.value, item.id])
+//                                 : field.onChange(
+//                                     field.value?.filter(
+//                                       (value: string) => value !== item.id
+//                                     )
+//                                   );
+//                             }}
+//                           />
+//                         </FormControl>
+//                         <FormLabel className="font-normal">
+//                           {item.label}
+//                         </FormLabel>
+//                       </FormItem>
+//                     );
+//                   }}
+//                 />
+//               ))}
+//               <FormMessage />
+//             </FormItem>
+//           )}
+//         />
+
+//         <div className="grid grid-cols-2 gap-7">
+//           {/* Start Month Field */}
+//           <FormField
+//             control={form.control}
+//             name="start_month"
+//             render={({ field }) => (
+//               <FormItem className="w-[300px]">
+//                 <FormLabel>Select Start Month</FormLabel>
+//                 <Select
+//                   onValueChange={(value) => field.onChange(Number(value))} // Convert value back to number
+//                   value={String(field.value)} // Ensure value is a string
+//                 >
+//                   <FormControl>
+//                     <SelectTrigger>
+//                       <SelectValue placeholder="Select Start Month" />
+//                     </SelectTrigger>
+//                   </FormControl>
+//                   <SelectContent>
+//                     {months.map((month) => (
+//                       <SelectItem key={month.value} value={month.value}>
+//                         {month.label}
+//                       </SelectItem>
+//                     ))}
+//                   </SelectContent>
+//                 </Select>
+//                 <FormMessage />
+//               </FormItem>
+//             )}
+//           />
+
+//           {/* End Month Field */}
+//           <FormField
+//             control={form.control}
+//             name="end_month"
+//             render={({ field }) => (
+//               <FormItem className="w-[300px]">
+//                 <FormLabel>Select End Month</FormLabel>
+//                 <Select
+//                   onValueChange={(value) => field.onChange(Number(value))} // Convert value back to number
+//                   value={String(field.value)} // Ensure value is a string
+//                 >
+//                   <FormControl>
+//                     <SelectTrigger>
+//                       <SelectValue placeholder="Select End Month" />
+//                     </SelectTrigger>
+//                   </FormControl>
+//                   <SelectContent>
+//                     {months.map((month) => (
+//                       <SelectItem key={month.value} value={month.value}>
+//                         {month.label}
+//                       </SelectItem>
+//                     ))}
+//                   </SelectContent>
+//                 </Select>
+//                 <FormMessage />
+//               </FormItem>
+//             )}
+//           />
+//         </div>
+
+//         {/* Attendance Flag Multiple Selector */}
+//         <FormField
+//           control={form.control}
+//           name="attendance_flag"
+//           render={({ field }) => (
+//             <FormItem>
+//               <FormLabel>
+//                 {/* Attendance flags that will be counted for extra work */}
+//               </FormLabel>
+//               <FormControl>
+//                 <MultipleSelector
+//                   {...field}
+//                   value={field.value}
+//                   onSearch={handleSearch}
+//                   onChange={(option) => {
+//                     field.onChange(option);
+//                   }}
+//                   hidePlaceholderWhenSelected
+//                   placeholder="Search and select options"
+//                   loadingIndicator={<span>Loading...</span>}
+//                   emptyIndicator={<span>No options found</span>}
+//                 />
+//               </FormControl>
+//               <FormMessage />
+//             </FormItem>
+//           )}
+//         />
+
+//         <FormField
+//           control={form.control}
+//           name="items"
+//           render={({ field }) => {
+//             return (
+//               <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+//                 <FormControl>
+//                   <Checkbox
+//                     checked={field.value?.includes("allow_attendance_visit")}
+//                     onCheckedChange={(checked) => {
+//                       return checked
+//                         ? field.onChange([
+//                             ...field.value,
+//                             "allow_attendance_visit",
+//                           ])
+//                         : field.onChange(
+//                             field.value?.filter(
+//                               (value: string) =>
+//                                 value !== "allow_attendance_visit"
+//                             )
+//                           );
+//                     }}
+//                   />
+//                 </FormControl>
+//                 <FormLabel className="font-normal">
+//                   Allow Attendance Visit
+//                 </FormLabel>
+//               </FormItem>
+//             );
+//           }}
+//         />
+//       </CardContent>
+//     </Card>
+//   );
+// }
+
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   FormControl,
@@ -9,124 +270,103 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { UseFormReturn } from "react-hook-form";
 import MultipleSelector, { Option } from "@/components/ui/multiSelectSearch";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { useState } from "react";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const items = [
+  { id: "foreign_leave_allowed", label: "Is Foreign Leave Allowed" },
+  { id: "multiple_application", label: "Allow Multiple Application?" },
   {
-    id: "is-foreign-leave-allowed",
-    label: "Is Foreign Leave Allowed",
-  },
-  {
-    id: "allow-muliple-application",
-    label: "Allow Muliple Application?",
-  },
-  {
-    id: "allow-responsibility-reliever-on-leave",
+    id: "responsibility_reliever",
     label: "Allow Responsibility reliever on leave?",
   },
   {
-    id: "is-exist-multiple-approver-hierarchy",
+    id: "multiple_approver_hierarchy",
     label: "Is exist Multiple Approver Hierarchy",
   },
   {
-    id: "enable-extra-day-compention",
-    label: "Enable Extra day compention",
+    id: "extra_day_compensation_eligible",
+    label: "Enable Extra day compensation",
   },
+  { id: "allows_half_day_leave", label: "Allow Half day leave?" },
   {
-    id: "allow-half-day-leave",
-    label: "Allow Half day leave?",
+    id: "allows_multiple_visits_same_date",
+    label: "Allow Multiple visit on same date?",
   },
+  { id: "can_approver_change", label: "Can change approver" },
   {
-    id: "allow-multiple-visit-in-same-date",
-    label: "Allow Multiple visit in same date?",
-  },
-  {
-    id: "can-change-approver",
-    label: "Can change approver",
-  },
-  {
-    id: "will-other-approvers-notify-on-fully-approval-or-rejection-of-an-application",
+    id: "notify_approver",
     label:
-      "Will other approvers notify on fully approval or rejection of an application?",
+      "Will other approvers be notified on full approval or rejection of an application?",
   },
   {
-    id: "other-than-leave-compensate-extra-days-with-salary",
+    id: "extra_day_salary",
     label: "Other than leave, compensate extra days with salary",
   },
 ] as const;
 
-const employeeList = [
-  { id: 1, value: "V", label: "Visit(V)" },
-  { id: 2, value: "L", label: "Leave(V)" },
-  { id: 3, value: "H", label: "Holiday(H)" },
-  { id: 4, value: "W", label: "Weekend(W)" },
+export type Flag = {
+  id: number;
+  value: string;
+  label:string;
+}
+
+const attendanceFlag: Flag[] = [
+  { id: 1, value: "Visit", label: "Visit" },
+  { id: 2, value: "Leave", label: "Leave" },
+  { id: 3, value: "Holiday", label: "Holiday" },
+  { id: 4, value: "Weekend", label: "Weekend" },
 ];
 
-export function LeavePolicyFields({ form }: { form: any }) {
-  const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
-  const [employeeSearchTerm, setEmployeeSearchTerm] = useState("");
+const months = [
+  { value: "1", label: "January" },
+  { value: "2", label: "February" },
+  { value: "3", label: "March" },
+  { value: "4", label: "April" },
+  { value: "5", label: "May" },
+  { value: "6", label: "June" },
+  { value: "7", label: "July" },
+  { value: "8", label: "August" },
+  { value: "9", label: "September" },
+  { value: "10", label: "October" },
+  { value: "11", label: "November" },
+  { value: "12", label: "December" },
+];
 
-  const [openFromDate, setOpenFromDate] = useState(false);
-  const [openToDate, setOpenToDate] = useState(false);
-  const [fromDate, setFromDate] = useState<Date | null>(null); // Set initial state as null
-  const [toDate, setToDate] = useState<Date | null>(null); // Set initial state as null
+export function LeavePolicyFields({ form }: { form: UseFormReturn }) {
+  // const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
 
-  // Debugging logs for form state
-  console.log("Form state:", form.getValues());
-  console.log("From Date:", fromDate);
-  console.log("To Date:", toDate);
-
-  const handleFromDateSelect = (date: Date | undefined) => {
-    if (date) {
-      setFromDate(date);
-      console.log("Selected From Date:", date); // Debugging log
-      setOpenFromDate(false);
-    }
-  };
-
-  const handleToDateSelect = (date: Date | undefined) => {
-    if (date) {
-      setToDate(date);
-      console.log("Selected To Date:", date); // Debugging log
-      setOpenToDate(false);
-    }
-  };
-  console.log(fromDate, toDate);
+  // console.log(selectedOptions);
 
   const handleSearch = async (query: string): Promise<Option[]> => {
-    setEmployeeSearchTerm(query);
-
-    // Transform the API response to match the Option interface
-    const options =
-      employeeList?.map((item: any) => ({
-        value: String(item.id),
+    return attendanceFlag
+      .filter((item) => item.label.toLowerCase().includes(query.toLowerCase()))
+      .map((item) => ({
+        // id:item.id,
+        value: String(item.value), // Ensure all values are strings for consistency
         label: item.label,
-      })) || [];
-
-    return options;
+      }));
   };
 
-  console.log(employeeSearchTerm)
-
   return (
-    <Card className="max-w-4xl">
-      {/* <CardHeader>
-        <CardTitle>Absent Policy</CardTitle>
-      </CardHeader> */}
-      <CardContent className="flex flex-col gap-6 pt-6">
+    <Card className="w-full h-full ">
+      <CardHeader>
+        <CardTitle>Leave Policy</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {/* Render checkbox items */}
         <FormField
           control={form.control}
           name="items"
           render={() => (
-            <FormItem className="grid grid-cols-2 gap-x-6 gap-y-4 items-start space-y-0">
+            <FormItem>
               {items.map((item) => (
                 <FormField
                   key={item.id}
@@ -136,7 +376,7 @@ export function LeavePolicyFields({ form }: { form: any }) {
                     return (
                       <FormItem
                         key={item.id}
-                        className="flex items-start gap-x-3 !space-y-0"
+                        className="flex flex-row items-start space-x-3 space-y-0"
                       >
                         <FormControl>
                           <Checkbox
@@ -146,7 +386,7 @@ export function LeavePolicyFields({ form }: { form: any }) {
                                 ? field.onChange([...field.value, item.id])
                                 : field.onChange(
                                     field.value?.filter(
-                                      (value: any) => value !== item.id
+                                      (value: string) => value !== item.id
                                     )
                                   );
                             }}
@@ -165,158 +405,125 @@ export function LeavePolicyFields({ form }: { form: any }) {
           )}
         />
 
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-2 gap-7">
+          {/* Start Month Field */}
           <FormField
             control={form.control}
             name="start_month"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-[300px]">
                 <FormLabel>Select Start Month</FormLabel>
-                <Popover open={openFromDate} onOpenChange={setOpenFromDate}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={`w-full justify-start text-left font-normal ${
-                        !fromDate ? "text-muted-foreground" : ""
-                      }`}
-                    >
-                      {fromDate ? format(fromDate, "MMMM yyyy") : "Pick a date"}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={fromDate ?? undefined} // Use undefined when fromDate is null
-                      onSelect={(date) => {
-                        handleFromDateSelect(date);
-                        field.onChange(date); // Update form value
-                      }}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+                <Select
+                  onValueChange={(value) => field.onChange(Number(value))} // Convert value back to number
+                  value={String(field.value)} // Ensure value is a string
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Start Month" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {months.map((month) => (
+                      <SelectItem key={month.value} value={month.value}>
+                        {month.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
           />
 
+          {/* End Month Field */}
           <FormField
             control={form.control}
             name="end_month"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-[300px]">
                 <FormLabel>Select End Month</FormLabel>
-                <Popover open={openToDate} onOpenChange={setOpenToDate}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={`w-full justify-start text-left font-normal ${
-                        !toDate ? "text-muted-foreground" : ""
-                      }`}
-                    >
-                      {toDate ? format(toDate, "MMMM yyyy") : "Pick a date"}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={toDate ?? undefined} // Use undefined when toDate is null
-                      onSelect={(date) => {
-                        handleToDateSelect(date);
-                        field.onChange(date); // Update form value
-                      }}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+                <Select
+                  onValueChange={(value) => field.onChange(Number(value))} // Convert value back to number
+                  value={String(field.value)} // Ensure value is a string
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select End Month" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {months.map((month) => (
+                      <SelectItem key={month.value} value={month.value}>
+                        {month.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
           />
-
-          <div className="space-y-2 col-span-2">
-            <FormField
-              control={form.control}
-              name="attendance_flags"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Attendance flags that will be counted for extra work
-                  </FormLabel>
-                  <FormControl>
-                    <MultipleSelector
-                      {...field}
-                      value={selectedOptions}
-                      onSearch={handleSearch}
-                      onChange={(options) => {
-                        setSelectedOptions(options);
-                        // Update the form field value with the selected option values
-                        field.onChange(
-                          options.map((option) => parseInt(option.value))
-                        );
-                      }}
-                      hidePlaceholderWhenSelected
-                      placeholder="Search and select options"
-                      loadingIndicator={<span>Loading...</span>}
-                      emptyIndicator={<span>No options found</span>}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="items"
-              render={() => (
-                <FormItem>
-                  {[
-                    {
-                      id: "consider-attendance-for-visit",
-                      label: "Consider attendance for visit",
-                    },
-                  ].map((item) => (
-                    <FormField
-                      key={item.id}
-                      control={form.control}
-                      name="items"
-                      render={({ field }) => {
-                        return (
-                          <FormItem
-                            key={item.id}
-                            className="flex items-start gap-x-3 !space-y-0"
-                          >
-                            <FormControl>
-                              <Checkbox
-                                checked={field.value?.includes(item.id)}
-                                onCheckedChange={(checked) => {
-                                  return checked
-                                    ? field.onChange([...field.value, item.id])
-                                    : field.onChange(
-                                        field.value?.filter(
-                                          (value: any) => value !== item.id
-                                        )
-                                      );
-                                }}
-                              />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {item.label}
-                            </FormLabel>
-                          </FormItem>
-                        );
-                      }}
-                    />
-                  ))}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
         </div>
+
+        {/* Attendance Flag Multiple Selector */}
+        <FormField
+          control={form.control}
+          name="attendance_flag"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Attendance flags that will be counted for extra work
+              </FormLabel>
+              <FormControl>
+                <MultipleSelector
+                  {...field}
+                  value={field.value}
+                  onSearch={handleSearch}
+                  onChange={(option) => {
+                    field.onChange(option);
+                  }}
+                  hidePlaceholderWhenSelected
+                  placeholder="Search and select options"
+                  loadingIndicator={<span>Loading...</span>}
+                  emptyIndicator={<span>No options found</span>}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="items"
+          render={({ field }) => {
+            return (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value?.includes("allow_attendance_visit")}
+                    onCheckedChange={(checked) => {
+                      return checked
+                        ? field.onChange([
+                            ...field.value,
+                            "allow_attendance_visit",
+                          ])
+                        : field.onChange(
+                            field.value?.filter(
+                              (value: string) =>
+                                value !== "allow_attendance_visit"
+                            )
+                          );
+                    }}
+                  />
+                </FormControl>
+                <FormLabel className="font-normal">
+                  Allow Attendance Visit
+                </FormLabel>
+              </FormItem>
+            );
+          }}
+        />
       </CardContent>
     </Card>
   );
