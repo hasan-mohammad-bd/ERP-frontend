@@ -57,15 +57,22 @@ export function ExtremeDelayPolicy({ form }: { form: UseFormReturn }) {
                       >
                         <FormControl>
                           <Checkbox
-                            checked={field.value?.includes(item.id)}
+                            checked={
+                              field.value
+                                ? field.value.includes(item.id)
+                                : false
+                            } // Default to false if no value
                             onCheckedChange={(checked) => {
                               return checked
-                                ? field.onChange([...field.value, item.id])
+                                ? field.onChange([
+                                    ...(field.value || []),
+                                    item.id,
+                                  ]) // Safely add item id
                                 : field.onChange(
-                                    field.value?.filter(
+                                    (field.value || []).filter(
                                       (value: string) => value !== item.id
                                     )
-                                  );
+                                  ); // Safely remove item id
                             }}
                           />
                         </FormControl>

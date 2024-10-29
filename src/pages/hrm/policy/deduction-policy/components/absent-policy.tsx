@@ -54,15 +54,20 @@ export function AbsentPolicy({ form }: { form: UseFormReturn }) {
                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                       <FormControl>
                         <Checkbox
-                          checked={field.value?.includes(item.id)} // Check if the current item id is in the field's value array
+                          checked={
+                            field.value ? field.value.includes(item.id) : false
+                          } // Default to false if no value
                           onCheckedChange={(checked) => {
                             return checked
-                              ? field.onChange([...field.value, item.id]) // Add the item id as a string
+                              ? field.onChange([
+                                  ...(field.value || []),
+                                  item.id,
+                                ]) // Safely add item id
                               : field.onChange(
-                                  field.value?.filter(
+                                  (field.value || []).filter(
                                     (value: string) => value !== item.id
                                   )
-                                ); // Remove the item id
+                                ); // Safely remove item id
                           }}
                         />
                       </FormControl>
