@@ -112,7 +112,10 @@ export default function Sidebar({ className }: SidebarProps) {
               />
             </div>
           )}
-          <div className={`${isOpen ? "mt-3" : "mt-8"} space-y-1`}>
+          <div
+            className={`${isOpen ? "mt-3" : "mt-8"} space-y-1 overflow-y-auto pr-3`}
+            style={{ maxHeight: "calc(100vh - 10rem)" }}
+          >
             <SideNav
               className="text-background opacity-0 transition-all duration-300 group-hover:z-50 group-hover:ml-4 group-hover:rounded group-hover:bg-foreground group-hover:p-2 group-hover:opacity-100"
               items={filteredNavItems}
