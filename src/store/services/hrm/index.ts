@@ -67,7 +67,8 @@ export const hrmApi = createApi({
     "leave-summary",
     "leave-usage",
     "leave-trend",
-    "leave-type-summary"
+    "leave-type-summary",
+    "employee-salary-payslip",
   ],
   endpoints: () => ({}),
 });

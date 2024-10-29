@@ -1,56 +1,60 @@
-import { Button } from "@/components/ui/button";
-
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-import { File, Printer } from "lucide-react";
-import { useRef } from "react";
-import ReactToPrint from "react-to-print";
+import { useState } from "react";
 import Payslip from "./components/payslip";
 import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Heading } from "@/components/common/heading";
+import PrintPDFWrapper from "@/components/common";
+import EmployeeSalaryPayslipFilter from "./components/employee-salary-payslip-filter";
+import { Loading } from "@/components/common/loading";
+import { useGetEmployeesEstimateSalaryPayslipQuery } from "@/store/services/hrm/api/employee-salary-payslip";
 
 const EmployeeSalaryPayslip = () => {
-  const componentRef = useRef<HTMLDivElement>(null);
+  const [filterParams, setFilterParams] = useState("");
 
-  const handleDownloadPDF = async () => {
-    if (!componentRef.current) return;
-
-    const pdf = new jsPDF("p", "mm", "a4");
-    const canvas = await html2canvas(componentRef.current, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save("employee-salary-details.pdf");
-  };
+  const {
+    data,
+    isLoading: employeeSalaryPayslipLoading,
+    isError: employeeSalaryPayslipError,
+  } = useGetEmployeesEstimateSalaryPayslipQuery(`${filterParams}`, {
+    skip: !filterParams,
+  });
+  const employeeSalaryPayslipData = data?.data;
 
   return (
-    <Card className="flex-1 space-y-4 max-w-4xl mx-auto p-3 pb-4">
-      <div className="flex flex-col">
-        <div ref={componentRef}>
-          <Payslip />
-        </div>
-        <div className="flex space-x-2 items-center justify-end mt-8 print:hidden">
-          <ReactToPrint
-            trigger={() => (
-              <Button size="input" variant="outline" className="h-8 lg:flex">
-                Print <Printer className="ml-1" size={16} strokeWidth={1.2} />
-              </Button>
-            )}
-            content={() => componentRef.current}
-          />
-          <Button
-            variant="outline"
-            size="input"
-            className="h-8 lg:flex"
-            onClick={handleDownloadPDF}
-          >
-            PDF <File className="ml-1" size={16} strokeWidth={1.2} />
-          </Button>
-
-        </div>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <Heading
+          title="Employee Salary Payslip"
+          description="Manage job apply for you business"
+        />
       </div>
-    </Card>
+      <Separator />
+      <div className="flex items-start">
+        <EmployeeSalaryPayslipFilter setFilterParams={setFilterParams} />
+
+        {employeeSalaryPayslipLoading && <Loading />}
+
+        {employeeSalaryPayslipData &&
+          !employeeSalaryPayslipLoading &&
+          !employeeSalaryPayslipError && (
+            <Card className="flex-1 space-y-4 max-w-[950px] w-full mx-auto p-3 pb-4">
+              <PrintPDFWrapper
+                className="space-y-4"
+                fileName="employee-salary-payslip"
+              >
+                <Payslip
+                  employeeSalaryPayslipData={employeeSalaryPayslipData}
+                />
+              </PrintPDFWrapper>
+            </Card>
+          )}
+        {employeeSalaryPayslipError && !employeeSalaryPayslipLoading && (
+          <Card className="flex-1 space-y-4 max-w-[950px] w-full mx-auto p-3 py-6 grid place-items-center">
+            <h2 className="text-center">No Data Found</h2>
+          </Card>
+        )}
+      </div>
+    </div>
   );
 };
 
