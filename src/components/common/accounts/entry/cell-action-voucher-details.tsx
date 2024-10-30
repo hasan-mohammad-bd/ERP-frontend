@@ -4,6 +4,7 @@ import { Modal } from "@/components/common/modal";
 import VoucherDetails from "./voucher-details";
 import { useGetEntryByIdQuery } from "@/store/services/accounts/api/entries";
 import { Loading } from "../../loading";
+import RoleAccess from "@/lib/access-control/role-access";
 
 interface CellActionProps {
   rowData: EntryRow;
@@ -25,28 +26,33 @@ export function CellActionVoucherDetails({ rowData }: CellActionProps) {
 
   return (
     <div>
-      <span
-        className="cursor-pointer text-blue-600"
-        onClick={handleOpenModal}
+      <RoleAccess
+        roles={["entries.show"]}
+        fallback={<span>{rowData?.entry_number}</span>}
       >
-        {rowData?.entry_number}
-      </span>
-
-      {voucherDetailsOpen && data && (
-        <Modal
-          isOpen={voucherDetailsOpen}
-          toggleModal={() => setVoucherDetailsOpen(false)}
-          className="max-w-5xl h-fit"
+        <span
+          className="cursor-pointer text-blue-600"
+          onClick={handleOpenModal}
         >
-          {isFetching ? (
-            <div className="w-full h-full flex justify-center items-center">
-              <Loading />
-            </div>
-          ) : (
-            <VoucherDetails data={data?.data} />
-          )}
-        </Modal>
-      )}
+          {rowData?.entry_number}
+        </span>
+
+        {voucherDetailsOpen && data && (
+          <Modal
+            isOpen={voucherDetailsOpen}
+            toggleModal={() => setVoucherDetailsOpen(false)}
+            className="max-w-5xl h-fit"
+          >
+            {isFetching ? (
+              <div className="w-full h-full flex justify-center items-center">
+                <Loading />
+              </div>
+            ) : (
+              <VoucherDetails data={data?.data} />
+            )}
+          </Modal>
+        )}
+      </RoleAccess>
     </div>
   );
 }

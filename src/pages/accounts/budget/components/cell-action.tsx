@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 import { BudgetRow } from "@/lib/validators/accounts/budget";
 import { useRemoveBudgetMutation } from "@/store/services/accounts/api/budget";
+import RoleAccess from "@/lib/access-control/role-access";
 
 interface CellActionProps {
   rowData: BudgetRow;
@@ -35,46 +36,52 @@ export function CellAction({ rowData }: CellActionProps) {
   };
 
   return (
-    <div className="flex justify-center space-x-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick = {() => navigation(`/accounts/budget/edit/${rowData.id}`)}
+    <div className="flex justify-center space-x-2 min-h-10">
+      <RoleAccess roles={["budgets.edit"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() =>
+                  navigation(`/accounts/budget/edit/${rowData.id}`)
+                }
 
-              // onClick={() => toggleModal()}
-            >
-              <Pencil className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Update Budget</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+                // onClick={() => toggleModal()}
+              >
+                <Pencil className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Update Budget</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => {
-                setAlertModalOpen(true);
-              }}
-            >
-              <Trash2 className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Delete Budget</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <RoleAccess roles={["budgets.delete"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => {
+                  setAlertModalOpen(true);
+                }}
+              >
+                <Trash2 className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Delete Budget</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
 
       <AlertModal
         title="Are you sure?"
@@ -85,8 +92,6 @@ export function CellAction({ rowData }: CellActionProps) {
         onConfirm={() => handleDepartmentDelete(rowData.id)}
         loading={deleteLoading}
       />
-
-
     </div>
   );
 }

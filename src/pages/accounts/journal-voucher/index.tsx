@@ -12,6 +12,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { subAccountColumns } from "./components/columns";
 import { useGetEntriesQuery } from "@/store/services/accounts/api/entries";
 import { useNavigate } from "react-router-dom";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const JournalVoucher = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -42,12 +43,14 @@ const JournalVoucher = () => {
               title="Journal Voucher"
               description="Manage your sub accounts for you business"
             />
-            <Button
-              onClick={() => navigate("/accounts/journal-voucher/add")}
-              size={"sm"}
-            >
-              <Plus className="mr-2 h-4 w-4" /> Add Journal Entry
-            </Button>
+            <RoleAccess roles={["entries.create"]}>
+              <Button
+                onClick={() => navigate("/accounts/journal-voucher/add")}
+                size={"sm"}
+              >
+                <Plus className="mr-2 h-4 w-4" /> Add Journal Entry
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {journalVoucher && (
@@ -63,7 +66,7 @@ const JournalVoucher = () => {
           )}
         </div>
       </div>
-{/*       <Modal
+      {/*       <Modal
         title="Add Journal Entry"
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}

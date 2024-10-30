@@ -1,4 +1,8 @@
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import {
   Command,
   CommandInput,
@@ -10,7 +14,8 @@ import {
 import { ChevronsUpDown, Check } from "lucide-react";
 import { cn } from "@/utils";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDebounce } from "@/store/hooks/useDebounce";
 
 interface SearchSelectProps<T> {
   items: T[];
@@ -21,6 +26,7 @@ interface SearchSelectProps<T> {
   placeholder?: string;
   noItemText?: string;
   className?: string;
+  onChangeSearch?: (value: string) => void;
 }
 
 const SearchSelect = <T extends object>({
@@ -28,17 +34,28 @@ const SearchSelect = <T extends object>({
   value,
   labelKey,
   valueKey,
-  onSelect=() => {},
+  onSelect = () => {},
   placeholder = "Select an item...",
   noItemText = "No items found.",
-  className
+  className,
+  onChangeSearch
 }: SearchSelectProps<T>) => {
   const [open, setOpen] = useState(false);
+  const [inputValue, setInputValue] = useState<string>("");
+  const debouncedValue = useDebounce(inputValue, 300);
 
   const handleSelect = (item: T) => {
-     onSelect(item);
+    onSelect(item);
     setOpen(false); // Close popover after selection
   };
+
+
+  useEffect(() => {
+    if (debouncedValue && onChangeSearch) {
+      console.log(debouncedValue, "Search value");
+      onChangeSearch(debouncedValue);
+    }
+  }, [debouncedValue, onChangeSearch]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -54,16 +71,22 @@ const SearchSelect = <T extends object>({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent  className={cn("max-w-fit w-[212px] p-0", className)}>
+      <PopoverContent className={cn("max-w-fit w-[212px] p-0", className)}>
         <Command>
-          <CommandInput placeholder={`Search ${placeholder.toLowerCase()}`} />
+          <CommandInput
+            onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setInputValue(e.target.value)
+            }
+            placeholder={`Search ${placeholder.toLowerCase()}`}
+          />
           <CommandList>
             <CommandEmpty>{noItemText}</CommandEmpty>
             <CommandGroup>
               {items.map((item) => (
                 <CommandItem
                   key={item[valueKey]?.toString()}
-                  value={item[valueKey]?.toString()}
+                  // value={item[valueKey]?.toString()}
+                  value={item[labelKey]?.toString()}
                   onSelect={() => handleSelect(item)}
                 >
                   <Check

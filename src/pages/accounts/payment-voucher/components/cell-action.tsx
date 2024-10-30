@@ -13,6 +13,7 @@ import { toast } from "sonner";
 
 import { useRemoveEntryMutation } from "@/store/services/accounts/api/entries";
 import { useNavigate } from "react-router-dom";
+import RoleAccess from "@/lib/access-control/role-access";
 
 interface CellActionProps {
   rowData: EntryRow;
@@ -34,47 +35,53 @@ export function CellAction({ rowData }: CellActionProps) {
   };
 
   return (
-    <div className="flex justify-center space-x-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              // onClick={() => setUpdateModalOpen(true)}
-              onClick={()=> navigation(`/accounts/payment-voucher/edit/${rowData.id}`)}
+    <div className="flex justify-center space-x-2 min-h-10">
+      <RoleAccess roles={["entries.edit"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                // onClick={() => setUpdateModalOpen(true)}
+                onClick={() =>
+                  navigation(`/accounts/payment-voucher/edit/${rowData.id}`)
+                }
 
-              // onClick={() => toggleModal()}
-            >
-              <Pencil className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Update Payment Voucher</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+                // onClick={() => toggleModal()}
+              >
+                <Pencil className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Update Payment Voucher</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => {
-                setAlertModalOpen(true);
-              }}
-            >
-              <Trash2 className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Delete payment voucher</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <RoleAccess roles={["entries.delete"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => {
+                  setAlertModalOpen(true);
+                }}
+              >
+                <Trash2 className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Delete payment voucher</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
 
       <AlertModal
         title="Are you sure?"
@@ -85,7 +92,7 @@ export function CellAction({ rowData }: CellActionProps) {
         onConfirm={() => handleDepartmentDelete(rowData.id)}
         loading={deleteLoading}
       />
-{/*       <Modal
+      {/*       <Modal
         title="Update Payment Voucher"
         isOpen={updateModalOpen}
         toggleModal={() => setUpdateModalOpen(false)}

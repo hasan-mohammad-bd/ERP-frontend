@@ -11,9 +11,10 @@ import { subAccountColumns } from "./components/columns";
 import { useGetRolesQuery } from "@/store/services/erp-main/api/user-role";
 
 import { useNavigate } from "react-router-dom";
+import { Heading } from "@/components/common/heading";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const UserRole = () => {
-
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -25,8 +26,6 @@ const UserRole = () => {
 
   const navigate = useNavigate();
 
-
-
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   if (isLoading) return <Loading />;
@@ -36,14 +35,15 @@ const UserRole = () => {
       <div className="flex flex-col">
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
-            {/* <Heading
+            <Heading
               title="User Role"
               description="Manage your sub accounts for you business"
-            /> */}
-            <div></div>
-            <Button onClick={() => navigate("/web/role/add")}>
-              <Plus className="mr-2 h-4 w-4" /> Add Role
-            </Button>
+            />
+            <RoleAccess roles={["roles.create"]}>
+              <Button onClick={() => navigate("/web/role/add")}>
+                <Plus className="mr-2 h-4 w-4" /> Add Role
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {userRole && (
@@ -55,13 +55,11 @@ const UserRole = () => {
                 pagination={pagination}
                 setPagination={setPagination}
                 className={"py-2"}
-                
               />
             </div>
           )}
         </div>
       </div>
-
     </>
   );
 };

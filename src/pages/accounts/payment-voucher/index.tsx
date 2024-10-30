@@ -11,6 +11,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { subAccountColumns } from "./components/columns";
 import { useGetEntriesQuery } from "@/store/services/accounts/api/entries";
 import { useNavigate } from "react-router-dom";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const PaymentVoucher = () => {
   const [pagination, setPagination] = React.useState<PaginationState>({
@@ -39,9 +40,14 @@ const PaymentVoucher = () => {
               title="Receipt Voucher"
               description="Manage your sub accounts for you business"
             />
-            <Button onClick={() => navigate("/accounts/payment-voucher/add")} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Payment Entry
-            </Button>
+            <RoleAccess roles={["entries.create"]}>
+              <Button
+                onClick={() => navigate("/accounts/payment-voucher/add")}
+                size={"sm"}
+              >
+                <Plus className="mr-2 h-4 w-4" /> Add Payment Entry
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {paymentVoucher && (
@@ -57,7 +63,6 @@ const PaymentVoucher = () => {
           )}
         </div>
       </div>
-
     </>
   );
 };

@@ -12,6 +12,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { subAccountColumns } from "./components/columns";
 import { AddUsers } from "./components/add-users-form";
 import { useGetUsersQuery } from "@/store/services/erp-main/api/users";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const Users = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,9 +38,11 @@ const Users = () => {
               title="Users"
               description="Manage your sub accounts for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add User
-            </Button>
+            <RoleAccess roles={["users.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add User
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {users && (

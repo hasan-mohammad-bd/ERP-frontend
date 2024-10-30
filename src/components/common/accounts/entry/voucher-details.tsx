@@ -22,8 +22,6 @@ interface Props {
 
 const VoucherDetails = ({ data }: Props) => {
   const componentRef = useRef<HTMLDivElement>(null);
-  console.log(data);
-
   const total = data.total as number;
 
   const handleDownloadPDF = async () => {

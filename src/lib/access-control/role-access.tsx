@@ -1,4 +1,4 @@
-import  { ReactNode } from "react";
+import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/store/hooks";
 import UnauthorizedPage from "@/pages/unauthorized-page";
@@ -8,9 +8,16 @@ interface RoleAccessProps {
   children: ReactNode;
   requireAll?: boolean; // If true, all roles are required for access
   showUnauthorizedPage?: boolean;
+  fallback?: ReactNode;
 }
 
-export default function RoleAccess({ roles, children, requireAll = false, showUnauthorizedPage=false }: Readonly<RoleAccessProps>) {
+export default function RoleAccess({
+  roles,
+  children,
+  requireAll = false,
+  showUnauthorizedPage = false,
+  fallback = null,
+}: Readonly<RoleAccessProps>) {
   const { user } = useAuth();
   const location = useLocation();
 
@@ -25,7 +32,7 @@ export default function RoleAccess({ roles, children, requireAll = false, showUn
   // Redirect to home if user lacks necessary roles
   if (!hasAccess) {
     // return <Navigate to="/" replace />;
-    return showUnauthorizedPage ? <UnauthorizedPage /> : null;
+    return fallback ? fallback : showUnauthorizedPage ? <UnauthorizedPage /> : null;
   }
 
   // Render children if user has the required roles

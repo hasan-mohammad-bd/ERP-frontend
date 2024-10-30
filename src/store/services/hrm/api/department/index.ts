@@ -46,6 +46,7 @@ const departmentApi = hrmApi.injectEndpoints({
 
 export const {
   useGetDepartmentsQuery,
+  useLazyGetDepartmentsQuery,
   useCreateDepartmentMutation, 
   useRemoveDepartmentMutation, 
   useUpdateDepartmentMutation 

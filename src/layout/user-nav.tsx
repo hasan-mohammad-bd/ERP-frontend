@@ -20,8 +20,6 @@ type Props = {
 export function UserNav({ user }: Props) {
 	const [logout] = useLogoutUserMutation();
 
-	console.log('user_image',user.image)
-
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger>

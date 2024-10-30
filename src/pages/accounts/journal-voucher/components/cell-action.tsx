@@ -12,7 +12,7 @@ import { EntryRow } from "@/lib/validators/accounts";
 import { toast } from "sonner";
 import { useRemoveEntryMutation } from "@/store/services/accounts/api/entries";
 import { useNavigate } from "react-router-dom";
-
+import RoleAccess from "@/lib/access-control/role-access";
 
 interface CellActionProps {
   rowData: EntryRow;
@@ -23,7 +23,6 @@ export function CellAction({ rowData }: CellActionProps) {
   const navigate = useNavigate();
 
   const [removeEntry, { isLoading: deleteLoading }] = useRemoveEntryMutation();
-
 
   const handleDepartmentDelete = async (id: number) => {
     try {
@@ -36,46 +35,52 @@ export function CellAction({ rowData }: CellActionProps) {
   };
 
   return (
-    <div className="flex justify-center space-x-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick = {() => navigate(`/accounts/journal-voucher/edit/${rowData.id}`)}
+    <div className="flex justify-center space-x-2 min-h-10">
+      <RoleAccess roles={["entries.edit"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() =>
+                  navigate(`/accounts/journal-voucher/edit/${rowData.id}`)
+                }
 
-              // onClick={() => toggleModal()}
-            >
-              <Pencil className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Update Journal</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+                // onClick={() => toggleModal()}
+              >
+                <Pencil className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Update Journal</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => {
-                setAlertModalOpen(true);
-              }}
-            >
-              <Trash2 className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Delete Journal</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <RoleAccess roles={["entries.delete"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => {
+                  setAlertModalOpen(true);
+                }}
+              >
+                <Trash2 className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Delete Journal</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
 
       <AlertModal
         title="Are you sure?"
@@ -87,7 +92,7 @@ export function CellAction({ rowData }: CellActionProps) {
         loading={deleteLoading}
       />
 
-{/*       <Modal
+      {/*       <Modal
         title=""
         isOpen={voucherDetailsOpen}
         toggleModal={() => setVoucherDetailsOpen(false)}
@@ -99,5 +104,3 @@ export function CellAction({ rowData }: CellActionProps) {
     </div>
   );
 }
-
-

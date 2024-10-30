@@ -11,6 +11,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { subAccountColumns } from "./components/columns";
 import { useGetEntriesQuery } from "@/store/services/accounts/api/entries";
 import { useNavigate } from "react-router-dom";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const ReceiptVoucher = () => {
   const navigation = useNavigate();
@@ -39,9 +40,14 @@ const ReceiptVoucher = () => {
               title="Receipt Voucher"
               description="Manage your sub accounts for you business"
             />
-            <Button onClick={() => navigation("/accounts/receipt-voucher/add")} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Receipt Entry
-            </Button>
+            <RoleAccess roles={["entries.create"]}>
+              <Button
+                onClick={() => navigation("/accounts/receipt-voucher/add")}
+                size={"sm"}
+              >
+                <Plus className="mr-2 h-4 w-4" /> Add Receipt Entry
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {receiptVoucher && (
@@ -57,7 +63,7 @@ const ReceiptVoucher = () => {
           )}
         </div>
       </div>
-{/*       <Modal
+      {/*       <Modal
         title="Add Receipt Entry"
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}

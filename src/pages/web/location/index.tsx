@@ -11,6 +11,7 @@ import { AddLocationForm } from "./components/add-location-form";
 import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const Location = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,9 +38,11 @@ const Location = () => {
               title="Location"
               description="Manage organization for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Location
-            </Button>
+            <RoleAccess roles={["locations.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Location
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {locations && (

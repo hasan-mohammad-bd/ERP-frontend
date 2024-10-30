@@ -32,6 +32,7 @@ interface Props {
 export default function EmployeeFilters({ setFilterParams }: Props) {
   // Fetch department data
   const { data: departmentData } = useGetDepartmentsQuery("per_page=1000");
+  // const [getDepartments, { data: departmentData }] = useLazyGetDepartmentsQuery();
   const { data: designationsData } = useGetDesignationQuery("per_page=1000");
   const { data: sectionsData } = useGetSectionsQuery("per_page=1000");
   const { data: branchData } = useGetLocationsQuery("per_page=1000");
@@ -123,6 +124,7 @@ export default function EmployeeFilters({ setFilterParams }: Props) {
           value={selectedDepartment}
           placeholder="Select Department"
           onSelect={setSelectedDepartment}
+          // onChangeSearch={(searchText) => getDepartments(`text=${searchText}`)}
         />
         <SearchSelect
           items={designationsData?.data || []}

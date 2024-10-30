@@ -1,4 +1,3 @@
-
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
@@ -12,6 +11,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const Organization = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -40,9 +40,14 @@ const Organization = () => {
               title="Organization"
               description="Manage organization for you business"
             />
-            <Button onClick={() => navigate("/web/organizations/add")} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Organization
-            </Button>
+            <RoleAccess roles={["organizations.create"]}>
+              <Button
+                onClick={() => navigate("/web/organizations/add")}
+                size={"sm"}
+              >
+                <Plus className="mr-2 h-4 w-4" /> Add Organization
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {organizations && (

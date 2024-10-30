@@ -11,6 +11,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { subAccountColumns } from "./components/columns";
 import { useGetEntriesQuery } from "@/store/services/accounts/api/entries";
 import { useNavigate } from "react-router-dom";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const ContraVoucher = () => {
   const navigate = useNavigate();
@@ -38,9 +39,11 @@ const ContraVoucher = () => {
               title="Contra Voucher"
               description="Manage your sub accounts for you business"
             />
-            <Button onClick={() => navigate("/accounts/contra-voucher/add")} >
-              <Plus className="mr-2 h-4 w-4" /> Add Contra Entry
-            </Button>
+            <RoleAccess roles={["entries.create"]}>
+              <Button onClick={() => navigate("/accounts/contra-voucher/add")}>
+                <Plus className="mr-2 h-4 w-4" /> Add Contra Entry
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {contraVoucher && (
@@ -56,7 +59,7 @@ const ContraVoucher = () => {
           )}
         </div>
       </div>
-{/*       <Modal
+      {/*       <Modal
         title="Add Contra Entry"
         isOpen={isOpen}
         toggleModal={() => setIsOpen(false)}

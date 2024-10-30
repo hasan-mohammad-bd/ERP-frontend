@@ -10,6 +10,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { subAccountColumns } from "./components/columns";
 import { useNavigate } from "react-router-dom";
 import { useGetBudgetsQuery } from "@/store/services/accounts/api/budget";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const Budget = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -24,10 +25,7 @@ const Budget = () => {
     }&type=opening balance`
   );
 
-
   const budget = data?.data || [];
-
-
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
   if (isLoading) return <Loading />;
@@ -41,12 +39,14 @@ const Budget = () => {
               title="Budget"
               description="Manage your sub accounts for you business"
             />
-            <Button
-              onClick={() => navigate("/accounts/budget/add")}
-              size={"sm"}
-            >
-              <Plus className="mr-2 h-4 w-4" /> Add Budget
-            </Button>
+            <RoleAccess roles={["budgets.create"]}>
+              <Button
+                onClick={() => navigate("/accounts/budget/add")}
+                size={"sm"}
+              >
+                <Plus className="mr-2 h-4 w-4" /> Add Budget
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {budget && (
@@ -62,7 +62,6 @@ const Budget = () => {
           )}
         </div>
       </div>
-
     </>
   );
 };
