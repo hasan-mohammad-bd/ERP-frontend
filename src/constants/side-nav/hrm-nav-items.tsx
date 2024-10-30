@@ -327,6 +327,13 @@ const hrmNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["hrm"],
       },
+      {
+        title: "Attendance Summary",
+        icon: UserRoundSearch,
+        href: "attendance-summary",
+        color: "text-sky-500",
+        permissions: ["hrm"],
+      },
     ],
   },
 

@@ -45,6 +45,7 @@ import LeaveUsagesReport from "@/pages/hrm/reports/leave-reports/leave-usages";
 import LeaveTrend from "@/pages/hrm/reports/leave-reports/leave-trend";
 import LeaveTypeSummary from "@/pages/hrm/reports/leave-reports/leave-type-summary";
 import { EmployeeForm } from "@/pages/hrm/employee/employee-list/components/employee-form";
+import AttendanceSummary from "@/pages/hrm/reports/leave-reports/attendance-summary";
 
 
 
@@ -286,6 +287,11 @@ const hrmRoutes = {
     {
       path: "leave-balance",
       element: withFallback(<LeaveBalance />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "attendance-summary",
+      element: withFallback(<AttendanceSummary />),
       errorElement: withFallback(<ErrorPage />),
     },
 
