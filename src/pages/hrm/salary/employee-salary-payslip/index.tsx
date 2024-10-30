@@ -29,7 +29,7 @@ const EmployeeSalaryPayslip = () => {
         />
       </div>
       <Separator />
-      <div className="flex items-start">
+      <div className="flex flex-col gap-4">
         <EmployeeSalaryPayslipFilter setFilterParams={setFilterParams} />
 
         {employeeSalaryPayslipLoading && <Loading />}

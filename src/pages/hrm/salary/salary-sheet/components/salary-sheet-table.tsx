@@ -1,3 +1,4 @@
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   Table,
   TableBody,
@@ -6,272 +7,244 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  SalaryCategory,
+  SalaryDepartmentColumn,
+} from "@/lib/validators/hrm/salary-report";
 import React from "react";
 
-// Define types for the data structure
-interface Employee {
-  sl: number;
-  name: string;
-  bp: number;
-  hra: number;
-  ma: number;
-  esa: number;
-  tiff: number;
-  wash: number;
-  tot_ai: number;
-  gpf: number;
-  bf: number;
-  tot_ded: number;
-  net: number;
-  signature: string;
-  position: string;
+interface Props {
+  data: SalaryDepartmentColumn[];
+  salary_category: SalaryCategory[];
 }
+const SalarySheetTable = ({ data, salary_category }: Props) => {
+  function calculateSubtotals(department: SalaryDepartmentColumn): number[] {
+    const subtotals: { [categoryName: string]: number } = {};
 
-interface Department {
-  department: string;
-  employees: Employee[];
-}
-
-// Define the type for the props
-interface SalarySheetTableProps {
-  data: Department[];
-}
-
-// Function to calculate totals and return as an array
-const calculateTotals = (data: Department[]): number[] => {
-  // Initialize totals
-  let totalBp = 0;
-  let totalHra = 0;
-  let totalMa = 0;
-  let totalEsa = 0;
-  let totalTiff = 0;
-  let totalWash = 0;
-  let totalTotAi = 0;
-  let totalGpf = 0;
-  let totalBf = 0;
-  let totalTotDed = 0;
-  let totalNet = 0;
-
-  // Iterate through each department
-  data.forEach((department) => {
-    // Iterate through each employee in the department
-    department.employees.forEach((employee) => {
-      totalBp += employee.bp;
-      totalHra += employee.hra;
-      totalMa += employee.ma;
-      totalEsa += employee.esa;
-      totalTiff += employee.tiff;
-      totalWash += employee.wash;
-      totalTotAi += employee.tot_ai;
-      totalGpf += employee.gpf;
-      totalBf += employee.bf;
-      totalTotDed += employee.tot_ded;
-      totalNet += employee.net;
+    department?.employees.forEach((employee) => {
+      employee?.salaries.forEach((salary) => {
+        salary.salary_details.forEach((detail) => {
+          if (subtotals[detail.category_name]) {
+            subtotals[detail.category_name] += detail.total;
+          } else {
+            subtotals[detail.category_name] = detail.total;
+          }
+        });
+      });
     });
-  });
 
-  // Return totals as an array
-  return [
-    totalBp,
-    totalHra,
-    totalMa,
-    totalEsa,
-    totalTiff,
-    totalWash,
-    totalTotAi,
-    totalGpf,
-    totalBf,
-    totalTotDed,
-    totalNet,
-  ];
-};
+    // Return only the values as an array
+    return Object.values(subtotals);
+  }
 
-const calculateDepartmentTotals = (employees: Employee[]) => {
-  return employees.reduce(
-    (totals, employee) => {
-      totals.bp += employee.bp;
-      totals.hra += employee.hra;
-      totals.ma += employee.ma;
-      totals.esa += employee.esa;
-      totals.tiff += employee.tiff;
-      totals.wash += employee.wash;
-      totals.tot_ai += employee.tot_ai;
-      totals.gpf += employee.gpf;
-      totals.bf += employee.bf;
-      totals.tot_ded += employee.tot_ded;
-      totals.net += employee.net;
-      return totals;
-    },
-    {
-      bp: 0,
-      hra: 0,
-      ma: 0,
-      esa: 0,
-      tiff: 0,
-      wash: 0,
-      tot_ai: 0,
-      gpf: 0,
-      bf: 0,
-      tot_ded: 0,
-      net: 0,
-    }
-  );
-};
+  function calculateTotalAcrossAllDepartments(
+    data: SalaryDepartmentColumn[]
+  ): number[] {
+    const combinedTotals: { [categoryName: string]: number } = {};
 
-const SalarySheetTable: React.FC<SalarySheetTableProps> = ({ data }) => {
-  const totals = calculateTotals(data);
+    data.forEach((department) => {
+      const departmentSubtotals = calculateSubtotals(department);
+
+      Object.keys(department.employees[0]?.salaries[0].salary_details).forEach(
+        (categoryName, index) => {
+          if (combinedTotals[categoryName]) {
+            combinedTotals[categoryName] += departmentSubtotals[index];
+          } else {
+            combinedTotals[categoryName] = departmentSubtotals[index];
+          }
+        }
+      );
+    });
+
+    // Return the combined totals as an array
+    return Object.values(combinedTotals);
+  }
+
+  // Calculate the total across all departments
+  // const grandTotalArray = calculateTotalAcrossAllDepartments(data);
+  // console.log("Total of all departments as an array:", grandTotalArray);
+  // data.forEach((department) => {
+  //   const subtotalValues = calculateSubtotals(department);
+  //   console.log(`Subtotal values for Department: ${department.name}`);
+  //   console.log(subtotalValues);
+  // });
+
+  // function calculateSubtotals(department: Department) {
+  //   const subtotals: { [categoryName: string]: number } = {};
+
+  //   department.employees.forEach((employee) => {
+  //     employee.salaries.forEach((salary) => {
+  //       salary.salary_details.forEach((detail) => {
+  //         if (subtotals[detail.category_name]) {
+  //           subtotals[detail.category_name] += detail.total;
+  //         } else {
+  //           subtotals[detail.category_name] = detail.total;
+  //         }
+  //       });
+  //     });
+  //   });
+
+  //   return subtotals;
+  // }
+
+  // // Calculate and display subtotals for each department
+  // data.forEach((department) => {
+  //   const subtotals = calculateSubtotals(department);
+  //   console.log(`Subtotals for Department: ${department.name}`);
+  //   console.log(subtotals);
+  // });
+
+  // Reusable function to calculate subtotal for any key
+  function calculateSubtotal(department: SalaryDepartmentColumn, key: string) {
+    let subtotal = 0;
+
+    department.employees.forEach((employee) => {
+      employee.salaries.forEach((salary) => {
+        subtotal += (salary as any)[key] || 0; // Use 'as any' to bypass type checking
+      });
+    });
+
+    return subtotal;
+  }
+
+  function calculateGrandTotal(data: SalaryDepartmentColumn[], key: string) {
+    return data.reduce((total, department) => {
+      return total + calculateSubtotal(department, key);
+    }, 0);
+  }
+
   return (
-    <Table className="border">
-      <TableHeader className="border border-black">
-        <TableRow className="border h-0 bg-gray-100 text-black">
-          {headings.map((heading, index) => (
-            <TableHead
-              key={index}
-              className="border py-2.5 h-0 text-center text-black"
-            >
-              {heading}
+    <ScrollArea className="w-[1567px] whitespace-nowrap">
+      <Table className="border">
+        <TableHeader className="border border-black">
+          <TableRow className="border h-0 bg-gray-100 text-black">
+            <TableHead className="border py-2.5 h-0 text-center text-black">
+              SL
             </TableHead>
-          ))}
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {data.map((department, deptIndex) => {
-          const departmentTotals = calculateDepartmentTotals(
-            department.employees
-          );
-          return (
-            <React.Fragment key={deptIndex}>
-              <TableRow>
-                <TableCell className="border py-2" colSpan={2}>
-                  Department
-                </TableCell>
-                <TableCell className="border py-2" colSpan={12}>
-                  {department.department}
-                </TableCell>
-              </TableRow>
-              {department.employees.map((item, empIndex) => (
-                <TableRow key={empIndex} className="border">
-                  <TableCell className="border py-2 text-center">
-                    {item.sl}
+            <TableHead className="border py-2.5 h-0 text-center text-black">
+              Name
+            </TableHead>
+            {salary_category.map((category, index) => (
+              <TableHead
+                key={index}
+                title={category.name}
+                className="border py-2.5 h-0 text-center text-black"
+              >
+                {category.short_code
+                  ? category.short_code
+                  : category.name
+                      .split(" ")
+                      .map((word) => word[0])
+                      .join(".")}
+              </TableHead>
+            ))}
+            <TableHead className="border py-2.5 h-0 text-center text-black">
+              Tot AI
+            </TableHead>
+            <TableHead className="border py-2.5 h-0 text-center text-black">
+              Tot Ded
+            </TableHead>
+            <TableHead className="border py-2.5 h-0 text-center text-black">
+              Net
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.map((department, deptIndex) => {
+            return (
+              <React.Fragment key={deptIndex}>
+                <TableRow>
+                  <TableCell className="border py-2" colSpan={2}>
+                    Department
                   </TableCell>
-                  <TableCell className="border py-2">
-                    <div className="flex flex-col">
-                      <span>{item.name}</span>
-                      <span className="ml-1.5">{item.position}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="border py-2 text-right">
-                    {item.bp}
-                  </TableCell>
-                  <TableCell className="border py-2 text-right">
-                    {item.hra}
-                  </TableCell>
-                  <TableCell className="border py-2 text-right">
-                    {item.ma}
-                  </TableCell>
-                  <TableCell className="border py-2 text-right">
-                    {item.esa}
-                  </TableCell>
-                  <TableCell className="border py-2 text-right">
-                    {item.tiff}
-                  </TableCell>
-                  <TableCell className="border py-2 text-right">
-                    {item.wash}
-                  </TableCell>
-                  <TableCell className="border py-2 text-right">
-                    {item.tot_ai}
-                  </TableCell>
-                  <TableCell className="border py-2 text-right">
-                    {item.gpf}
-                  </TableCell>
-                  <TableCell className="border py-2 text-right">
-                    {item.bf}
-                  </TableCell>
-                  <TableCell className="border py-2 text-right">
-                    {item.tot_ded}
-                  </TableCell>
-                  <TableCell className="border py-2 text-right">
-                    {item.net}
-                  </TableCell>
-                  <TableCell className="border py-2 text-right">
-                    {item.signature}
+                  <TableCell className="border py-2" colSpan={12}>
+                    {department?.name}
                   </TableCell>
                 </TableRow>
-              ))}
-              <TableRow className="border">
-                <TableCell className="font-semibold border py-2"></TableCell>
-                <TableCell className="font-semibold border py-2">
-                  Subtotal
-                </TableCell>
-                <TableCell className="font-semibold border py-2 text-right">
-                  {departmentTotals.bp}
-                </TableCell>
-                <TableCell className="font-semibold border py-2 text-right">
-                  {departmentTotals.hra}
-                </TableCell>
-                <TableCell className="font-semibold border py-2 text-right">
-                  {departmentTotals.ma}
-                </TableCell>
-                <TableCell className="font-semibold border py-2 text-right">
-                  {departmentTotals.esa}
-                </TableCell>
-                <TableCell className="font-semibold border py-2 text-right">
-                  {departmentTotals.tiff}
-                </TableCell>
-                <TableCell className="font-semibold border py-2 text-right">
-                  {departmentTotals.wash}
-                </TableCell>
-                <TableCell className="font-semibold border py-2 text-right">
-                  {departmentTotals.tot_ai}
-                </TableCell>
-                <TableCell className="font-semibold border py-2 text-right">
-                  {departmentTotals.gpf}
-                </TableCell>
-                <TableCell className="font-semibold border py-2 text-right">
-                  {departmentTotals.bf}
-                </TableCell>
-                <TableCell className="font-semibold border py-2 text-right">
-                  {departmentTotals.tot_ded}
-                </TableCell>
-                <TableCell className="font-semibold border py-2 text-right">
-                  {departmentTotals.net}
-                </TableCell>
-                <TableCell className="border py-2"></TableCell>
-              </TableRow>
-            </React.Fragment>
-          );
-        })}
-        <TableRow className="border bg-gray-100">
-          <TableCell colSpan={2} className="font-bold border py-2">
-            Total
-          </TableCell>
-          {totals.map((total, index) => (
-            <TableCell key={index} className="font-bold border py-2 text-right">
-              {total}
+                {department.employees.map((employee, empIndex) => (
+                  <TableRow key={empIndex} className="border">
+                    <TableCell className="border py-2 text-center">
+                      {empIndex + 1}
+                    </TableCell>
+                    <TableCell className="border py-2">
+                      <div className="flex flex-col">
+                        <span>{`${employee.first_name} ${employee.last_name}`}</span>
+                        <span className="ml-1.5">{employee.designation}</span>
+                      </div>
+                    </TableCell>
+
+                    {employee?.salaries?.map((salary) => (
+                      <>
+                        {salary?.salary_details?.map((salaryDetail) => (
+                          <TableCell className="border py-2 text-right">
+                            {salaryDetail.total}
+                          </TableCell>
+                        ))}
+                        <TableCell className="border py-2 text-right">
+                          {salary.allowance_total}
+                        </TableCell>
+                        <TableCell className="border py-2 text-right">
+                          {salary.deduction_total}
+                        </TableCell>
+                        <TableCell className="border py-2 text-right">
+                          {salary.net_salary}
+                        </TableCell>
+                      </>
+                    ))}
+                  </TableRow>
+                ))}
+                <TableRow className="border">
+                  <TableCell className="font-semibold border py-2"></TableCell>
+                  <TableCell className="font-semibold border py-2">
+                    Subtotal
+                  </TableCell>
+                  {calculateSubtotals(department).map((subtotal) => (
+                    <TableCell className="font-semibold border py-2 text-right">
+                      {subtotal}
+                    </TableCell>
+                  ))}
+                  {["allowance_total", "deduction_total", "net_salary"].map(
+                    (key, keyIndex) => (
+                      <TableCell
+                        key={keyIndex}
+                        className="font-semibold border py-2 text-right"
+                      >
+                        {calculateSubtotal(department, key)}
+                      </TableCell>
+                    )
+                  )}{" "}
+                </TableRow>
+              </React.Fragment>
+            );
+          })}
+          <TableRow className="border bg-gray-100">
+            <TableCell colSpan={2} className="font-bold border py-2">
+              Total
             </TableCell>
-          ))}
-          <TableCell className="font-bold border py-2"></TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
+            {calculateTotalAcrossAllDepartments(data).map((total, index) => (
+              <TableCell
+                key={index}
+                className="font-bold border py-2 text-right"
+              >
+                {total?.toFixed(0)}
+              </TableCell>
+            ))}
+            {["allowance_total", "deduction_total", "net_salary"].map(
+              (key, keyIndex) => (
+                <TableCell
+                  key={keyIndex}
+                  className="font-bold border py-2 text-right"
+                >
+                  {calculateGrandTotal(data, key)}
+                </TableCell>
+              )
+            )}
+          </TableRow>
+        </TableBody>
+      </Table>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   );
 };
 
 export default SalarySheetTable;
-
-const headings = [
-  "SL",
-  "Name",
-  "B.P",
-  "H.R.A",
-  "M.A",
-  "E.S.A",
-  "Tiff",
-  "Wash",
-  "Tot AI",
-  "G.P.F",
-  "B.F",
-  "Tot Ded",
-  "Net",
-  "Signature",
-];

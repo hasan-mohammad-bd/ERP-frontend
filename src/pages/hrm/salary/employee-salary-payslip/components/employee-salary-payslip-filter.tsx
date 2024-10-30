@@ -57,10 +57,10 @@ export default function EmployeeSalaryPayslipFilter({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleEstimate)}
-        className="w-full rounded-lg space-y-6 max-w-md"
+        className="w-full rounded-lg space-y-6"
       >
-        <Card>
-          <div className="grid gap-6 md:grid-cols-1 p-5">
+        <Card className="p-5">
+          <div className="grid gap-6 md:grid-cols-5">
             {/* Employee Selector */}
             <div className="w-full">
               <FormSearchSelect<EmployeeColumn>
@@ -103,17 +103,16 @@ export default function EmployeeSalaryPayslipFilter({
                 </p>
               )}
             </div>
-
-            <div className="pt-7 col-span-1 flex items-center mt-auto">
-              <Button
-                variant="default"
-                type="submit"
-                className="w-fit px-14 mt-[3px] capitalize"
-              >
-                {/* {employeeSalaryPayslipLoading ? "Applying..." : "Apply"} */}
-                apply
-              </Button>
-            </div>
+          </div>
+          <div className="pt-7 col-span-3 flex justify-end mt-auto">
+            <Button
+              variant="default"
+              type="submit"
+              className="w-fit px-14 mt-[3px] capitalize"
+            >
+              {/* {employeeSalaryPayslipLoading ? "Applying..." : "Apply"} */}
+              apply
+            </Button>
           </div>
         </Card>
       </form>

@@ -1,275 +1,150 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { toast } from "sonner";
+import { Form } from "@/components/ui/form";
 import {
   DepartmentColumn,
-  JobPostColumn,
-  JobPostFromValues,
-  JobPostFormSchema,
-  OrganizationDropdownColumn,
+  EmployeeColumn,
+  EmployeeClassColumn,
 } from "@/lib/validators";
-import { Loading } from "@/components/common/loading";
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 import { useGetDepartmentsQuery } from "@/store/services/hrm/api/department";
-import {
-  useCreateJobPostMutation,
-  useUpdateJobPostMutation,
-} from "@/store/services/hrm/api/job-post";
-import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
 import { Card } from "@/components/ui/card";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
+import { useGetEmployeeClassesQuery } from "@/store/services/hrm/api/employee-class";
+import DatePicker from "react-datepicker";
+import { z } from "zod";
+import { format } from "date-fns";
+import { cn } from "@/utils";
 
-interface AddJobPostFormProps {
-  modalClose: () => void;
-  data?: JobPostColumn;
+interface Props {
+  setFilterParams: (params: string) => void;
 }
 
-export default function SalarySheetFilters({
-  modalClose,
-  data: previousData,
-}: AddJobPostFormProps) {
-  const [createJobPost] = useCreateJobPostMutation();
-  const [updateJobPost] = useUpdateJobPostMutation();
-  const [openFromDate, setOpenFromDate] = useState(false);
-  const [fromDate, setFromDate] = useState<Date>(new Date());
+const SalaryFilterFormSchema = z.object({
+  employee_ids: z.string().optional(), // Ensure employee_id is not empty
+  salary_month: z.date(), // Expect a formatted string
+  department_id: z.string().optional(),
+  employee_class_id: z.string().optional(),
+});
 
-  const handleFromDateSelect = (date: Date | undefined) => {
-    if (!date) return;
-    setFromDate(date);
-    setOpenFromDate(false); // Close popover after selecting a date
-  };
+interface SalaryFilterFormValues {
+  employee_ids: string;
+  salary_month: Date | null;
+  department_id: string;
+  employee_class_id: string;
+}
 
-  const { data: organizations, isLoading: organizationLoading } =
-    useGetOrganizationForDropDownQuery();
+export default function SalarySheetFilters({ setFilterParams }: Props) {
   const { data: departments, isLoading: departmentLoading } =
     useGetDepartmentsQuery("page=1&per_page=1000");
+  const { data: employees, isLoading: employeeLoading } =
+    useGetEmployeesQuery(`page=1&per_page=1000`);
+  const { data: employeeClasses, isLoading: employeeClassLoading } =
+    useGetEmployeeClassesQuery("per_page=1000");
 
+  const employeeData = employees?.data || [];
   const departmentData = departments?.data || [];
-  const organizationData = organizations?.data || [];
+  const employeeClassesData = employeeClasses?.data || [];
 
-  const form = useForm<JobPostFromValues>({
-    resolver: zodResolver(JobPostFormSchema),
-    defaultValues: {
-      title: previousData?.title || "",
-      sorting_index: previousData?.sorting_index || 0,
-      date: previousData?.date || "",
-      deadline: previousData?.deadline || "",
-      vacancy_number: previousData?.vacancy_number || 0,
-      organization_id: previousData?.organization?.id || 1,
-      department_id: previousData?.department?.id || 1,
-      designation_id: previousData?.designation?.id || 1,
-      location_id: previousData?.location?.id || 1,
-      vacancy_requisition_id: previousData?.vacancy_requisition?.id || 1,
-      employment_status_id: previousData?.employment_status?.id || 1,
-      work_place_id: previousData?.work_place?.id || 1,
-      min_age: previousData?.min_age || 18,
-      max_age: previousData?.max_age || 60,
-      responsibilities: previousData?.responsibilities || "",
-      education: previousData?.education || "",
-      experience: previousData?.experience || "",
-      skills: previousData?.skills || "",
-      show_salary: previousData?.show_salary || 0,
-      min_salary: previousData?.min_salary || 0,
-      max_salary: previousData?.max_salary || 0,
-      status: previousData?.status || "active",
-    },
+  const form = useForm<SalaryFilterFormValues>({
+    resolver: zodResolver(SalaryFilterFormSchema),
   });
 
-  async function onSubmit(data: JobPostFromValues) {
-    try {
-      if (previousData) {
-        await updateJobPost({
-          jobPostId: previousData.id,
-          updatedJobPost: data,
-        });
-        toast.success("Job Post updated successfully");
-        modalClose();
-      } else {
-        await createJobPost(data);
-        toast.success("Job Post created successfully");
-        modalClose();
-      }
-    } catch (error) {
-      console.log(error);
+  async function onSubmit(data: SalaryFilterFormValues) {
+    const salaryMonth = format(String(data.salary_month), "yyyy-MM");
+    if (!salaryMonth) {
+      return;
     }
+
+    const params = new URLSearchParams();
+    params.append("salary_month", salaryMonth);
+    params.append("employee_ids", data.employee_ids ? data.employee_ids : "");
+    params.append(
+      "department_id",
+      data.department_id ? data.department_id : ""
+    );
+    params.append(
+      "employee_class_id",
+      data.employee_class_id ? data.employee_class_id : ""
+    );
+    const filterParams = params.toString();
+    setFilterParams(filterParams);
   }
 
   return (
-    <Card className="p-6 my-8 max-w-3xl mx-auto w-full">
+    <Card className="p-6 my-4 w-full">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-3 ">
-          <div className="grid grid-cols-2 gap-5">
-            <div className="space-y-2">
-              <label htmlFor="fromDate" className="text-sm font-medium">
-                Select Date
+        <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6 ">
+          <div className="grid grid-cols-4 gap-5">
+            <div className="space-y-2 flex flex-col">
+              <label
+                className={cn(
+                  "text-sm font-medium mt-1",
+                  form.formState.errors.salary_month && "text-red-500"
+                )}
+              >
+                Month and Year
               </label>
-              <Popover open={openFromDate} onOpenChange={setOpenFromDate}>
-                <PopoverTrigger asChild className="h-10">
-                  <Button
-                    variant={"outline"}
-                    className={`w-full justify-start text-left font-normal ${
-                      !fromDate && "text-muted-foreground"
-                    }`}
-                  >
-                    {fromDate ? format(fromDate, "PP") : "Pick a date"}
-                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={fromDate}
-                    onSelect={handleFromDateSelect}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
+              <DatePicker
+                selected={form.watch("salary_month")} // Watch for form updates
+                onChange={(date) => {
+                  form.setValue("salary_month", date); // Set the value
+                  form.trigger("salary_month"); // Trigger validation for the field
+                }}
+                dateFormat="MM/yyyy"
+                showMonthYearPicker
+                placeholderText="Select month and year"
+                className="border rounded p-2 w-full bg-none bg_remove"
+              />
+
+              {form.formState.errors.salary_month && (
+                <p className="text-red-500 text-sm">
+                  {form.formState.errors.salary_month?.message}
+                </p>
+              )}
             </div>
 
-            <FormField
-              control={form.control}
-              name="department_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Select Class</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={
-                      previousData?.department?.id
-                        ? String(previousData.department.id)
-                        : undefined
-                    }
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Class" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {departmentLoading ? (
-                        <Loading />
-                      ) : (
-                        departmentData?.map((department: DepartmentColumn) => (
-                          <SelectItem
-                            key={department.id}
-                            value={String(department.id)}
-                          >
-                            {department.name}
-                          </SelectItem>
-                        ))
-                      )}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="organization_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Select Department</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={
-                      previousData?.organization?.id
-                        ? String(previousData.organization.id)
-                        : undefined
-                    }
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Department" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {organizationLoading ? (
-                        <Loading />
-                      ) : (
-                        organizationData?.map(
-                          (organization: OrganizationDropdownColumn) => (
-                            <SelectItem
-                              key={organization.id}
-                              value={String(organization.id)}
-                            >
-                              {organization.name}
-                            </SelectItem>
-                          )
-                        )
-                      )}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="organization_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Select Employee</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={
-                      previousData?.organization?.id
-                        ? String(previousData.organization.id)
-                        : undefined
-                    }
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Employee" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {organizationLoading ? (
-                        <Loading />
-                      ) : (
-                        organizationData?.map(
-                          (organization: OrganizationDropdownColumn) => (
-                            <SelectItem
-                              key={organization.id}
-                              value={String(organization.id)}
-                            >
-                              {organization.name}
-                            </SelectItem>
-                          )
-                        )
-                      )}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
+            <div className="w-full">
+              <FormSearchSelect<EmployeeColumn>
+                loading={employeeLoading}
+                data={employeeData}
+                displayField="first_name"
+                valueField="id"
+                form={form}
+                name="employee_ids"
+                title="Select Employee"
+                className="w-[245px]"
+              />
+            </div>
+
+            <div className="w-full">
+              <FormSearchSelect<DepartmentColumn>
+                loading={departmentLoading}
+                data={departmentData}
+                displayField="name"
+                valueField="id"
+                form={form}
+                name="department_id"
+                title="Select Department"
+                className="w-[245px]"
+              />
+            </div>
+            <div className="w-full">
+              <FormSearchSelect<EmployeeClassColumn>
+                loading={employeeClassLoading}
+                data={employeeClassesData}
+                displayField="name"
+                valueField="id"
+                form={form}
+                name="employee_class_id"
+                title="Select Employee Class"
+                className="w-[245px]"
+              />
+            </div>
+
+            {/* <FormField
               control={form.control}
               name="organization_id"
               render={({ field }) => (
@@ -348,14 +223,15 @@ export default function SalarySheetFilters({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
+          </div>
+          <div className="flex justify-end gap-4">
+            <Button variant="default" className="w-fit px-14">
+              Apply
+            </Button>
           </div>
         </form>
       </Form>
-      <div className="flex justify-center gap-4 mt-10">
-        <Button variant="default">View Report</Button>
-        <Button variant="outline">Print</Button>
-      </div>
     </Card>
   );
 }
