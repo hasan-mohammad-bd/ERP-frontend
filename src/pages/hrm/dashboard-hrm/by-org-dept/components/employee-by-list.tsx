@@ -23,7 +23,11 @@ const ByOrgDeptList = ({ data, subject }: Props) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{subject ? subject[0].toUpperCase() + subject.slice(1, subject.length) : null}</TableHead>
+            <TableHead>
+              {subject
+                ? subject[0].toUpperCase() + subject.slice(1, subject.length)
+                : null}
+            </TableHead>
             {/* <TableHead></TableHead> */}
             <TableHead className="!text-right">Employee Count</TableHead>
           </TableRow>
@@ -40,10 +44,14 @@ const ByOrgDeptList = ({ data, subject }: Props) => {
                   />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <span className="whitespace-nowrap">{subject ? item[subject] : null}</span>
+                <span className="whitespace-nowrap">
+                  {subject ? item[subject] : null}
+                </span>
               </TableCell>
 
-              <TableCell className="!text-right ">{item.total_employee}</TableCell>
+              <TableCell className="!text-right ">
+                {item.total_employee}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

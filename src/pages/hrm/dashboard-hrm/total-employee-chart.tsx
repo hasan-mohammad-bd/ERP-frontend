@@ -1,10 +1,8 @@
 "use client"
-// import { TrendingUp } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import {
   Card,
   CardContent,
-  // CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -15,26 +13,38 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-export const description = "A simple area chart"
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-]
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-} satisfies ChartConfig
-export function TotalEmployeeChart() {
+
+// Define the type for each entry in the employee_month data
+interface EmployeeMonthData {
+  month_short: string;
+  count: number;
+}
+
+// Define the props type for TotalEmployeeChart
+interface TotalEmployeeChartProps {
+  employee_month: EmployeeMonthData[];
+}
+
+// Update TotalEmployeeChart to receive `employee_month` data as a prop
+export function TotalEmployeeChart({ employee_month }: TotalEmployeeChartProps) {
+  // Transform `employee_month` data to match the structure expected by the chart
+  const chartData = employee_month?.map((entry) => ({
+    month: entry.month_short,
+    desktop: entry.count,
+  })) || []
+
+  // Define chart config for styling the area chart dynamically
+  const chartConfig = {
+    desktop: {
+      label: "Total Employees",
+      color: "hsl(var(--chart-1))",
+    },
+  } satisfies ChartConfig
+
   return (
     <Card>
       <CardHeader>
-      <CardTitle className="text-md font-normal">Total Employee By Year</CardTitle>
+        <CardTitle className="text-md font-normal">Total Employee By Year</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -52,7 +62,7 @@ export function TotalEmployeeChart() {
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) => value.slice(0, 3)} // Ensures short month names
             />
             <ChartTooltip
               cursor={false}

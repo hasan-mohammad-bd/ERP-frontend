@@ -1,36 +1,21 @@
 import { Card } from "@/components/ui/card";
-// import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-
 import {
-  // ArrowRightLeft,
-  // ChevronDown,
-  // ChevronUp,
-  // CircleDollarSign,
-  // Coins,
   FolderOpenDot,
-  // PersonStanding,
-  // ReceiptText,
-  // UserMinus,
-  // UserRound,
   UserRoundMinus,
   UserRoundSearch,
   UsersRound,
 } from "lucide-react";
-import { DatePickerWithRange } from "@/components/common/tool-bar/tool-bar-items/date-range-picker";
-import React from "react";
-import { format } from "date-fns";
-// import { Chart } from "./chart";
-// import Voucher from "./voucher-list";
-import { useGetDashboardSummariesQuery } from "@/store/services/accounts/api/general-ledger copy";
-// import { BarChartComponent } from "./bar-chart";
+
 import { TotalEmployeeChart } from "./total-employee-chart";
 import { EmployeeBranch } from "./employee-branch";
-// import EmployeeServiceLife from "./employee-service-life";
+
 import EmployeeBy from "./employee-by";
 import { RangeBarChart } from "./range-bar-chart";
 import ByOrgDept from "./by-org-dept";
-import Announcement from "./announcement";
+// import Announcement from "./announcement";
+import { useGetDashboardHrmQuery } from "@/store/services/hrm/api/dashboard-hrm";
+import { dashboardHrm } from "@/store/services/hrm/api/dashboard-hrm/type";
 
 const employeeData = [
   {
@@ -119,141 +104,155 @@ const employeeData = [
   },
 ];
 
-const employeeGenderData = [
-  {
-    id: 1,
-    gender: "Male",
-    total_employee: 22,
-  },
-  {
-    id: 2,
-    gender: "Female",
-    total_employee: 10,
-  },
-];
+// const announcementData = [
+//   {
+//     id: 1,
+//     title: "HRM Announcement",
+//     description:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, assumenda.",
+//       date: "2022-01-01",
+//   },
+//   {
+//     id: 2,
+//     title: "Holiday Announcement",
+//     date: "2022-01-01",
+//     description:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, assumenda.",
 
-const employeeServiceLifeData = [
-  {
-    id: 1,
-    total_employee: 4,
-    years: "10+ years",
-    age: "60 + ages",
-  },
-  {
-    id: 2,
-    total_employee: 8,
-    years: "5-10 years",
-    age: "40 - 60 ages",
-  },
-  {
-    id: 3,
-    total_employee: 16,
-    years: "2-5 years",
-    age: "20 - 40 ages",
-  },
-  {
-    id: 4,
-    total_employee: 20,
-    years: "0-2 years",
-    age: "10 - 20 ages",
-  },
-  {
-    id: 5,
-    total_employee: 9,
-    years: "Less than 1 year",
-    age: "Less than 10 ages",
-  },
-];
-
-const employeeByDeptOrganization = [
-  {
-    id: 1,
-    total_employee: 22,
-    department: "HR",
-    organization: "One Lead",
-    image:
-      "https://www.logomaker.com/wpstatic/uploads/2015/06/Logo-Samples2-33-min.jpg",
-  },
-  {
-    id: 2,
-    total_employee: 10,
-    department: "IT",
-    organization: "One Mood",
-    image:
-      "https://www.logomaker.com/wpstatic/uploads/2015/06/Logo-Samples2-36-min.jpg",
-  },
-  {
-    id: 3,
-    total_employee: 16,
-    department: "Development",
-    organization: "One Restaurant",
-    image:
-      "https://www.logomaker.com/wpstatic/uploads/2015/06/Logo-Samples2-04-min.jpg",
-  },
-  {
-    id: 4,
-    total_employee: 20,
-    department: "Design",
-    organization: "One Tech",
-    image:
-      "https://www.logomaker.com/wpstatic/uploads/2015/06/Logo-Samples2-38-min.jpg",
-  },
-];
-
-const announcementData = [
-  {
-    id: 1,
-    title: "HRM Announcement",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, assumenda.",
-      date: "2022-01-01",
-  },
-  {
-    id: 2,
-    title: "Holiday Announcement",
-    date: "2022-01-01",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, assumenda.",
-      
-  },
-  {
-    id: 3,
-    title: "Salary Announcement",
-    date: "2022-01-01",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, assumenda.",
-  },
-]
+//   },
+//   {
+//     id: 3,
+//     title: "Salary Announcement",
+//     date: "2022-01-01",
+//     description:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, assumenda.",
+//   },
+// ]
 
 const HRMDashboard = () => {
-  const [startDate, setStartDate] = React.useState<Date | null>(new Date());
-  const [endDate, setEndDate] = React.useState<Date | null>(new Date());
-  const formateStartDate = format(
-    startDate ? startDate : new Date(),
-    "yyyy-MM-dd"
-  );
-  const formateEndDate = format(endDate ? endDate : new Date(), "yyyy-MM-dd");
+  const { data } = useGetDashboardHrmQuery();
 
-  const { data } = useGetDashboardSummariesQuery(
-    `start_date=${formateStartDate ? formateStartDate : ""}&end_date=${
-      formateEndDate ? formateEndDate : ""
-    }`
-  );
+  const hrmDashboardData = (data?.data as dashboardHrm) || [];
 
+  console.log("object", data);
   // const chartData = data?.data || [];
+
+  const employeeServiceLifeData = [
+    {
+      id: 1,
+      total_employee: Number(
+        hrmDashboardData.employee_service_life?.years_10_plus || 0
+      ),
+      years: "10+ years",
+      age: "60 + ages",
+    },
+    {
+      id: 2,
+      total_employee: Number(
+        hrmDashboardData.employee_service_life?.years_5_to_10 || 0
+      ),
+      years: "5-10 years",
+      age: "40 - 60 ages",
+    },
+    {
+      id: 3,
+      total_employee: Number(
+        hrmDashboardData.employee_service_life?.years_2_to_5 || 0
+      ),
+      years: "2-5 years",
+      age: "20 - 40 ages",
+    },
+    {
+      id: 4,
+      total_employee: Number(
+        hrmDashboardData.employee_service_life?.years_0_to_2 || 0
+      ),
+      years: "0-2 years",
+      age: "10 - 20 ages",
+    },
+    {
+      id: 5,
+      total_employee: Number(
+        hrmDashboardData.employee_service_life?.less_than_1_year || 0
+      ),
+      years: "Less than 1 year",
+      age: "Less than 10 ages",
+    },
+  ];
+
+  const employeeByAgeData = [
+    {
+      id: 1,
+      total_employee: Number(
+        hrmDashboardData.employee_age_group?.age_60_plus || 0
+      ),
+      age: "60+ ages",
+    },
+    {
+      id: 2,
+      total_employee: Number(
+        hrmDashboardData.employee_age_group?.age_40_to_60 || 0
+      ),
+      age: "40 - 60 ages",
+    },
+    {
+      id: 3,
+      total_employee: Number(
+        hrmDashboardData.employee_age_group?.age_20_to_40 || 0
+      ),
+      age: "20 - 40 ages",
+    },
+    {
+      id: 4,
+      total_employee: Number(
+        hrmDashboardData.employee_age_group?.age_10_to_20 || 0
+      ),
+      age: "10 - 20 ages",
+    },
+    {
+      id: 5,
+      total_employee: Number(
+        hrmDashboardData.employee_age_group?.age_less_than_10 || 0
+      ),
+      age: "Less than 10 ages",
+    },
+  ];
+
+  // Transform genders data to match the structure expected by RangeBarChart
+  const employeeGenderData =
+    hrmDashboardData.genders?.map((gender) => ({
+      id: gender.id,
+      total_employee: gender.employees_count,
+      gender: gender.name,
+    })) || [];
+
+  const employeeByDeptOrganization =
+    hrmDashboardData.organizations?.map((org) => ({
+      id: org.id,
+      total_employee: Number(org.employees_count || 0),
+      organization: org.name,
+      // image: "https://via.placeholder.com/100",
+    })) || [];
+
+  // Transform departments data to match the structure expected by ByOrgDept
+  const employeeByDepartment =
+    hrmDashboardData.departments?.map((dept) => ({
+      id: dept.id,
+      total_employee: Number(dept.employees_count || 0),
+      department: dept.name,
+      // image: "https://via.placeholder.com/100",
+    })) || [];
+
+  const organizationsPicChartData = hrmDashboardData?.organizations || [];
+
+  const employee_month = hrmDashboardData?.employee_month || [];
 
   return (
     <div className="flex h-full flex-col">
       <div className="flex-1 space-y-4">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-xl tracking-tight">HRM Dashboard</h2>
-          <div className="flex items-center space-x-2">
-            <DatePickerWithRange
-              setStartDate={setStartDate}
-              setEndDate={setEndDate}
-            />
-            {/* <Button size="sm">Download</Button> */}
-          </div>
+          <div className="flex items-center space-x-2"></div>
         </div>
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsContent value="overview" className="space-y-4">
@@ -268,7 +267,7 @@ const HRMDashboard = () => {
                       <UsersRound size={16} />
                     </div>
                     <div className="ml-3 text-lg font-bold">
-                      {data?.growth?.income.toLocaleString("en-IN") || 0}
+                      {hrmDashboardData?.employee?.total_employee}
                     </div>
                   </div>
                   <h2 className="mt-2 text-sm">Total Employee</h2>
@@ -278,12 +277,9 @@ const HRMDashboard = () => {
                     <div className="p-2 rounded-md bg-red-200">
                       <FolderOpenDot size={16} />
                     </div>
-                    <div className="ml-3 text-lg font-bold">
-                      {" "}
-                      {data?.growth?.expence.toLocaleString("en-IN") || 0}
-                    </div>
+                    <div className="ml-3 text-lg font-bold"> 0</div>
                   </div>
-                  <h2 className="mt-2 text-sm">Total Project</h2>
+                  <h2 className="mt-2 text-sm">Today's Attendance</h2>
                 </Card>
                 <Card className="p-4">
                   <div className="flex items-center">
@@ -292,7 +288,7 @@ const HRMDashboard = () => {
                     </div>
                     <div className="ml-3 text-lg font-bold">
                       {" "}
-                      {data?.growth?.net_profit.toLocaleString("en-IN") || 0}
+                      {hrmDashboardData?.leaves_today_count}
                     </div>
                   </div>
                   <h2 className="mt-2 text-sm">Today's Leave</h2>
@@ -304,7 +300,7 @@ const HRMDashboard = () => {
                     </div>
                     <div className="ml-3 text-lg font-bold">
                       {" "}
-                      {data?.growth?.net_profit.toLocaleString("en-IN") || 0}
+                      {hrmDashboardData?.employee?.new_employee}
                     </div>
                   </div>
                   <h2 className="mt-2 text-sm">New Employee</h2>
@@ -313,7 +309,7 @@ const HRMDashboard = () => {
             </Card>
             <div className="grid grid-cols-3 gap-3">
               <div className="pb-3">
-                <TotalEmployeeChart />
+                <TotalEmployeeChart employee_month={employee_month} />
 
                 {/* <Card className="mt-3">
                   <CardHeader>
@@ -321,7 +317,7 @@ const HRMDashboard = () => {
                   </CardHeader>
                   <CardContent className="pl-2">
                     <BarChartComponent chartData={chartData} />
-                   
+
                   </CardContent>
                 </Card> */}
                 <div className="mt-3">
@@ -338,11 +334,12 @@ const HRMDashboard = () => {
                     data={employeeData}
                   />
                 </div>
-
               </div>
               <div className="">
                 <div className="">
-                  <EmployeeBranch />
+                  <EmployeeBranch
+                    organizationsPicChartData={organizationsPicChartData}
+                  />
                 </div>
                 {/* <div className="mt-3">
                   <Voucher />
@@ -357,7 +354,7 @@ const HRMDashboard = () => {
                 <div className="mt-3">
                   <ByOrgDept
                     title="Employee By Department"
-                    data={employeeByDeptOrganization}
+                    data={employeeByDepartment}
                     subject="department"
                   />
                 </div>
@@ -369,7 +366,7 @@ const HRMDashboard = () => {
                   />
                 </div>
                 <div className="mt-3">
-                    <Announcement title="Announcement" data={announcementData}/>
+                  {/* <Announcement title="Announcement" data={announcementData}/> */}
                 </div>
               </div>
               <div>
@@ -389,7 +386,7 @@ const HRMDashboard = () => {
                   <RangeBarChart
                     title="Employee Buy Age"
                     dataKey_1="age"
-                    chartData={employeeServiceLifeData}
+                    chartData={employeeByAgeData}
                   />
                 </div>
                 <div className="mt-3">
