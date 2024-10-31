@@ -11,6 +11,7 @@ import { useGetVacancyRequisitionsQuery } from "@/store/services/hrm/api/vacancy
 import { vacancyRequisitionColumns } from "./components/columns";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const VacancyRequisition = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,9 +41,11 @@ const VacancyRequisition = () => {
               title="Vacancy Requisitions"
               description="Manage requisitions for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add vacancy
-            </Button>
+            <RoleAccess roles={["vacancy-requisitions.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add vacancy
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {vacancyRequisitions && (

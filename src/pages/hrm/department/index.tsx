@@ -11,6 +11,7 @@ import { Modal } from "@/components/common/modal";
 import { AddDepartmentForm } from "./components/add-department-form";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const Department = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,9 +38,11 @@ const Department = () => {
               title="Departments"
               description="Manage department for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Department
-            </Button>
+            <RoleAccess roles={["departments.delete"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Department
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {departments && (

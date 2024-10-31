@@ -63,7 +63,7 @@ const PermissionItems = ({
 
             {permissionOne.permissions &&
               permissionOne.permissions.length > 0 && (
-                <div className="flex gap-x-4 my-3">
+                <div className="grid grid-cols-4 gap-4 mt-4">
                   {permissionOne.permissions.map((permissionTwo, index) => (
                     <div key={index} className="flex items-center space-x-2">
                       <Checkbox

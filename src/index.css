@@ -99,7 +99,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-y-hidden;
     font-family: "Inter", sans-serif;
   }
   .roster-calendar .fc-license-message {

@@ -12,6 +12,7 @@ import { useGetSectionsQuery } from "@/store/services/hrm/api/section";
 import { AddSectionForm } from "./components/add-section-form";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const Section = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,9 +40,11 @@ const Section = () => {
               title="Sections"
               description="Manage sections for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Section
-            </Button>
+            <RoleAccess roles={["sections.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Section
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {sections && (

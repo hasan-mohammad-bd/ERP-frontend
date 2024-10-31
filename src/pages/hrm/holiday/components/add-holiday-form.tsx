@@ -27,7 +27,7 @@ import { useCreateHolidayMutation } from "@/store/services/hrm/api/holiday";
 import { Loading } from "@/components/common/loading";
 import { HolidayFormValues, schema } from "@/lib/validators/hrm/holidays";
 
-export function AddHolidayForm() {
+export default function AddHolidayForm() {
   const [openDatePickers, setOpenDatePickers] = useState<{
     fromDate: boolean[];
     toDate: boolean[];

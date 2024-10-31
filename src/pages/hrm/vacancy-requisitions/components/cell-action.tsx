@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { AddVacancyRequisitionForm } from "./add-vacancy-requisition-form";
 import { Modal } from "@/components/common/modal";
 import { useRemoveVacancyRequisitionMutation } from "@/store/services/hrm/api/vacancy-requisition";
+import RoleAccess from "@/lib/access-control/role-access";
 
 interface CellActionProps {
   data: VacancyRequisitionColumn;
@@ -36,46 +37,50 @@ export function CellAction({ data }: CellActionProps) {
   };
 
   return (
-    <div className="flex justify-center space-x-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => setUpdateModalOpen(true)}
+    <div className="flex justify-center space-x-2 min-h-10">
+      <RoleAccess roles={["vacancy-requisitions.edit"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => setUpdateModalOpen(true)}
 
-              // onClick={() => toggleModal()}
-            >
-              <Pencil className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Update Section</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+                // onClick={() => toggleModal()}
+              >
+                <Pencil className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Update Section</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => {
-                setAlertModalOpen(true);
-              }}
-            >
-              <Trash2 className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Delete Requisition</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <RoleAccess roles={["vacancy-requisitions.delete"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => {
+                  setAlertModalOpen(true);
+                }}
+              >
+                <Trash2 className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Delete Requisition</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
 
       <AlertModal
         title="Are you sure?"

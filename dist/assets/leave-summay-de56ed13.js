@@ -1,1 +1,0 @@
-import{bc as r}from"./index-911882cf.js";const s=r.injectEndpoints({endpoints:e=>({getLeaveSummary:e.query({query:a=>`leave-reports/summary?${a}`,providesTags:["leave-summary"]})}),overrideExisting:!1}),{useGetLeaveSummaryQuery:u,useLazyGetLeaveSummaryQuery:t}=s;export{u as a,t as u};

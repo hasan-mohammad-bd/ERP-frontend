@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { AddEmployeeClassForm } from "./add-employee-class-form";
 import { Modal } from "@/components/common/modal";
 import { useRemoveEmployeeClassMutation } from "@/store/services/hrm/api/employee-class";
+import RoleAccess from "@/lib/access-control/role-access";
 
 interface CellActionProps {
   data: EmployeeClassColumn;
@@ -36,46 +37,50 @@ export function CellAction({ data }: CellActionProps) {
   };
 
   return (
-    <div className="flex justify-center space-x-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => setUpdateModalOpen(true)}
+    <div className="flex justify-center space-x-2 min-h-10">
+      <RoleAccess roles={["employee-classes.edit"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => setUpdateModalOpen(true)}
 
-              // onClick={() => toggleModal()}
-            >
-              <Pencil className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Update Employee Class</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+                // onClick={() => toggleModal()}
+              >
+                <Pencil className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Update Employee Class</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => {
-                setAlertModalOpen(true);
-              }}
-            >
-              <Trash2 className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Delete Employee Class</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <RoleAccess roles={["employee-classes.delete"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => {
+                  setAlertModalOpen(true);
+                }}
+              >
+                <Trash2 className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Delete Employee Class</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
 
       <AlertModal
         title="Are you sure?"

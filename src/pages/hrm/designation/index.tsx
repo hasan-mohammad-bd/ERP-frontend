@@ -11,6 +11,7 @@ import { AddDesignationForm } from "./components/add-designation-form";
 import { useGetDesignationQuery } from "@/store/services/hrm/api/designation";
 import { PaginationInfo } from "@/types";
 import { PaginationState } from "@tanstack/react-table";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const Designation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,9 +36,11 @@ const Designation = () => {
               title="Designation"
               description="Manage departments for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Designation
-            </Button>
+            <RoleAccess roles={["designations.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Designation
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {designations && (

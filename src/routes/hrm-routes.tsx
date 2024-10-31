@@ -1,6 +1,5 @@
 import withFallback from "@/utils/with-fallback";
 import {
-
   Department,
   Designation,
   Employee,
@@ -36,21 +35,16 @@ import {
   NotFoundPage,
   HRMDashboard,
   LeaveSummary,
+  AddHolidayForm,
+  EmployeeForm,
+  EstimateSalary,
+  LeaveBalance,
+  LeaveUsagesReport,
+  LeaveTrend,
+  LeaveTypeSummary,
+  AttendanceSummary,
 } from "./components";
-
-import { AddHolidayForm } from "@/pages/hrm/holiday/components/add-holiday-form";
-import EstimateSalary from "@/pages/hrm/estimate-salary";
-import LeaveBalance from "@/pages/hrm/reports/leave-reports/leave-balance";
-import LeaveUsagesReport from "@/pages/hrm/reports/leave-reports/leave-usages";
-import LeaveTrend from "@/pages/hrm/reports/leave-reports/leave-trend";
-import LeaveTypeSummary from "@/pages/hrm/reports/leave-reports/leave-type-summary";
-import { EmployeeForm } from "@/pages/hrm/employee/employee-list/components/employee-form";
-import AttendanceSummary from "@/pages/hrm/reports/leave-reports/attendance-summary";
-
-
-
-
-// import AttendancePolicy from "@/pages/hrm/attendance-policy";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const hrmRoutes = {
   path: "hrm/",
@@ -58,112 +52,188 @@ const hrmRoutes = {
   children: [
     {
       index: true,
-      element: withFallback(<HRMDashboard/>),
+      element: withFallback(
+        <RoleAccess roles={["dashboard-reports", "dashboard-reports.show"]} showUnauthorizedPage={true}>
+          <HRMDashboard />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
-
     {
       path: "employees-list/",
-      // element: withFallback(<Employee />),
       errorElement: withFallback(<ErrorPage />),
       children: [
         {
           index: true,
-          element: withFallback(<Employee />),
+          element: withFallback(
+            <RoleAccess roles={["employees"]} showUnauthorizedPage={true}>
+              <Employee />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         {
           path: "add",
-          element: withFallback(<EmployeeForm />),
+          element: withFallback(
+            <RoleAccess roles={["employees.create"]} showUnauthorizedPage={true}>
+              <EmployeeForm />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         {
           path: "edit/:id",
-          element: withFallback(<EmployeeForm />),
+          element: withFallback(
+            <RoleAccess roles={["employees.edit"]} showUnauthorizedPage={true}>
+              <EmployeeForm />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
-      ]
+      ],
     },
 
-    //our(new) dev task
+    // Our (new) dev task
     {
       path: "employee-salary-payslip",
-      element: withFallback(<EmployeeSalaryPayslip />),
+      element: withFallback(
+        <RoleAccess roles={["hrm"]} showUnauthorizedPage={true}>
+          <EmployeeSalaryPayslip />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
 
     {
       path: "bank-salary-advice",
-      element: withFallback(<BankSalaryAdvice />),
+      element: withFallback(
+        <RoleAccess roles={["hrm"]} showUnauthorizedPage={true}>
+          <BankSalaryAdvice />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
+
     {
       path: "salary-certificate",
-      element: withFallback(<SalaryCertificate />),
+      element: withFallback(
+        <RoleAccess roles={["hrm"]} showUnauthorizedPage={true}>
+          <SalaryCertificate />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
 
     {
       path: "daily-attendance",
-      element: withFallback(<DailyAttendance />),
+      element: withFallback(
+        <RoleAccess roles={["hrm"]} showUnauthorizedPage={true}>
+          <DailyAttendance />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
 
     {
       path: "departments",
-      element: withFallback(<Department />),
+      element: withFallback(
+        <RoleAccess roles={["departments"]} showUnauthorizedPage={true}>
+          <Department />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
+
     {
       path: "designations",
-      element: withFallback(<Designation />),
+      element: withFallback(
+        <RoleAccess roles={["designations"]} showUnauthorizedPage={true}>
+          <Designation />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
+
     {
       path: "sections",
-      element: withFallback(<Section />),
+      element: withFallback(
+        <RoleAccess roles={["sections"]} showUnauthorizedPage={true}>
+          <Section />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
+
     {
       path: "employee-classes",
-      element: withFallback(<EmployeeClass />),
+      element: withFallback(
+        <RoleAccess roles={["employee-classes"]} showUnauthorizedPage={true}>
+          <EmployeeClass />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
+
     {
       path: "employee-grades",
-      element: withFallback(<EmployeeGrade />),
+      element: withFallback(
+        <RoleAccess roles={["employee-grades"]} showUnauthorizedPage={true}>
+          <EmployeeGrade />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
+
     {
-      path: "schedules",
-      element: withFallback(<Schedule />),
+      path: "shifts",
+      element: withFallback(
+        <RoleAccess roles={["schedules"]} showUnauthorizedPage={true}>
+          <Schedule />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
+
     {
       path: "rosters",
-      element: withFallback(<Roster />),
+      element: withFallback(
+        <RoleAccess roles={["rosters"]} showUnauthorizedPage={true}>
+          <Roster />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
-
     },
+
     {
       path: "roster-employee",
-      element: withFallback(<EmployeeRoster />),
+      element: withFallback(
+        <RoleAccess roles={["roster-employees "]} showUnauthorizedPage={true}>
+          <EmployeeRoster />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
 
     {
       path: "holidays/",
-      // element: withFallback(<Holiday />),
       errorElement: <ErrorPage />,
       children: [
         {
           index: true,
-          element: withFallback(<Holiday />),
+          element: withFallback(
+            <RoleAccess roles={["holidays"]} showUnauthorizedPage={true}>
+              <Holiday />
+            </RoleAccess>
+          ),
           errorElement: <ErrorPage />,
         },
         {
           path: "add",
-          element: withFallback(<AddHolidayForm />),
+          element: withFallback(
+            <RoleAccess roles={["holidays.create "]} showUnauthorizedPage={true}>
+              <AddHolidayForm />
+            </RoleAccess>
+          ),
           errorElement: <ErrorPage />,
         },
       ],
@@ -171,131 +241,238 @@ const hrmRoutes = {
 
     {
       path: "deduction-policy",
-      element: withFallback(<DeductionPolicy />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "overtime-policy",
-      element: withFallback(<OverTimePolicy />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "leave-policy",
-      element: withFallback(<LeavePolicy />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "vacancy-requisitions",
-      element: withFallback(<VacancyRequisition />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "job-posts",
-      element: withFallback(<JobPost />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "job-candidates",
-      element: withFallback(<JobCandidate />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "job-apply",
-      element: withFallback(<JobApply />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "attendance-policy",
-      element: withFallback(<AttendancePolicy />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "attendance-policy-mapping",
-      element: withFallback(<AttendancePolicyMapping />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "leave-request",
-      element: withFallback(<LeaveRequest />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "leave-group",
-      element: withFallback(<LeaveGroup />),
+      element: withFallback(
+        <RoleAccess roles={["deduction-policies"]} showUnauthorizedPage={true}>
+          <DeductionPolicy />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
 
     {
+      path: "overtime-policy",
+      element: withFallback(
+        <RoleAccess roles={["hrm"]} showUnauthorizedPage={true}>
+          <OverTimePolicy />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "leave-policy",
+      element: withFallback(
+        <RoleAccess roles={["leave-policies"]} showUnauthorizedPage={true}>
+          <LeavePolicy />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "vacancy-requisitions",
+      element: withFallback(
+        <RoleAccess roles={["vacancy-requisitions"]} showUnauthorizedPage={true}>
+          <VacancyRequisition />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "job-posts",
+      element: withFallback(
+        <RoleAccess roles={["job-posts"]} showUnauthorizedPage={true}>
+          <JobPost />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "job-candidates",
+      element: withFallback(
+        <RoleAccess roles={["job-candidates"]} showUnauthorizedPage={true}>
+          <JobCandidate />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "job-apply",
+      element: withFallback(
+        <RoleAccess roles={["job-applies"]} showUnauthorizedPage={true}>
+          <JobApply />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "attendance-policy",
+      element: withFallback(
+        <RoleAccess roles={["attendance-policy"]} showUnauthorizedPage={true}>
+          <AttendancePolicy />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "attendance-policy-mapping",
+      element: withFallback(
+        <RoleAccess roles={["employee-attendance-policies"]} showUnauthorizedPage={true}>
+          <AttendancePolicyMapping />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    { 
+      path: "leave-request",
+      element: withFallback(
+        <RoleAccess roles={["leaves"]} showUnauthorizedPage={true}>
+          <LeaveRequest />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "leave-group",
+      element: withFallback(
+        <RoleAccess roles={["leave-groups"]} showUnauthorizedPage={true}>
+          <LeaveGroup />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "leave-type",
+      element: withFallback(
+        <RoleAccess roles={["leaves"]} showUnauthorizedPage={true}>
+          <LeaveType />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "attendances-list",
+      element: withFallback(
+        <RoleAccess roles={["attendances"]} showUnauthorizedPage={true}>
+          <AttendancesList />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "salary_breakup",
+      element: withFallback(
+        <RoleAccess roles={["salaries"]} showUnauthorizedPage={true}>
+          <SalaryBreakUp />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "salary-sheet",
+      element: withFallback(
+        <RoleAccess roles={["salaries", "salaries.show"]} showUnauthorizedPage={true}>
+          <SalarySheet />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "salary-setup/:employee_id",
+      element: withFallback(
+        <RoleAccess roles={["salary-settings.create", "salary-settings.edit", "salary-settings"]} showUnauthorizedPage={true}>
+          <SalarySetup />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "estimate-salary",
+      element: withFallback(
+        <RoleAccess roles={["salary-settings"]} showUnauthorizedPage={true}>
+          <EstimateSalary />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "leave-summary",
+      element: withFallback(
+        <RoleAccess roles={["hrm-report.leave-reports.summary"]} showUnauthorizedPage={true}>
+          <LeaveSummary />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "leave-usages",
+      element: withFallback(
+        <RoleAccess roles={["hrm-report.leave-reports.usages"]} showUnauthorizedPage={true}>
+          <LeaveUsagesReport />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "leave-balance",
+      element: withFallback(
+        <RoleAccess roles={["hrm-report.leave-reports.balance"]} showUnauthorizedPage={true}>
+          <LeaveBalance />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    
+    {
       path: "leave-trend",
-      element: withFallback(<LeaveTrend />),
+      element: withFallback(
+        <RoleAccess roles={["hrm-report.leave-reports.trend"]} showUnauthorizedPage={true}>
+          <LeaveTrend />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
 
     {
       path: "leave-type-summary",
-      element: withFallback(<LeaveTypeSummary />),
+      element: withFallback(
+        <RoleAccess roles={["hrm-report.leave-reports.type-summary"]} showUnauthorizedPage={true}>
+          <LeaveTypeSummary />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
 
+    {
+      path: "attendance-summary",
+      element: withFallback(
+        <RoleAccess roles={["hrm-report.attendance-summary-report"]} showUnauthorizedPage={true}>
+          <AttendanceSummary />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
 
-    {
-      path: "leave-type",
-      element: withFallback(<LeaveType />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "attendances-list",
-      element: withFallback(<AttendancesList />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "salary_breakup",
-      element: withFallback(<SalaryBreakUp />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "salary-sheet",
-      element: withFallback(<SalarySheet />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "salary-setup/:employye_id",
-      element: withFallback(<SalarySetup />),
-      errorElement: withFallback(<ErrorPage />),
-    },
     {
       path: "*",
       element: withFallback(<NotFoundPage />),
     },
-
-
-    {
-      path: "estimate-salary",
-      element: withFallback(<EstimateSalary />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "leave-summary",
-      element: withFallback(<LeaveSummary />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "leave-usages",
-      element: withFallback(<LeaveUsagesReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "leave-balance",
-      element: withFallback(<LeaveBalance />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "attendance-summary",
-      element: withFallback(<AttendanceSummary />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-
-
   ],
 };
 

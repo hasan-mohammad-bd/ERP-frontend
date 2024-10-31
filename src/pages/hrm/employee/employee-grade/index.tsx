@@ -13,6 +13,7 @@ import { AddEmployeeGradeForm } from "./components/add-employee-grade-form";
 import { employeeGradeColumns } from "./components/columns";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const EmployeeGrade = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,9 +42,11 @@ const EmployeeGrade = () => {
               title="Employee Grades"
               description="Manage employee grades for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Employee Grade
-            </Button>
+            <RoleAccess roles={["employee-grades.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Employee Grade
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {employeeGrades && (

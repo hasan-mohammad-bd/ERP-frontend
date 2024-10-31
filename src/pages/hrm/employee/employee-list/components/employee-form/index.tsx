@@ -88,7 +88,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 // }
 
-export function EmployeeForm() {
+export default function EmployeeForm() {
   const [isPasswordType, setIsPasswordType] = useState(true);
   const params = useParams();
   const navigate = useNavigate();

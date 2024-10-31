@@ -11,6 +11,7 @@ import { useGetEmployeeClassesQuery } from "@/store/services/hrm/api/employee-cl
 import { AddEmployeeClassForm } from "./components/add-employee-class-form";
 import { PaginationInfo } from "@/types";
 import { PaginationState } from "@tanstack/react-table";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const EmployeeClass = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,9 +40,11 @@ const EmployeeClass = () => {
               title="Employee Class"
               description="Manage employee classes for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Employee Class
-            </Button>
+            <RoleAccess roles={["employee-classes.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Employee Class
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {employeeClasses && (
