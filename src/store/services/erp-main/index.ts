@@ -15,6 +15,6 @@ export const authApi = createApi({
 			return headers;
 		},
 	}),
-	tagTypes: ["user", "organizations", "locations", "roles", "permissions", "users"],
+	tagTypes: ["user", "organizations", "locations", "roles", "permissions", "users", "approval-groups"],
 	endpoints: () => ({}),
 });

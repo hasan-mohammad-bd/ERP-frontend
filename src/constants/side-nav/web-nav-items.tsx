@@ -1,5 +1,5 @@
 import { NavItem } from "@/types";
-import { MapPin, RollerCoaster, Store, Users } from "lucide-react";
+import { MapPin, RollerCoaster, Settings, Store, Users } from "lucide-react";
 
 const webNavItems: NavItem[] = [
 	// {
@@ -16,6 +16,25 @@ const webNavItems: NavItem[] = [
 		color: "text-sky-500",
 		permissions: ["organizations"],
 	},
+	{
+		title: "Settings",
+		icon: Settings,
+		href: "/web",
+		color: "text-sky-500",
+		permissions: ["settings"],
+		isChildren: true,
+		children: [
+			{
+				title: "Approval Groups",
+				icon: Settings,
+				href: "/web/approval-group",
+				color: "text-sky-500",
+				permissions: ["settings"],
+			},
+		],
+
+	}
+	,
 
 	{
 		title: "Locations",

@@ -12,6 +12,8 @@ import Users from "@/pages/web/users";
 import { AddUserRoleForm } from "@/pages/web/user-role/components/add-user-role-form";
 import RoleAccess from "@/lib/access-control/role-access";
 import { Navigate } from "react-router-dom";
+import ApprovalGroup from "@/pages/web/approval-groups";
+import { AddApprovalGroups } from "@/pages/web/approval-groups/components/add-approval-groups-form";
 
 
 const webRoutes = {
@@ -57,6 +59,37 @@ const webRoutes = {
 					errorElement: withFallback(<ErrorPage />),
 				}
 			]
+		},
+		{
+			path: "approval-group/",
+			errorElement: withFallback(<ErrorPage />),
+			children: [
+				{
+					index: true,
+					element: withFallback(
+						<RoleAccess roles={["settings"]} showUnauthorizedPage={true}>
+							<ApprovalGroup />
+						</RoleAccess>),
+					errorElement: withFallback(<ErrorPage />),
+				},
+				{
+					path: "add",
+					element: withFallback(
+						<RoleAccess roles={["settings.create"]} showUnauthorizedPage={true}>
+							<AddApprovalGroups />
+						</RoleAccess>),
+					errorElement: withFallback(<ErrorPage />),
+				},
+				{
+					path: "edit/:id",
+					element: withFallback(
+						<RoleAccess roles={["settings.edit"]} showUnauthorizedPage={true}>
+							<AddApprovalGroups />
+						</RoleAccess>),
+					errorElement: withFallback(<ErrorPage />),
+				}
+			]
+
 		},
 		{
 			path: "locations",
