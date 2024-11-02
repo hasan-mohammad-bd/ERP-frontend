@@ -40,6 +40,7 @@ import MultipleSelector, { Option } from "@/components/ui/multiSelectSearch";
 import { useGetUsersQuery } from "@/store/services/erp-main/api/users";
 import { UsersRow } from "@/lib/validators/web/users";
 
+
 interface Catalog {
   name: string;
   id: number;
@@ -66,13 +67,13 @@ export function AddApprovalGroups() {
   const { data } = useGetApprovalGroupByIdQuery(`${id}`);
   const previousData = data?.data ;
   const navigate = useNavigate();
-
+console.log(previousData)
   const form = useForm<ApprovalGroupFormValues>({
     // resolver: zodResolver(approvalGroupSchema),
     defaultValues: 
     {
        name: previousData?.name || "",
-      location_id: previousData?.location_id|| null,
+      location_id: previousData?.location_id?.toString() || null,
       type: previousData?.type || "",
       membars: previousData?.members?.map((item: { id: number }) => item.id) || [],
       level_count: previousData?.level_count ,
@@ -85,7 +86,7 @@ export function AddApprovalGroups() {
     if (previousData) {
       form.reset({
         name: previousData.name || "",
-        location_id: previousData.location_id || null,
+        location_id: previousData.location_id?.toString() || null,
         type: previousData.type || "",
         membars: previousData.members?.map((item : { id: number }) => item.id) || [],
         level_count: previousData.level_count,
@@ -115,6 +116,35 @@ export function AddApprovalGroups() {
       form.setValue(`levels.${index}.level`, index + 1);
     });
   }, [levels.length, form]);
+
+  useEffect(() => {
+    if(previousData) {
+      previousData.members?.map((item:{id: number, name: string}) => {
+        setMembarsOptions((prev) => [
+          ...prev,
+          {
+            value: String(item.id),
+            label: `${item.name} (${item.id})`,
+          },
+        ])
+      })
+    }
+  }, [previousData, form]);
+
+
+  useEffect(() => {
+    if(previousData) {
+      previousData.levels?.map((item:{level: number, admins: { id: number, name: string }[]}) => {
+        setAdminOptions((prev) => ({
+          ...prev,
+          [item.level]: item.admins?.map((admin) => ({
+            value: String(admin.id),
+            label: `${admin.name} (${admin.id})`,
+          })),
+        }));
+      })
+    }
+    },[ previousData, form]);
 
   useEffect(() => {
     if (levels.length === 0) {
@@ -276,7 +306,7 @@ export function AddApprovalGroups() {
                             <FormControl>
                               <MultipleSelector
                                 {...field}
-                                value={adminOptions[index] || []}
+                                value={adminOptions[previousData? index + 1 : index  ] || []}
                                 onSearch={handleSearchAdmin}
                                 onChange={(options) => {
                                   setAdminOptions((prev) => ({

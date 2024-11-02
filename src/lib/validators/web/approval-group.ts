@@ -84,7 +84,7 @@ const detailsSchema = z.object({
   type: z.string(),
   status: z.number(),
   level_count: z.number(),
-  location_id: z.number().nullable(),
+  location_id: z.string().nullable(),
   location: z.unknown().nullable(),
   members: z.array(MemberSchema),
   user: z.unknown().nullable(),
@@ -105,7 +105,7 @@ const LevelSchema2 = z.object({
 export const approvalGroupsSchema = z.object({
   name: z.string(),
   type: z.string(),
-  location_id: z.coerce.number().nullable(),
+  location_id: z.string().nullable(),
   membars: z.array(z.number()),
   level_count: z.coerce.number(),
   levels: z.array(LevelSchema2),
