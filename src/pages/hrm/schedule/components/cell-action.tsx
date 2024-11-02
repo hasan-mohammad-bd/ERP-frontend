@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -6,14 +5,15 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useState } from "react";
 
-import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
+import { Modal } from "@/components/common/modal";
 import { type ScheduleColumn } from "@/lib/validators";
+import { useRemoveScheduleMutation } from "@/store/services/hrm/api/schedule";
+import { Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { AddScheduleForm } from "./add-schedule-form";
-import { Modal } from "@/components/common/modal";
-import { useRemoveScheduleMutation } from "@/store/services/hrm/api/schedule";
 
 interface CellActionProps {
   data: ScheduleColumn;
@@ -88,7 +88,7 @@ export function CellAction({ data }: CellActionProps) {
       />
       {updateModalOpen && (
         <Modal
-          title="Update Schedule"
+          title="Update Shift"
           isOpen={updateModalOpen}
           toggleModal={() => setUpdateModalOpen(false)}
         >

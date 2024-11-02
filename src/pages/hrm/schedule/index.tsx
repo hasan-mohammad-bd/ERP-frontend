@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
+import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
+import { Separator } from "@radix-ui/react-dropdown-menu";
+import { Plus } from "lucide-react";
+import React, { useState } from "react";
 
 import { Modal } from "@/components/common/modal";
 
-import { AddScheduleForm } from "./components/add-schedule-form";
 import { useGetSchedulesQuery } from "@/store/services/hrm/api/schedule";
-import { scheduleColumns } from "./components/columns";
-import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
+import { PaginationState } from "@tanstack/react-table";
+import { AddScheduleForm } from "./components/add-schedule-form";
+import { scheduleColumns } from "./components/columns";
 
 const Schedule = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,11 +37,11 @@ const Schedule = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="Schedule"
-              description="Manage schedule for you business"
+              title="Shifts"
+              description="Manage shifts for you business"
             />
             <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Schedule
+              <Plus className="mr-2 h-4 w-4" /> Add Shift
             </Button>
           </div>
           <Separator />
@@ -60,7 +60,7 @@ const Schedule = () => {
       </div>
       {isOpen && (
         <Modal
-          title="Add Schedule"
+          title="Add Shift"
           isOpen={isOpen}
           toggleModal={() => setIsOpen(false)}
         >
