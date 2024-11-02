@@ -44,6 +44,10 @@ import {
   LeaveTypeSummary,
   AttendanceSummary,
 } from "./components";
+
+import DailyAttendanceReport from "@/pages/hrm/reports/daily-attendance-report";
+
+// import AttendancePolicy from "@/pages/hrm/attendance-policy";
 import RoleAccess from "@/lib/access-control/role-access";
 import SalaryBillReport from "@/pages/hrm/reports/salary-bill-report";
 
@@ -485,6 +489,40 @@ const hrmRoutes = {
       path: "*",
       element: withFallback(<NotFoundPage />),
     },
+
+
+    {
+      path: "estimate-salary",
+      element: withFallback(<EstimateSalary />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "leave-summary",
+      element: withFallback(<LeaveSummary />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "leave-usages",
+      element: withFallback(<LeaveUsagesReport />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "leave-balance",
+      element: withFallback(<LeaveBalance />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "attendance-summary",
+      element: withFallback(<AttendanceSummary />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "daily-attendance-report",
+      element: withFallback(<DailyAttendanceReport />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+
   ],
 };
 

@@ -354,6 +354,13 @@ const hrmNavItems: NavItem[] = [
         href: "/hrm/salary-bill-report",
         permissions: ["hrm"],
       },
+      {
+        title: "Daily Attendance",
+        icon: UserRoundSearch,
+        href: "daily-attendance-report",
+        color: "text-sky-500",
+        permissions: ["hrm"],
+      },
     ],
   },
 /*   {
