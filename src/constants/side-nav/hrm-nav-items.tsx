@@ -3,13 +3,13 @@ import {
   AlignEndVertical,
   Blinds,
   BookOpenCheck,
-  BriefcaseBusiness,
+  // BriefcaseBusiness,
   Building,
   CalendarCheck2,
   Captions,
   ClipboardType,
   Clock,
-  Disc,
+  // Disc,
   Fan,
   FileBadge2,
   LayoutDashboard,
@@ -19,7 +19,7 @@ import {
   Settings,
   Soup,
   SquarePen,
-  UserRoundCog,
+  // UserRoundCog,
   UserRoundSearch,
   Users,
   Vote,
@@ -349,7 +349,7 @@ const hrmNavItems: NavItem[] = [
       },
     ],
   },
-  {
+/*   {
     title: "Job",
     href: "/hrm",
     icon: BriefcaseBusiness,
@@ -386,7 +386,7 @@ const hrmNavItems: NavItem[] = [
         permissions: ["job-applies"],
       },
     ],
-  },
+  }, */
 
   {
     title: "HRM Setting",

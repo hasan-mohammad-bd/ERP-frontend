@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
 import { useEstimateSalaryMutation } from "@/store/services/hrm/api/estimate-salary";
 import { useSalaryGenerateMutation } from "@/store/services/hrm/api/salary-generate"; // Import the salaryGenerate mutation
@@ -30,6 +30,8 @@ import { Card } from "@/components/ui/card";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
+// import { RootState } from "@/store";
 
 type EstimateSalarySearchToolbarProps = {
   onShowEstimateSalary: (salaryData: EstimateSalaryColumn[]) => void;
@@ -51,7 +53,23 @@ export default function EstimateSalarySearchToolbar({
   const [estimateClicked, setEstimateClicked] = useState(false);
   const [estimateSalary] = useEstimateSalaryMutation();
   const [salaryGenerate] = useSalaryGenerateMutation(); // Hook for salary generation API
+  const selectedEmployeeAction = useSelector(
+    (state: any) => state.common.selectedEmployeeAction
+  );
 
+  console.log(selectedEmployees)
+
+  console.log(selectedEmployeeAction);
+
+  useEffect(() => {
+    if (selectedEmployeeAction) {
+      const uniqueEmployees = selectedEmployeeAction.payload.map((item: any) => ({
+        value: String(item.id),
+        label: `${item.first_name} ${item.last_name} (${item.id})`,
+      }));
+      setSelectedEmployees(uniqueEmployees);
+    }
+  }, [selectedEmployeeAction]);
   const { data: employeeList } = useGetEmployeesQuery(
     `per_page=15&page=1&search=${employeeSearchTerm}`,
     {

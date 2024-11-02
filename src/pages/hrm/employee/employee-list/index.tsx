@@ -17,6 +17,8 @@ import { Separator } from "@/components/ui/separator";
 import EmployeeFilters from "./components/employee-filters";
 import ListSkeleton from "@/components/common/ListSkeleton";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setSelectedEmployeeAction } from "@/store/services/erp-main/slices/commonSlice";
 
 const BULK_ACTIONS = [
   {
@@ -31,10 +33,15 @@ const BULK_ACTIONS = [
     label: "Delete Selected",
     value: "delete-selected",
   },
+  {
+    label: "Salary Estimate/Generate",
+    value: "salary-estimate-generate",
+  },
 ];
 
 const Employee = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [filterParams, setFilterParams] = useState("");
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
@@ -63,6 +70,15 @@ const Employee = () => {
     toast.success("Employee roster updated successfully");
     setSelectedBulkAction({ action: "", payload: [] });
   };
+
+  const handleSaveToGlobalState = () => {
+    console.log(selectedBulkAction)
+    dispatch(setSelectedEmployeeAction(selectedBulkAction));
+    toast.success("Employee selected successfully");
+    setSelectedBulkAction({ action: "", payload: [] });
+    navigate("/hrm/estimate-salary")
+  };
+
 
   return (
     <>
@@ -125,6 +141,21 @@ const Employee = () => {
           />
         </Modal>
       )}
+
+      {
+        selectedBulkAction.action === "salary-estimate-generate" && (
+          <Modal
+            title="Salary Estimate/Generate"
+            toggleModal={() => setSelectedBulkAction({ action: "", payload: [] })}
+            isOpen={selectedBulkAction.action === "salary-estimate-generate"}
+            className="!h-fit"
+          >
+            {/* delete each on at a time */}
+            <span>{selectedBulkAction.payload.map((item) => item.first_name).join(", ")} </span> 
+            <Button onClick={handleSaveToGlobalState}>Select the Employees</Button>
+          </Modal>
+        )
+      }
     </>
   );
 };
