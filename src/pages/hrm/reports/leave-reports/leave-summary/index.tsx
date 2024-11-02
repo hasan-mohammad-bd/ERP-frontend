@@ -1,19 +1,22 @@
 // import React from "react";
+import PrintPDFWrapper from "@/components/common";
+import { Heading } from "@/components/common/heading";
 import { Loading } from "@/components/common/loading";
+import { Paginator } from "@/components/common/paginator";
+import { Card } from "@/components/ui/card";
+import EmployeeFilters from "@/pages/hrm/employee/employee-list/components/employee-filters";
 import { useGetLeaveSummaryQuery } from "@/store/services/hrm/api/report/leave/leave-summay";
 import { PaginationInfo } from "@/types";
-import LeaveSummaryTable from "./components/leave-summary-table";
 import { useState } from "react";
-import { Paginator } from "@/components/common/paginator";
-import PrintPDFWrapper from "@/components/common";
-import { Card } from "@/components/ui/card";
+import LeaveSummaryTable from "./components/leave-summary-table";
 
 const LeaveSummary = () => {
   const [page, setPage] = useState(1); // Default current page
   const [pageSize, setPageSize] = useState(10); // Number of items per page
+  const [filterParams, setFilterParams] = useState("");
 
   const { data, isLoading } = useGetLeaveSummaryQuery(
-    `per_page=${pageSize}&page=${page}`
+    `per_page=${pageSize}&page=${page}&${filterParams}`
   );
 
   const leaveSummary = data?.data || [];
@@ -25,6 +28,13 @@ const LeaveSummary = () => {
 
   return (
     <>
+      <div className="mb-5 space-y-5">
+        <Heading
+          title="Employees"
+          description="Manage employees for you business"
+        />
+        <EmployeeFilters setFilterParams={setFilterParams} />
+      </div>
       <Card>
         <PrintPDFWrapper className="space-y-4" fileName="leave-summary-report">
           <div className="flex-1 space-y-4 my-4">
