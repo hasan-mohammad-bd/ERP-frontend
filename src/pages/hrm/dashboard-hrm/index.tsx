@@ -17,92 +17,92 @@ import ByOrgDept from "./by-org-dept";
 import { useGetDashboardHrmQuery } from "@/store/services/hrm/api/dashboard-hrm";
 import { dashboardHrm } from "@/store/services/hrm/api/dashboard-hrm/type";
 
-const employeeData = [
-  {
-    id: 1,
-    employee_name: "John Doe",
-    image:
-      "https://plus.unsplash.com/premium_photo-1674854858248-8987c02e74cf?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    department: "IT",
-    designation: "Software Engineer",
-    age: "70",
-    gender: "Male",
-    leave: true,
-    organization: "One Tech",
-  },
-  {
-    id: 2,
-    employee_name: "Rahana Rahaman",
-    designation: "Manager",
-    image:
-      "https://images.unsplash.com/photo-1664575602554-2087b04935a5?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    department: "Accounts",
-    age: "25",
-    gender: "Female",
-    leave: true,
-    organization: "Opportunity",
-  },
-  {
-    id: 3,
-    employee_name: "Bathon Khan",
-    designation: "Manager",
-    image:
-      "https://images.unsplash.com/photo-1464863979621-258859e62245?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    department: "IT",
-    age: "21",
-    gender: "Female",
-    leave: true,
-    organization: "One Lead",
-  },
-  {
-    id: 4,
-    employee_name: "Mike Smith",
-    designation: "Manager",
-    image:
-      "https://plus.unsplash.com/premium_photo-1671656349218-5218444643d8?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    department: "Development",
-    age: "30",
-    gender: "Male",
-    leave: true,
-    organization: "One Mood",
-  },
-  {
-    id: 5,
-    employee_name: "Jasika Khan",
-    designation: "Front-end Developer",
-    image:
-      "https://plus.unsplash.com/premium_photo-1670884442192-7b58d513cd55?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    department: "IT",
-    age: "30",
-    gender: "Female",
-    leave: false,
-    organization: "One Restaurant",
-  },
-  {
-    id: 6,
-    employee_name: "Orange Qube",
-    designation: "Manager",
-    image:
-      "https://plus.unsplash.com/premium_photo-1669879825881-6d4e4bde67d5?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    department: "IT",
-    age: "32",
-    gender: "Male",
-    leave: true,
-    organization: "One Restaurant",
-  },
-  {
-    id: 7,
-    employee_name: "Halana Omar",
-    designation: "Dev ops Engineer",
-    image:
-      "https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    department: "Design",
-    age: "22",
-    gender: "Female",
-    leave: true,
-    organization: "One Tech",
-  },
-];
+// const employeeData = [
+//   {
+//     id: 1,
+//     employee_name: "John Doe",
+//     image:
+//       "https://plus.unsplash.com/premium_photo-1674854858248-8987c02e74cf?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//     department: "IT",
+//     designation: "Software Engineer",
+//     age: "70",
+//     gender: "Male",
+//     leave: true,
+//     organization: "One Tech",
+//   },
+//   {
+//     id: 2,
+//     employee_name: "Rahana Rahaman",
+//     designation: "Manager",
+//     image:
+//       "https://images.unsplash.com/photo-1664575602554-2087b04935a5?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//     department: "Accounts",
+//     age: "25",
+//     gender: "Female",
+//     leave: true,
+//     organization: "Opportunity",
+//   },
+//   {
+//     id: 3,
+//     employee_name: "Bathon Khan",
+//     designation: "Manager",
+//     image:
+//       "https://images.unsplash.com/photo-1464863979621-258859e62245?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//     department: "IT",
+//     age: "21",
+//     gender: "Female",
+//     leave: true,
+//     organization: "One Lead",
+//   },
+//   {
+//     id: 4,
+//     employee_name: "Mike Smith",
+//     designation: "Manager",
+//     image:
+//       "https://plus.unsplash.com/premium_photo-1671656349218-5218444643d8?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//     department: "Development",
+//     age: "30",
+//     gender: "Male",
+//     leave: true,
+//     organization: "One Mood",
+//   },
+//   {
+//     id: 5,
+//     employee_name: "Jasika Khan",
+//     designation: "Front-end Developer",
+//     image:
+//       "https://plus.unsplash.com/premium_photo-1670884442192-7b58d513cd55?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//     department: "IT",
+//     age: "30",
+//     gender: "Female",
+//     leave: false,
+//     organization: "One Restaurant",
+//   },
+//   {
+//     id: 6,
+//     employee_name: "Orange Qube",
+//     designation: "Manager",
+//     image:
+//       "https://plus.unsplash.com/premium_photo-1669879825881-6d4e4bde67d5?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//     department: "IT",
+//     age: "32",
+//     gender: "Male",
+//     leave: true,
+//     organization: "One Restaurant",
+//   },
+//   {
+//     id: 7,
+//     employee_name: "Halana Omar",
+//     designation: "Dev ops Engineer",
+//     image:
+//       "https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//     department: "Design",
+//     age: "22",
+//     gender: "Female",
+//     leave: true,
+//     organization: "One Tech",
+//   },
+// ];
 
 // const announcementData = [
 //   {
@@ -243,6 +243,24 @@ const HRMDashboard = () => {
       // image: "https://via.placeholder.com/100",
     })) || [];
 
+    // const employeeTodayLeaveData = hrmDashboardData?.leaves_today?.map((leave) => ({
+    //   id: leave.id,
+    //   employee_name: `${leave.employee.first_name} ${leave.employee.last_name}`,
+    //   department: leave.employee.department.name,
+    //   designation: leave.employee.designation.name,
+    // })) || [];
+
+    const employeeTodayLeaveData = Array.isArray(hrmDashboardData?.leaves_today)
+  ? hrmDashboardData.leaves_today.map((leave) => ({
+      id: leave.id,
+      employee_name: `${leave.employee.first_name} ${leave.employee.last_name}`,
+      department: leave.employee.department.name,
+      designation: leave.employee.designation.name,
+    }))
+  : [];
+
+
+
   const organizationsPicChartData = hrmDashboardData?.organizations || [];
 
   const employee_month = hrmDashboardData?.employee_month || [];
@@ -277,9 +295,9 @@ const HRMDashboard = () => {
                     <div className="p-2 rounded-md bg-red-200">
                       <FolderOpenDot size={16} />
                     </div>
-                    <div className="ml-3 text-lg font-bold"> 0</div>
+                    <div className="ml-3 text-lg font-bold">{hrmDashboardData?.todays_present}</div>
                   </div>
-                  <h2 className="mt-2 text-sm">Today's Attendance</h2>
+                  <h2 className="mt-2 text-sm">Today's Present</h2>
                 </Card>
                 <Card className="p-4">
                   <div className="flex items-center">
@@ -324,16 +342,16 @@ const HRMDashboard = () => {
                   <EmployeeBy
                     title="Employee on Leave"
                     subject="department"
-                    data={employeeData}
+                    data={employeeTodayLeaveData}
                   />
                 </div>
-                <div className="mt-3">
+                {/* <div className="mt-3">
                   <EmployeeBy
                     title="Upcoming Birthday"
                     subject="department"
                     data={employeeData}
                   />
-                </div>
+                </div> */}
               </div>
               <div className="">
                 <div className="">
@@ -375,7 +393,7 @@ const HRMDashboard = () => {
                   subjectOn="years"
                   data={employeeServiceLifeData}
                 /> */}
-                <div className="mt-3">
+                <div className="">
                   <RangeBarChart
                     title="Employee Service Life"
                     dataKey_1="years"
@@ -396,13 +414,13 @@ const HRMDashboard = () => {
                     chartData={employeeGenderData}
                   />
                 </div>
-                <div className="mt-3">
+                {/* <div className="mt-3">
                   <EmployeeBy
                     title="Work Anniversary"
                     subject="department"
                     data={employeeData}
                   />
-                </div>
+                </div> */}
 
                 {/* <div className="mt-3">
                   <EmployeeServiceLife

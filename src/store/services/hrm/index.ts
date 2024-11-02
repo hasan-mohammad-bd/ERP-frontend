@@ -71,7 +71,8 @@ export const hrmApi = createApi({
     "employee-salary-payslip",
     "attendance-summary-report",
     "salary-report",
-    "dashboard-reports"
+    "dashboard-reports",
+    "salary-settings"
   ],
   endpoints: () => ({}),
 });

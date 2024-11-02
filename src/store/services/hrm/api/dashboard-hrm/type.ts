@@ -48,5 +48,6 @@ export interface dashboardHrm {
     years_0_to_2: string;
     less_than_1_year: string;
   };
+  todays_present:number;
   employee_anniversary: string; // Assuming array with unknown structure
 }
