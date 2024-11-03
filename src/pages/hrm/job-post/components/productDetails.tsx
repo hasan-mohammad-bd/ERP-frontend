@@ -1,12 +1,9 @@
-
 import { JobPostColumn } from "@/lib/validators";
 
-
 interface ProductDetailsProps {
-  data : JobPostColumn
+  data: JobPostColumn;
 }
-const ProductDetails = ({data} : ProductDetailsProps) => {
-
+const ProductDetails = ({ data }: ProductDetailsProps) => {
   return (
     <div>
       <div className="grid grid-cols-2 gap-4">
@@ -54,10 +51,10 @@ const ProductDetails = ({data} : ProductDetailsProps) => {
           <p className="font-semibold">Work Place:</p>
           <div>{data.work_place?.name}</div>
         </div>
-        <div>
+        {/* <div>
           <p className="font-semibold">Sorting Index:</p>
           <div>{data.sorting_index}</div>
-        </div>
+        </div> */}
         <div>
           <p className="font-semibold">Status:</p>
           <div>{data.status}</div>

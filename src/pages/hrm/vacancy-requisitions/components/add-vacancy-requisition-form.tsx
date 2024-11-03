@@ -67,7 +67,7 @@ export function AddVacancyRequisitionForm({
 		resolver: zodResolver(VacancyRequisitionFormSchema),
 		defaultValues: {
 			name: previousData?.name || "",
-			sorting_index: previousData?.sorting_index || 0,
+			// sorting_index: previousData?.sorting_index || 0,
 			vacancy_number: previousData?.vacancy_number || 0,
 			organization_id: previousData?.organization?.id || 1,
 			department_id: previousData?.department?.id || 1,
@@ -120,7 +120,7 @@ export function AddVacancyRequisitionForm({
 								</FormItem>
 							)}
 						/>
-						<FormField
+						{/* <FormField
 							control={form.control}
 							name="sorting_index"
 							render={({ field }) => (
@@ -136,7 +136,7 @@ export function AddVacancyRequisitionForm({
 									<FormMessage />
 								</FormItem>
 							)}
-						/>
+						/> */}
 						<FormField
 							control={form.control}
 							name="vacancy_number"

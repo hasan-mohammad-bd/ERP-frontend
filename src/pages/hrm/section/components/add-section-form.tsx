@@ -1,5 +1,4 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,19 +9,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
+import handleErrors from "@/lib/handle-errors";
 import {
-  SectionFormSchema,
   SectionColumn,
+  SectionFormSchema,
   SectionFromValues,
 } from "@/lib/validators";
-import { Loading } from "@/components/common/loading";
 import {
   useCreateSectionMutation,
   useUpdateSectionMutation,
 } from "@/store/services/hrm/api/section";
-import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface AddSectionFormProps {
   modalClose: () => void;
@@ -41,7 +41,7 @@ export function AddSectionForm({
     resolver: zodResolver(SectionFormSchema),
     defaultValues: {
       name: previousData?.name || "",
-      sorting_index: previousData?.sorting_index || 0,
+      // sorting_index: previousData?.sorting_index || 0,
     },
   });
 
@@ -90,7 +90,7 @@ export function AddSectionForm({
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="sorting_index"
               render={({ field }) => (
@@ -106,7 +106,7 @@ export function AddSectionForm({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <div>
               <Button variant="default" type="submit" className="w-full mt-4">
                 {previousData ? "Update" : "Add"}

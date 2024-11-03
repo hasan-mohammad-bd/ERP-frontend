@@ -1,5 +1,3 @@
-
-
 import { z } from "zod";
 
 // Department Form validation
@@ -13,15 +11,7 @@ export const DepartmentFormSchema = z.object({
       message: "Name must be at most 255 characters.",
     }),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type DepartmentFromValues = z.infer<typeof DepartmentFormSchema>;
@@ -29,7 +19,7 @@ export type DepartmentFromValues = z.infer<typeof DepartmentFormSchema>;
 export const departmentColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type DepartmentColumn = z.infer<typeof departmentColumn>;
@@ -53,15 +43,7 @@ export const DesignationFormSchema = z.object({
       message: "Name must be at most 255 characters.",
     }),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type DesignationFromValues = z.infer<typeof DesignationFormSchema>;
@@ -69,7 +51,7 @@ export type DesignationFromValues = z.infer<typeof DesignationFormSchema>;
 export const designationColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type DesignationColumn = z.infer<typeof designationColumn>;
@@ -85,15 +67,7 @@ export const SectionFormSchema = z.object({
       message: "Name must be at most 255 characters.",
     }),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type SectionFromValues = z.infer<typeof SectionFormSchema>;
@@ -101,7 +75,7 @@ export type SectionFromValues = z.infer<typeof SectionFormSchema>;
 export const sectionColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type SectionColumn = z.infer<typeof sectionColumn>;
@@ -117,15 +91,7 @@ export const EmployeeClassFormSchema = z.object({
       message: "Name must be at most 255 characters.",
     }),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type EmployeeClassFromValues = z.infer<typeof EmployeeClassFormSchema>;
@@ -133,7 +99,7 @@ export type EmployeeClassFromValues = z.infer<typeof EmployeeClassFormSchema>;
 export const employeeClassColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type EmployeeClassColumn = z.infer<typeof employeeClassColumn>;
@@ -150,15 +116,7 @@ export const EmployeeGradeFormSchema = z.object({
       message: "Name must be at most 255 characters.",
     }),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
   max_salary: z.coerce.number(),
   min_salary: z.coerce.number(),
 });
@@ -168,7 +126,7 @@ export type EmployeeGradeFromValues = z.infer<typeof EmployeeGradeFormSchema>;
 export const employeeGradeColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
   max_salary: z.coerce.number(),
   min_salary: z.coerce.number(),
 });
@@ -187,15 +145,7 @@ export const OrganizationFormSchema = z.object({
       message: "Name must be at most 255 characters.",
     }),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type OrganizationFromValues = z.infer<typeof OrganizationFormSchema>;
@@ -203,8 +153,7 @@ export type OrganizationFromValues = z.infer<typeof OrganizationFormSchema>;
 export const organizationColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number(),
-  
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type OrganizationColumn = z.infer<typeof organizationColumn>;
@@ -213,12 +162,13 @@ export type OrganizationColumn = z.infer<typeof organizationColumn>;
 export const organizationDropdownColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
   child_organization: organizationColumn.array().optional().nullable(),
-})
+});
 
-export type OrganizationDropdownColumn = z.infer<typeof organizationDropdownColumn>;
-
+export type OrganizationDropdownColumn = z.infer<
+  typeof organizationDropdownColumn
+>;
 
 // Schedule
 
@@ -234,15 +184,7 @@ export const ScheduleFormSchema = z.object({
   hour: z.string(),
   start_time: z.string(),
   end_time: z.string(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
   organization_id: z.coerce.number().optional().nullable(),
 });
 
@@ -254,7 +196,7 @@ export const scheduleColumn = z.object({
   hour: z.string(),
   start_time: z.string(),
   end_time: z.string(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
   organization: organizationColumn.nullable(),
 });
 
@@ -271,15 +213,7 @@ export const VacancyRequisitionFormSchema = z.object({
     .max(255, {
       message: "Name must be at most 255 characters.",
     }),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
   vacancy_number: z.coerce.number(),
   department_id: z.coerce.number().optional().nullable(),
   organization_id: z.coerce.number().optional().nullable(),
@@ -293,7 +227,7 @@ export type VacancyRequisitionFromValues = z.infer<
 export const vacancyRequisitionColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number().nullable(),
+  sorting_index: z.coerce.number().nullable().optional().nullable(),
   vacancy_number: z.coerce.number(),
   department: departmentColumn.nullable(),
   organization: organizationColumn.nullable(),
@@ -314,15 +248,7 @@ export const LocationFormSchema = z.object({
       message: "Name must be at most 255 characters.",
     }),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
   organization_id: z.coerce.number().optional().nullable(),
 });
 
@@ -332,7 +258,7 @@ export const locationColumn = z.object({
   id: z.number(),
   name: z.string(),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
   organization: organizationColumn.nullable(),
 });
 
@@ -393,15 +319,7 @@ export const JobPostFormSchema = z.object({
   min_salary: z.coerce.number(),
   max_salary: z.coerce.number(),
   status: z.string(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type JobPostFromValues = z.infer<typeof JobPostFormSchema>;
@@ -431,7 +349,7 @@ export const jobPostColumn = z.object({
   min_age: z.coerce.number(),
   max_age: z.coerce.number(),
   status: z.string(), //Active or Inactive
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type JobPostColumn = z.infer<typeof jobPostColumn>;
@@ -454,32 +372,24 @@ export const EducationFormSchema = z.object({
   start_date: z.string().date(),
   end_date: z.string().date(),
   grade: z.string(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
   // file: z.string().optional().nullable(),
 });
 
 export type EducationFromValues = z.infer<typeof EducationFormSchema>;
 
 export const educationColumn = z.object({
-	id: z.number(),
-	type: z.string(),
-	academy: z.string(),
-	title: z.string(),
-	degree: z.string(),
-	start_date: z.string(),
-	end_date: z.string().nullable(),
-	grade: z.string(),
-	sorting_index: z.coerce.number(),
+  id: z.number(),
+  type: z.string(),
+  academy: z.string(),
+  title: z.string(),
+  degree: z.string(),
+  start_date: z.string(),
+  end_date: z.string().nullable(),
+  grade: z.string(),
+  sorting_index: z.coerce.number().optional().nullable(),
   // file: z.string().optional().nullable(),
-})
+});
 
 export type EducationColumn = z.infer<typeof educationColumn>;
 
@@ -491,37 +401,28 @@ export const ExperienceFormSchema = z.object({
   institution: z.string().min(2, {
     message: "Institution must be at least 2 characters.",
   }),
-	employment_status_id: z.coerce.number().optional().nullable(),
+  employment_status_id: z.coerce.number().optional().nullable(),
   designation: z.string(),
   start_date: z.string().date(),
   end_date: z.string().date().optional().nullable(),
   description: z.string().optional().nullable(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type ExperienceFormValues = z.infer<typeof ExperienceFormSchema>;
 
-
 export const experienceColumn = z.object({
-	id: z.number(),
-	institution: z.string(),
+  id: z.number(),
+  institution: z.string(),
   designation: z.string(),
-	employment_status: employmentStatusColumn.nullable(),
-	start_date: z.string(),
-	end_date: z.string().nullable(),
+  employment_status: employmentStatusColumn.nullable(),
+  start_date: z.string(),
+  end_date: z.string().nullable(),
   duration: z.string(),
-	description: z.string().nullable(),
-	sorting_index: z.coerce.number(),
+  description: z.string().nullable(),
+  sorting_index: z.coerce.number().optional().nullable(),
   file: z.string().optional().nullable(),
-})
+});
 
 export type ExperienceColumn = z.infer<typeof experienceColumn>;
 
@@ -530,35 +431,27 @@ export type ExperienceColumn = z.infer<typeof experienceColumn>;
 export const SkillFormSchema = z.object({
   model_type: z.string(),
   model_id: z.coerce.number().optional().nullable(),
-	name: z.string().min(2, {
-		message: "Skill must be at least 2 characters.",
-	}),
-	type: z.string(),
-	start_date: z.string().date(),
-	end_date: z.string().date().optional().nullable(),
-	description: z.string().optional().nullable(),
-	sorting_index: z.coerce
-	.number()
-	.int()
-	.min(0, {
-		message: "Sorting index must be at least 0.",
-	})
-	.max(9999, {
-		message: "Sorting index must be at most 9999.",
-	}),
-})
+  name: z.string().min(2, {
+    message: "Skill must be at least 2 characters.",
+  }),
+  type: z.string(),
+  start_date: z.string().date(),
+  end_date: z.string().date().optional().nullable(),
+  description: z.string().optional().nullable(),
+  sorting_index: z.coerce.number().optional().nullable(),
+});
 
 export type SkillFormValues = z.infer<typeof SkillFormSchema>;
 
 export const skillColumn = z.object({
-	id: z.number(),
-	name: z.string(),
-	type: z.string(),
-	start_date: z.string(),
-	end_date: z.string().nullable(),
-	description: z.string().nullable(),
-	sorting_index: z.coerce.number(),
-})
+  id: z.number(),
+  name: z.string(),
+  type: z.string(),
+  start_date: z.string(),
+  end_date: z.string().nullable(),
+  description: z.string().nullable(),
+  sorting_index: z.coerce.number().optional().nullable(),
+});
 
 export type SkillColumn = z.infer<typeof skillColumn>;
 
@@ -571,10 +464,8 @@ export const CityFormSchema = z.object({
   }),
   lattitude: z.coerce.number(),
   longitude: z.coerce.number(),
-  country: z.string()
-
-
-})
+  country: z.string(),
+});
 
 export type CityFormValues = z.infer<typeof CityFormSchema>;
 
@@ -583,11 +474,10 @@ export const cityColumn = z.object({
   name: z.string(),
   lattitude: z.number(),
   longitude: z.number(),
-  country: z.string()
-})
+  country: z.string(),
+});
 
 export type CityColumn = z.infer<typeof cityColumn>;
-
 
 //country
 
@@ -604,8 +494,8 @@ export const CountryFormSchema = z.object({
   }),
   dial_code: z.string().min(2, {
     message: "Dial code must be at least 2 characters.",
-  })
-})
+  }),
+});
 
 export type CountryFormValues = z.infer<typeof CountryFormSchema>;
 
@@ -614,8 +504,8 @@ export const countryColumn = z.object({
   name: z.string(),
   code: z.string(),
   flag: z.string(),
-  dial_code: z.string()
-})
+  dial_code: z.string(),
+});
 
 export type CountryColumn = z.infer<typeof countryColumn>;
 
@@ -628,8 +518,8 @@ export const AddressFormSchema = z.object({
   city_id: z.coerce.number(),
   post_code: z.string(),
   address: z.string(),
-  type: z.string()
-})
+  type: z.string(),
+});
 
 export type AddressFromValues = z.infer<typeof AddressFormSchema>;
 
@@ -639,52 +529,52 @@ export const addressColumn = z.object({
   address: z.string(),
   type: z.string(),
   country: countryColumn,
-  city: cityColumn
-})
+  city: cityColumn,
+});
 
 export type AddressColumn = z.infer<typeof addressColumn>;
-
 
 //present_address
 
 export const PresentAddressFormSchema = z.object({
-	country_id: z.coerce.number(),
-	city_id: z.coerce.number(),
-	post_code: z.string(),
-	address: z.string(),
-})
+  country_id: z.coerce.number(),
+  city_id: z.coerce.number(),
+  post_code: z.string(),
+  address: z.string(),
+});
 
 export type PresentAddressFormValues = z.infer<typeof PresentAddressFormSchema>;
 
 export const presentAddressColumn = z.object({
-	id: z.number(),
-	country: countryColumn,
-	city: cityColumn,
-	post_code: z.string(),
-	address: z.string(),
-})
+  id: z.number(),
+  country: countryColumn,
+  city: cityColumn,
+  post_code: z.string(),
+  address: z.string(),
+});
 
 export type PresentAddressColumn = z.infer<typeof presentAddressColumn>;
-
 
 //permanent_address
 
 export const PermanentAddressFormSchema = z.object({
-	country_id: z.coerce.number(),
-	city_id: z.coerce.number(),
-	post_code: z.string(),
-	address: z.string(),
-})
+  country_id: z.coerce.number(),
+  city_id: z.coerce.number(),
+  post_code: z.string(),
+  address: z.string(),
+});
 
-export type PermanentAddressFormValues = z.infer<typeof PermanentAddressFormSchema>;
+export type PermanentAddressFormValues = z.infer<
+  typeof PermanentAddressFormSchema
+>;
 
 export const permanentAddressColumn = z.object({
-	id: z.number(),
-	country: countryColumn,
-	city: cityColumn,
-	post_code: z.string(),
-	address: z.string(),
-})
+  id: z.number(),
+  country: countryColumn,
+  city: cityColumn,
+  post_code: z.string(),
+  address: z.string(),
+});
 
 export type PermanentAddressColumn = z.infer<typeof permanentAddressColumn>;
 
@@ -693,16 +583,8 @@ export type PermanentAddressColumn = z.infer<typeof permanentAddressColumn>;
 export const religionColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce
-  .number()
-  .int()
-  .min(0, {
-    message: "Sorting index must be at least 0.",
-  })
-  .max(9999, {
-    message: "Sorting index must be at most 9999.",
-  }),
-})
+  sorting_index: z.coerce.number().optional().nullable(),
+});
 
 export type ReligionColumn = z.infer<typeof religionColumn>;
 
@@ -711,16 +593,8 @@ export type ReligionColumn = z.infer<typeof religionColumn>;
 export const genderColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce
-  .number()
-  .int()
-  .min(0, {
-    message: "Sorting index must be at least 0.",
-  })
-  .max(9999, {
-    message: "Sorting index must be at most 9999.",
-  }),
-})
+  sorting_index: z.coerce.number().optional().nullable(),
+});
 
 export type GenderColumn = z.infer<typeof genderColumn>;
 
@@ -730,93 +604,92 @@ export const JobCandidateFormSchema = z.object({
   first_name: z.string().min(2, {
     message: "First name must be at least 2 characters.",
   }),
-  last_name: z
-    .string()
-    .min(2, {
-      message: "Last name must be at least 2 characters.",
-    })
-    ,
+  last_name: z.string().min(2, {
+    message: "Last name must be at least 2 characters.",
+  }),
   email: z.string().email({
     message: "Invalid email address.",
   }),
   phone: z.string().min(10, {
     message: "Phone number must be at least 10 characters.",
   }),
-  alt_phone: z.string().min(10, {
-    message: "Alternate phone number must be at least 10 characters.",
-  }).nullable(),
+  alt_phone: z
+    .string()
+    .min(10, {
+      message: "Alternate phone number must be at least 10 characters.",
+    })
+    .nullable(),
   nid_type: z.string(),
   nid_number: z.coerce.string(),
   marital_status: z.string(),
-  birth_date: z.string().refine((value) => {
-    const birthDate = new Date(value);
-    const now = new Date();
-    const diff = now.getTime() - birthDate.getTime();
-    const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); 
-    return age >= 10;
-  }, {
-    message: "Birth date must be at least 10 years old.",
-  }),
+  birth_date: z.string().refine(
+    (value) => {
+      const birthDate = new Date(value);
+      const now = new Date();
+      const diff = now.getTime() - birthDate.getTime();
+      const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+      return age >= 10;
+    },
+    {
+      message: "Birth date must be at least 10 years old.",
+    }
+  ),
   // expected_salary: z.coerce.number(),
   // status: z.string(),
   religion_id: z.coerce.number(),
   gender_id: z.coerce.number(),
   educations: EducationFormSchema.array().optional().nullable(),
-	experiences: ExperienceFormSchema.array().optional().nullable(), 
-	skills: SkillFormSchema.array().optional().nullable(),
-	present_address: PresentAddressFormSchema.optional().nullable(),
-	permanent_address: PermanentAddressFormSchema.optional().nullable(),
+  experiences: ExperienceFormSchema.array().optional().nullable(),
+  skills: SkillFormSchema.array().optional().nullable(),
+  present_address: PresentAddressFormSchema.optional().nullable(),
+  permanent_address: PermanentAddressFormSchema.optional().nullable(),
 });
 
 export type JobCandidateFromValues = z.infer<typeof JobCandidateFormSchema>;
 
-
 export const jobCandidateColumn = z.object({
-	id: z.coerce.number(),
-	first_name: z.string(),
-	last_name: z.string(),
-	email: z.string(),
-	phone: z.string(),
-	alt_phone: z.string(),
-	nid_type: z.string(),
-	nid_number: z.coerce.string(),
-	marital_status: z.string(),
-	birth_date: z.string().date(),
-	// expected_salary: z.coerce.number(),
-	// status: z.string(),
-	religion_id: z.coerce.number(),
-	gender_id: z.coerce.number(),
+  id: z.coerce.number(),
+  first_name: z.string(),
+  last_name: z.string(),
+  email: z.string(),
+  phone: z.string(),
+  alt_phone: z.string(),
+  nid_type: z.string(),
+  nid_number: z.coerce.string(),
+  marital_status: z.string(),
+  birth_date: z.string().date(),
+  // expected_salary: z.coerce.number(),
+  // status: z.string(),
+  religion_id: z.coerce.number(),
+  gender_id: z.coerce.number(),
   religion: religionColumn.optional().nullable(),
   gender: genderColumn.optional().nullable(),
-	educations: educationColumn.array().optional().nullable(),
-	experiences: experienceColumn.array().optional().nullable(),
-	skills: skillColumn.array().optional().nullable(),
-	present_address: presentAddressColumn.optional().nullable(),
-	permanent_address: permanentAddressColumn.optional().nullable(),
-})
+  educations: educationColumn.array().optional().nullable(),
+  experiences: experienceColumn.array().optional().nullable(),
+  skills: skillColumn.array().optional().nullable(),
+  present_address: presentAddressColumn.optional().nullable(),
+  permanent_address: permanentAddressColumn.optional().nullable(),
+});
 
 export type JobCandidateColumn = z.infer<typeof jobCandidateColumn>;
 
-//job-apply-status 
+//job-apply-status
 
 export const jobApplyStatusColumn = z.object({
-  job_apply_status: z.enum([
-    "Pending",
-    "Rejected",
-    "Shortlisted",
-    "Call For Interview",
-    "Interviewed",
-    "Selected"
-  ]).array(),
-  contract_type: z.enum([
-    "Email",
-    "Phone",
-    "Message"
-  ]).array()
+  job_apply_status: z
+    .enum([
+      "Pending",
+      "Rejected",
+      "Shortlisted",
+      "Call For Interview",
+      "Interviewed",
+      "Selected",
+    ])
+    .array(),
+  contract_type: z.enum(["Email", "Phone", "Message"]).array(),
 });
 
 export type JobApplyStatusColumn = z.infer<typeof jobApplyStatusColumn>;
-
 
 //job-apply
 
@@ -825,7 +698,7 @@ export const JobApplyFormSchema = z.object({
   job_candidate_id: z.coerce.number(),
   status: z.string(),
   expected_salary: z.coerce.number(),
-})
+});
 
 export type JobApplyFormValues = z.infer<typeof JobApplyFormSchema>;
 
@@ -835,7 +708,7 @@ export const jobApplyColumn = z.object({
   expected_salary: z.coerce.number(),
   job_post: jobPostColumn.optional().nullable(),
   job_candidate: jobCandidateColumn.optional().nullable(),
-})
+});
 
 export type JobApplyColumn = z.infer<typeof jobApplyColumn>;
 
@@ -845,10 +718,9 @@ export const roleColumn = z.object({
   id: z.coerce.number(),
   name: z.string(),
   permissions: z.string().array().optional().nullable(),
-})
+});
 
 export type RoleColumn = z.infer<typeof roleColumn>;
-
 
 //employee nominee
 
@@ -864,7 +736,7 @@ export const employeeNomineeColumn = z.object({
   image: z.string(),
   gender: genderColumn.optional().nullable(),
   address: presentAddressColumn.optional().nullable(),
-})
+});
 
 export type EmployeeNomineeColumn = z.infer<typeof employeeNomineeColumn>;
 
@@ -873,33 +745,40 @@ export type EmployeeNomineeColumn = z.infer<typeof employeeNomineeColumn>;
 export const bloodGroupColumn = z.object({
   id: z.coerce.number(),
   name: z.string(),
-})
+});
 
 export type BloodGroupColumn = z.infer<typeof bloodGroupColumn>;
 
-//employee 
+//employee
 
 export const EmployeeFormSchema = z.object({
   employee_unique_id: z.string(),
   card_id: z.string().optional().nullable(),
   machine_id: z.string().optional().nullable(),
-  first_name: z.string({ 
+  first_name: z.string({
     required_error: "First name is required.",
   }),
   last_name: z.string().optional().nullable(),
   phone: z.string({
-    required_error: "Phone number is required.",}),
+    required_error: "Phone number is required.",
+  }),
   corporate_phone: z.string().optional().nullable(),
   email: z.string().email({
     message: "Invalid email address.",
   }),
-  password: z.string().regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$/, {
-    message: "Password must contain at least one uppercase letter, one lowercase letter, and one digit."
-  }).min(8, { message: "Password must be at least 8 characters long." }).optional().nullable(),
+  password: z
+    .string()
+    .regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$/, {
+      message:
+        "Password must contain at least one uppercase letter, one lowercase letter, and one digit.",
+    })
+    .min(8, { message: "Password must be at least 8 characters long." })
+    .optional()
+    .nullable(),
   role_id: z.coerce.number({
     required_error: "Role ID is required.",
   }),
-  joining_date: z.string().refine(value => !isNaN(Date.parse(value)), {
+  joining_date: z.string().refine((value) => !isNaN(Date.parse(value)), {
     message: "Invalid joining date.",
   }),
   is_head_of_dept: z.number().optional().nullable(),
@@ -938,11 +817,17 @@ export const EmployeeFormSchema = z.object({
     required_error: "Employment status ID is required.",
   }),
   reporting_to_id: z.coerce.number().optional().nullable(),
-  sorting_index: z.coerce.number().int().min(0, {
-    message: "Sorting index must be at least 0.",
-  }).max(9999, {
-    message: "Sorting index must be at most 9999.",
-  }).optional().nullable(),
+  sorting_index: z.coerce
+    .number()
+    .int()
+    .min(0, {
+      message: "Sorting index must be at least 0.",
+    })
+    .max(9999, {
+      message: "Sorting index must be at most 9999.",
+    })
+    .optional()
+    .nullable(),
   gender_id: z.coerce.number({
     required_error: "Gender ID is required.",
   }),
@@ -959,19 +844,25 @@ export const EmployeeFormSchema = z.object({
   bank_name: z.string().optional().nullable(),
   bank_branch: z.string().optional().nullable(),
   nid_number: z.string().optional().nullable(),
-  birth_date: z.string().refine(value => {
-    const birthDate = new Date(value);
-    const now = new Date();
-    const diff = now.getTime() - birthDate.getTime();
-    const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); 
-    return age >= 10;
-  }, {
-    message: "Birth date must be at least 10 years old.",
-  }).optional().nullable(),
+  birth_date: z
+    .string()
+    .refine(
+      (value) => {
+        const birthDate = new Date(value);
+        const now = new Date();
+        const diff = now.getTime() - birthDate.getTime();
+        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+        return age >= 10;
+      },
+      {
+        message: "Birth date must be at least 10 years old.",
+      }
+    )
+    .optional()
+    .nullable(),
   tin_number: z.string().optional().nullable(),
   marital_status: z.enum(["Married", "Unmarried"]).optional().nullable(),
 });
-
 
 export type EmployeeFormValues = z.infer<typeof EmployeeFormSchema>;
 
@@ -982,11 +873,17 @@ export const EmployeeUpdateSchema = z.object({
   machine_id: z.string().optional().nullable(),
   is_head_of_dept: z.number().optional().nullable(),
   reporting_to_id: z.coerce.number().optional().nullable(),
-  sorting_index: z.coerce.number().int().min(0, {
-    message: "Sorting index must be at least 0.",
-  }).max(9999, {
-    message: "Sorting index must be at most 9999.",
-  }).optional().nullable(),
+  sorting_index: z.coerce
+    .number()
+    .int()
+    .min(0, {
+      message: "Sorting index must be at least 0.",
+    })
+    .max(9999, {
+      message: "Sorting index must be at most 9999.",
+    })
+    .optional()
+    .nullable(),
   fathers_name: z.string().optional().nullable(),
   mothers_name: z.string().optional().nullable(),
   payment_type: z.enum(["Cash", "Bank"]).optional().nullable(),
@@ -994,20 +891,25 @@ export const EmployeeUpdateSchema = z.object({
   bank_name: z.string().optional().nullable(),
   bank_branch: z.string().optional().nullable(),
   nid_number: z.string().optional().nullable(),
-  birth_date: z.string().refine(value => {
-    const birthDate = new Date(value);
-    const now = new Date();
-    const diff = now.getTime() - birthDate.getTime();
-    const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); 
-    return age >= 10;
-  }, {
-    message: "Birth date must be at least 10 years old.",
-  }).optional().nullable(),
+  birth_date: z
+    .string()
+    .refine(
+      (value) => {
+        const birthDate = new Date(value);
+        const now = new Date();
+        const diff = now.getTime() - birthDate.getTime();
+        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+        return age >= 10;
+      },
+      {
+        message: "Birth date must be at least 10 years old.",
+      }
+    )
+    .optional()
+    .nullable(),
   tin_number: z.string().optional().nullable(),
   marital_status: z.enum(["Married", "Unmarried"]).optional().nullable(),
-
-
-})
+});
 
 export type EmployeeUpdateFormValues = z.infer<typeof EmployeeUpdateSchema>;
 
@@ -1028,7 +930,7 @@ export const employeeColumn = z.object({
   location_id: z.coerce.number(),
   organization_id: z.coerce.number(),
   work_place_id: z.coerce.number(),
-  department_id : z.coerce.number(),
+  department_id: z.coerce.number(),
   schedule_id: z.coerce.number(),
   designation_id: z.coerce.number(),
   section_id: z.coerce.number(),
@@ -1051,15 +953,15 @@ export const employeeColumn = z.object({
   birth_date: z.string(),
   tin_number: z.string(),
   marital_status: z.enum(["Married", "Unmarried"]),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
   religion: religionColumn,
   gender: genderColumn.optional().nullable(),
   blood_group: bloodGroupColumn.optional().nullable(),
   educations: educationColumn.array().optional().nullable(),
   present_address: presentAddressColumn.optional().nullable(),
-	permanent_address: permanentAddressColumn.optional().nullable(),
+  permanent_address: permanentAddressColumn.optional().nullable(),
   experiences: experienceColumn.array().optional().nullable(),
-	skills: skillColumn.array().optional().nullable(),
+  skills: skillColumn.array().optional().nullable(),
   location: locationColumn.optional().nullable(),
   organization: organizationColumn.optional().nullable(),
   department: departmentColumn.optional().nullable(),
@@ -1071,21 +973,6 @@ export const employeeColumn = z.object({
   employee_grade: employeeGradeColumn.optional().nullable(),
   employment_status: employmentStatusColumn.optional().nullable(),
   work_place: workPlaceColumn.optional().nullable(),
-
-  
-
-})
+});
 
 export type EmployeeColumn = z.infer<typeof employeeColumn>;
-
-
-
-
-
-
-
-
-
-
-
-

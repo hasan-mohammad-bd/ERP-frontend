@@ -1,5 +1,4 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,20 +9,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
 import {
-  ScheduleColumn,
-  ScheduleFromValues,
-  ScheduleFormSchema,
-
   OrganizationDropdownColumn,
+  ScheduleColumn,
+  ScheduleFormSchema,
+  ScheduleFromValues,
 } from "@/lib/validators";
-import { Loading } from "@/components/common/loading";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-import {
-  useCreateScheduleMutation,
-  useUpdateScheduleMutation,
-} from "@/store/services/hrm/api/schedule";
 import {
   Select,
   SelectContent,
@@ -31,10 +26,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
 import handleErrors from "@/lib/handle-errors";
+import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
+import {
+  useCreateScheduleMutation,
+  useUpdateScheduleMutation,
+} from "@/store/services/hrm/api/schedule";
 import { ErrorResponse } from "@/types";
-
 
 interface AddScheduleFormProps {
   modalClose: () => void;
@@ -48,8 +46,8 @@ export function AddScheduleForm({
   const [createSchedule, { isLoading }] = useCreateScheduleMutation();
   const [updateSchedule, { isLoading: updateLoading }] =
     useUpdateScheduleMutation();
-  const { data, isLoading: organizationLoading } = useGetOrganizationForDropDownQuery();
-
+  const { data, isLoading: organizationLoading } =
+    useGetOrganizationForDropDownQuery();
 
   const organizationData = data?.data || [];
 
@@ -57,7 +55,7 @@ export function AddScheduleForm({
     resolver: zodResolver(ScheduleFormSchema),
     defaultValues: {
       name: previousData?.name || "",
-      sorting_index: previousData?.sorting_index || 0,
+      // sorting_index: previousData?.sorting_index || 0,
       hour: previousData?.hour || "0",
       start_time: previousData?.start_time || "00:00:00",
       end_time: previousData?.end_time || "00:00:00",
@@ -72,11 +70,11 @@ export function AddScheduleForm({
           scheduleId: previousData.id,
           updatedSchedule: data,
         }).unwrap();
-        toast.success("Schedule updated successfully");
+        toast.success("Shift updated successfully");
         modalClose();
       } else {
         await createSchedule(data).unwrap();
-        toast.success("Schedule created successfully");
+        toast.success("Shift created successfully");
         modalClose();
       }
     } catch (error) {
@@ -84,7 +82,6 @@ export function AddScheduleForm({
       handleErrors(error as ErrorResponse);
     }
   }
-
 
   return (
     <>
@@ -105,13 +102,13 @@ export function AddScheduleForm({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter schedule name" {...field} />
+                    <Input placeholder="Enter Shift name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="sorting_index"
               render={({ field }) => (
@@ -127,8 +124,8 @@ export function AddScheduleForm({
                   <FormMessage />
                 </FormItem>
               )}
-            />
-{/*             <FormField
+            /> */}
+            {/*             <FormField
               control={form.control}
               name="hour"
               render={({ field }) => (
@@ -154,7 +151,7 @@ export function AddScheduleForm({
                   <FormControl>
                     <Input
                       type="time"
-                      placeholder="Enter schedule start time"
+                      placeholder="Enter shift start time"
                       {...field}
                     />
                   </FormControl>
@@ -187,7 +184,11 @@ export function AddScheduleForm({
                   <FormLabel>Organization Name</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={previousData?.organization?.id ? String(previousData.organization.id) : undefined}
+                    defaultValue={
+                      previousData?.organization?.id
+                        ? String(previousData.organization.id)
+                        : undefined
+                    }
                   >
                     <FormControl>
                       <SelectTrigger>

@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -9,13 +9,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   useCreateSalaryCategoriesMutation,
   useUpdateSalaryCategoriesMutation,
 } from "@/store/services/hrm/api/salary-categories";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Loading } from "@/components/common/loading";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 // Match the form field names with your API schema
 interface FormValues {
@@ -23,8 +23,7 @@ interface FormValues {
   name: string;
   short_code: string;
   type: "Allowance" | "Deduction";
-  sorting_index: number;
-
+  // sorting_index: number;
 }
 
 type UpdateFormValues = {
@@ -35,14 +34,14 @@ type UpdateFormValues = {
 
   // note: string;
   is_default: string; // Enforcing type to be strictly "0" or "1"
-  sorting_index: number;
+  // sorting_index: number;
 };
 
 interface FormValuesColumn {
   name: string;
   short_code: string;
   type: "Allowance" | "Deduction";
-  sorting_index: number;
+  // sorting_index: number;
 }
 
 interface AddHolidayFormProps {
@@ -67,7 +66,7 @@ export function AddSalaryBreakupForm({
       name: previousData?.name || "",
       short_code: previousData?.short_code || "",
       type: previousData?.type || "Allowance", // Default to "Allowance"
-      sorting_index: previousData?.sorting_index,
+      // sorting_index: previousData?.sorting_index,
     },
   });
 
@@ -78,7 +77,7 @@ export function AddSalaryBreakupForm({
           name: data.name,
           short_code: data.short_code,
           type: data.type,
-          sorting_index: data.sorting_index,
+          // sorting_index: data.sorting_index,
         };
         await updateSalaryCategory({
           salaryCategoriesId: previousData.id,
@@ -183,7 +182,6 @@ export function AddSalaryBreakupForm({
                 </FormItem>
               )}
             />
-
 
             <div className="text-right">
               <Button variant="default" type="submit" className="w-full mt-4">

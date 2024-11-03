@@ -91,7 +91,7 @@ export function AddDepartmentForm({
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="sorting_index"
               render={({ field }) => (
@@ -107,7 +107,7 @@ export function AddDepartmentForm({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <div>
               <Button variant="default" type="submit" className="w-full mt-4">
                 {previousData ? "Update" : "Add"}

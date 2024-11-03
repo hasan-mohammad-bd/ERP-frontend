@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-
 // Department Form validation
 export const DepartmentFormSchema = z.object({
   name: z
@@ -12,15 +11,7 @@ export const DepartmentFormSchema = z.object({
       message: "Name must be at most 255 characters.",
     }),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().nullable().optional(),
 });
 
 export type DepartmentFromValues = z.infer<typeof DepartmentFormSchema>;
@@ -28,7 +19,7 @@ export type DepartmentFromValues = z.infer<typeof DepartmentFormSchema>;
 export const departmentColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type DepartmentColumn = z.infer<typeof departmentColumn>;
@@ -52,15 +43,7 @@ export const DesignationFormSchema = z.object({
       message: "Name must be at most 255 characters.",
     }),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().int().optional().nullable(),
 });
 
 export type DesignationFromValues = z.infer<typeof DesignationFormSchema>;
@@ -68,7 +51,7 @@ export type DesignationFromValues = z.infer<typeof DesignationFormSchema>;
 export const designationColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type DesignationColumn = z.infer<typeof designationColumn>;
@@ -84,15 +67,7 @@ export const SectionFormSchema = z.object({
       message: "Name must be at most 255 characters.",
     }),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type SectionFromValues = z.infer<typeof SectionFormSchema>;
@@ -100,7 +75,7 @@ export type SectionFromValues = z.infer<typeof SectionFormSchema>;
 export const sectionColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type SectionColumn = z.infer<typeof sectionColumn>;
@@ -116,15 +91,7 @@ export const EmployeeClassFormSchema = z.object({
       message: "Name must be at most 255 characters.",
     }),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().int().optional().nullable(),
 });
 
 export type EmployeeClassFromValues = z.infer<typeof EmployeeClassFormSchema>;
@@ -132,7 +99,7 @@ export type EmployeeClassFromValues = z.infer<typeof EmployeeClassFormSchema>;
 export const employeeClassColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type EmployeeClassColumn = z.infer<typeof employeeClassColumn>;
@@ -149,15 +116,7 @@ export const EmployeeGradeFormSchema = z.object({
       message: "Name must be at most 255 characters.",
     }),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
   max_salary: z.coerce.number(),
   min_salary: z.coerce.number(),
 });
@@ -167,7 +126,7 @@ export type EmployeeGradeFromValues = z.infer<typeof EmployeeGradeFormSchema>;
 export const employeeGradeColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
   max_salary: z.coerce.number(),
   min_salary: z.coerce.number(),
 });
@@ -177,7 +136,6 @@ export type EmployeeGradeColumn = z.infer<typeof employeeGradeColumn>;
 // Organization
 
 export const OrganizationFormSchema = z.object({
-
   name: z.string(),
   title: z.string().optional().nullable(),
   email: z.string().array().optional().nullable(),
@@ -188,13 +146,13 @@ export const OrganizationFormSchema = z.object({
   logo: z.string().optional().nullable(),
   banner: z.string().optional().nullable(),
   parent_id: z.coerce.number().nullable().optional(),
-
-
 });
 
 export type OrganizationFromValues = z.infer<typeof OrganizationFormSchema>;
 
-export const organizationColumn = OrganizationFormSchema.extend({id: z.number()});
+export const organizationColumn = OrganizationFormSchema.extend({
+  id: z.number(),
+});
 
 export type OrganizationColumn = z.infer<typeof organizationColumn>;
 
@@ -202,7 +160,7 @@ export type OrganizationColumn = z.infer<typeof organizationColumn>;
 export const organizationDropdownColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
   child_organization: organizationColumn.array().optional().nullable(),
 });
 
@@ -224,15 +182,7 @@ export const ScheduleFormSchema = z.object({
   hour: z.string(),
   start_time: z.string(),
   end_time: z.string(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
   organization_id: z.coerce.number().optional().nullable(),
 });
 
@@ -244,7 +194,7 @@ export const scheduleColumn = z.object({
   hour: z.string(),
   start_time: z.string(),
   end_time: z.string(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
   organization: organizationColumn.nullable(),
 });
 
@@ -311,15 +261,7 @@ export const VacancyRequisitionFormSchema = z.object({
     .max(255, {
       message: "Name must be at most 255 characters.",
     }),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
   vacancy_number: z.coerce.number(),
   department_id: z.coerce.number().optional().nullable(),
   organization_id: z.coerce.number().optional().nullable(),
@@ -333,7 +275,7 @@ export type VacancyRequisitionFromValues = z.infer<
 export const vacancyRequisitionColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce.number().nullable(),
+  sorting_index: z.coerce.number().optional().nullable(),
   vacancy_number: z.coerce.number(),
   department: departmentColumn.nullable(),
   organization: organizationColumn.nullable(),
@@ -354,15 +296,7 @@ export const LocationFormSchema = z.object({
       message: "Name must be at most 255 characters.",
     }),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
   organization_id: z.coerce.number().optional().nullable(),
 });
 
@@ -372,7 +306,7 @@ export const locationColumn = z.object({
   id: z.number(),
   name: z.string(),
   parent_id: z.coerce.number().nullable().optional(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
   organization: organizationColumn.nullable(),
 });
 
@@ -433,15 +367,7 @@ export const JobPostFormSchema = z.object({
   min_salary: z.coerce.number(),
   max_salary: z.coerce.number(),
   status: z.string(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type JobPostFromValues = z.infer<typeof JobPostFormSchema>;
@@ -471,7 +397,7 @@ export const jobPostColumn = z.object({
   min_age: z.coerce.number(),
   max_age: z.coerce.number(),
   status: z.string(), //Active or Inactive
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type JobPostColumn = z.infer<typeof jobPostColumn>;
@@ -536,7 +462,7 @@ export const ExperienceFormSchema = z.object({
   start_date: z.string().date(),
   end_date: z.string().date().optional().nullable(),
   description: z.string().optional().nullable(),
-/*   sorting_index: z.coerce
+  /*   sorting_index: z.coerce
     .number()
     .int()
     .min(0, {
@@ -558,7 +484,7 @@ export const experienceColumn = z.object({
   end_date: z.string().nullable(),
   duration: z.string(),
   description: z.string().nullable(),
-  sorting_index: z.coerce.number(),
+  sorting_index: z.coerce.number().optional().nullable(),
   file: z.string().optional().nullable(),
 });
 
@@ -576,7 +502,7 @@ export const SkillFormSchema = z.object({
   start_date: z.string().date(),
   end_date: z.string().date().optional().nullable(),
   description: z.string().optional().nullable(),
-/*   sorting_index: z.coerce
+  /*   sorting_index: z.coerce
     .number()
     .int()
     .min(0, {
@@ -683,15 +609,7 @@ export type AddressColumn = z.infer<typeof addressColumn>;
 export const religionColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type ReligionColumn = z.infer<typeof religionColumn>;
@@ -701,15 +619,7 @@ export type ReligionColumn = z.infer<typeof religionColumn>;
 export const genderColumn = z.object({
   id: z.number(),
   name: z.string(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type GenderColumn = z.infer<typeof genderColumn>;
@@ -991,7 +901,7 @@ export const EmployeeFormSchema = z.object({
     required_error: "Leave group ID is required.",
   }),
   reporting_to_id: z.string().optional().nullable(),
-/*   sorting_index: z.coerce
+  /*   sorting_index: z.coerce
     .number()
     .int()
     .min(0, {
@@ -1091,7 +1001,7 @@ export const employeeColumn = z.object({
   id: z.coerce.number(),
   // leave_group_id: z.string(),
   // leave_group: leaveGroupRow,
-  leave_group: z.object({name: z.string(), id: z.coerce.number()}),
+  leave_group: z.object({ name: z.string(), id: z.coerce.number() }),
   first_name: z.string(),
   last_name: z.string(),
   email: z.string(),
@@ -1102,7 +1012,7 @@ export const employeeColumn = z.object({
   status: z.enum(["Active", "Inactive"]),
   user_id: z.coerce.number().optional().nullable(),
   user: z.object({
-    role: roleColumn
+    role: roleColumn,
   }),
   gender_id: z.coerce.number(),
   religion_id: z.coerce.number(),

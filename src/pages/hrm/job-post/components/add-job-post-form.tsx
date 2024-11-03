@@ -86,7 +86,7 @@ export function AddJobPostForm({
 		resolver: zodResolver(JobPostFormSchema),
 		defaultValues: {
 			title: previousData?.title || "",
-			sorting_index: previousData?.sorting_index || 0,
+			// sorting_index: previousData?.sorting_index || 0,
 			date: previousData?.date || "",
 			deadline: previousData?.deadline || "",
 			vacancy_number: previousData?.vacancy_number || 0,
@@ -479,7 +479,7 @@ export function AddJobPostForm({
 								)}
 							/>
 
-							<FormField
+							{/* <FormField
 								control={form.control}
 								name="sorting_index"
 								render={({ field }) => (
@@ -495,7 +495,7 @@ export function AddJobPostForm({
 										<FormMessage />
 									</FormItem>
 								)}
-							/>
+							/> */}
 							<FormField
 								control={form.control}
 								name="status"

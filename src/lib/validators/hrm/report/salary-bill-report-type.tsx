@@ -4,7 +4,7 @@ const salaryCategorySchema = z.object({
   id: z.number(),
   name: z.string(),
   type: z.enum(["Allowance", "Deduction"]),
-  sorting_index: z.number(),
+  sorting_index: z.number().optional().nullable(),
 });
 
 export const allowanceSchema = z.object({

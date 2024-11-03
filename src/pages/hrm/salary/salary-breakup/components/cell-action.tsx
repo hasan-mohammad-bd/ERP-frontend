@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { AlertModal } from "@/components/common/alert-modal";
+import { Modal } from "@/components/common/modal";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -6,15 +7,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Pencil, Trash2 } from "lucide-react";
-import { AlertModal } from "@/components/common/alert-modal";
-import { toast } from "sonner";
-import { Modal } from "@/components/common/modal";
-import { AddSalaryBreakupForm } from "./add-salary-breakup-form";
-import { useRemoveSalaryCategoriesMutation } from "@/store/services/hrm/api/salary-categories";
-import { SalaryCategoriesFormRows } from "@/lib/validators/hrm/salary-categories";
 import handleErrors from "@/lib/handle-errors";
+import { SalaryCategoriesFormRows } from "@/lib/validators/hrm/salary-categories";
+import { useRemoveSalaryCategoriesMutation } from "@/store/services/hrm/api/salary-categories";
 import { ErrorResponse } from "@/types";
+import { Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { AddSalaryBreakupForm } from "./add-salary-breakup-form";
 
 export interface CellActionProps {
   data: SalaryCategoriesFormRows;
@@ -32,9 +32,8 @@ export function CellAction({ data }: CellActionProps) {
       toast.success("Job deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
-
       console.log(error);
-      handleErrors(error as ErrorResponse)
+      handleErrors(error as ErrorResponse);
     }
   };
 
@@ -122,7 +121,7 @@ export function CellAction({ data }: CellActionProps) {
               short_code: data.short_code || "", // Provide a default value
               type: data.type,
               is_default: data.is_default.toString(), // Ensure is_default is a string
-              sorting_index: data.sorting_index,
+              // sorting_index: data.sorting_index,
             }}
             modalClose={() => setUpdateModalOpen(false)}
           />

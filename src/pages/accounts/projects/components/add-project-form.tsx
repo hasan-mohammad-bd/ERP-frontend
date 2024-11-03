@@ -107,7 +107,7 @@ export function AddProjectForm({
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="sorting_index"
               render={({ field }) => (
@@ -123,7 +123,7 @@ export function AddProjectForm({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             <div>
               <Button variant="default" type="submit" className="w-full mt-4">

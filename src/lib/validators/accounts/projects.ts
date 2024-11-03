@@ -6,15 +6,7 @@ export const projectSchema = z.object({
   }),
   description: z.string().optional().nullable(),
   image: z.string().optional().nullable(),
-  sorting_index: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Sorting index must be at least 0.",
-    })
-    .max(9999, {
-      message: "Sorting index must be at most 9999.",
-    }),
+  sorting_index: z.coerce.number().optional().nullable(),
 });
 
 export type ProjectFromValues = z.infer<typeof projectSchema>;

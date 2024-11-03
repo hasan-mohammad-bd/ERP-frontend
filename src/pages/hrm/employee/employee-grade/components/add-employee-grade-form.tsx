@@ -1,5 +1,4 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,19 +9,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
+import handleErrors from "@/lib/handle-errors";
 import {
-  EmployeeGradeFromValues,
   EmployeeGradeColumn,
   EmployeeGradeFormSchema,
+  EmployeeGradeFromValues,
 } from "@/lib/validators";
-import { Loading } from "@/components/common/loading";
 import {
   useCreateEmployeeGradeMutation,
   useUpdateEmployeeGradeMutation,
 } from "@/store/services/hrm/api/employee-grade";
-import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface AddSectionFormProps {
   modalClose: () => void;
@@ -92,7 +92,7 @@ export function AddEmployeeGradeForm({
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="sorting_index"
               render={({ field }) => (
@@ -108,7 +108,7 @@ export function AddEmployeeGradeForm({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="min_salary"

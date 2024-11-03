@@ -23,7 +23,13 @@ import {
   useCreateLocationMutation,
   useUpdateLocationMutation,
 } from "@/store/services/erp-main/api/location";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useGetOrganizationsQuery } from "@/store/services/erp-main/api/organization";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
@@ -41,7 +47,9 @@ export function AddLocationForm({
   const [updatedLocation, { isLoading: updateLoading }] =
     useUpdateLocationMutation();
 
-    const { data, isLoading: organizationLoading } = useGetOrganizationsQuery("page=1&per_page=1000");
+  const { data, isLoading: organizationLoading } = useGetOrganizationsQuery(
+    "page=1&per_page=1000"
+  );
 
   const organizationData = data?.data || [];
 
@@ -49,7 +57,7 @@ export function AddLocationForm({
     resolver: zodResolver(LocationFormSchema),
     defaultValues: {
       name: previousData?.name || "",
-      sorting_index: previousData?.sorting_index || 0,
+      // sorting_index: previousData?.sorting_index || 0,
       organization_id: previousData?.organization?.id || 1,
     },
   });
@@ -99,7 +107,7 @@ export function AddLocationForm({
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="sorting_index"
               render={({ field }) => (
@@ -115,7 +123,7 @@ export function AddLocationForm({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             <FormField
               control={form.control}

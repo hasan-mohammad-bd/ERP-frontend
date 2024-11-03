@@ -57,7 +57,7 @@ type Employee = {
   tin_number: string;
   marital_status: "Married" | "Single" | "Divorced" | "Widowed";
   is_roster_elegible: number;
-  sorting_index: number;
+  sorting_index: number | null;
   leave_group_id: number;
   present_address: string | null;
   permanent_address: string | null;

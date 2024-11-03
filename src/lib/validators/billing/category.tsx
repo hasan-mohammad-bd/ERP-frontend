@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 
 // Define the schema for the category data
@@ -8,7 +7,7 @@ export const categorySchema = z.object({
   image: z.string().optional(), // Image is optional (can be URL or file)
   description: z.string().optional(),
   status: z.union([z.literal(1), z.literal(0)]).default(1), // Use 1 and 0 instead of strings
-  sorting_index: z.number().optional(),
+  sorting_index: z.number().optional().optional().nullable(),
   parent_id: z.number().nullable().optional(),
 });
 
@@ -21,9 +20,3 @@ export const categoryRowSchema = z.object({
 // Infer types from the schemas
 export type CategoryFormValues = z.infer<typeof categorySchema>; // Form values type
 export type CategoryRow = z.infer<typeof categoryRowSchema>;
-
-
-
-
-
-
