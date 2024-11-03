@@ -1,7 +1,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
+import { LeaveGroupRow } from "@/lib/validators/hrm/leave";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import { LeaveGroupRow } from "@/lib/validators/hrm/leave";
 
 export const attendanceColumns: ColumnDef<LeaveGroupRow>[] = [
   {
@@ -35,9 +35,16 @@ export const attendanceColumns: ColumnDef<LeaveGroupRow>[] = [
   {
     accessorKey: "Leave Types",
     cell: ({ row }) =>
-      row.original.leave_group_types
-        .map((leave_type) => leave_type.leave_type.name)
-        .join(", "),
+      row.original.leave_group_types.map((leave_type) => (
+        <div className="py-1">{leave_type.leave_type.name}</div>
+      )),
+  },
+  {
+    accessorKey: "Leave Count",
+    cell: ({ row }) =>
+      row.original.leave_group_types.map((leave_type) => (
+        <div className="py-1">{leave_type.leave_count}</div>
+      )),
   },
 
   {
