@@ -33,6 +33,7 @@ import {
   useUpdateScheduleMutation,
 } from "@/store/services/hrm/api/schedule";
 import { ErrorResponse } from "@/types";
+import formatTo24HourTime from "@/utils/format-dates";
 
 interface AddScheduleFormProps {
   modalClose: () => void;
@@ -57,8 +58,8 @@ export function AddScheduleForm({
       name: previousData?.name || "",
       // sorting_index: previousData?.sorting_index || 0,
       hour: previousData?.hour || "0",
-      start_time: previousData?.start_time || "00:00:00",
-      end_time: previousData?.end_time || "00:00:00",
+      start_time: formatTo24HourTime(previousData?.start_time) || "00:00",
+      end_time: formatTo24HourTime(previousData?.end_time) || "00:00",
       organization_id: previousData?.organization?.id || 1,
     },
   });

@@ -236,7 +236,7 @@ const hrmRoutes = {
         {
           path: "add",
           element: withFallback(
-            <RoleAccess roles={["holidays.create "]} showUnauthorizedPage={true}>
+            <RoleAccess roles={["holidays.create"]} showUnauthorizedPage={true}>
               <AddHolidayForm />
             </RoleAccess>
           ),

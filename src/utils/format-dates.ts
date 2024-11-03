@@ -3,6 +3,8 @@
 import { 
   format, 
   // parseISO 
+  isValid,
+  parse,
 } from "date-fns";
 
 /**
@@ -39,3 +41,50 @@ export const getFormattedDateTime = (date: string) => {
   const formattedDate = format(date, "yyyy-MM-dd hh:mm a");
   return formattedDate;
 };
+
+
+
+/**
+ * The function `getFormattedTime` takes a time string in "HH:mm:ss" format, parses it into a Date
+ * object, and returns the time in "hh:mm a" format.
+ * @param {string} time - The `time` parameter is a string representing a time value in the format
+ * "HH:mm:ss" (hours:minutes:seconds).
+ * @returns The function `getFormattedTime` returns a formatted time string in the format "hh:mm a"
+ * (e.g., "03:30 PM") based on the input time string provided in the "HH:mm:ss" format.
+ */
+export const getFormattedTime = (time: string) => {
+  // Parse the time string to a Date object
+  const parsedDate = parse(time, "HH:mm:ss", new Date());
+  return format(parsedDate, "hh:mm a");
+};
+
+
+/**
+ * Converts a time string in "HH:mm:ss" or "HH:mm" format to "HH:mm" (24-hour format).
+ *
+ * @param {string | Date} time - The time to format (e.g., "15:00:00" or "15:00").
+ * @returns {string | null} - The formatted time as "HH:mm" or null if invalid.
+ */
+function formatTo24HourTime(time: string | Date | undefined): string | null {
+  let dateObj: Date;
+
+  // Attempt to parse "HH:mm:ss" format, and fall back to "HH:mm" if needed
+  if (typeof time === 'string') {
+      dateObj = parse(time, 'HH:mm:ss', new Date());
+      if (!isValid(dateObj)) {
+          dateObj = parse(time, 'HH:mm', new Date());
+      }
+  } else if (time instanceof Date) {
+      dateObj = time;
+  } else {
+      return null; // Return null for unsupported types.
+  }
+
+  // Check if the date object is valid
+  if (!isValid(dateObj)) return null;
+
+  // Format the date to "HH:mm"
+  return format(dateObj, 'HH:mm');
+}
+
+export default formatTo24HourTime;

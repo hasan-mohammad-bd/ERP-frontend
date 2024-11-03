@@ -2,6 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ScheduleColumn } from "@/lib/validators";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
+import { getFormattedTime } from "@/utils/format-dates";
 
 export const scheduleColumns: ColumnDef<ScheduleColumn>[] = [
   {
@@ -32,17 +33,15 @@ export const scheduleColumns: ColumnDef<ScheduleColumn>[] = [
     accessorKey: "name",
     header: "Shift Name",
   },
-  /*   {
-    accessorKey: "hour",
-    header: "Hour",
-  }, */
   {
     accessorKey: "start_time",
     header: "Start Time",
+    cell: ({ row }) => <span>{getFormattedTime(row.original.start_time)}</span>,
   },
   {
     accessorKey: "end_time",
     header: "End Time",
+    cell: ({ row }) => <span>{getFormattedTime(row.original.end_time)}</span>,
   },
   {
     accessorKey: "hour",

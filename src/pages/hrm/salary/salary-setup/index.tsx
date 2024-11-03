@@ -46,14 +46,14 @@ type SalaryFormData = {
 };
 
 const SalarySetup = () => {
-  const { employye_id } = useParams();
+  const { employee_id } = useParams();
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [submittedData, setSubmittedData] = useState<SalaryFormData | null>(
     null
   ); // Store form data temporarily
   const [createSalarySetup, { isLoading: isCreateSalarySetupLoading }] =
     useCreateSalarySetupMutation();
-  const { data, isLoading } = useGetSalarySetupsQuery(employye_id);
+  const { data, isLoading } = useGetSalarySetupsQuery(employee_id);
 
   const salarySetupData = data || {
     employee_id: "",
@@ -149,7 +149,7 @@ const SalarySetup = () => {
         ];
 
         await createSalarySetup({
-          employee_id: Number(employye_id),
+          employee_id: Number(employee_id),
           salary_categories: salaryCategories,
         }).unwrap();
 
