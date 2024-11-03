@@ -1,14 +1,11 @@
-// import { PaginationInfo } from "@/types";
+import { PaginationInfo } from "@/types";
 import { hrmApi } from "../..";
 import { attendanceSummary } from "./type";
-
-
 
 const attendanceSummaryApi = hrmApi.injectEndpoints({
   endpoints: (build) => ({
     getAttendanceSummary: build.query<
-    //   { data: attendanceSummary[]},
-    attendanceSummary[],
+      { data: attendanceSummary[], meta: PaginationInfo },
       string
     >({
       query: (params) => `attendance-summary-report?${params}`,

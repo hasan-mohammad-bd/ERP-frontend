@@ -81,7 +81,7 @@ export const LeaveUsagesReport = lazy(() => import("@/pages/hrm/reports/leave-re
 export const LeaveTrend = lazy(() => import("@/pages/hrm/reports/leave-reports/leave-trend"));
 export const LeaveTypeSummary = lazy(() => import("@/pages/hrm/reports/leave-reports/leave-type-summary"));
 export const EmployeeForm = lazy(() => import("@/pages/hrm/employee/employee-list/components/employee-form"));
-export const AttendanceSummary = lazy(() => import("@/pages/hrm/reports/leave-reports/attendance-summary"));
+export const AttendanceSummary = lazy(() => import("@/pages/hrm/reports/attendance-summary"));
 
 
 // Accounts

@@ -189,32 +189,10 @@ const hrmNavItems: NavItem[] = [
     isChildren: true,
     children: [
       {
-        title: "Employee Payslip",
-        icon: CalendarCheck2,
-        color: "text-sky-500",
-        href: "/hrm/employee-salary-payslip",
-        permissions: ["hrm-report.pay-slip-report"],
-      },
-      {
-        title: "Bank Salary Advice",
-        icon: CalendarCheck2,
-        color: "text-sky-500",
-        href: "/hrm/bank-salary-advice",
-        permissions: ["salaries"],
-      },
-      {
         title: "Salary Breakup",
         icon: CalendarCheck2,
         color: "text-sky-500",
         href: "/hrm/salary_breakup",
-        permissions: ["salaries"],
-      },
-
-      {
-        title: "Salary Certificate",
-        icon: CalendarCheck2,
-        color: "text-sky-500",
-        href: "/hrm/salary-certificate",
         permissions: ["salaries"],
       },
       {
@@ -306,6 +284,27 @@ const hrmNavItems: NavItem[] = [
     isChildren: true,
     children: [
       {
+        title: "Employee Payslip",
+        icon: CalendarCheck2,
+        color: "text-sky-500",
+        href: "/hrm/employee-salary-payslip",
+        permissions: ["hrm-report.pay-slip-report"],
+      },
+      {
+        title: "Bank Salary Advice",
+        icon: CalendarCheck2,
+        color: "text-sky-500",
+        href: "/hrm/bank-salary-advice",
+        permissions: ["salaries"],
+      },
+      {
+        title: "Salary Certificate",
+        icon: CalendarCheck2,
+        color: "text-sky-500",
+        href: "/hrm/salary-certificate",
+        permissions: ["salaries"],
+      },
+      {
         title: "Leave Summary",
         icon: UserRoundSearch,
         href: "leave-summary",
@@ -343,7 +342,7 @@ const hrmNavItems: NavItem[] = [
       {
         title: "Attendance Summary",
         icon: UserRoundSearch,
-        href: " ",
+        href: "attendance-summary",
         color: "text-sky-500",
         permissions: ["hrm-report.attendance-summary-report"],
       },
@@ -359,14 +358,7 @@ const hrmNavItems: NavItem[] = [
         icon: UserRoundSearch,
         href: "daily-attendance-report",
         color: "text-sky-500",
-        permissions: ["hrm"],
-      },
-      {
-        title: "Daily Attendance",
-        icon: UserRoundSearch,
-        href: "daily-attendance-report",
-        color: "text-sky-500",
-        permissions: ["hrm"],
+        permissions: ["hrm-report.daily-attendance-report"],
       },
     ],
   },

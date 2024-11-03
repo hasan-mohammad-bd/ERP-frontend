@@ -51,7 +51,6 @@ import DailyAttendanceReport from "@/pages/hrm/reports/daily-attendance-report";
 import RoleAccess from "@/lib/access-control/role-access";
 import SalaryBillReport from "@/pages/hrm/reports/salary-bill-report";
 
-
 const hrmRoutes = {
   path: "hrm/",
   element: withFallback(<Layout />),
@@ -59,7 +58,10 @@ const hrmRoutes = {
     {
       index: true,
       element: withFallback(
-        <RoleAccess roles={["dashboard-reports", "dashboard-reports.show"]} showUnauthorizedPage={true}>
+        <RoleAccess
+          roles={["dashboard-reports", "dashboard-reports.show"]}
+          showUnauthorizedPage={true}
+        >
           <HRMDashboard />
         </RoleAccess>
       ),
@@ -81,7 +83,10 @@ const hrmRoutes = {
         {
           path: "add",
           element: withFallback(
-            <RoleAccess roles={["employees.create"]} showUnauthorizedPage={true}>
+            <RoleAccess
+              roles={["employees.create"]}
+              showUnauthorizedPage={true}
+            >
               <EmployeeForm />
             </RoleAccess>
           ),
@@ -278,7 +283,10 @@ const hrmRoutes = {
     {
       path: "vacancy-requisitions",
       element: withFallback(
-        <RoleAccess roles={["vacancy-requisitions"]} showUnauthorizedPage={true}>
+        <RoleAccess
+          roles={["vacancy-requisitions"]}
+          showUnauthorizedPage={true}
+        >
           <VacancyRequisition />
         </RoleAccess>
       ),
@@ -328,14 +336,17 @@ const hrmRoutes = {
     {
       path: "attendance-policy-mapping",
       element: withFallback(
-        <RoleAccess roles={["employee-attendance-policies"]} showUnauthorizedPage={true}>
+        <RoleAccess
+          roles={["employee-attendance-policies"]}
+          showUnauthorizedPage={true}
+        >
           <AttendancePolicyMapping />
         </RoleAccess>
       ),
       errorElement: withFallback(<ErrorPage />),
     },
 
-    { 
+    {
       path: "leave-request",
       element: withFallback(
         <RoleAccess roles={["leaves"]} showUnauthorizedPage={true}>
@@ -388,7 +399,10 @@ const hrmRoutes = {
     {
       path: "salary-sheet",
       element: withFallback(
-        <RoleAccess roles={["salaries", "salaries.show"]} showUnauthorizedPage={true}>
+        <RoleAccess
+          roles={["salaries", "salaries.show"]}
+          showUnauthorizedPage={true}
+        >
           <SalarySheet />
         </RoleAccess>
       ),
@@ -398,7 +412,14 @@ const hrmRoutes = {
     {
       path: "salary-setup/:employee_id",
       element: withFallback(
-        <RoleAccess roles={["salary-settings.create", "salary-settings.edit", "salary-settings"]} showUnauthorizedPage={true}>
+        <RoleAccess
+          roles={[
+            "salary-settings.create",
+            "salary-settings.edit",
+            "salary-settings",
+          ]}
+          showUnauthorizedPage={true}
+        >
           <SalarySetup />
         </RoleAccess>
       ),
@@ -418,7 +439,10 @@ const hrmRoutes = {
     {
       path: "leave-summary",
       element: withFallback(
-        <RoleAccess roles={["hrm-report.leave-reports.summary"]} showUnauthorizedPage={true}>
+        <RoleAccess
+          roles={["hrm-report.leave-reports.summary"]}
+          showUnauthorizedPage={true}
+        >
           <LeaveSummary />
         </RoleAccess>
       ),
@@ -428,7 +452,10 @@ const hrmRoutes = {
     {
       path: "leave-usages",
       element: withFallback(
-        <RoleAccess roles={["hrm-report.leave-reports.usages"]} showUnauthorizedPage={true}>
+        <RoleAccess
+          roles={["hrm-report.leave-reports.usages"]}
+          showUnauthorizedPage={true}
+        >
           <LeaveUsagesReport />
         </RoleAccess>
       ),
@@ -438,17 +465,23 @@ const hrmRoutes = {
     {
       path: "leave-balance",
       element: withFallback(
-        <RoleAccess roles={["hrm-report.leave-reports.balance"]} showUnauthorizedPage={true}>
+        <RoleAccess
+          roles={["hrm-report.leave-reports.balance"]}
+          showUnauthorizedPage={true}
+        >
           <LeaveBalance />
         </RoleAccess>
       ),
       errorElement: withFallback(<ErrorPage />),
     },
-    
+
     {
       path: "leave-trend",
       element: withFallback(
-        <RoleAccess roles={["hrm-report.leave-reports.trend"]} showUnauthorizedPage={true}>
+        <RoleAccess
+          roles={["hrm-report.leave-reports.trend"]}
+          showUnauthorizedPage={true}
+        >
           <LeaveTrend />
         </RoleAccess>
       ),
@@ -458,7 +491,10 @@ const hrmRoutes = {
     {
       path: "leave-type-summary",
       element: withFallback(
-        <RoleAccess roles={["hrm-report.leave-reports.type-summary"]} showUnauthorizedPage={true}>
+        <RoleAccess
+          roles={["hrm-report.leave-reports.type-summary"]}
+          showUnauthorizedPage={true}
+        >
           <LeaveTypeSummary />
         </RoleAccess>
       ),
@@ -468,7 +504,10 @@ const hrmRoutes = {
     {
       path: "attendance-summary",
       element: withFallback(
-        <RoleAccess roles={["hrm-report.attendance-summary-report"]} showUnauthorizedPage={true}>
+        <RoleAccess
+          roles={["hrm-report.attendance-summary-report"]}
+          showUnauthorizedPage={true}
+        >
           <AttendanceSummary />
         </RoleAccess>
       ),
@@ -477,53 +516,31 @@ const hrmRoutes = {
     {
       path: "salary-bill-report",
       element: withFallback(
-         <RoleAccess roles={["hrm-report.pay-slip-report"]} showUnauthorizedPage={true}>
-           <SalaryBillReport />
-         </RoleAccess>
+        <RoleAccess
+          roles={["hrm-report.pay-slip-report"]}
+          showUnauthorizedPage={true}
+        >
+          <SalaryBillReport />
+        </RoleAccess>
       ),
-      errorElement: withFallback(<ErrorPage />),
-    },
-
-
-
-    {
-      path: "*",
-      element: withFallback(<NotFoundPage />),
-    },
-
-
-    {
-      path: "estimate-salary",
-      element: withFallback(<EstimateSalary />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "leave-summary",
-      element: withFallback(<LeaveSummary />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "leave-usages",
-      element: withFallback(<LeaveUsagesReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "leave-balance",
-      element: withFallback(<LeaveBalance />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "attendance-summary",
-      element: withFallback(<AttendanceSummary />),
       errorElement: withFallback(<ErrorPage />),
     },
     {
       path: "daily-attendance-report",
-      element: withFallback(<DailyAttendanceReport />),
+      element: withFallback(
+        <RoleAccess
+          roles={["hrm-report.daily-attendance-report"]}
+          showUnauthorizedPage={true}
+        >
+          <DailyAttendanceReport />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
-
-
+    {
+      path: "*",
+      element: withFallback(<NotFoundPage />),
+    },
   ],
 };
 
