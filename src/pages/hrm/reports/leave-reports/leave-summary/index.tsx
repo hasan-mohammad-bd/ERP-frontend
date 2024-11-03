@@ -30,7 +30,7 @@ const LeaveSummary = () => {
     <>
       <div className="mb-5 space-y-5">
         <Heading
-          title="Employees"
+          title="Leave Summary"
           description="Manage employees for you business"
         />
         <EmployeeFilters setFilterParams={setFilterParams} />

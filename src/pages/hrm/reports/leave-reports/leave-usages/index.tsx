@@ -4,13 +4,15 @@ import { Separator } from "@radix-ui/react-dropdown-menu";
 // import { PaginationState } from "@tanstack/react-table";
 
 // import { PaginationInfo } from "@/types";
-import LeaveUsagesTable from "./components/leave-usages-table";
+import PrintPDFWrapper from "@/components/common";
+import { Heading } from "@/components/common/heading";
+import { Paginator } from "@/components/common/paginator";
+import { Card } from "@/components/ui/card";
+import EmployeeFilters from "@/pages/hrm/employee/employee-list/components/employee-filters";
 import { useGetLeaveUsageQuery } from "@/store/services/hrm/api/report/leave/leave-usages";
 import { PaginationInfo } from "@/types";
-import { Paginator } from "@/components/common/paginator";
-import PrintPDFWrapper from "@/components/common";
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
+import LeaveUsagesTable from "./components/leave-usages-table";
 
 const LeaveUsagesReport = () => {
   // const [pagination, setPagination] = React.useState<PaginationState>({
@@ -20,9 +22,10 @@ const LeaveUsagesReport = () => {
 
   const [page, setPage] = useState(1); // Default current page
   const [pageSize, setPageSize] = useState(10); // Number of items per page
+  const [filterParams, setFilterParams] = useState("");
 
   const { data, isLoading } = useGetLeaveUsageQuery(
-    `per_page=${pageSize}&page=${page}`
+    `per_page=${pageSize}&page=${page}&${filterParams}`
   );
 
   const fetchedData = data?.data || [];
@@ -33,6 +36,13 @@ const LeaveUsagesReport = () => {
 
   return (
     <>
+      <div className="mb-5 space-y-5">
+        <Heading
+          title="Leave Usages"
+          description="Manage employees for you business"
+        />
+        <EmployeeFilters setFilterParams={setFilterParams} />
+      </div>
       <Card>
         <PrintPDFWrapper className="space-y-4" fileName="leave-usages-report">
           <div className="flex-1 space-y-4 my-4">
