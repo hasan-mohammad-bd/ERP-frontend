@@ -16,6 +16,8 @@ import { Modal } from "@/components/common/modal";
 import ProductDetails from "./productDetails";
 import { useRemoveEmployeeMutation } from "@/store/services/hrm/api/employee-list";
 import { useNavigate } from "react-router-dom";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface CellActionProps {
   data: EmployeeColumn;
@@ -35,11 +37,12 @@ export function CellAction({ data }: CellActionProps) {
 
   const handleDepartmentDelete = async (id: number) => {
     try {
-      await deleteEmployee(id);
+      await deleteEmployee(id).unwrap();
       toast.success("Job Candidate deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
+      handleErrors(error as ErrorResponse);
     }
   };
 
