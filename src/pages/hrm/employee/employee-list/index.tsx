@@ -1,24 +1,24 @@
-import React, { useState } from "react";
-import { Heading } from "@/components/common/heading";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { DataTable } from "@/components/ui/data-table/data-table";
-import { Modal } from "@/components/common/modal";
-import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
-import { employeeColumns } from "./components/columns";
-import { PaginationState } from "@tanstack/react-table";
-import { PaginationInfo } from "@/types";
-import { BulkAction } from "@/components/ui/data-table/data-table-bulk-actions";
-import { EmployeeColumn } from "@/lib/validators";
 import { AlertModal } from "@/components/common/alert-modal";
-import { toast } from "sonner";
-import { AddAttendancePolicyMappingForm } from "./components/employee-form/add-attendance-policy";
-import { Separator } from "@/components/ui/separator";
-import EmployeeFilters from "./components/employee-filters";
+import { Heading } from "@/components/common/heading";
 import ListSkeleton from "@/components/common/ListSkeleton";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Modal } from "@/components/common/modal";
+import { Button } from "@/components/ui/button";
+import { DataTable } from "@/components/ui/data-table/data-table";
+import { BulkAction } from "@/components/ui/data-table/data-table-bulk-actions";
+import { Separator } from "@/components/ui/separator";
+import { EmployeeColumn } from "@/lib/validators";
 import { setSelectedEmployeeAction } from "@/store/services/erp-main/slices/commonSlice";
+import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
+import { PaginationInfo } from "@/types";
+import { PaginationState } from "@tanstack/react-table";
+import { Plus } from "lucide-react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { employeeColumns } from "./components/columns";
+import EmployeeFilters from "./components/employee-filters";
+import { AddAttendancePolicyMappingForm } from "./components/employee-form/add-attendance-policy";
 
 const BULK_ACTIONS = [
   {
@@ -51,7 +51,7 @@ const Employee = () => {
   const { data, isLoading } = useGetEmployeesQuery(
     `per_page=${pagination.pageSize}&page=${
       pagination.pageIndex + 1
-    }${filterParams}{}`
+    }&${filterParams}`
   );
 
   // Set appropriate bulk action type here
@@ -72,13 +72,12 @@ const Employee = () => {
   };
 
   const handleSaveToGlobalState = () => {
-    console.log(selectedBulkAction)
+    console.log(selectedBulkAction);
     dispatch(setSelectedEmployeeAction(selectedBulkAction));
     toast.success("Employee selected successfully");
     setSelectedBulkAction({ action: "", payload: [] });
-    navigate("/hrm/estimate-salary")
+    navigate("/hrm/estimate-salary");
   };
-
 
   return (
     <>
@@ -89,7 +88,10 @@ const Employee = () => {
               title="Employees"
               description="Manage employees for you business"
             />
-            <Button onClick={(()=> navigate("/hrm/employees-list/add"))} size={"sm"}>
+            <Button
+              onClick={() => navigate("/hrm/employees-list/add")}
+              size={"sm"}
+            >
               <Plus className="mr-2 h-4 w-4" /> Add Employee
             </Button>
           </div>
@@ -111,7 +113,6 @@ const Employee = () => {
           )}
         </div>
       </div>
-
 
       {/* Example uses with modal using selected bulk action  */}
       {selectedBulkAction.action === "enable-roster" && (
@@ -142,20 +143,24 @@ const Employee = () => {
         </Modal>
       )}
 
-      {
-        selectedBulkAction.action === "salary-estimate-generate" && (
-          <Modal
-            title="Salary Estimate/Generate"
-            toggleModal={() => setSelectedBulkAction({ action: "", payload: [] })}
-            isOpen={selectedBulkAction.action === "salary-estimate-generate"}
-            className="!h-fit"
-          >
-            {/* delete each on at a time */}
-            <span>{selectedBulkAction.payload.map((item) => item.first_name).join(", ")} </span> 
-            <Button onClick={handleSaveToGlobalState}>Select the Employees</Button>
-          </Modal>
-        )
-      }
+      {selectedBulkAction.action === "salary-estimate-generate" && (
+        <Modal
+          title="Salary Estimate/Generate"
+          toggleModal={() => setSelectedBulkAction({ action: "", payload: [] })}
+          isOpen={selectedBulkAction.action === "salary-estimate-generate"}
+          className="!h-fit"
+        >
+          {/* delete each on at a time */}
+          <span>
+            {selectedBulkAction.payload
+              .map((item) => item.first_name)
+              .join(", ")}{" "}
+          </span>
+          <Button onClick={handleSaveToGlobalState}>
+            Select the Employees
+          </Button>
+        </Modal>
+      )}
     </>
   );
 };
