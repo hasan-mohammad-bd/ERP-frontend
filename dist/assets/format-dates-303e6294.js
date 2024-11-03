@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:dist/assets/format-dates-6dcc0dab.js
-import{a8 as n,bQ as s,bR as o}from"./index-4b237266.js";const D=(e,t)=>{const r=[],a=new Date(e);for(;a<=t;)r.push(new Date(a)),a.setDate(a.getDate()+1);return r},f=e=>n(e,"yyyy-MM-dd hh:mm a"),u=e=>{const t=s(e,"HH:mm:ss",new Date);return n(t,"hh:mm a")};function c(e){let t;if(typeof e=="string")t=s(e,"HH:mm:ss",new Date),o(t)||(t=s(e,"HH:mm",new Date));else if(e instanceof Date)t=e;else return null;return o(t)?n(t,"HH:mm"):null}export{u as a,f as b,c as f,D as g};
-========
-import{a8 as n,bQ as s,bR as o}from"./index-945ff9a6.js";const D=(e,t)=>{const r=[],a=new Date(e);for(;a<=t;)r.push(new Date(a)),a.setDate(a.getDate()+1);return r},f=e=>n(e,"yyyy-MM-dd hh:mm a"),u=e=>{const t=s(e,"HH:mm:ss",new Date);return n(t,"hh:mm a")};function c(e){let t;if(typeof e=="string")t=s(e,"HH:mm:ss",new Date),o(t)||(t=s(e,"HH:mm",new Date));else if(e instanceof Date)t=e;else return null;return o(t)?n(t,"HH:mm"):null}export{u as a,f as b,c as f,D as g};
->>>>>>>> 5642829550ae661cfbd9cc1d4e8aa9666d0f3ce1:dist/assets/format-dates-303e6294.js
