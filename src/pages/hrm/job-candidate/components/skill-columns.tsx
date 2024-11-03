@@ -41,10 +41,10 @@ export const skillColumns: ColumnDef<SkillColumn>[] = [
 		accessorKey: "description",
 		header: "Description",
 	},
-	{
-		accessorKey: "start_date",
-		header: "Start date",
-	},
+	// {
+	// 	accessorKey: "start_date",
+	// 	header: "Start date",
+	// },
 
 	{
 		id: "actions",

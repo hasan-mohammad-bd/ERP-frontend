@@ -1,3 +1,4 @@
+// import { image } from "html2canvas/dist/types/css/types/image";
 import { z } from "zod";
 
 // Department Form validation
@@ -946,6 +947,7 @@ export const EmployeeFormSchema = z.object({
     .nullable(),
   tin_number: z.string().optional().nullable(),
   marital_status: z.enum(["Married", "Unmarried"]).optional().nullable(),
+  image: z.string().optional().nullable(),
 });
 
 export type EmployeeFormValues = z.infer<typeof EmployeeFormSchema>;
@@ -957,6 +959,7 @@ export const EmployeeUpdateSchema = z.object({
   machine_id: z.string().optional().nullable(),
   is_head_of_dept: z.number().optional().nullable(),
   reporting_to_id: z.coerce.number().optional().nullable(),
+  // image: z.string().optional().nullable(),
   // sorting_index: z.coerce
   //   .number()
   //   .int()
@@ -1043,6 +1046,7 @@ export const employeeColumn = z.object({
   birth_date: z.string(),
   tin_number: z.string(),
   marital_status: z.enum(["Married", "Unmarried"]),
+  image: z.string().optional().nullable(),
   // sorting_index: z.coerce.number(),
   religion: religionColumn,
   gender: genderColumn.optional().nullable(),

@@ -102,7 +102,7 @@ export default function FileUploadSingle({ setUploadedFile, image }: ImageUpload
         <div>
           <ScrollArea className="h-40">
             <p className="font-medium my-2 mt-6 text-muted-foreground text-sm">
-              Previous Image
+              Uploaded Image
             </p>
             <div className="space-y-2 pr-3">
               <div
@@ -112,7 +112,7 @@ export default function FileUploadSingle({ setUploadedFile, image }: ImageUpload
                 <div className="items-center p-2">
                   <img
                     src={image}
-                    alt="Previous Logo"
+                    alt="Preview"
                     className="h-20 rounded"
                   />
                 </div>

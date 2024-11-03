@@ -39,10 +39,10 @@ const employeeApi = hrmApi.injectEndpoints({
       }),
       invalidatesTags: ["employees"],
     }),
-    updateEmployee: build.mutation<{ data: EmployeeColumn }, { employeeId: number, updatedEmployee: EmployeeFormValues }>({
+    updateEmployee: build.mutation<{ data: EmployeeColumn }, { employeeId: number, updatedEmployee: FormData }>({
       query: ({ employeeId, updatedEmployee }) => ({
         url: `employees/${employeeId}`,
-        method: "PUT",
+        method: "POST",
         body: updatedEmployee,
       }),
       invalidatesTags: ["employees"],

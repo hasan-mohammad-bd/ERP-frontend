@@ -67,7 +67,7 @@ import { ErrorResponse } from "@/types";
 import { useGetLeaveGroupsQuery } from "@/store/services/hrm/api/leave-group";
 import { LeaveGroupRow } from "@/lib/validators/hrm/leave";
 import { useNavigate, useParams } from "react-router-dom";
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -82,6 +82,8 @@ import { Switch } from "@/components/ui/switch";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { GenderColumn } from "../validators";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { serialize } from "object-to-formdata";
+import { Heading } from "@/components/common/heading";
 
 // interface EmployeeFormProps {
 // 	modalClose?: () => void;
@@ -217,23 +219,50 @@ export default function EmployeeForm() {
         gender_id: previousData?.gender?.id.toString(),
         religion_id: previousData?.religion?.id.toString(),
         blood_group_id: previousData?.blood_group?.id.toString(),
-        role_id: previousData?.user?.role?.id.toString(),
+        role_id: previousData?.role?.id.toString(),
         leave_group_id: previousData?.leave_group?.id?.toString(),
+        card_id: previousData?.card_id || null,
+        machine_id: previousData?.machine_id || null,
+        is_head_of_dept: previousData?.is_head_of_dept || 0,
+        // reporting_to_id: previousData?.reporting_to_id || null,
+        // sorting_index: previousData?.sorting_index || 0,
+        nid_number: previousData?.nid_number || null,
+        fathers_name: previousData?.fathers_name || null,
+        mothers_name: previousData?.mothers_name || null,
+        payment_type: previousData?.payment_type || "Cash",
+        account_number: previousData?.account_number || null,
+        bank_name: previousData?.bank_name || null,
+        bank_branch: previousData?.bank_branch || null,
+        marital_status: previousData?.marital_status || "Married",
+        birth_date: previousData?.birth_date || null,
+        tin_number: previousData?.tin_number || null,
+        //if amarsolution.xyz is not included in proviousData.image then it will be null
+        // image: previousData?.image?.includes("amarsolution.xyz") ? previousData?.image : null
+        image:
+          typeof previousData?.image === "string" ? null : previousData?.image,
       });
     }
   }, [previousData, form]);
 
   async function onSubmit(data: EmployeeFormValues) {
     try {
+      const formData = serialize(
+        {
+          ...data,
+          _method: "PUT",
+          // image: uploadedFile,
+        },
+        { indices: true }
+      );
       if (previousData) {
         await updateEmployee({
           employeeId: previousData.id,
-          updatedEmployee: data,
+          updatedEmployee: formData,
         }).unwrap();
 
         toast.success("Employee updated successfully");
         // modalClose();
-        navigate(`/hrm/employees-list`);
+        // navigate(`/hrm/employees-list`);
       } else {
         await createEmployee(data).unwrap();
         toast.success("Employee created successfully");
@@ -253,152 +282,165 @@ export default function EmployeeForm() {
           <Loading />
         </div>
       ) : (
-        <div className="w-4/6 mx-auto">
-          <Tabs defaultValue="basic-info" className="">
-            <TabsList className="grid w-full grid-cols-7">
-              <TabsTrigger value="basic-info">Basic Info</TabsTrigger>
-              <TabsTrigger disabled={!previousData} value="additional-info">
-                Additional Info
-              </TabsTrigger>
-              <TabsTrigger disabled={!previousData} value="address">
-                Address
-              </TabsTrigger>
-              <TabsTrigger disabled={!previousData} value="education">
-                Education
-              </TabsTrigger>
-              <TabsTrigger disabled={!previousData} value="experience">
-                Experience
-              </TabsTrigger>
-              <TabsTrigger disabled={!previousData} value="skill">
-                Skill
-              </TabsTrigger>
-              <TabsTrigger disabled={!previousData} value="nominee">
-                Nominee
-              </TabsTrigger>
-            </TabsList>
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <Heading
+              title={`Employee ${previousData ? "Edit" : "Add"}`}
+              description="Manage job candidates for you business"
+            />
+            <Button onClick={() => navigate("/hrm/employees-list")} size={"sm"}>
+               Employee List
+            </Button>
+          </div>
 
-            {/* Basic Info */}
-            <TabsContent value="basic-info">
-              <Card>
-                <CardContent className="space-y-2 pt-3">
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="">
-                    <ScrollArea className=" h-[75vh] rounded-md border p-4">
-                        <div className="w-1/4 mb-4 mr-3">
-                          <FormField
-                            control={form.control}
-                            name="employee_unique_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Employee Unique Id</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="text"
-                                    placeholder="Employee Unique Id"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4 w-1/2 mb-4">
-                          <FormField
-                            control={form.control}
-                            name="first_name"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>First Name</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="text"
-                                    placeholder="First Name"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name="last_name"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Last Name (optional)</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="text"
-                                    placeholder="Last Name (optional)"
-                                    {...field}
-                                    value={field.value || ""}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4 w-1/2 mb-4">
-                          <FormField
-                            control={form.control}
-                            name="phone"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Phone</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="text"
-                                    placeholder=" Phone"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+          <div className="w-4/6 mx-auto">
+            <Tabs defaultValue="basic-info" className="">
+              <TabsList className="grid w-full grid-cols-7">
+                <TabsTrigger value="basic-info">Basic Info</TabsTrigger>
+                <TabsTrigger disabled={!previousData} value="additional-info">
+                  Additional Info
+                </TabsTrigger>
+                <TabsTrigger disabled={!previousData} value="address">
+                  Address
+                </TabsTrigger>
+                <TabsTrigger disabled={!previousData} value="education">
+                  Education
+                </TabsTrigger>
+                <TabsTrigger disabled={!previousData} value="experience">
+                  Experience
+                </TabsTrigger>
+                <TabsTrigger disabled={!previousData} value="skill">
+                  Skill
+                </TabsTrigger>
+                <TabsTrigger disabled={!previousData} value="nominee">
+                  Nominee
+                </TabsTrigger>
+              </TabsList>
 
-                          <FormField
-                            control={form.control}
-                            name="corporate_phone"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Corporate Phone (optional)</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="text"
-                                    placeholder="Corporate Phone (optional)"
-                                    {...field}
-                                    value={field.value || ""}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                        <div className=" mb-4 w-1/2">
-                          <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Email</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="email"
-                                    placeholder=" Email"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
+              {/* Basic Info */}
+              <TabsContent value="basic-info">
+                <Card>
+                  <CardContent className="space-y-2 pt-3">
+                    <Form {...form}>
+                      <form onSubmit={form.handleSubmit(onSubmit)} className="">
+                        <ScrollArea className=" h-[75vh] rounded-md border p-4">
+                          <div className="w-1/4 mb-4 mr-3">
+                            <FormField
+                              control={form.control}
+                              name="employee_unique_id"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Employee Unique Id</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="text"
+                                      placeholder="Employee Unique Id"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                          <div className="grid grid-cols-2 gap-4 w-1/2 mb-4">
+                            <FormField
+                              control={form.control}
+                              name="first_name"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>First Name</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="text"
+                                      placeholder="First Name"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="last_name"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Last Name (optional)</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="text"
+                                      placeholder="Last Name (optional)"
+                                      {...field}
+                                      value={field.value || ""}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                          <div className="grid grid-cols-2 gap-4 w-1/2 mb-4">
+                            <FormField
+                              control={form.control}
+                              name="phone"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Phone</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="text"
+                                      placeholder=" Phone"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
 
-                        {/* <FormField
+                            <FormField
+                              control={form.control}
+                              name="corporate_phone"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>
+                                    Corporate Phone (optional)
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="text"
+                                      placeholder="Corporate Phone (optional)"
+                                      {...field}
+                                      value={field.value || ""}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                          <div className=" mb-4 w-1/2">
+                            <FormField
+                              control={form.control}
+                              name="email"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Email</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="email"
+                                      placeholder=" Email"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+
+                          {/* <FormField
                           control={form.control}
                           name="joining_date"
                           render={({ field }) => (
@@ -415,129 +457,129 @@ export default function EmployeeForm() {
                             </FormItem>
                           )}
                         /> */}
-                        <div className="w-1/2 mb-4 flex items-baseline gap-4 ">
-                          <FormField
-                            control={form.control}
-                            name="joining_date"
-                            render={({ field }) => (
-                              <FormItem className="flex flex-col w-full">
-                                <FormLabel className="mb-1">Joining Date</FormLabel>
-                                <Popover>
-                                  <PopoverTrigger asChild>
-                                    <FormControl>
-                                      <Button
-                                        variant={"outline"}
-                                        className={cn(
-                                          " pl-3 text-left font-normal w-full",
-                                          !field.value &&
-                                            "text-muted-foreground"
-                                        )}
-                                      >
-                                        {field.value ? (
-                                          format(new Date(field.value), "PPP") // Ensure field.value is a Date object
-                                        ) : (
-                                          <span>Joining Date</span>
-                                        )}
-                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                      </Button>
-                                    </FormControl>
-                                  </PopoverTrigger>
-                                  <PopoverContent
-                                    className="w-auto p-0"
-                                    align="start"
-                                  >
-                                    <Calendar
-                                      mode="single"
-                                      selected={
-                                        field.value
-                                          ? new Date(field.value)
-                                          : undefined
-                                      } // Convert string to Date
-                                      onSelect={(date) =>
-                                        field.onChange(date?.toISOString())
-                                      } // Save the Date as ISO string
-                                      // disabled={(date) =>
-                                      //   date > new Date() ||
-                                      //   date < new Date("1900-01-01")
-                                      // }
-                                      initialFocus
-                                    />
-                                  </PopoverContent>
-                                </Popover>
-
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          {!previousData && (
-                            <div className="w-full">
-                              <FormField
-                                control={form.control}
-                                name="password"
-                                render={({ field }) => (
-                                  <FormItem>
-                                    <FormLabel>Password</FormLabel>
-                                    <div className="relative ">
-                                      <FormControl className="">
-                                        <Input
-                                          type={
-                                            isPasswordType ? "password" : "text"
-                                          }
-                                          placeholder="Password"
-                                          {...field}
-                                          value={field.value ?? ""}
-                                        />
+                          <div className="w-1/2 mb-4 flex items-baseline gap-4 ">
+                            <FormField
+                              control={form.control}
+                              name="joining_date"
+                              render={({ field }) => (
+                                <FormItem className="flex flex-col w-full">
+                                  <FormLabel className="mb-1">
+                                    Joining Date
+                                  </FormLabel>
+                                  <Popover>
+                                    <PopoverTrigger asChild>
+                                      <FormControl>
+                                        <Button
+                                          variant={"outline"}
+                                          className={cn(
+                                            " pl-3 text-left font-normal w-full",
+                                            !field.value &&
+                                              "text-muted-foreground"
+                                          )}
+                                        >
+                                          {field.value ? (
+                                            format(new Date(field.value), "PPP") // Ensure field.value is a Date object
+                                          ) : (
+                                            <span>Joining Date</span>
+                                          )}
+                                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                        </Button>
                                       </FormControl>
-                                      <span
-                                        className="cursor-pointer absolute bottom-1/2 translate-y-1/2 right-3"
-                                        onClick={() =>
-                                          setIsPasswordType((prev) => !prev)
-                                        }
-                                      >
-                                        {isPasswordType ? (
-                                          <Eye size={18} />
-                                        ) : (
-                                          <EyeClosedIcon />
-                                        )}
-                                      </span>
-                                    </div>
-                                    <FormMessage />
+                                    </PopoverTrigger>
+                                    <PopoverContent
+                                      className="w-auto p-0"
+                                      align="start"
+                                    >
+                                      <Calendar
+                                        mode="single"
+                                        selected={
+                                          field.value
+                                            ? new Date(field.value)
+                                            : undefined
+                                        } // Convert string to Date
+                                        onSelect={(date) =>
+                                          field.onChange(date?.toISOString())
+                                        } // Save the Date as ISO string
+                                        // disabled={(date) =>
+                                        //   date > new Date() ||
+                                        //   date < new Date("1900-01-01")
+                                        // }
+                                        initialFocus
+                                      />
+                                    </PopoverContent>
+                                  </Popover>
 
-                                    
-                                  </FormItem>
-                                )}
-                              />
-                            </div>
-                          )}
-
-                        </div>
-                        <div className="w-1/4 mb-4">
-                        <span className="text-sm">Status</span>
-                        <FormField
-                            control={form.control}
-                            name="status"
-                            render={({ field }) => (
-                              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm h-10 mt-2">
-                             
-                                <div className="space-y-0.5">
-                                  <FormLabel>Active</FormLabel>
-                                </div>
-                                <FormControl>
-                                  <Switch
-                                    className="!mt-0 "
-                                    checked={field.value === "Active"}
-                                    onCheckedChange={(checked: boolean) =>
-                                      field.onChange(
-                                        checked ? "Active" : "Inactive"
-                                      )
-                                    }
-                                  />
-                                </FormControl>
-                              </FormItem>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            {!previousData && (
+                              <div className="w-full">
+                                <FormField
+                                  control={form.control}
+                                  name="password"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Password</FormLabel>
+                                      <div className="relative ">
+                                        <FormControl className="">
+                                          <Input
+                                            type={
+                                              isPasswordType
+                                                ? "password"
+                                                : "text"
+                                            }
+                                            placeholder="Password"
+                                            {...field}
+                                            value={field.value ?? ""}
+                                          />
+                                        </FormControl>
+                                        <span
+                                          className="cursor-pointer absolute bottom-1/2 translate-y-1/2 right-3"
+                                          onClick={() =>
+                                            setIsPasswordType((prev) => !prev)
+                                          }
+                                        >
+                                          {isPasswordType ? (
+                                            <Eye size={18} />
+                                          ) : (
+                                            <EyeClosedIcon />
+                                          )}
+                                        </span>
+                                      </div>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                              </div>
                             )}
-                          />
-                        </div>
-                        {/* 
+                          </div>
+                          <div className="w-1/4 mb-4">
+                            <span className="text-sm">Status</span>
+                            <FormField
+                              control={form.control}
+                              name="status"
+                              render={({ field }) => (
+                                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm h-10 mt-2">
+                                  <div className="space-y-0.5">
+                                    <FormLabel>Active</FormLabel>
+                                  </div>
+                                  <FormControl>
+                                    <Switch
+                                      className="!mt-0 "
+                                      checked={field.value === "Active"}
+                                      onCheckedChange={(checked: boolean) =>
+                                        field.onChange(
+                                          checked ? "Active" : "Inactive"
+                                        )
+                                      }
+                                    />
+                                  </FormControl>
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                          {/* 
                                       <FormField
                 control={form.control}
                 name="discard_weekend_attendance"
@@ -559,10 +601,9 @@ export default function EmployeeForm() {
                 )}
               /> */}
 
-                        <div className="grid grid-cols-3 gap-4">
-                          {" "}
-
-                          {/*                           <FormField
+                          <div className="grid grid-cols-3 gap-4">
+                            {" "}
+                            {/*                           <FormField
                             control={form.control}
                             name="status"
                             render={({ field }) => (
@@ -592,20 +633,20 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
-                          {/*                         
+                            {/*                         
                         /> */}
-                          <FormSearchSelect<LocationColumn>
-                            loading={locationLoading}
-                            data={locationData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="location_id"
-                            placeholder="Location"
-                            title="Location"
-                            className="w-[330px]"
-                          />
-                          {/*                           <FormField
+                            <FormSearchSelect<LocationColumn>
+                              loading={locationLoading}
+                              data={locationData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="location_id"
+                              placeholder="Location"
+                              title="Location"
+                              className="w-[330px]"
+                            />
+                            {/*                           <FormField
                             control={form.control}
                             name="location_id"
                             render={({ field }) => (
@@ -645,18 +686,18 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
-                          <FormSearchSelect<OrganizationDropdownColumn>
-                            loading={organizationLoading}
-                            data={organizationData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="organization_id"
-                            placeholder="Organization"
-                            className="w-[330px]"
-                            title="Organization"
-                          />
-                          {/*                           <FormField
+                            <FormSearchSelect<OrganizationDropdownColumn>
+                              loading={organizationLoading}
+                              data={organizationData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="organization_id"
+                              placeholder="Organization"
+                              className="w-[330px]"
+                              title="Organization"
+                            />
+                            {/*                           <FormField
                             control={form.control}
                             name="organization_id"
                             render={({ field }) => (
@@ -698,18 +739,18 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
-                          <FormSearchSelect<WorkPlaceColumn>
-                            loading={workplaceLoading}
-                            data={workplaceData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="work_place_id"
-                            placeholder="Work Place"
-                            className="w-[330px]"
-                            title="Work Place"
-                          />
-                          {/* 
+                            <FormSearchSelect<WorkPlaceColumn>
+                              loading={workplaceLoading}
+                              data={workplaceData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="work_place_id"
+                              placeholder="Work Place"
+                              className="w-[330px]"
+                              title="Work Place"
+                            />
+                            {/* 
                           <FormField
                             control={form.control}
                             name="work_place_id"
@@ -750,18 +791,18 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
-                          <FormSearchSelect<DepartmentColumn>
-                            loading={departmentLoading}
-                            data={departmentData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="department_id"
-                            placeholder="Department"
-                            className="w-[330px]"
-                            title="Department"
-                          />
-                          {/*                           <FormField
+                            <FormSearchSelect<DepartmentColumn>
+                              loading={departmentLoading}
+                              data={departmentData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="department_id"
+                              placeholder="Department"
+                              className="w-[330px]"
+                              title="Department"
+                            />
+                            {/*                           <FormField
                             control={form.control}
                             name="department_id"
                             render={({ field }) => (
@@ -801,18 +842,18 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
-                          <FormSearchSelect<DesignationColumn>
-                            loading={designationLoading}
-                            data={designationData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="designation_id"
-                            placeholder="Designation"
-                            className="w-[330px]"
-                            title="Designation"
-                          />
-                          {/*                           <FormField
+                            <FormSearchSelect<DesignationColumn>
+                              loading={designationLoading}
+                              data={designationData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="designation_id"
+                              placeholder="Designation"
+                              className="w-[330px]"
+                              title="Designation"
+                            />
+                            {/*                           <FormField
                             control={form.control}
                             name="designation_id"
                             render={({ field }) => (
@@ -852,18 +893,18 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
-                          <FormSearchSelect<SectionColumn>
-                            loading={sectionLoading}
-                            data={sectionData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="section_id"
-                            placeholder="Section"
-                            className="w-[330px]"
-                            title="Section"
-                          />
-                          {/*                           <FormField
+                            <FormSearchSelect<SectionColumn>
+                              loading={sectionLoading}
+                              data={sectionData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="section_id"
+                              placeholder="Section"
+                              className="w-[330px]"
+                              title="Section"
+                            />
+                            {/*                           <FormField
                             control={form.control}
                             name="section_id"
                             render={({ field }) => (
@@ -903,18 +944,18 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
-                          <FormSearchSelect<ScheduleColumn>
-                            loading={scheduleLoading}
-                            data={scheduleData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="schedule_id"
-                            placeholder="Schedule"
-                            className="w-[330px]"
-                            title="Schedule"
-                          />
-                          {/*                           <FormField
+                            <FormSearchSelect<ScheduleColumn>
+                              loading={scheduleLoading}
+                              data={scheduleData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="schedule_id"
+                              placeholder="Schedule"
+                              className="w-[330px]"
+                              title="Schedule"
+                            />
+                            {/*                           <FormField
                             control={form.control}
                             name="schedule_id"
                             render={({ field }) => (
@@ -954,18 +995,18 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
-                          <FormSearchSelect<EmployeeClassColumn>
-                            loading={employeeClassLoading}
-                            data={employeeClassData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="employee_class_id"
-                            placeholder="Employee Class"
-                            className="w-[330px]"
-                            title="Employee Class"
-                          />
-                          {/*                           <FormField
+                            <FormSearchSelect<EmployeeClassColumn>
+                              loading={employeeClassLoading}
+                              data={employeeClassData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="employee_class_id"
+                              placeholder="Employee Class"
+                              className="w-[330px]"
+                              title="Employee Class"
+                            />
+                            {/*                           <FormField
                             control={form.control}
                             name="employee_class_id"
                             render={({ field }) => (
@@ -1008,18 +1049,18 @@ export default function EmployeeForm() {
                             )}
 
                           /> */}
-                          <FormSearchSelect<EmployeeGradeColumn>
-                            loading={employeeGradeLoading}
-                            data={employeeGradeData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="employee_grade_id"
-                            placeholder="Employee Grade"
-                            className="w-[330px]"
-                            title="Employee Grade"
-                          />
-                          {/*                           <FormField
+                            <FormSearchSelect<EmployeeGradeColumn>
+                              loading={employeeGradeLoading}
+                              data={employeeGradeData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="employee_grade_id"
+                              placeholder="Employee Grade"
+                              className="w-[330px]"
+                              title="Employee Grade"
+                            />
+                            {/*                           <FormField
                             control={form.control}
                             name="employee_grade_id"
                             render={({ field }) => (
@@ -1061,18 +1102,18 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
-                          <FormSearchSelect<EmploymentStatusColumn>
-                            loading={employmentStatusLoading}
-                            data={employmentStatusData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="employment_status_id"
-                            placeholder="Employment Status"
-                            className="w-[330px]"
-                            title="Employment Status"
-                          />
-                          {/*                           <FormField
+                            <FormSearchSelect<EmploymentStatusColumn>
+                              loading={employmentStatusLoading}
+                              data={employmentStatusData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="employment_status_id"
+                              placeholder="Employment Status"
+                              className="w-[330px]"
+                              title="Employment Status"
+                            />
+                            {/*                           <FormField
                             control={form.control}
                             name="employment_status_id"
                             render={({ field }) => (
@@ -1117,18 +1158,18 @@ export default function EmployeeForm() {
                             )}
 
                           /> */}
-                          <FormSearchSelect<BloodGroupColumn>
-                            loading={bloodGroupLoading}
-                            data={bloodGroupData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="blood_group_id"
-                            placeholder="Blood Group"
-                            className="w-[330px]"
-                            title="Blood Group"
-                          />
-                          {/*                           <FormField
+                            <FormSearchSelect<BloodGroupColumn>
+                              loading={bloodGroupLoading}
+                              data={bloodGroupData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="blood_group_id"
+                              placeholder="Blood Group"
+                              className="w-[330px]"
+                              title="Blood Group"
+                            />
+                            {/*                           <FormField
                             control={form.control}
                             name="blood_group_id"
                             render={({ field }) => (
@@ -1168,18 +1209,18 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
-                          <FormSearchSelect<ReligionColumn>
-                            loading={religionLoading}
-                            data={religionData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="religion_id"
-                            placeholder="Religion"
-                            className="w-[330px]"
-                            title="Religion"
-                          />
-                          {/*                           <FormField
+                            <FormSearchSelect<ReligionColumn>
+                              loading={religionLoading}
+                              data={religionData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="religion_id"
+                              placeholder="Religion"
+                              className="w-[330px]"
+                              title="Religion"
+                            />
+                            {/*                           <FormField
                             control={form.control}
                             name="religion_id"
                             render={({ field }) => (
@@ -1219,7 +1260,7 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
-                          {/* 
+                            {/* 
                            <FormField
           control={form.control}
           name="gender_id"
@@ -1252,7 +1293,7 @@ export default function EmployeeForm() {
             </FormItem>
           )}
         /> */}
-                          {/*                           <FormField
+                            {/*                           <FormField
                             control={form.control}
                             name="gender_id"
                             render={({ field }) => (
@@ -1289,18 +1330,18 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
-                          <FormSearchSelect<GenderColumn>
-                            loading={genderLoading}
-                            data={genderData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="gender_id"
-                            placeholder="Gender"
-                            className="w-[330px]"
-                            title="Gender"
-                          />
-                          {/*                           <FormField
+                            <FormSearchSelect<GenderColumn>
+                              loading={genderLoading}
+                              data={genderData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="gender_id"
+                              placeholder="Gender"
+                              className="w-[330px]"
+                              title="Gender"
+                            />
+                            {/*                           <FormField
                             control={form.control}
                             name="gender_id"
                             render={({ field }) => (
@@ -1341,18 +1382,18 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
-                          <FormSearchSelect<RoleColumn>
-                            loading={roleLoading}
-                            data={roleData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="role_id"
-                            placeholder="Role"
-                            className="w-[330px]"
-                            title="Role"
-                          />
-                          {/*                           <FormField
+                            <FormSearchSelect<RoleColumn>
+                              loading={roleLoading}
+                              data={roleData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="role_id"
+                              placeholder="Role"
+                              className="w-[330px]"
+                              title="Role"
+                            />
+                            {/*                           <FormField
                             control={form.control}
                             name="role_id"
                             render={({ field }) => (
@@ -1391,18 +1432,18 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
-                          <FormSearchSelect<LeaveGroupRow>
-                            loading={LeaveGroupLoading}
-                            data={leaveGroupData}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name="leave_group_id"
-                            placeholder="Leave Group"
-                            className="w-[330px]"
-                            title="Leave Group"
-                          />
-                          {/*                           <FormField
+                            <FormSearchSelect<LeaveGroupRow>
+                              loading={LeaveGroupLoading}
+                              data={leaveGroupData}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name="leave_group_id"
+                              placeholder="Leave Group"
+                              className="w-[330px]"
+                              title="Leave Group"
+                            />
+                            {/*                           <FormField
                             control={form.control}
                             name="leave_group_id"
                             render={({ field }) => (
@@ -1443,94 +1484,95 @@ export default function EmployeeForm() {
                               </FormItem>
                             )}
                           /> */}
+                          </div>
+                        </ScrollArea>
+                        <div className="mt-2 flex justify-end gap-4">
+                          <Button
+                            variant="default"
+                            type="submit"
+                            className="mt-4"
+                            size={"sm"}
+                          >
+                            {previousData ? "Update" : "Save"}
+                          </Button>
                         </div>
-                      </ScrollArea>
-                      <div className="mt-2 flex justify-end gap-4">
-                        <Button
-                          variant="default"
-                          type="submit"
-                          className="mt-4"
-                          size={"sm"}
-                        >
-                          {previousData ? "Update" : "Save"}
-                        </Button>
+                      </form>
+                    </Form>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* additional info */}
+              <TabsContent value="additional-info">
+                <Card>
+                  <CardContent className="">
+                    <AddAdditionalInfoForm previousData={previousData} />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* address */}
+
+              <TabsContent value="address">
+                <Card>
+                  <CardContent className="space-y-2">
+                    <div className="flex items-center gap-x-6">
+                      <div className="w-1/2">
+                        <AddressForm
+                          previousData={previousData?.present_address}
+                          modelId={previousData?.id}
+                          addressType="Present"
+                          title="Present Address"
+                        />
                       </div>
-                    </form>
-                  </Form>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* additional info */}
-            <TabsContent value="additional-info">
-              <Card>
-                <CardContent className="">
-                  <AddAdditionalInfoForm previousData={previousData} />
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* address */}
-
-            <TabsContent value="address">
-              <Card>
-                <CardContent className="space-y-2">
-                  <div className="flex items-center gap-x-6">
-                    <div className="w-1/2">
-                      <AddressForm
-                        previousData={previousData?.present_address}
-                        modelId={previousData?.id}
-                        addressType="Present"
-                        title="Present Address"
-                      />
+                      <div className="w-1/2">
+                        <AddressForm
+                          previousData={previousData?.permanent_address}
+                          modelId={previousData?.id}
+                          addressType="Permanent"
+                          title="Permanent Address"
+                        />
+                      </div>
                     </div>
-                    <div className="w-1/2">
-                      <AddressForm
-                        previousData={previousData?.permanent_address}
-                        modelId={previousData?.id}
-                        addressType="Permanent"
-                        title="Permanent Address"
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                  </CardContent>
+                </Card>
+              </TabsContent>
 
-            {/* education */}
+              {/* education */}
 
-            <TabsContent value="education">
-              <Card>
-                <CardContent className="space-y-2">
-                  <AddEducationForm previousData={previousData} />
-                </CardContent>
-              </Card>
-            </TabsContent>
+              <TabsContent value="education">
+                <Card>
+                  <CardContent className="space-y-2">
+                    <AddEducationForm previousData={previousData} />
+                  </CardContent>
+                </Card>
+              </TabsContent>
 
-            {/* experience */}
+              {/* experience */}
 
-            <TabsContent value="experience">
-              <Card>
-                <CardContent className="space-y-2">
-                  <AddExperienceForm previousData={previousData} />
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value="skill">
-              <Card>
-                <CardContent className="space-y-2">
-                  <AddSkillForm previousData={previousData} />
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value="nominee">
-              <Card>
-                <CardContent className="space-y-2">
-                  <AddNomineeForm previousData={previousData} />
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+              <TabsContent value="experience">
+                <Card>
+                  <CardContent className="space-y-2">
+                    <AddExperienceForm previousData={previousData} />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              <TabsContent value="skill">
+                <Card>
+                  <CardContent className="space-y-2">
+                    <AddSkillForm previousData={previousData} />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              <TabsContent value="nominee">
+                <Card>
+                  <CardContent className="space-y-2">
+                    <AddNomineeForm previousData={previousData} />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
       )}
     </>
