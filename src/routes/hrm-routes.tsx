@@ -51,6 +51,7 @@ import DailyAttendanceReport from "@/pages/hrm/reports/daily-attendance-report";
 import RoleAccess from "@/lib/access-control/role-access";
 import SalaryBillReport from "@/pages/hrm/reports/salary-bill-report";
 
+
 const hrmRoutes = {
   path: "hrm/",
   element: withFallback(<Layout />),
@@ -476,9 +477,9 @@ const hrmRoutes = {
     {
       path: "salary-bill-report",
       element: withFallback(
-        // <RoleAccess roles={["hrm-report.salary-bill-report"]} showUnauthorizedPage={true}>
-          <SalaryBillReport />
-        // </RoleAccess>
+         <RoleAccess roles={["hrm-report.pay-slip-report"]} showUnauthorizedPage={true}>
+           <SalaryBillReport />
+         </RoleAccess>
       ),
       errorElement: withFallback(<ErrorPage />),
     },

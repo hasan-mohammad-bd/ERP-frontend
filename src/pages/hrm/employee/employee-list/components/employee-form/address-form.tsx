@@ -37,6 +37,8 @@ import {
 } from "@/store/services/hrm/api/address";
 import { useGetCitiesQuery } from "@/store/services/hrm/api/city";
 import { CardHeader, CardTitle } from "@/components/ui/card";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface AddressFormProps {
 	previousData?: AddressColumn | undefined | null;
@@ -83,14 +85,15 @@ export function AddressForm({
 				await updateAddress({
 					addressId: previousData?.id,
 					updatedAddress: data,
-				});
+				}).unwrap();
 				toast.success("Address updated successfully");
 			} else {
-				await createAddress(data);
+				await createAddress(data).unwrap();
 				toast.success("Address created successfully");
 			}
 		} catch (error) {
 			console.log(error);
+			handleErrors(error as ErrorResponse);
 		}
 	}
 

@@ -352,6 +352,13 @@ const hrmNavItems: NavItem[] = [
         icon: CalendarCheck2,
         color: "text-sky-500",
         href: "/hrm/salary-bill-report",
+        permissions: ["hrm-report.pay-slip-report"],
+      },
+      {
+        title: "Daily Attendance",
+        icon: UserRoundSearch,
+        href: "daily-attendance-report",
+        color: "text-sky-500",
         permissions: ["hrm"],
       },
       {

@@ -25,15 +25,16 @@ import { useUpdateEmployeeMutation } from "@/store/services/hrm/api/employee-lis
 
 import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { serialize } from "object-to-formdata";
+import FileUploadSingle from "@/components/common/file-upload-single";
 
 interface AddAdditionalInfoFormProps {
 	previousData?: EmployeeColumn;
 }
 
-export function AddAdditionalInfoForm({
-	previousData,
-}: AddAdditionalInfoFormProps) {
+export function AddAdditionalInfoForm({ previousData }: AddAdditionalInfoFormProps) {
+	const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 	// const [createEmployee, { isLoading }] = useCreateEmployeeMutation();
 	const [updateEmployee, { isLoading: updateLoading }] =
 		useUpdateEmployeeMutation();
@@ -87,6 +88,8 @@ export function AddAdditionalInfoForm({
     if (previousData) {
       form.reset({
         ...previousData,
+				first_name: previousData?.first_name || "",
+				last_name: previousData?.last_name || "",
         reporting_to_id: previousData.reporting_to_id?.toString(),
         location_id: previousData?.location?.id.toString(),
         organization_id: previousData?.organization?.id.toString(),
@@ -103,6 +106,8 @@ export function AddAdditionalInfoForm({
         blood_group_id: previousData?.blood_group?.id.toString(),
         role_id: previousData?.user?.role?.id.toString(),
         leave_group_id: previousData?.leave_group?.id?.toString(),
+				image: previousData?.image?.includes("amarsolution.xyz") ? previousData?.image : null
+				
 			
       });
     }
@@ -113,10 +118,18 @@ export function AddAdditionalInfoForm({
 
 	async function onSubmit(data: EmployeeFormValues) {
 		try {
+			const formData = serialize(
+        {
+          ...data,
+          _method: "PUT",
+          image: uploadedFile,
+        },
+        { indices: true }
+      );
 			if (previousData) {
 				await updateEmployee({
 					employeeId: previousData.id,
-					updatedEmployee: data,
+					updatedEmployee: formData,
 				});
 
 				toast.success("Employee updated successfully");
@@ -274,7 +287,7 @@ export function AddAdditionalInfoForm({
 											<FormControl>
 												<RadioGroup
 													onValueChange={field.onChange}
-													defaultValue={previousData?.payment_type && previousData?.payment_type || "Cash"}
+													defaultValue={previousData?.payment_type && previousData?.payment_type === "Bank" ? "Bank" : "Cash"}
 													className="flex items-center space-y-0 space-x-3"
 												>
 													<FormItem className="space-y-0 space-x-2 flex items-center">
@@ -399,8 +412,9 @@ export function AddAdditionalInfoForm({
 											<FormControl>
 												<RadioGroup
 													onValueChange={field.onChange}
-													defaultValue={field.value?.toString()}
+													defaultValue={previousData?.marital_status && previousData?.marital_status}
 													className="flex items-center space-y-1 space-x-3"
+												
 												>
 													<FormItem className="flex items-center space-x-2 space-y-0">
 														<FormControl>
@@ -424,6 +438,13 @@ export function AddAdditionalInfoForm({
 										</FormItem>
 									)}
 								/>
+                <div className="col-span-2">
+                  <FormLabel>Employee Photo</FormLabel>
+                  <FileUploadSingle
+                    image={previousData?.image && previousData?.image}
+                    setUploadedFile={setUploadedFile}
+                  />
+                </div>
 							</div>
 							<div className="flex justify-end mt-4">
 								<Button
