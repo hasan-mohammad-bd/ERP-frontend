@@ -13,9 +13,16 @@ import jsPDF from "jspdf";
 import { File, Printer } from "lucide-react";
 import { useRef } from "react";
 import ReactToPrint from "react-to-print";
+import { SalaryBatchMonthDataType } from "@/store/services/hrm/api/btach-list/type";
 
-const BankSalaryVoucher = () => {
+type BankSalaryVoucherProps = {
+  salaryData: SalaryBatchMonthDataType[];
+};
+
+const BankSalaryVoucher = ({ salaryData }: BankSalaryVoucherProps) => {
   const componentRef = useRef<HTMLDivElement>(null);
+
+  console.log("salaryData", salaryData);
 
   const handleDownloadPDF = async () => {
     if (!componentRef.current) return;
@@ -27,30 +34,39 @@ const BankSalaryVoucher = () => {
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save("bank-salary-boucher.pdf");
+    pdf.save("bank-salary-voucher.pdf");
   };
+
+  const dateToDisplay = salaryData.length > 0 ? salaryData[0].bank_date : "N/A";
+
+  const bank_advice_no = salaryData[0]?.bank_advice_no;
 
   return (
     <div>
       <div ref={componentRef}>
-        {/* <div> */}
         <div className="p-7">
           <div className="mb-6">
             <div className="flex justify-between mb-3">
               <p>To</p>
-              <p>Date: 10/06/2024</p>
+              <p>
+                Date:{" "}
+                {dateToDisplay
+                  ? new Date(dateToDisplay).toLocaleDateString("en-IN")
+                  : "N/A"}
+              </p>{" "}
+              {/* Display the date */}
             </div>
             <p>The Branch Manager</p>
-            <p>Ductch Bangla Bank Ltd.</p>
+            <p>Ducth Bangla Bank Ltd.</p>
             <p>Rabindra Sarani Branch</p>
-            <p>Sub: Request for salary disbursment</p>
+            <p>Sub: Request for salary disbursement</p>
             <p className="mt-2">Dear Sir,</p>
             <p>
               We would like to request you to kindly transfer Taka to our
-              following employee accounts by debiting our current account no
-              3211100001988 in the name of employee's month salary of May. So,
-              please pay the salaries of the above employees in these accounts
-              and the total will be debited from our account.
+              following employee accounts by debiting our current account no{" "}
+              {bank_advice_no} in the name of employee's month salary of May.
+              So, please pay the salaryData of the above employees in these
+              accounts and the total will be debited from our account.
             </p>
           </div>
 
@@ -70,41 +86,66 @@ const BankSalaryVoucher = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody className="border border-black">
-                  {tableData.map((data, index) => {
-                    return (
-                      <TableRow className="border border-black " key={index}>
+                  {salaryData.length > 0 ? (
+                    salaryData.map((salary, index) => (
+                      <TableRow className="border border-black" key={index}>
                         <TableCell className="border border-black py-[5px]">
-                          {data.slNo}
+                          {index + 1} {/* Displaying SL.No */}
                         </TableCell>
                         <TableCell className="border border-black py-[5px]">
-                          {data.name}
+                          {salary.employee?.first_name}{" "}
+                          {salary.employee?.last_name} {/* Full Name */}
                         </TableCell>
                         <TableCell className="border border-black py-[5px]">
-                          {data.designation}
+                          {salary?.employee?.designation?.name}{" "}
+                          {/* Designation */}
                         </TableCell>
                         <TableCell className="border border-black py-[5px]">
-                          {data.accountNumber}
+                          {salary?.employee?.account_number}{" "}
+                          {/* Bank Account */}
                         </TableCell>
                         <TableCell className="border border-black py-[5px]">
-                          {data.salary}
+                          {salary?.total} {/* Salary */}
                         </TableCell>
                       </TableRow>
-                    );
-                  })}
-                  <TableRow className="border border-black bg-gray-100">
-                    <TableCell
-                      colSpan={4}
-                      className="text-right font-bold border border-black py-[5px]"
-                    >
-                      Total
-                    </TableCell>
-                    <TableCell
-                      colSpan={2}
-                      className="font-bold border border-black py-[5px]"
-                    >
-                      {1000?.toLocaleString("en-IN")}
-                    </TableCell>
-                  </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={5}
+                        className="text-center border border-black py-[5px]"
+                      >
+                        No data available
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {salaryData.length > 0 && (
+                    <TableRow className="border border-black bg-gray-100">
+                      <TableCell
+                        colSpan={4}
+                        className="text-right font-bold border border-black py-[5px]"
+                      >
+                        Total
+                      </TableCell>
+                      <TableCell
+                        colSpan={2}
+                        className="font-bold border border-black py-[5px]"
+                      >
+                        {salaryData &&
+                          salaryData.length > 0 &&
+                          salaryData
+                            .reduce(
+                              (acc: number, curr: SalaryBatchMonthDataType) =>
+                                acc + (curr.allowance_total || 0),
+                              0
+                            )
+                            .toLocaleString("en-IN", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
+                      </TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
               </Table>
             </Card>
@@ -147,63 +188,4 @@ const tableHeadings = [
   "Designation",
   "A/C Number",
   "Pay Salary",
-];
-
-const tableData = [
-  {
-    slNo: 1,
-    name: "Anirban Saha",
-    designation: "Graphic Designer",
-    accountNumber: "321103019580",
-    salary: "XXXX",
-  },
-  {
-    slNo: 2,
-    name: "Md. Arfan Ahmed",
-    designation: "Marketing Manager",
-    accountNumber: "321103019512",
-    salary: "XXXX",
-  },
-  {
-    slNo: 3,
-    name: "Rifat Hossain",
-    designation: "App Developer",
-    accountNumber: "321103019479",
-    salary: "XXXX",
-  },
-  {
-    slNo: 4,
-    name: "Muhammad Touhiduzzaman",
-    designation: "Frontend Engineer",
-    accountNumber: "321103019463",
-    salary: "XXXX",
-  },
-  {
-    slNo: 5,
-    name: "Md. Aikash Ahmed",
-    designation: "Office Assistant",
-    accountNumber: "321103019527",
-    salary: "XXXX",
-  },
-  {
-    slNo: 6,
-    name: "Fahim Rahman",
-    designation: "Sr. Marketing Executive",
-    accountNumber: "1031030131064",
-    salary: "XXXX",
-  },
-  {
-    slNo: 7,
-    name: "Arfat Hossain",
-    designation: "Software Developer",
-    accountNumber: "103158002909",
-    salary: "XXXX",
-  },
-  {
-    slNo: 8,
-    name: "Shahjalal Mahmud",
-    designation: "Software Developer",
-    accountNumber: "107103636860",
-    salary: "XXXX",
-  },
 ];
