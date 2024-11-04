@@ -26,8 +26,7 @@ const AttendancePolicyMapping = () => {
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
 
-  const leaveType = data?.data || [];
-  console.log(leaveType);
+  const pmData = data?.data || [];
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   if (isLoading) return <Loading />;
@@ -46,17 +45,17 @@ const AttendancePolicyMapping = () => {
             </Button>
           </div>
           <Separator />
-          {leaveType && (
+          {pmData.length ? (
             <div>
               <DataTable
                 columns={attendanceColumns}
-                data={leaveType}
+                data={pmData}
                 paginationInfo={paginationInfo}
                 pagination={paginationInfo && pagination}
                 setPagination={paginationInfo && setPagination}
               />
             </div>
-          )}
+          ): null}
         </div>
       </div>
 

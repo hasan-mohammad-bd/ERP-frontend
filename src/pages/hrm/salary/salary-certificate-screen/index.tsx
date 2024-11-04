@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import SalaryCertificateVoucher from "./components/salary-certificate-boucher";
 import PrintPDFWrapper from "@/components/common";
 import { Heading } from "@/components/common/heading";
-import EmployeeSalaryCeertificateFilter from "./components/employee-salary-certificate-filter";
+import EmployeeSalaryCertificateFilter from "./components/employee-salary-certificate-filter";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { useGetEmployeeSalaryCertificateQuery } from "@/store/services/hrm/api/salary-certificate";
@@ -25,7 +25,7 @@ const SalaryCertificateScreen = () => {
       </div>
       <Separator />
       <div className="flex flex-col gap-4">
-        <EmployeeSalaryCeertificateFilter setFilterParams={setEmployeeId} />
+        <EmployeeSalaryCertificateFilter setFilterParams={setEmployeeId} />
 
         {isLoading && <Loading />}
         {data && !isLoading && !isError && (

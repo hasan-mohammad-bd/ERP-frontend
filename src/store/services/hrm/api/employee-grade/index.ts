@@ -47,6 +47,7 @@ const employeeGradeApi = hrmApi.injectEndpoints({
 
 export const {
   useGetEmployeeGradesQuery, 
+  useLazyGetEmployeeGradesQuery,
   useCreateEmployeeGradeMutation, 
   useRemoveEmployeeGradeMutation, 
   useUpdateEmployeeGradeMutation 

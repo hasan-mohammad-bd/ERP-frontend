@@ -46,6 +46,7 @@ const schedulesApi = hrmApi.injectEndpoints({
 
 export const {
   useGetSchedulesQuery,
+  useLazyGetSchedulesQuery,
   useCreateScheduleMutation,
   useRemoveScheduleMutation,
   useUpdateScheduleMutation

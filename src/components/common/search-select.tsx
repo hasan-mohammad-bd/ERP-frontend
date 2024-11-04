@@ -14,7 +14,7 @@ import {
 import { ChevronsUpDown, Check } from "lucide-react";
 import { cn } from "@/utils";
 import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "@/store/hooks/useDebounce";
 
 interface SearchSelectProps<T> {
@@ -38,24 +38,39 @@ const SearchSelect = <T extends object>({
   placeholder = "Select an item...",
   noItemText = "No items found.",
   className,
-  onChangeSearch
+  onChangeSearch = () => {},
 }: SearchSelectProps<T>) => {
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState<string>("");
   const debouncedValue = useDebounce(inputValue, 300);
+  const flag = useRef(false);
+  const flag2 = useRef(true);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    flag.current = true;
+  };
 
   const handleSelect = (item: T) => {
     onSelect(item);
     setOpen(false); // Close popover after selection
   };
 
-
+  // Getting search result
   useEffect(() => {
-    if (debouncedValue && onChangeSearch) {
-      console.log(debouncedValue, "Search value");
+    if (debouncedValue && flag.current) {
+      flag.current = false; // preventing the infinite loop
       onChangeSearch(debouncedValue);
     }
   }, [debouncedValue, onChangeSearch]);
+
+  // getting initial data
+  useEffect(() => {
+    if (open && flag2.current) {
+      flag2.current = false; // preventing the infinite loop
+      onChangeSearch("");
+    }
+  }, [open, onChangeSearch]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -74,9 +89,7 @@ const SearchSelect = <T extends object>({
       <PopoverContent className={cn("max-w-fit w-[212px] p-0", className)}>
         <Command>
           <CommandInput
-            onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setInputValue(e.target.value)
-            }
+            onInput={handleInputChange}
             placeholder={`Search ${placeholder.toLowerCase()}`}
           />
           <CommandList>

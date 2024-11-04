@@ -45,7 +45,8 @@ const employeeClassApi = hrmApi.injectEndpoints({
 });
 
 export const {
-  useGetEmployeeClassesQuery, 
+  useGetEmployeeClassesQuery,
+  useLazyGetEmployeeClassesQuery,
   useCreateEmployeeClassMutation, 
   useRemoveEmployeeClassMutation, 
   useUpdateEmployeeClassMutation 

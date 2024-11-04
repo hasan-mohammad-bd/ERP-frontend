@@ -45,7 +45,8 @@ const locationApi = authApi.injectEndpoints({
 });
 
 export const {
-  useGetLocationsQuery, 
+  useGetLocationsQuery,
+  useLazyGetLocationsQuery,
   useCreateLocationMutation, 
   useRemoveLocationMutation, 
   useUpdateLocationMutation 

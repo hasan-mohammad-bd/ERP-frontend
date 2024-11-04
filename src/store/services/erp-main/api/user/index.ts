@@ -33,6 +33,7 @@ const userApi = authApi.injectEndpoints({
 					toast("logout successful");
 					console.log("logout successful");
 					dispatch(setCredentials({ user: null, isLoading: false }));
+					window.location.href = "/login";
 				} catch (err) {
 					console.log(err);
 					// console.log("logout failed");

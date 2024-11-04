@@ -49,6 +49,7 @@ const designationApi = hrmApi.injectEndpoints({
 
 export const {
 	useGetDesignationQuery,
+	useLazyGetDesignationQuery,
 	useCreateDesignationMutation,
 	useRemoveDesignationMutation,
 	useUpdateDesignationMutation,

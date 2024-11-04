@@ -11,4 +11,4 @@ const genderApi = hrmApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useGetGendersQuery } = genderApi;
+export const { useGetGendersQuery, useLazyGetGendersQuery } = genderApi;

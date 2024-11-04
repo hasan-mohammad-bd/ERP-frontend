@@ -45,7 +45,8 @@ const sectionApi = hrmApi.injectEndpoints({
 });
 
 export const {
-  useGetSectionsQuery, 
+  useGetSectionsQuery,
+  useLazyGetSectionsQuery,
   useCreateSectionMutation, 
   useRemoveSectionMutation, 
   useUpdateSectionMutation 
