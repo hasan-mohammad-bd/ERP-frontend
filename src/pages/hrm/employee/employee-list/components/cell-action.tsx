@@ -38,7 +38,7 @@ export function CellAction({ data }: CellActionProps) {
   const handleDepartmentDelete = async (id: number) => {
     try {
       await deleteEmployee(id).unwrap();
-      toast.success("Job Candidate deleted successfully");
+      toast.success("Employee deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);

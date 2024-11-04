@@ -13,6 +13,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { cn } from "@/utils";
+import { ScrollArea } from "./scroll-area";
 
 export interface Option {
   value: string;
@@ -465,95 +466,98 @@ const MultipleSelector = React.forwardRef<
             inputRef.current?.focus();
           }}
         >
-          <div className="relative flex flex-wrap gap-1">
-            {selected.map((option) => {
-              return (
-                <Badge
-                  key={option.value}
-                  className={cn(
-                    "data-[disabled]:bg-muted-foreground data-[disabled]:text-muted data-[disabled]:hover:bg-muted-foreground",
-                    "data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground",
-                    badgeClassName
-                  )}
-                  data-fixed={option.fixed}
-                  data-disabled={disabled || undefined}
-                >
-                  {option.label}
-                  <button
+          <ScrollArea className="h-20">
+            <div className="relative flex flex-wrap gap-1">
+              {selected.map((option) => {
+                return (
+                  <Badge
+                    key={option.value}
                     className={cn(
-                      "ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2",
-                      (disabled || option.fixed) && "hidden"
+                      "data-[disabled]:bg-muted-foreground data-[disabled]:text-muted data-[disabled]:hover:bg-muted-foreground",
+                      "data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground",
+                      badgeClassName
                     )}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleUnselect(option);
-                      }
-                    }}
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }}
-                    onClick={() => handleUnselect(option)}
+                    data-fixed={option.fixed}
+                    data-disabled={disabled || undefined}
                   >
-                    <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
-                  </button>
-                </Badge>
-              );
-            })}
-            {/* Avoid having the "Search" Icon */}
-            <CommandPrimitive.Input
-              {...inputProps}
-              ref={inputRef}
-              value={inputValue}
-              disabled={disabled}
-              onValueChange={(value) => {
-                setInputValue(value);
-                inputProps?.onValueChange?.(value);
-              }}
-              onBlur={(event) => {
-                if (!onScrollbar) {
-                  setOpen(false);
+                    {option.label}
+                    <button
+                      className={cn(
+                        "ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                        (disabled || option.fixed) && "hidden"
+                      )}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleUnselect(option);
+                        }
+                      }}
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                      onClick={() => handleUnselect(option)}
+                    >
+                      <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                    </button>
+                  </Badge>
+                );
+              })}
+              {/* Avoid having the "Search" Icon */}
+              <CommandPrimitive.Input
+                {...inputProps}
+                ref={inputRef}
+                value={inputValue}
+                disabled={disabled}
+                onValueChange={(value) => {
+                  setInputValue(value);
+                  inputProps?.onValueChange?.(value);
+                }}
+                onBlur={(event) => {
+                  if (!onScrollbar) {
+                    setOpen(false);
+                  }
+                  inputProps?.onBlur?.(event);
+                }}
+                onFocus={(event) => {
+                  setOpen(true);
+                  triggerSearchOnFocus && onSearch?.(debouncedSearchTerm);
+                  inputProps?.onFocus?.(event);
+                }}
+                placeholder={
+                  hidePlaceholderWhenSelected && selected.length !== 0
+                    ? ""
+                    : placeholder
                 }
-                inputProps?.onBlur?.(event);
-              }}
-              onFocus={(event) => {
-                setOpen(true);
-                triggerSearchOnFocus && onSearch?.(debouncedSearchTerm);
-                inputProps?.onFocus?.(event);
-              }}
-              placeholder={
-                hidePlaceholderWhenSelected && selected.length !== 0
-                  ? ""
-                  : placeholder
-              }
-              className={cn(
-                "flex-1 bg-transparent outline-none placeholder:text-muted-foreground",
-                {
-                  "w-full": hidePlaceholderWhenSelected,
-                  "px-3 py-2": selected.length === 0,
-                  "ml-1": selected.length !== 0,
-                },
-                inputProps?.className
-              )}
-            />
-            <button
-              type="button"
-              onClick={() => {
-                setSelected(selected.filter((s) => s.fixed));
-                onChange?.(selected.filter((s) => s.fixed));
-              }}
-              className={cn(
-                "absolute right-0 h-6 w-6 p-0",
-                (hideClearAllButton ||
-                  disabled ||
-                  selected.length < 1 ||
-                  selected.filter((s) => s.fixed).length === selected.length) &&
-                  "hidden"
-              )}
-            >
-              <X />
-            </button>
-          </div>
+                className={cn(
+                  "flex-1 bg-transparent outline-none placeholder:text-muted-foreground",
+                  {
+                    "w-full": hidePlaceholderWhenSelected,
+                    "px-3 py-2": selected.length === 0,
+                    "ml-1": selected.length !== 0,
+                  },
+                  inputProps?.className
+                )}
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  setSelected(selected.filter((s) => s.fixed));
+                  onChange?.(selected.filter((s) => s.fixed));
+                }}
+                className={cn(
+                  "absolute right-0 h-6 w-6 p-0",
+                  (hideClearAllButton ||
+                    disabled ||
+                    selected.length < 1 ||
+                    selected.filter((s) => s.fixed).length ===
+                      selected.length) &&
+                    "hidden"
+                )}
+              >
+                <X />
+              </button>
+            </div>
+          </ScrollArea>
         </div>
         <div className="relative">
           {open && (

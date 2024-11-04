@@ -24,6 +24,8 @@ import { useGetGendersQuery } from "@/store/services/hrm/api/gender";
 import { useGetEmployeeClassesQuery } from "@/store/services/hrm/api/employee-class";
 import { useGetEmployeeGradesQuery } from "@/store/services/hrm/api/employee-grade";
 import { toast } from "sonner";
+import { format } from "date-fns";
+import DatePicker from "react-datepicker";
 
 interface Props {
   setFilterParams: (params: string) => void;
@@ -72,14 +74,26 @@ export default function EmployeeFilters({ setFilterParams }: Props) {
   const [selectedEmployeeGrade, setSelectedEmployeeGrade] = useState<
     EmployeeGradeColumn | undefined
   >(undefined);
+  const [selectEstimateDate, setSelectEstimateDate] = useState<
+    Date | undefined
+  >(undefined);
+
+  const [selectHasSalaryDate, setSelectHasSalaryDate] = useState<
+    Date | undefined
+  >(undefined);
 
   const handleApplyFilters = () => {
+    const estimateMonth = selectEstimateDate ? format(selectEstimateDate, "yyyy-MM") : "";
+    const salaryMonth = selectHasSalaryDate ? format(selectHasSalaryDate, "yyyy-MM") : "";
+    
+    console.log(salaryMonth)
     const params = new URLSearchParams();
     if (selectedDepartment)
       params.append("department_id", selectedDepartment.id.toString());
     if (selectedDesignation)
       params.append("designation_id", selectedDesignation.id.toString());
-    if (selectedBranch) params.append("location_id", selectedBranch.id.toString());
+    if (selectedBranch)
+      params.append("location_id", selectedBranch.id.toString());
     if (selectedSection)
       params.append("section_id", selectedSection.id.toString());
     if (selectedEmploymentStatus)
@@ -87,12 +101,18 @@ export default function EmployeeFilters({ setFilterParams }: Props) {
         "employment_status_id",
         selectedEmploymentStatus.id.toString()
       );
-    if (selectedShift) params.append("schedule_id", selectedShift.id.toString());
-    if (selectedGender) params.append("gender_id", selectedGender.id.toString());
+    if (selectedShift)
+      params.append("schedule_id", selectedShift.id.toString());
+    if (selectedGender)
+      params.append("gender_id", selectedGender.id.toString());
     if (selectedEmployeeClass)
       params.append("employee_class_id", selectedEmployeeClass.id.toString());
     if (selectedEmployeeGrade)
       params.append("employee_grade_id", selectedEmployeeGrade.id.toString());
+    if (selectEstimateDate)
+      params.append("estimate_salary_for", estimateMonth.toString());
+    if (selectHasSalaryDate)
+      params.append("has_salary_month", salaryMonth.toString());
 
     const filterParams = params.toString();
     console.log(filterParams);
@@ -111,6 +131,8 @@ export default function EmployeeFilters({ setFilterParams }: Props) {
     setSelectedEmployeeClass(undefined);
     setSelectedEmployeeGrade(undefined);
     setFilterParams(""); // reset filters
+    setSelectEstimateDate(undefined);
+    setSelectHasSalaryDate(undefined);
     toast.success("Filters reset successfully");
   };
 
@@ -190,6 +212,38 @@ export default function EmployeeFilters({ setFilterParams }: Props) {
           placeholder="Select Grade"
           onSelect={setSelectedEmployeeGrade}
         />
+        <div className="space-y-2 flex flex-col py-0">
+          {/* <label className={cn("text-sm font-medium mt-1")}>
+            Month and Year
+          </label> */}
+          <DatePicker
+            selected={selectEstimateDate} // Watch for form updates
+            onChange={(date) => {
+              setSelectEstimateDate(date ?? undefined);
+              if (!date) return;
+            }}
+            dateFormat="MM/yyyy"
+            showMonthYearPicker
+            placeholderText="Select Estimate Salary For"
+            className="border rounded p-[6px] w-full bg-none bg_remove "
+          />
+        </div>
+        <div className="space-y-2 flex flex-col py-0">
+          {/* <label className={cn("text-sm font-medium mt-1")}>
+            Month and Year
+          </label> */}
+          <DatePicker
+            selected={selectHasSalaryDate} // Watch for form updates
+            onChange={(date) => {
+              setSelectHasSalaryDate(date ?? undefined);
+              if (!date) return;
+            }}
+            dateFormat="MM/yyyy"
+            showMonthYearPicker
+            placeholderText="Select Has Salary Month"
+            className="border rounded p-[6px] w-full bg-none bg_remove "
+          />
+        </div>
       </div>
       <div className="mt-4 flex justify-end gap-4">
         <Button variant="outline" size={"sm"} onClick={handleResetFilters}>

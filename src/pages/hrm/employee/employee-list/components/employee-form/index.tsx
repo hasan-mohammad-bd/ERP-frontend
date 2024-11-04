@@ -219,7 +219,7 @@ export default function EmployeeForm() {
         gender_id: previousData?.gender?.id.toString(),
         religion_id: previousData?.religion?.id.toString(),
         blood_group_id: previousData?.blood_group?.id.toString(),
-        role_id: previousData?.role?.id.toString(),
+        role_id: previousData?.user?.role?.id.toString(),
         leave_group_id: previousData?.leave_group?.id?.toString(),
         card_id: previousData?.card_id || null,
         machine_id: previousData?.machine_id || null,

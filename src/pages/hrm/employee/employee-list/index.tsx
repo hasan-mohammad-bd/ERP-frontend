@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { employeeColumns } from "./components/columns";
 import EmployeeFilters from "./components/employee-filters";
 import { AddAttendancePolicyMappingForm } from "./components/employee-form/add-attendance-policy";
+import { Badge } from "@/components/ui/badge";
 
 const BULK_ACTIONS = [
   {
@@ -43,6 +44,7 @@ const Employee = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [filterParams, setFilterParams] = useState("");
+  console.log(filterParams);
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -150,11 +152,19 @@ const Employee = () => {
           isOpen={selectedBulkAction.action === "salary-estimate-generate"}
           className="!h-fit"
         >
+          <span>{
+            filterParams.includes("estimate_salary_for") ? null : <span className="text-red-500 text-xs">Please Select estimated salary for</span>
+            }</span>
+            <span>
+              {
+                selectedBulkAction.payload.length > 1 ? null : <span className="text-red-500 text-xs">Please Select at least one employee</span>
+              }
+            </span>
           {/* delete each on at a time */}
           <span>
             {selectedBulkAction.payload
-              .map((item) => item.first_name)
-              .join(", ")}{" "}
+              .map((item) => <Badge className="mr-1 mb-1" key={item.id}>{item.first_name}</Badge>)
+            }
           </span>
           <Button onClick={handleSaveToGlobalState}>
             Select the Employees

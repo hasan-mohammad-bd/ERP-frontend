@@ -163,6 +163,7 @@ export default function EstimateSalarySearchToolbar({
             <label htmlFor="employees" className="text-sm font-medium">
               Employees *
             </label>
+  
             <MultipleSelector
               value={selectedEmployees}
               className="min-h-16"
@@ -172,7 +173,10 @@ export default function EstimateSalarySearchToolbar({
               placeholder="Search employees"
               loadingIndicator={<span>Loading...</span>}
               emptyIndicator={<span>No options found</span>}
+              
             />
+
+
           </div>
 
           {/* Month and Year Picker */}
