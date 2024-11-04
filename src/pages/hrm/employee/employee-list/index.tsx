@@ -53,7 +53,7 @@ const Employee = () => {
       pagination.pageIndex + 1
     }&${filterParams}`
   );
-
+  console.log("🚀 ~ Employee ~ data:", data);
   // Set appropriate bulk action type here
   const [selectedBulkAction, setSelectedBulkAction] = useState<
     BulkAction<EmployeeColumn>

@@ -1,1 +1,0 @@
-import{ba as r}from"./index-6c7a6430.js";const s=r.injectEndpoints({endpoints:e=>({getGenders:e.query({query:()=>"genders",providesTags:["genders"]})}),overrideExisting:!1}),{useGetGendersQuery:i}=s;export{i as u};

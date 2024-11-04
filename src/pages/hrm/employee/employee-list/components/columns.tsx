@@ -1,6 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
-import { type ColumnDef } from "@tanstack/react-table";
 import { EmployeeColumn } from "@/lib/validators";
+import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 
 export const employeeColumns: ColumnDef<EmployeeColumn>[] = [
@@ -28,25 +28,24 @@ export const employeeColumns: ColumnDef<EmployeeColumn>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  
-  {
-		accessorKey: "image",
-		header: " Image",
-		cell: ({ row }) => {
-			const image = row.getValue("image");
-			if (image) {
-				return (
-					<img
-						src={image as string}
-						alt="image"
-						className="h-8 w-8 rounded-full"
-					/>
-				);
-			}
-			return null;
-		}
 
-	},
+  {
+    accessorKey: "image",
+    header: " Image",
+    cell: ({ row }) => {
+      const image = row.getValue("image");
+      if (image) {
+        return (
+          <img
+            src={image as string}
+            alt="image"
+            className="h-8 w-8 rounded-full"
+          />
+        );
+      }
+      return null;
+    },
+  },
 
   {
     accessorKey: "first_name",
@@ -66,24 +65,28 @@ export const employeeColumns: ColumnDef<EmployeeColumn>[] = [
     header: "Phone",
   },
   {
-	accessorKey: "joining_date",
-  header: "Joining date",
-	// accessorFn: ({ department }) => department?.name,
-	// header: "Department",
+    // accessorKey: "joining_date",
+    // header: "Joining date",
+    accessorFn: ({ department }) => department?.name,
+    header: "Department",
   },
-/*   {
+  {
+    accessorFn: ({ designation }) => designation?.name,
+    header: "Designation",
+  },
+  /*   {
     accessorKey: "location",
     accessorFn: ({ location }) => location?.name,
     header: "Location",
   }, */
-//   {
-//     accessorKey: "birth_date",
-//     header: "Birth date",
-//   },
-//   {
-//     accessorKey: "marital_status",
-//     header: "Marital status",
-//   },
+  //   {
+  //     accessorKey: "birth_date",
+  //     header: "Birth date",
+  //   },
+  //   {
+  //     accessorKey: "marital_status",
+  //     header: "Marital status",
+  //   },
 
   /*   {
     accessorKey: "",
