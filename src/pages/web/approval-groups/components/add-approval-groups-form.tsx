@@ -39,6 +39,8 @@ import MultipleSelector, { Option } from "@/components/ui/multiSelectSearch";
 // import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
 import { useGetUsersQuery } from "@/store/services/erp-main/api/users";
 import { UsersRow } from "@/lib/validators/web/users";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedEmployeeAction } from "@/store/services/erp-main/slices/commonSlice";
 
 
 interface Catalog {
@@ -46,6 +48,7 @@ interface Catalog {
   id: number;
 }
 export function AddApprovalGroups() {
+  const dispatch = useDispatch();
   const [createApprovalGroup, { isLoading }] = useCreateApprovalGroupMutation();
   const [updateApprovalGroup, { isLoading: updateLoading }] = useUpdateApprovalGroupMutation();
   const { data: locations, isLoading: locationLoading } = useGetLocationsQuery("page=1&per_page=1000");
@@ -53,13 +56,25 @@ export function AddApprovalGroups() {
 
   const catalogData =  catalog?.["approval-type"] || [];
   const locationData = locations?.data || [];
+  const selectedUserAction = useSelector(
+    (state: any) => state.common.selectedEmployeeAction
+  );
+
+
+
+
 
   const [membarsOptions, setMembarsOptions] = useState<Option[]>([]);
   const [adminOptions, setAdminOptions] = useState<{ [key: number]: Option[] }>({});
   const [employeeSearchTerm, setEmployeeSearchTerm] = useState("");
   const { data: employeeList} = useGetUsersQuery(
     `per_page=15&page=1&search=${employeeSearchTerm}`
+    
   );
+
+  console.log(membarsOptions)
+
+
   // const users = data?.data || [];
   // const { data: employeeList } = useGetEmployeesQuery(`per_page=15&page=1&search=${employeeSearchTerm}`);
 
@@ -97,6 +112,18 @@ console.log(previousData)
       });
     } 
   }, [previousData, form]);
+
+
+  useEffect(() => {
+    if (!previousData && selectedUserAction.action === "approval-groups-select") {
+      const uniqueUsers = selectedUserAction.payload.map((item: UsersRow) => ({
+        value: String(item.id),
+        label: `${item.name}(${item.id})`,
+      }));
+      setMembarsOptions(uniqueUsers);
+      form.setValue("membars", selectedUserAction.payload.map((item: UsersRow) => item.id));
+    }
+  }, [selectedUserAction, previousData, form]);
 
   const {
     fields: levels,
@@ -137,10 +164,11 @@ console.log(previousData)
       previousData.levels?.map((item:{level: number, admins: { id: number, name: string }[]}) => {
         setAdminOptions((prev) => ({
           ...prev,
-          [item.level]: item.admins?.map((admin) => ({
+          [item.level - 1]: item.admins?.map((admin) => ({
             value: String(admin.id),
             label: `${admin.name} (${admin.id})`,
-          })),
+          })
+        ),
         }));
       })
     }
@@ -174,7 +202,7 @@ console.log(previousData)
   };
 
   async function onSubmit(data: ApprovalGroupFormValues) {
-    console.log(data)
+
     try {
       if (previousData) {
         await updateApprovalGroup({
@@ -185,6 +213,7 @@ console.log(previousData)
         navigate("/web/approval-group");
       } else {
         await createApprovalGroup(data).unwrap();
+        dispatch(setSelectedEmployeeAction({ action: "", payload: [] }));
         toast.success("Approval group created successfully");
         navigate("/web/approval-group");
       }
@@ -306,7 +335,7 @@ console.log(previousData)
                             <FormControl>
                               <MultipleSelector
                                 {...field}
-                                value={adminOptions[previousData? index + 1 : index  ] || []}
+                                value={adminOptions[index]}
                                 onSearch={handleSearchAdmin}
                                 onChange={(options) => {
                                   setAdminOptions((prev) => ({

@@ -62,7 +62,7 @@ export default function EstimateSalarySearchToolbar({
   console.log(selectedEmployeeAction);
 
   useEffect(() => {
-    if (selectedEmployeeAction) {
+    if (selectedEmployeeAction.action === "salary-estimate-generate") {
       const uniqueEmployees = selectedEmployeeAction.payload.map((item: any) => ({
         value: String(item.id),
         label: `${item.first_name} ${item.last_name} (${item.id})`,
@@ -70,6 +70,7 @@ export default function EstimateSalarySearchToolbar({
       setSelectedEmployees(uniqueEmployees);
     }
   }, [selectedEmployeeAction]);
+  
   const { data: employeeList } = useGetEmployeesQuery(
     `per_page=15&page=1&search=${employeeSearchTerm}`,
     {

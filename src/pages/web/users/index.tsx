@@ -13,19 +13,46 @@ import { subAccountColumns } from "./components/columns";
 import { AddUsers } from "./components/add-users-form";
 import { useGetUsersQuery } from "@/store/services/erp-main/api/users";
 import RoleAccess from "@/lib/access-control/role-access";
+import { Badge } from "@/components/ui/badge";
+import { BulkAction } from "@/components/ui/data-table/data-table-bulk-actions";
+import { UsersRow } from "@/lib/validators/web/users";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setSelectedEmployeeAction } from "@/store/services/erp-main/slices/commonSlice";
+import { toast } from "sonner";
 
+const BULK_ACTIONS = [
+
+  {
+    label: "Approval Groups Select",
+    value: "approval-groups-select",
+  },
+];
 const Users = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [selectedBulkAction, setSelectedBulkAction] = useState<
+  BulkAction<UsersRow>
+>({ action: "", payload: [] });
   const { data, isLoading } = useGetUsersQuery(
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
   const users = data?.data || [];
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
+
+  const handleSaveToGlobalState = () => {
+    console.log(selectedBulkAction);
+    dispatch(setSelectedEmployeeAction(selectedBulkAction));
+    toast.success("User selected successfully");
+    setSelectedBulkAction({ action: "", payload: [] });
+    navigate("/web/approval-group/add");
+  };
 
   if (isLoading) return <Loading />;
 
@@ -53,6 +80,8 @@ const Users = () => {
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}
+                bulkActions={BULK_ACTIONS}
+                onBulkSelectChange={setSelectedBulkAction}
               />
             </div>
           )}
@@ -66,6 +95,31 @@ const Users = () => {
       >
         <AddUsers modalClose={() => setIsOpen(false)} />
       </Modal>
+
+      {selectedBulkAction.action === "approval-groups-select" && (
+        <Modal
+          title="Approval Groups Selection"
+          toggleModal={() => setSelectedBulkAction({ action: "", payload: [] })}
+          isOpen={selectedBulkAction.action === "approval-groups-select"}
+          className="!h-fit"
+        >
+
+            <span>
+              {
+                selectedBulkAction.payload.length > 0 ? null : <span className="text-red-500 text-xs">Please Select at least one employee</span>
+              }
+            </span>
+          {/* delete each on at a time */}
+          <span>
+            {selectedBulkAction.payload
+              .map((item) => <Badge className="mr-1 mb-1" key={item.id}>{item.name}</Badge>)
+            }
+          </span>
+          <Button onClick={handleSaveToGlobalState}>
+            Select The Users
+          </Button>
+        </Modal>
+      )}
     </>
   );
 };
