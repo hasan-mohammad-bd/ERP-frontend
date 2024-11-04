@@ -48,13 +48,10 @@ export const employeeColumns: ColumnDef<EmployeeColumn>[] = [
   },
 
   {
-    accessorKey: "first_name",
-    header: "First name",
+    header: "Name",
+    cell: ({ row }) => row.original.first_name + " " + row.original.last_name,
   },
-  {
-    accessorKey: "last_name",
-    header: "Last name",
-  },
+
   {
     accessorKey: "email",
     header: "Email",
