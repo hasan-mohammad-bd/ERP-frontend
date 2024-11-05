@@ -1,0 +1,31 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to Rang Bd VPS via SSH
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: 103.132.218.15
+          username: akaarit2
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/asbd-rangbd/htdocs/rangbd-erp-frontend;
+            git pull origin main
+
+
