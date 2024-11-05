@@ -45,7 +45,7 @@ const AttendancePolicyMapping = () => {
             </Button>
           </div>
           <Separator />
-          {pmData.length ? (
+          {pmData && (
             <div>
               <DataTable
                 columns={attendanceColumns}
@@ -55,7 +55,7 @@ const AttendancePolicyMapping = () => {
                 setPagination={paginationInfo && setPagination}
               />
             </div>
-          ): null}
+          )}
         </div>
       </div>
 
