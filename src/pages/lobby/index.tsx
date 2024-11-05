@@ -26,9 +26,7 @@ const Lobby = () => {
           {/* <h1 className="text-lg font-semibold">{user?.organization?.name || siteConfig.name}</h1> */}
         </Link>
         <div className="ml-auto flex items-center space-x-4">
-          <div className="border border-gray-300 rounded-full px-[3px] mt-1">
-            {user && <UserNav user={user} />}
-          </div>
+          {user && <UserNav user={user} />}
           <ThemeToggle />
         </div>
       </div>
