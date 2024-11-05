@@ -43,6 +43,7 @@ import {
   LeaveTrend,
   LeaveTypeSummary,
   AttendanceSummary,
+  SalaryAdjustment,
 } from "./components";
 
 import DailyAttendanceReport from "@/pages/hrm/reports/daily-attendance-report";
@@ -533,6 +534,18 @@ const hrmRoutes = {
           showUnauthorizedPage={true}
         >
           <DailyAttendanceReport />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "salary-adjustment",
+      element: withFallback(
+        <RoleAccess
+          roles={["hrm-report.pay-slip-report"]}
+          showUnauthorizedPage={true}
+        >
+          <SalaryAdjustment />
         </RoleAccess>
       ),
       errorElement: withFallback(<ErrorPage />),

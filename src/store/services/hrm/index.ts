@@ -74,8 +74,9 @@ export const hrmApi = createApi({
     "daily-attendance-report",
     "dashboard-reports",
     "salary-settings",
+    "salaries",
     "salary-batch",
-    "salary-batch-month"
+    "salary-batch-month",
   ],
   endpoints: () => ({}),
 });

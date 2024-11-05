@@ -38,13 +38,17 @@ const BULK_ACTIONS = [
     label: "Salary Estimate/Generate",
     value: "salary-estimate-generate",
   },
+  {
+    label: "Salary Adjustment",
+    value: "salary-adjustment",
+  },
 ];
 
 const Employee = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [filterParams, setFilterParams] = useState("");
-  console.log(filterParams);
+  // console.log(filterParams?.split("="));
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -55,7 +59,7 @@ const Employee = () => {
       pagination.pageIndex + 1
     }&${filterParams}`
   );
-  console.log("🚀 ~ Employee ~ data:", data);
+  // console.log("🚀 ~ Employee ~ data:", data);
   // Set appropriate bulk action type here
   const [selectedBulkAction, setSelectedBulkAction] = useState<
     BulkAction<EmployeeColumn>
@@ -73,12 +77,27 @@ const Employee = () => {
     setSelectedBulkAction({ action: "", payload: [] });
   };
 
-  const handleSaveToGlobalState = () => {
-    console.log(selectedBulkAction);
+  const handleSaveToGlobalState = (navigateTo: string) => {
+    // console.log(selectedBulkAction);
     dispatch(setSelectedEmployeeAction(selectedBulkAction));
     toast.success("Employee selected successfully");
     setSelectedBulkAction({ action: "", payload: [] });
-    navigate("/hrm/estimate-salary");
+    // navigate("/hrm/estimate-salary");
+    const employeeIds = selectedBulkAction.payload
+      .map((employee) => employee.id)
+      .join(",");
+
+    const salary_month =
+      filterParams?.split("=").includes("has_salary_month") &&
+      filterParams?.split("=")[1];
+
+    if (selectedBulkAction.action === "salary-adjustment") {
+      navigate(
+        `${navigateTo}?employee_ids=${employeeIds}&salary_month=${salary_month}`
+      );
+    } else {
+      navigate(navigateTo);
+    }
   };
 
   return (
@@ -152,21 +171,72 @@ const Employee = () => {
           isOpen={selectedBulkAction.action === "salary-estimate-generate"}
           className="!h-fit"
         >
-          <span>{
-            filterParams.includes("estimate_salary_for") ? null : <span className="text-red-500 text-xs">Please Select estimated salary for</span>
-            }</span>
-            <span>
-              {
-                selectedBulkAction.payload.length > 1 ? null : <span className="text-red-500 text-xs">Please Select at least one employee</span>
-              }
-            </span>
+          <span>
+            {filterParams.includes("estimate_salary_for") ? null : (
+              <span className="text-red-500 text-xs">
+                Please Select estimated salary for
+              </span>
+            )}
+          </span>
+          <span>
+            {selectedBulkAction.payload.length > 0 ? null : (
+              <span className="text-red-500 text-xs">
+                Please Select at least one employee
+              </span>
+            )}
+          </span>
           {/* delete each on at a time */}
           <span>
-            {selectedBulkAction.payload
-              .map((item) => <Badge className="mr-1 mb-1" key={item.id}>{item.first_name}</Badge>)
-            }
+            {selectedBulkAction.payload.map((item) => (
+              <Badge className="mr-1 mb-1" key={item.id}>
+                {item.first_name}
+              </Badge>
+            ))}
           </span>
-          <Button onClick={handleSaveToGlobalState}>
+          <Button
+            onClick={() => handleSaveToGlobalState("/hrm/estimate-salary")}
+          >
+            Select the Employees
+          </Button>
+        </Modal>
+      )}
+
+      {selectedBulkAction.action === "salary-adjustment" && (
+        <Modal
+          title="Salary Adjustment"
+          toggleModal={() => setSelectedBulkAction({ action: "", payload: [] })}
+          isOpen={selectedBulkAction.action === "salary-adjustment"}
+          className="!h-fit"
+        >
+          <span>
+            {filterParams.includes("has_salary_month") ? null : (
+              <span className="text-red-500 text-xs">
+                Please select a month for employees with generated salaries.
+              </span>
+            )}
+          </span>
+          <span>
+            {selectedBulkAction.payload.length > 0 ? null : (
+              <span className="text-red-500 text-xs">
+                Please Select at least one employee
+              </span>
+            )}
+          </span>
+          {/* delete each on at a time */}
+          <span>
+            {selectedBulkAction.payload.map((item) => (
+              <Badge className="mr-1 mb-1" key={item.id}>
+                {item.first_name}
+              </Badge>
+            ))}
+          </span>
+          <Button
+            onClick={() => handleSaveToGlobalState("/hrm/salary-adjustment")}
+            disabled={
+              !filterParams.includes("has_salary_month") ||
+              selectedBulkAction.payload.length === 0
+            }
+          >
             Select the Employees
           </Button>
         </Modal>
