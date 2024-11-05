@@ -55,7 +55,7 @@ export function CellAction({ rowData }: CellActionProps) {
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Update Receipt Voucher</p>
+              <p>Update Received Voucher</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -77,7 +77,7 @@ export function CellAction({ rowData }: CellActionProps) {
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Delete Receipt Voucher</p>
+              <p>Delete Received Voucher</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

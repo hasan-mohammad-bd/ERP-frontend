@@ -199,7 +199,7 @@ export function AddReceiptForm() {
               onClick={() => navigate("/accounts/receipt-voucher")}
               size={"sm"}
             >
-              Receipt Voucher List
+              Received Voucher List
             </Button>
           </div>
           <Card className="p-3">

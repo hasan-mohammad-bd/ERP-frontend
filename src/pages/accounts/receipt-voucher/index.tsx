@@ -37,7 +37,7 @@ const ReceiptVoucher = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="Receipt Voucher"
+              title="Received Voucher"
               description="Manage your sub accounts for you business"
             />
             <RoleAccess roles={["entries.create"]}>
@@ -45,7 +45,7 @@ const ReceiptVoucher = () => {
                 onClick={() => navigation("/accounts/receipt-voucher/add")}
                 size={"sm"}
               >
-                <Plus className="mr-2 h-4 w-4" /> Add Receipt Entry
+                <Plus className="mr-2 h-4 w-4" /> Add Received Entry
               </Button>
             </RoleAccess>
           </div>

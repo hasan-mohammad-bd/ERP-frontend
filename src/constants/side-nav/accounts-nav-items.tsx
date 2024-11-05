@@ -116,7 +116,7 @@ const accountsNavItems: NavItem[] = [
         permissions: ["entries"],
       },
       {
-        title: "Receipt Voucher",
+        title: "Received Voucher",
         icon: Clock,
         href: "/accounts/receipt-voucher",
         color: "text-sky-500",

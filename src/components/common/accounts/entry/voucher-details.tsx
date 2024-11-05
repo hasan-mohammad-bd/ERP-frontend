@@ -23,6 +23,7 @@ interface Props {
 const VoucherDetails = ({ data }: Props) => {
   const componentRef = useRef<HTMLDivElement>(null);
   const total = data.total as number;
+  console.log(data.organization);
 
   const handleDownloadPDF = async () => {
     if (!componentRef.current) return;
@@ -44,29 +45,32 @@ const VoucherDetails = ({ data }: Props) => {
           <div className="grid grid-cols-4">
             <div className="w-[180px]">
               {data.organization.logo && (
-                <img src={data.organization.logo} alt="" />
+                <img src={data?.organization?.logo} alt="" />
               )}
             </div>
-            <div className="text-center col-span-2">
+            <div className="text-center col-span-2 mb-2">
               <div className="font-bold text-center text-xl">
-                {data.organization.name}
+                {data?.organization?.name}
               </div>
               <div className="text-sm w-full">
                 <div>
                   {/* Address: House 51C Road-13/B, Dhaka 1230 */}
-                  {data.organization.address}
+                  {data?.organization?.address}
                 </div>{" "}
-                <div className="mb-2">
+                <div className="">
                   Phone:
                   {/* 01712345678 */}
-                  {data.organization.phone}
+                  {data?.organization?.phone}
                 </div>
               </div>
+              <span className="text-sm">
+                Website: {data?.organization?.website}
+              </span>
             </div>
           </div>
 
           <div className="text-center text-base mb-3 border border-spacing-1 w-fit mx-auto py-2 px-4 rounded-full">
-            {data.type}
+            {data.type === "Receipt Voucher" ? "Received Voucher" : data.type}
           </div>
           <div className="text-right text-sm mb-3">
             <div className="flex justify-between items-start">
@@ -81,7 +85,7 @@ const VoucherDetails = ({ data }: Props) => {
               <div>
                 <div>
                   <span className="font-bold">Voucher No:</span>{" "}
-                  {data.entry_number}
+                  {data?.entry_number}
                 </div>
                 <div>
                   <span className="font-bold">Date:</span> {data.date}
@@ -135,17 +139,17 @@ const VoucherDetails = ({ data }: Props) => {
                         </TableCell>
 
                         <TableCell className="border border-black py-[5px]">
-                          {data.account?.name}
+                          {data?.account?.name}
                         </TableCell>
                         <TableCell className="border border-black py-[5px]">
-                          {data.account?.code}
+                          {data?.account?.code}
                         </TableCell>
                         <TableCell className="border border-black py-[5px] ">
                           {data?.contact?.name}
                         </TableCell>
 
                         <TableCell className="border border-black py-[5px]">
-                          {data.note}
+                          {data?.note}
                         </TableCell>
 
                         <TableCell className="border border-black py-[5px]">
@@ -192,16 +196,17 @@ const VoucherDetails = ({ data }: Props) => {
 
             <div className="flex items-end justify-evenly text-sm mt-20  text-center">
               <div>
-                <div className="font-bold flex flex-col">{data.user.name} </div>
+                <div className="font-bold flex flex-col">
+                  {data?.user?.name}{" "}
+                </div>
                 <div>Prepared By </div>
               </div>
-
+              <div>Accounts</div>
               <div>
                 <div></div>
                 <div>Checked By</div>
               </div>
-              <div>Authorized By</div>
-              <div>Pay By</div>
+              <div>Approved By</div>
             </div>
           </div>
         </div>
