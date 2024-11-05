@@ -19,13 +19,7 @@ export type LeaveTypeFormValues = z.infer<typeof leaveTypeSchema>;
 export const leaveTypeRow = leaveTypeSchema.extend({
   id: z.coerce
     .number()
-    .int()
-    .min(0, {
-      message: "Id must be at least 0.",
-    })
-    .max(9999, {
-      message: "Id must be at most 9999.",
-    }),
+    
 });
 
 export type LeaveTypeRow = z.infer<typeof leaveTypeRow>;

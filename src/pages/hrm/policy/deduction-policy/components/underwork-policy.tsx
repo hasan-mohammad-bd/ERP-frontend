@@ -1,3 +1,4 @@
+import { Loading } from "@/components/common/loading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -15,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { LeaveTypeRow } from "@/lib/validators/hrm/leave";
 import { UseFormReturn } from "react-hook-form";
 
 const items = [
@@ -32,7 +34,15 @@ const items = [
   },
 ] as const;
 
-export function UnderworkPolicy({ form }: { form: UseFormReturn }) {
+export function UnderworkPolicy({
+  form,
+  leaveTypeList,
+  leaveTypeLoading,
+}: {
+  form: UseFormReturn;
+  leaveTypeList: LeaveTypeRow[];
+  leaveTypeLoading: boolean;
+}) {
   return (
     <Card className="w-full h-full">
       <CardHeader>
@@ -96,8 +106,8 @@ export function UnderworkPolicy({ form }: { form: UseFormReturn }) {
             <FormItem className="w-[300px]">
               <FormLabel>Leave type</FormLabel>
               <Select
-                onValueChange={(value) => field.onChange(Number(value))}
-                value={field.value && String(field.value)}
+                onValueChange={(value) => field.onChange(Number(value))} // Convert string to number
+                value={field.value && String(field.value)} // Ensure value is a string for rendering
               >
                 <FormControl>
                   <SelectTrigger>
@@ -105,9 +115,15 @@ export function UnderworkPolicy({ form }: { form: UseFormReturn }) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="1">Annual Leave</SelectItem>
-                  <SelectItem value="2">Sick Leave</SelectItem>
-                  <SelectItem value="3">Casual Leave</SelectItem>
+                  {leaveTypeLoading ? (
+                    <Loading />
+                  ) : (
+                    leaveTypeList?.map((group: LeaveTypeRow) => (
+                      <SelectItem key={group.id} value={String(group.id)}>
+                        {group.name}
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
               <FormMessage />

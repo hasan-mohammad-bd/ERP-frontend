@@ -1,3 +1,4 @@
+import { Loading } from "@/components/common/loading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -7,6 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+// import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -15,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { LeaveTypeRow } from "@/lib/validators/hrm/leave";
 import { UseFormReturn } from "react-hook-form";
 
 const items = [
@@ -32,7 +35,15 @@ const items = [
   },
 ] as const;
 
-export function AbsentPolicy({ form }: { form: UseFormReturn }) {
+export function AbsentPolicy({
+  form,
+  leaveTypeList,
+  leaveTypeLoading,
+}: {
+  form: UseFormReturn;
+  leaveTypeList: LeaveTypeRow[];
+  leaveTypeLoading: boolean;
+}) {
   return (
     <Card className="w-full h-full">
       <CardHeader>
@@ -122,9 +133,15 @@ export function AbsentPolicy({ form }: { form: UseFormReturn }) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="1">Annual Leave</SelectItem>
-                  <SelectItem value="2">Sick Leave</SelectItem>
-                  <SelectItem value="3">Casual Leave</SelectItem>
+                  {leaveTypeLoading ? (
+                    <Loading />
+                  ) : (
+                    leaveTypeList?.map((group: LeaveTypeRow) => (
+                      <SelectItem key={group.id} value={String(group.id)}>
+                        {group.name}
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
               <FormMessage />

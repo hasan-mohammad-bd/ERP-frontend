@@ -1,3 +1,4 @@
+import { Loading } from "@/components/common/loading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -15,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { LeaveTypeRow } from "@/lib/validators/hrm/leave";
 import { UseFormReturn } from "react-hook-form";
 
 const items = [
@@ -32,7 +34,15 @@ const items = [
   },
 ] as const;
 
-export function ExtremeDelayPolicy({ form }: { form: UseFormReturn }) {
+export function ExtremeDelayPolicy({
+  form,
+  leaveTypeList,
+  leaveTypeLoading,
+}: {
+  form: UseFormReturn;
+  leaveTypeList: LeaveTypeRow[];
+  leaveTypeLoading: boolean;
+}) {
   return (
     <Card className="w-full h-full">
       <CardHeader>
@@ -105,9 +115,15 @@ export function ExtremeDelayPolicy({ form }: { form: UseFormReturn }) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="1">Annual Leave</SelectItem>
-                  <SelectItem value="2">Sick Leave</SelectItem>
-                  <SelectItem value="3">Casual Leave</SelectItem>
+                  {leaveTypeLoading ? (
+                    <Loading />
+                  ) : (
+                    leaveTypeList?.map((group: LeaveTypeRow) => (
+                      <SelectItem key={group.id} value={String(group.id)}>
+                        {group.name}
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
               <FormMessage />

@@ -39,6 +39,7 @@ export type DeductionPolicyWithoutData = {
   delay_leave_type?: LeaveType;
   extreme_delay_leave_type?: LeaveType;
   underwork_leave_type?: LeaveType;
+  deduction_type?: string;
 };
 
 // Type with the data object
@@ -80,6 +81,8 @@ export const deductionPolicySchemaForm = z.object({
 
   unpaid_consider: z.union([z.literal(0), z.literal(1)]),
   unpaid_deduct_gross_salary: z.union([z.literal(0), z.literal(1)]),
+
+  deduction_type: z.string().nullable(),
 });
 
 export const deductionPolicySchema = z.object({
@@ -97,6 +100,8 @@ export const deductionPolicySchema = z.object({
   underwork_adjust_days: z.number().int().positive(),
   underwork_consider_hours: z.number().int().positive(),
   underwork_leave_type_id: z.number(),
+
+  deduction_type: z.string().nullable(),
 });
 
 export type DeductionPolicySchemaTypes = z.infer<typeof deductionPolicySchema>;

@@ -23,12 +23,22 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
+import { useGetLeaveTypesQuery } from "@/store/services/hrm/api/leave-type";
+import { DeductionType } from "./components/deduction-type";
 
 const DeductionPolicy = () => {
   const { data, isLoading: deductionPolicyFetchLoading } =
     useGetDeductionPoliciesQuery();
   const [updateDeductionPolicy, { isLoading: isUpdating }] =
     useUpdateDeductionPolicyMutation();
+
+    const { data:leaveTypeData, isLoading: LeaveTypeDataLoading } = useGetLeaveTypesQuery(
+      `per_page=1000&page=1`
+    );
+  
+  
+  
+    const leaveType = leaveTypeData?.data || [];
 
   const deductionPolicyList: DeductionPolicyWithoutData = useMemo(() => {
     return data?.data || {};
@@ -58,6 +68,7 @@ const DeductionPolicy = () => {
         "underwork_deduct_gross_salary",
         "unpaid_consider",
         "unpaid_deduct_gross_salary",
+        "deduction_type"
       ];
 
       keys.forEach((key) => {
@@ -90,6 +101,8 @@ const DeductionPolicy = () => {
         underwork_consider_hours:
           deductionPolicyList.underwork_consider_hours || 0,
         underwork_adjust_days: deductionPolicyList.underwork_adjust_days || 0,
+
+        deduction_type: deductionPolicyList.deduction_type || "days_of_month",
       });
     }
   }, [data, deductionPolicyList, form]);
@@ -149,7 +162,9 @@ const DeductionPolicy = () => {
       unpaid_deduct_gross_salary: toBoolean(
         data.items.includes("unpaid_deduct_gross_salary")
       ),
+      deduction_type: data?.deduction_type ?? null,
     };
+
 
     // Validate the payload
     try {
@@ -190,11 +205,12 @@ const DeductionPolicy = () => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="grid grid-cols-2 gap-6 items-start max-w-7xl mx-auto"
             >
-              <AbsentPolicy form={form} />
-              <DelayPolicy form={form} />
-              <ExtremeDelayPolicy form={form} />
-              <UnderworkPolicy form={form} />
+              <AbsentPolicy leaveTypeList={leaveType} leaveTypeLoading={LeaveTypeDataLoading} form={form} />
+              <DelayPolicy leaveTypeList={leaveType} leaveTypeLoading={LeaveTypeDataLoading} form={form} />
+              <ExtremeDelayPolicy leaveTypeList={leaveType} leaveTypeLoading={LeaveTypeDataLoading} form={form} />
+              <UnderworkPolicy leaveTypeList={leaveType} leaveTypeLoading={LeaveTypeDataLoading} form={form} />
               <UnpaidPolicy form={form} />
+              <DeductionType form={form} />
             </form>
           </Form>
         )}
