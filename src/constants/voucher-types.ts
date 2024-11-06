@@ -17,7 +17,7 @@ const VOUCHER_TYPES = [
 	},
 	{
 		type: "receipt voucher",
-		title: "Receipt Voucher",
+		title: "Received Voucher",
 	},
 ];
 
