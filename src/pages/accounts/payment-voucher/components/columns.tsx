@@ -6,62 +6,87 @@ import { CellActionVoucherDetails } from "@/components/common/accounts/entry/cel
 import { FormatIndianCurrency } from "@/utils/indian-formate";
 
 export const subAccountColumns: ColumnDef<EntryRow>[] = [
-	{
-		id: "select",
-		header: ({ table }) => (
-			<Checkbox
-				checked={
-					table.getIsAllPageRowsSelected() ||
-					(table.getIsSomePageRowsSelected() && "indeterminate")
-				}
-				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-				aria-label="Select all"
-				className="translate-y-[2px]"
-			/>
-		),
-		cell: ({ row }) => (
-			<Checkbox
-				checked={row.getIsSelected()}
-				onCheckedChange={(value) => row.toggleSelected(!!value)}
-				aria-label="Select row"
-				className="translate-y-[2px]"
-			/>
-		),
-		enableSorting: false,
-		enableHiding: false,
-	},
-	{
-		accessorKey: "entry_number",
-		header: "PV No.",
-		cell: ({ row }) => <CellActionVoucherDetails rowData={row.original} />,
-	},
-	{
-		accessorKey: "type",
-		header: "Type",
-	},
-	{
-		accessorKey: "date",
-		header: "Date",
-	},
-	{
-		accessorKey: "total",
-		header: "Total",
-		cell: ({ row }) => <FormatIndianCurrency amount={row.original.total as number} />,
-	},
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+        className="translate-y-[2px]"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+        className="translate-y-[2px]"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "entry_number",
+    header: "PV No.",
+    cell: ({ row }) => <CellActionVoucherDetails rowData={row.original} />,
+  },
+  {
+    accessorKey: "type",
+    header: "Type",
+  },
+  {
+    accessorKey: "date",
+    header: "Date",
+  },
+  {
+    accessorKey: "total",
+    header: "Total",
+    cell: ({ row }) => (
+      <FormatIndianCurrency amount={row.original.total as number} />
+    ),
+  },
 
-	{
-		header: "Location",
-		accessorFn: (row) => row?.location?.name,
-	},
+  {
+    header: "Location",
+    accessorFn: (row) => row?.location?.name,
+  },
 
-	{
-		header: "User",
-		accessorFn: (row) => row?.user?.name,
-	},
+  {
+    header: "User",
+    accessorFn: (row) => row?.user?.name,
+  },
+  {
+    header: "Approval Status",
+    cell: ({ row }) => {
+      const status = row.original.approval?.status;
+      if (status === 0) {
+        return (
+          <span className="text-yellow-600  text-[12px] py-1 px-2 bg-green-100 rounded-xl">
+            Pending
+          </span>
+        );
+      } else if (status === 1) {
+        return (
+          <span className="text-green-600 text-[12px] py-1 px-2 bg-yellow-100 rounded-xl">
+            Approved
+          </span>
+        );
+      } else {
+        return (
+          <span className="text-red-600 text-[12px] py-1 px-2 bg-red-100 rounded-xl">
+            Rejected
+          </span>
+        );
+      }
+    },
+  },
 
-
-
-/* 	{
+  /* 	{
 		accessorKey: "is_active",
 		header: "Active",
 		cell: ({ row }) => {
@@ -101,10 +126,10 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
 			);
 		},
 	}, */
-	{
-		id: "actions",
-		header: () => <div className="text-center">Actions</div>,
-		enableSorting: false,
-		cell: ({ row }) => <CellAction rowData={row.original} />,
-	},
+  {
+    id: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    enableSorting: false,
+    cell: ({ row }) => <CellAction rowData={row.original} />,
+  },
 ];

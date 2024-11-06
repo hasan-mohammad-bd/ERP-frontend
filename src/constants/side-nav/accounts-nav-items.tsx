@@ -209,6 +209,38 @@ const accountsNavItems: NavItem[] = [
 			}, */
     ],
   },
+  {
+    title: "Approvals",
+    icon: Settings,
+    href: "/accounts",
+    color: "text-sky-500",
+    permissions: ["settings", "entries"],
+    isChildren: true,
+    children: [
+      {
+        title: "Pending for Approvals",
+        icon: Clock,
+        href: "/accounts/approvals/pending",
+        color: "text-sky-500",
+        permissions: ["settings", "entries"],
+      },
+      {
+        title: "Approved List",
+        icon: Clock,
+        href: "/accounts/approvals/approved",
+        color: "text-sky-500",
+        permissions: ["settings", "entries"],
+      },
+      {
+        title: "Rejected List",
+        icon: Clock,
+        href: "/accounts/approvals/rejected",
+        color: "text-sky-500",
+        permissions: ["settings", "entries"],
+      },
+      
+    ],
+  },
 ];
 
 export default accountsNavItems;

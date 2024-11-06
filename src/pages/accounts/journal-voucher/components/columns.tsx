@@ -5,8 +5,6 @@ import { CellAction } from "./cell-action";
 import { CellActionVoucherDetails } from "@/components/common/accounts/entry/cell-action-voucher-details";
 import { FormatIndianCurrency } from "@/utils/indian-formate";
 
-
-
 export const subAccountColumns: ColumnDef<EntryRow>[] = [
   {
     id: "select",
@@ -21,7 +19,7 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
         className="translate-y-[2px]"
       />
     ),
-		
+
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
@@ -49,7 +47,9 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
   {
     accessorKey: "total",
     header: "Total",
-    cell: ({ row }) => <FormatIndianCurrency amount={row.original.total as number} />,
+    cell: ({ row }) => (
+      <FormatIndianCurrency amount={row.original.total as number} />
+    ),
   },
 
   {
@@ -59,10 +59,33 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
 
   {
     header: "User",
-    accessorFn: (row) => row?.user?.name,
+    accessorFn: (row) => row?.user?.name ?? row?.user?.username,
   },
-
-
+  {
+    header: "Approval Status",
+    cell: ({ row }) => {
+      const status = row.original.approval?.status;
+      if (status === 0) {
+        return (
+          <span className="text-yellow-600  text-[12px] py-1 px-2 bg-green-100 rounded-xl">
+            Pending
+          </span>
+        );
+      } else if (status === 1) {
+        return (
+          <span className="text-green-600 text-[12px] py-1 px-2 bg-yellow-100 rounded-xl">
+            Approved
+          </span>
+        );
+      } else {
+        return (
+          <span className="text-red-600 text-[12px] py-1 px-2 bg-red-100 rounded-xl">
+            Rejected
+          </span>
+        );
+      }
+    },
+  },
 
   /* 	{
 		accessorKey: "is_active",

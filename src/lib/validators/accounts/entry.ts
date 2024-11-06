@@ -3,6 +3,7 @@ import { financialYearRow } from "./financial-year";
 import { locationColumn, organizationColumn } from "@/lib/validators";
 import { z } from "zod";
 import { subAccountRow } from "./sub-account";
+import { approvalSchema } from "../approvals";
 
 export const constCenterRow = z.object({
   cost_center_id: z.coerce.number(),
@@ -12,6 +13,7 @@ export const constCenterRow = z.object({
 export const userRow = z.object({
   id: z.number().int(),
   name: z.string(),
+  username: z.string(),
   phone: z.string().regex(/^\d+$/), // assuming phone is a string of digits
   organization_id: z.number().int(),
   location_id: z.number().int(),
@@ -73,6 +75,7 @@ export const entryRow = entrySchema.extend({
   location: locationColumn.omit({ organization: true }),
   total: z.coerce.number().optional().nullable(),
   project: z.object({ name: z.string(), id: z.number() }).optional().nullable(),
+  approval: approvalSchema
 });
 
 export type EntryRow = z.infer<typeof entryRow>;

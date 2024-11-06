@@ -7,13 +7,12 @@ import { Loading } from "../../loading";
 import RoleAccess from "@/lib/access-control/role-access";
 
 interface CellActionProps {
-  rowData: EntryRow;
+  rowData: EntryRow | any;
 }
 
 export function CellActionVoucherDetails({ rowData }: CellActionProps) {
   const [voucherDetailsOpen, setVoucherDetailsOpen] = useState(false);
   const [fetchDataOnOpen, setFetchDataOnOpen] = useState(false);
-
   // Fetch the data only when the modal is open
   const { data, isFetching } = useGetEntryByIdQuery(`${rowData?.id}`, {
     skip: !fetchDataOnOpen,

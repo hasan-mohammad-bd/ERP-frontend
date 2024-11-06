@@ -35,6 +35,9 @@ import { AddBudgetForm } from "@/pages/accounts/budget/components/add-budjet-for
 import CheckBooks from "@/pages/accounts/check-books";
 import RoleAccessOutlet from "@/lib/access-control/role-access-outlet";
 import RoleAccess from "@/lib/access-control/role-access";
+import PendingApprovals from "@/pages/accounts/approvals/pending-approvals";
+import ApprovedApprovals from "@/pages/accounts/approvals/approved-approvals";
+import RejectedApprovals from "@/pages/accounts/approvals/rejected-approvals";
 
 const accountsRoutes = {
   path: "accounts/",
@@ -386,6 +389,40 @@ const accountsRoutes = {
           element: withFallback(
             <RoleAccess roles={["reports.detailed.ledger"]} showUnauthorizedPage={true}>
               <DetailedGeneralLedger />
+            </RoleAccess>
+        ),
+          errorElement: <ErrorPage />,
+        },
+      ],
+    },
+    {
+      path: "approvals/",
+      element: <RoleAccessOutlet roles={["settings", "entries"]}  />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: "pending",
+          element: withFallback(
+            <RoleAccess roles={["settings", "entries"]} showUnauthorizedPage={true}>
+              <PendingApprovals />
+            </RoleAccess>
+        ),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "approved",
+          element: withFallback(
+            <RoleAccess roles={["settings", "entries"]} showUnauthorizedPage={true}>
+              <ApprovedApprovals />
+            </RoleAccess>
+        ),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "rejected",
+          element: withFallback(
+            <RoleAccess roles={["settings", "entries"]} showUnauthorizedPage={true}>
+              <RejectedApprovals />
             </RoleAccess>
         ),
           errorElement: <ErrorPage />,

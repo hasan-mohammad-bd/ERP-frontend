@@ -50,19 +50,43 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
 		cell: ({ row }) => <FormatIndianCurrency amount={row.original.total as number} />,
 	},
 
-	{
-		header: "Location",
-		accessorFn: (row) => row?.location?.name,
-	},
+  {
+    header: "Location",
+    accessorFn: (row) => row?.location?.name,
+  },
 
-	{
-		header: "User",
-		accessorFn: (row) => row?.user?.name,
-	},
+  {
+    header: "User",
+    accessorFn: (row) => row?.user?.name,
+  },
 
+  {
+    header: "Approval Status",
+    cell: ({ row }) => {
+      const status = row.original.approval?.status;
+      if (status === 0) {
+        return (
+          <span className="text-yellow-600  text-[12px] py-1 px-2 bg-green-100 rounded-xl">
+            Pending
+          </span>
+        );
+      } else if (status === 1) {
+        return (
+          <span className="text-green-600 text-[12px] py-1 px-2 bg-yellow-100 rounded-xl">
+            Approved
+          </span>
+        );
+      } else {
+        return (
+          <span className="text-red-600 text-[12px] py-1 px-2 bg-red-100 rounded-xl">
+            Rejected
+          </span>
+        );
+      }
+    },
+  },
 
-
-/* 	{
+  /* 	{
 		accessorKey: "is_active",
 		header: "Active",
 		cell: ({ row }) => {
@@ -102,10 +126,10 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
 			);
 		},
 	}, */
-	{
-		id: "actions",
-		header: () => <div className="text-center">Actions</div>,
-		enableSorting: false,
-		cell: ({ row }) => <CellAction rowData={row.original} />,
-	},
+  {
+    id: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    enableSorting: false,
+    cell: ({ row }) => <CellAction rowData={row.original} />,
+  },
 ];
