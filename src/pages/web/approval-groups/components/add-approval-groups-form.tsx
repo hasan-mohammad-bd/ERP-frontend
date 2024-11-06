@@ -68,7 +68,7 @@ export function AddApprovalGroups() {
   const [adminOptions, setAdminOptions] = useState<{ [key: number]: Option[] }>({});
   const [employeeSearchTerm, setEmployeeSearchTerm] = useState("");
   const { data: employeeList} = useGetUsersQuery(
-    `per_page=15&page=1&search=${employeeSearchTerm}`
+    `per_page=15&page=1&text=${employeeSearchTerm}`
     
   );
 

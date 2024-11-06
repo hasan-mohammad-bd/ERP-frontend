@@ -40,6 +40,7 @@ export const cashBookColumns: ColumnDef<EntryRow>[] = [
   {
     accessorKey: "type",
     header: "Type",
+    cell: ({ row }) => row.original.type === "Receipt Voucher" ? "Received Voucher" : row.original.type,
   },
   {
     accessorKey: "date",

@@ -72,7 +72,7 @@ export default function EstimateSalarySearchToolbar({
   }, [selectedEmployeeAction]);
   
   const { data: employeeList } = useGetEmployeesQuery(
-    `per_page=15&page=1&search=${employeeSearchTerm}`,
+    `per_page=15&page=1&text=${employeeSearchTerm}`,
     {
       skip: !employeeSearchTerm,
     }

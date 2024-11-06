@@ -38,7 +38,7 @@ export const subAccountColumns: ColumnDef<EntryRow>[] = [
 	{
 		accessorKey: "type",
 		header: "Type",
-		cell: ({ row }) => row.original.type === "Receipt Voucher" ? "Received Voucher" : "Received Voucher",
+		cell: ({ row }) => row.original.type === "Receipt Voucher" ? "Received Voucher" : row.original.type,
 	},
 	{
 		accessorKey: "date",

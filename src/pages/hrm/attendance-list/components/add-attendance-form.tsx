@@ -36,7 +36,8 @@ export function AddAttendanceForm({ tab, modalClose }: AddAttendanceFormProps) {
   const [employeeSearchTerm, setEmployeeSearchTerm] = useState("");
 
   const { data: employeeList, isLoading: isLoadingEmployee } =
-    useGetEmployeesQuery(`per_page=15&page=1&search=${employeeSearchTerm}`);
+    useGetEmployeesQuery(`per_page=15&page=1&text=${employeeSearchTerm}`);
+
 
   const [createAttendanceCheckIn, { isLoading: isSubmittingCheckIn }] =
     useCreateAttendanceCheckInMutation(); // Check-in mutation
@@ -59,6 +60,8 @@ export function AddAttendanceForm({ tab, modalClose }: AddAttendanceFormProps) {
 
     return options;
   };
+
+
 
   const onSubmit = async (data: attendanceCheckInFormValues) => {
     try {

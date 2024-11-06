@@ -36,7 +36,7 @@ export default function AttendanceSearchToolbar({
   const { data: employeeList } = useGetEmployeesQuery(
     `per_page=15&location_id=${
       locationFiltered ? locationFiltered : ""
-    }&page=1&search=${employeeSearchTerm}`,
+    }&page=1&text=${employeeSearchTerm}`,
     {
       skip: !employeeSearchTerm,
     }
