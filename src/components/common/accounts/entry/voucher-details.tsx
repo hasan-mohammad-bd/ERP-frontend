@@ -40,15 +40,14 @@ const VoucherDetails = ({ data }: Props) => {
     pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
     // pdf.save("voucher-details.pdf");
     pdf.save(`${data?.entry_number}-voucher-details.pdf`);
-
   };
 
   return (
     <div>
       <div ref={componentRef}>
         <div className="p-7">
-          <div className="grid grid-cols-4">
-            <div className="h-[80px] max-w-[180px]">
+          <div className="flex items-start justify-center relative">
+            <div className="absolute left-0 top-0 h-[80px] max-w-[180px]">
               {data?.organization?.logo && (
                 <img
                   src={data?.organization?.logo}
@@ -57,30 +56,30 @@ const VoucherDetails = ({ data }: Props) => {
                 />
               )}
             </div>
-            <div className="text-center col-span-2 mb-2">
+            <div className="text-center mb-2">
               <div className="font-bold text-center text-xl">
                 {data?.organization?.name}
               </div>
-              <div className="text-sm w-full">
+              <div className="text-sm w-full whitespace-nowrap">
                 <div>
                   {/* Address: House 51C Road-13/B, Dhaka 1230 */}
-                  {data?.organization?.address}
+                  {data?.organization?.address?.join(". ")}
                 </div>{" "}
                 <div className="">
-                  Phone:
-                  {/* 01712345678 */}
-                  {data?.organization?.phone}
+                  Phone: {data?.organization?.phone?.join(", ")}
                 </div>
               </div>
               <span className="text-sm">
                 Website: {data?.organization?.website}
               </span>
+              <div className="text-center text-base my-3 border border-spacing-1 w-fit mx-auto !py-2 px-4 rounded-full">
+                {data.type === "Receipt Voucher"
+                  ? "Received Voucher"
+                  : data.type}
+              </div>
             </div>
           </div>
 
-          <div className="text-center text-base mb-3 border border-spacing-1 w-fit mx-auto py-2 px-4 rounded-full">
-            {data.type === "Receipt Voucher" ? "Received Voucher" : data.type}
-          </div>
           <div className="text-right text-sm mb-3">
             <div className="flex justify-between items-start">
               <div>
