@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import SalaryCertificateVoucher from "./components/salary-certificate-boucher";
-import PrintPDFWrapper from "@/components/common";
+import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import { Heading } from "@/components/common/heading";
 import EmployeeSalaryCertificateFilter from "./components/employee-salary-certificate-filter";
 import { Separator } from "@/components/ui/separator";

@@ -3,7 +3,7 @@ import Payslip from "./components/payslip";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/common/heading";
-import PrintPDFWrapper from "@/components/common";
+import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import EmployeeSalaryPayslipFilter from "./components/employee-salary-payslip-filter";
 import { Loading } from "@/components/common/loading";
 import { useGetEmployeesEstimateSalaryPayslipQuery } from "@/store/services/hrm/api/employee-salary-payslip";

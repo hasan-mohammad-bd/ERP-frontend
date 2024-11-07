@@ -58,7 +58,7 @@ const SearchSelect = <T extends object>({
 
   // Getting search result
   useEffect(() => {
-    if (debouncedValue && flag.current) {
+    if (flag.current) {
       flag.current = false; // preventing the infinite loop
       onChangeSearch(debouncedValue);
     }

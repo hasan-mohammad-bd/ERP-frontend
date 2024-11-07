@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { PaginationInfo } from "@/types";
 
-import PrintPDFWrapper from "@/components/common";
+import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import { Card } from "@/components/ui/card";
 
 import { Heading } from "@/components/common/heading";

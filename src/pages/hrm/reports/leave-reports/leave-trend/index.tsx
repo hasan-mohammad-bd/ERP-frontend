@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { PaginationInfo } from "@/types"; // Assuming you have a PaginationInfo type like in CheckBooks
 
-import PrintPDFWrapper from "@/components/common";
+import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import { Heading } from "@/components/common/heading";
 import { Paginator } from "@/components/common/paginator";
 import { Card } from "@/components/ui/card";

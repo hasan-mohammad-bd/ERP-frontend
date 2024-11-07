@@ -60,7 +60,7 @@
 
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import PrintPDFWrapper from "@/components/common";
+import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import MasterSalesTable from "./components/master-sales-report";
 import { Paginator } from "@/components/common/paginator";
 import { PaginationInfo } from "@/types";

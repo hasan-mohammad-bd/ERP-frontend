@@ -1,5 +1,5 @@
 import { Loading } from "@/components/common/loading";
-import PrintPDFWrapper from "@/components/common";
+import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import { Card } from "@/components/ui/card";
 import { useGetAttendanceSummaryQuery } from "@/store/services/hrm/api/attendance-summary";
 import AttendanceSummaryTable from "./components/attendance-summary-table";

@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import SalarySheetFilters from "./components/salary-sheet-filters";
 import { Card } from "@/components/ui/card";
 import SalarySheetTable from "./components/salary-sheet-table";
-import PrintPDFWrapper from "@/components/common";
+import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import { useState } from "react";
 import { useGetSalaryReportQuery } from "@/store/services/hrm/api/salary-report";
 import { Loading } from "@/components/common/loading";

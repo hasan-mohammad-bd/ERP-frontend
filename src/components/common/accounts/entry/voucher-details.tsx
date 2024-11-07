@@ -23,19 +23,24 @@ interface Props {
 const VoucherDetails = ({ data }: Props) => {
   const componentRef = useRef<HTMLDivElement>(null);
   const total = data.total as number;
-  console.log(data.organization);
+  // console.log(data.organization);
 
   const handleDownloadPDF = async () => {
     if (!componentRef.current) return;
 
     const pdf = new jsPDF("p", "mm", "a4");
-    const canvas = await html2canvas(componentRef.current, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
+    const canvas = await html2canvas(componentRef.current, {
+      scale: 2, // Reduce scale to lower image resolution
+      useCORS: true,
+    });
+    const imgData = canvas.toDataURL("image/jpeg", 1); // Use JPEG with quality 0.75
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save("voucher-details.pdf");
+    pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+    // pdf.save("voucher-details.pdf");
+    pdf.save(`${data?.entry_number}-voucher-details.pdf`);
+
   };
 
   return (
@@ -43,9 +48,13 @@ const VoucherDetails = ({ data }: Props) => {
       <div ref={componentRef}>
         <div className="p-7">
           <div className="grid grid-cols-4">
-            <div className="w-[180px]">
-              {data.organization.logo && (
-                <img src={data?.organization?.logo} alt="" />
+            <div className="h-[80px] max-w-[180px]">
+              {data?.organization?.logo && (
+                <img
+                  src={data?.organization?.logo}
+                  alt=""
+                  className="w-full h-full object-contain"
+                />
               )}
             </div>
             <div className="text-center col-span-2 mb-2">

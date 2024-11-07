@@ -1,5 +1,5 @@
 // import React from "react";
-import PrintPDFWrapper from "@/components/common";
+import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import { Heading } from "@/components/common/heading";
 import { Loading } from "@/components/common/loading";
 import { Paginator } from "@/components/common/paginator";
