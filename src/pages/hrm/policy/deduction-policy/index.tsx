@@ -98,8 +98,8 @@ const DeductionPolicy = () => {
 
         underwork_leave_type_id:
           deductionPolicyList?.underwork_leave_type_id || 0,
-        underwork_consider_hours:
-          deductionPolicyList.underwork_consider_hours || 0,
+        underwork_consider_days:
+          deductionPolicyList.underwork_consider_days || 0,
         underwork_adjust_days: deductionPolicyList.underwork_adjust_days || 0,
 
         deduction_type: deductionPolicyList.deduction_type || "days_of_month",
@@ -154,7 +154,7 @@ const DeductionPolicy = () => {
       underwork_deduct_gross_salary: toBoolean(
         data.items.includes("underwork_deduct_gross_salary")
       ),
-      underwork_consider_hours: parseInt(data.underwork_consider_hours),
+      underwork_consider_days: parseInt(data.underwork_consider_days),
       underwork_adjust_days: parseInt(data.underwork_adjust_days),
       underwork_leave_type_id: parseInt(data.underwork_leave_type_id),
 

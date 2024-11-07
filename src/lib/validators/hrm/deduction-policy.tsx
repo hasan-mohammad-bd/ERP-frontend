@@ -30,7 +30,7 @@ export type DeductionPolicyWithoutData = {
   underwork_consider?: number;
   underwork_deduct_salary?: number;
   underwork_deduct_gross_salary?: number;
-  underwork_consider_hours?: number;
+  underwork_consider_days?: number;
   underwork_adjust_days?: number;
   underwork_leave_type_id?: number;
   unpaid_consider?: number;
@@ -75,7 +75,7 @@ export const deductionPolicySchemaForm = z.object({
   underwork_consider: z.union([z.literal(0), z.literal(1)]),
   underwork_deduct_salary: z.union([z.literal(0), z.literal(1)]),
   underwork_deduct_gross_salary: z.union([z.literal(0), z.literal(1)]),
-  underwork_consider_hours: z.number().int().positive(),
+  underwork_consider_days: z.number().int().positive(),
   underwork_adjust_days: z.number().int().positive(),
   underwork_leave_type_id: z.number(),
 
@@ -98,7 +98,7 @@ export const deductionPolicySchema = z.object({
   extreme_delay_leave_type_id: z.number(),
   items: z.array(z.string()).optional(),
   underwork_adjust_days: z.number().int().positive(),
-  underwork_consider_hours: z.number().int().positive(),
+  underwork_consider_days: z.number().int().positive(),
   underwork_leave_type_id: z.number(),
 
   deduction_type: z.string().nullable(),

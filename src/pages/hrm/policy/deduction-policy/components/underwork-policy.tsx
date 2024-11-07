@@ -134,7 +134,7 @@ export function UnderworkPolicy({
         <div className="flex gap-20">
           <FormField
             control={form.control}
-            name="underwork_consider_hours"
+            name="underwork_consider_days"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Number delay to consider</FormLabel>
