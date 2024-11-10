@@ -51,6 +51,10 @@ import DailyAttendanceReport from "@/pages/hrm/reports/daily-attendance-report";
 // import AttendancePolicy from "@/pages/hrm/attendance-policy";
 import RoleAccess from "@/lib/access-control/role-access";
 import SalaryBillReport from "@/pages/hrm/reports/salary-bill-report";
+import RoleAccessOutlet from "@/lib/access-control/role-access-outlet";
+import HRM_PendingApprovals from "@/pages/hrm/approvals/hrm-pending-approvals";
+import HRM_ApprovedApprovals from "@/pages/hrm/approvals/hrm-approved-approvals";
+import HRM_RejectedApprovals from "@/pages/hrm/approvals/hrm-rejected-approvals";
 
 const hrmRoutes = {
   path: "hrm/",
@@ -549,6 +553,81 @@ const hrmRoutes = {
         </RoleAccess>
       ),
       errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "approvals/",
+      element: (
+        <RoleAccessOutlet
+          roles={[
+            "leaves",
+            "leaves.show",
+            "salaries",
+            "salaries.show",
+            "attendances",
+            "attendances.show",
+          ]}
+        />
+      ),
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: "pending",
+          element: withFallback(
+            <RoleAccess
+              roles={[
+                "leaves",
+                "leaves.show",
+                "salaries",
+                "salaries.show",
+                "attendances",
+                "attendances.show",
+              ]}
+              showUnauthorizedPage={true}
+            >
+              <HRM_PendingApprovals />
+            </RoleAccess>
+          ),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "approved",
+          element: withFallback(
+            <RoleAccess
+              roles={[
+                "leaves",
+                "leaves.show",
+                "salaries",
+                "salaries.show",
+                "attendances",
+                "attendances.show",
+              ]}
+              showUnauthorizedPage={true}
+            >
+              <HRM_ApprovedApprovals />
+            </RoleAccess>
+          ),
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "rejected",
+          element: withFallback(
+            <RoleAccess
+              roles={[
+                "leaves",
+                "leaves.show",
+                "salaries",
+                "salaries.show",
+                "attendances",
+                "attendances.show",
+              ]}
+              showUnauthorizedPage={true}
+            >
+              <HRM_RejectedApprovals />
+            </RoleAccess>
+          ),
+          errorElement: <ErrorPage />,
+        },
+      ],
     },
     {
       path: "*",

@@ -38,7 +38,14 @@ const hrmNavItems: NavItem[] = [
     icon: Users,
     href: "/hrm",
     color: "text-sky-500",
-    permissions: ["employees", "employee-classes", "employee-grades", "departments", "designations", "sections"],
+    permissions: [
+      "employees",
+      "employee-classes",
+      "employee-grades",
+      "departments",
+      "designations",
+      "sections",
+    ],
     isChildren: true,
     children: [
       {
@@ -146,7 +153,7 @@ const hrmNavItems: NavItem[] = [
     icon: Clock,
     href: "/hrm",
     color: "text-sky-500",
-    permissions: ["leaves", "leave-groups", "holidays"], 
+    permissions: ["leaves", "leave-groups", "holidays"],
     isChildren: true,
     children: [
       {
@@ -185,7 +192,12 @@ const hrmNavItems: NavItem[] = [
     icon: CalendarCheck2,
     href: "/hrm",
     color: "text-sky-500",
-    permissions: ["hrm-report.salary-report", "hrm-report.pay-slip-report", "salaries.show", "salaries"],
+    permissions: [
+      "hrm-report.salary-report",
+      "hrm-report.pay-slip-report",
+      "salaries.show",
+      "salaries",
+    ],
     isChildren: true,
     children: [
       {
@@ -233,7 +245,12 @@ const hrmNavItems: NavItem[] = [
     icon: Vote,
     href: "/hrm",
     color: "text-sky-500",
-    permissions: ["attendance-policy", "leave-policies", "overtime-policies", "deduction-policies"],
+    permissions: [
+      "attendance-policy",
+      "leave-policies",
+      "overtime-policies",
+      "deduction-policies",
+    ],
     isChildren: true,
     children: [
       {
@@ -362,7 +379,7 @@ const hrmNavItems: NavItem[] = [
       },
     ],
   },
-/*   {
+  /*   {
     title: "Job",
     href: "/hrm",
     icon: BriefcaseBusiness,
@@ -407,6 +424,65 @@ const hrmNavItems: NavItem[] = [
     href: "hrm/new-route",
     color: "text-sky-500",
     permissions: ["xyz-hide"],
+  },
+  {
+    title: "Approvals",
+    icon: Settings,
+    href: "/hrm",
+    color: "text-sky-500",
+    permissions: [
+      "leaves",
+      "leaves.show",
+      "salaries",
+      "salaries.show",
+      "attendances",
+      "attendances.show",
+    ],
+    isChildren: true,
+    children: [
+      {
+        title: "Pending for Approvals",
+        icon: Clock,
+        href: "/hrm/approvals/pending",
+        color: "text-sky-500",
+        permissions: [
+          "leaves",
+          "leaves.show",
+          "salaries",
+          "salaries.show",
+          "attendances",
+          "attendances.show",
+        ],
+      },
+      {
+        title: "Approved List",
+        icon: Clock,
+        href: "/hrm/approvals/approved",
+        color: "text-sky-500",
+        permissions: [
+          "leaves",
+          "leaves.show",
+          "salaries",
+          "salaries.show",
+          "attendances",
+          "attendances.show",
+        ],
+      },
+      {
+        title: "Rejected List",
+        icon: Clock,
+        href: "/hrm/approvals/rejected",
+        color: "text-sky-500",
+        permissions: [
+          "leaves",
+          "leaves.show",
+          "salaries",
+          "salaries.show",
+          "attendances",
+          "attendances.show",
+        ],
+      },
+    ],
   },
 ];
 

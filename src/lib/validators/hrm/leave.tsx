@@ -1,6 +1,7 @@
 import { employeeColumn } from "@/lib/validators";
 import { z } from "zod";
 import { files } from "../accounts/entry";
+import { approvalSchema } from "../approvals";
 
 //leave type
 export const leaveTypeSchema = z.object({
@@ -81,6 +82,7 @@ export const leaveRequestRow = leaveRequestSchema.extend({
     }),
   employee: employeeColumn,
   leave_type: leaveTypeRow,
+  approval: approvalSchema
 });
 
 export type LeaveRequestRow = z.infer<typeof leaveRequestRow>;
