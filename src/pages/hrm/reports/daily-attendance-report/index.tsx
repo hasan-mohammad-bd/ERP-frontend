@@ -6,31 +6,43 @@ import { format } from "date-fns";
 import DailyAttendanceReportSearchToolbar from "./components/daily-attendance-report-search-toolbar";
 import DailyAttendanceReportTable from "./components/daily-attendance-report-table";
 import { useGetDailyAttendanceReportQuery } from "@/store/services/hrm/api/daily-attendance-report";
+import { Heading } from "@/components/common/heading";
+import { Separator } from "@/components/ui/separator";
 
 const DailyAttendanceReport = () => {
-  const [filterParams, setFilterParams] = useState(`date=${format(new Date(), "yyyy-MM")}`); // Start with empty string to fetch all data initially
+  const [filterParams, setFilterParams] = useState(
+    `date=${format(new Date(), "yyyy-MM")}`
+  ); // Start with empty string to fetch all data initially
 
   const { data, isLoading } = useGetDailyAttendanceReportQuery(filterParams);
 
   const dailyAttendanceReportData = data?.data || [];
 
-  console.log("object",data);
-  console.log("object2",dailyAttendanceReportData);
+  console.log("object", data);
+  console.log("object2", dailyAttendanceReportData);
 
-  console.log("object",);
+  console.log("object");
 
   if (isLoading) return <Loading />;
 
   return (
-    <div>
-      <div className="py-3">
-        <Card>
-          <DailyAttendanceReportSearchToolbar setFilterParams={setFilterParams} />
-        </Card>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <Heading
+          title="Daily Attendance Report"
+          description="Manage Daily Attendance Report for you business"
+        />
+      </div>
+      <Separator />
+      <div className="">
+        <DailyAttendanceReportSearchToolbar setFilterParams={setFilterParams} />
       </div>
       <div>
         <Card>
-          <PrintPDFWrapper className="space-y-4" fileName="attendance-summary-report">
+          <PrintPDFWrapper
+            className="space-y-4"
+            fileName="attendance-summary-report"
+          >
             <div className="flex-1 space-y-4 my-4">
               <div className="text-center">
                 <h2>Akaar IT</h2>
@@ -39,7 +51,9 @@ const DailyAttendanceReport = () => {
             </div>
 
             {dailyAttendanceReportData ? (
-              <DailyAttendanceReportTable tableData={dailyAttendanceReportData} />
+              <DailyAttendanceReportTable
+                tableData={dailyAttendanceReportData}
+              />
             ) : null}
           </PrintPDFWrapper>
         </Card>

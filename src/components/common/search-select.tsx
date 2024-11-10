@@ -26,6 +26,7 @@ interface SearchSelectProps<T> {
   placeholder?: string;
   noItemText?: string;
   className?: string;
+  size?: "sm" | "lg" | "input" | "default" | "icon" | null | undefined
   onChangeSearch?: (value: string) => void;
 }
 
@@ -38,6 +39,7 @@ const SearchSelect = <T extends object>({
   placeholder = "Select an item...",
   noItemText = "No items found.",
   className,
+  size = "sm",
   onChangeSearch = () => {},
 }: SearchSelectProps<T>) => {
   const [open, setOpen] = useState(false);
@@ -77,7 +79,7 @@ const SearchSelect = <T extends object>({
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          size={"sm"}
+          size={size}
           role="combobox"
           aria-expanded={open}
           className={cn("w-[212px] justify-between", className)}
@@ -86,7 +88,7 @@ const SearchSelect = <T extends object>({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={cn("max-w-fit w-[212px] p-0", className)}>
+      <PopoverContent className={cn("max-w-[300px] w-[212px] p-0", className)}>
         <Command>
           <CommandInput
             onInput={handleInputChange}

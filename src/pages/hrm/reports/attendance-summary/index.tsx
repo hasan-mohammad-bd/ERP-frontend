@@ -8,6 +8,8 @@ import AttendanceSummarySearchToolbar from "./components/attendance-summary-sear
 import { format } from "date-fns";
 import { PaginationInfo } from "@/types";
 import { Paginator } from "@/components/common/paginator";
+import { Heading } from "@/components/common/heading";
+import { Separator } from "@/components/ui/separator";
 
 const AttendanceSummary = () => {
   // State for pagination
@@ -16,18 +18,25 @@ const AttendanceSummary = () => {
   const [filterParams, setFilterParams] = useState(
     `date=${format(new Date(), "yyyy-MM")}`
   ); // Start with empty string to fetch all data initially
-  const { data, isLoading } = useGetAttendanceSummaryQuery(`per_page=${pageSize}&page=${page}&${filterParams}`);
+  const { data, isLoading } = useGetAttendanceSummaryQuery(
+    `per_page=${pageSize}&page=${page}&${filterParams}`
+  );
   const attendanceSummaryData = data?.data || [];
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   if (isLoading) return <Loading />;
 
   return (
-    <div>
-      <div className="py-3">
-        <Card>
-          <AttendanceSummarySearchToolbar setFilterParams={setFilterParams} />
-        </Card>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <Heading
+          title="Attendance Summary Report"
+          description="Manage Attendance Summary Report for you business"
+        />
+      </div>
+      <Separator />
+      <div className="">
+        <AttendanceSummarySearchToolbar setFilterParams={setFilterParams} />
       </div>
       <div>
         <Card>

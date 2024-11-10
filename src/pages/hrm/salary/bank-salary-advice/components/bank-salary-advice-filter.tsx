@@ -73,13 +73,12 @@ export default function BankSalaryAdviceFilter({
           e.preventDefault(); // Prevent default form submission
           onGenerate(); // Call the onGenerate function passed from the parent
         }}
-        className="w-full p-4 rounded-lg space-y-6"
+        className="w-full"
       >
-        <h2 className="font-semibold mb-6">Bank Salary Advise</h2>
         <Card>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5 p-5">
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-5 p-5">
             {/* Month and Year Picker */}
-            <div className="space-y-2 flex flex-col">
+            <div className="space-y-2.5 flex flex-col">
               <label className="text-sm font-medium mt-1">
                 Month and Year *
               </label>
@@ -89,12 +88,12 @@ export default function BankSalaryAdviceFilter({
                 dateFormat="MM/yyyy"
                 showMonthYearPicker
                 placeholderText="Select month and year"
-                className="border rounded p-2 w-full"
+                className="border rounded p-[7px] w-full"
               />
             </div>
 
             {!showBatchDropdown ? (
-              <div className="pt-3 col-span-6 flex justify-end items-center mt-auto">
+              <div className="pt-7">
                 <Button
                   variant="default"
                   onClick={handleGetBatch}
@@ -110,7 +109,7 @@ export default function BankSalaryAdviceFilter({
                   control={form.control}
                   name="batch_number"
                   render={({ field }) => (
-                    <FormItem className="col-span-2">
+                    <FormItem className="w-full">
                       <FormLabel>
                         <p className="mt-2 mb-1">Batch Number *</p>
                       </FormLabel>
@@ -125,6 +124,8 @@ export default function BankSalaryAdviceFilter({
                             setSelectedBatch(value); // value can be SalaryBatchDataType or undefined
                             field.onChange(value?.batch_number || ""); // Adjust if needed
                           }}
+                          className="w-[290px]"
+                          size={"default"}
                         />
                       </FormControl>
                     </FormItem>
@@ -132,13 +133,9 @@ export default function BankSalaryAdviceFilter({
                 />
 
                 {/* Generate Button */}
-                <div className="col-span-5 flex justify-end items-center mt-auto">
-                  <Button
-                    variant="default"
-                    type="submit"
-                    className="w-fit px-14"
-                  >
-                    Bank Salary Advise
+                <div className="pt-8">
+                  <Button variant="default" type="submit" className="w-fit">
+                    Generate Bank Salary Advise
                   </Button>
                 </div>
               </>

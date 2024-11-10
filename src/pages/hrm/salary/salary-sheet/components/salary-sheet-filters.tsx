@@ -23,8 +23,8 @@ interface Props {
 }
 
 const SalaryFilterFormSchema = z.object({
-  employee_ids: z.string().optional(), // Ensure employee_id is not empty
-  salary_month: z.date(), // Expect a formatted string
+  employee_ids: z.string().optional(),
+  salary_month: z.date(),
   department_id: z.string().optional(),
   employee_class_id: z.string().optional(),
 });
@@ -73,11 +73,21 @@ export default function SalarySheetFilters({ setFilterParams }: Props) {
     setFilterParams(filterParams);
   }
 
+  function resetFilters() {
+    form.reset({
+      employee_ids: "",
+      salary_month: null,
+      department_id: "",
+      employee_class_id: "",
+    });
+    setFilterParams(""); // Clear the filter parameters
+  }
+
   return (
-    <Card className="p-6 my-4 w-full">
+    <Card className="p-6 w-full">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6 ">
-          <div className="grid grid-cols-4 gap-5">
+          <div className="grid grid-cols-5 gap-5">
             <div className="space-y-2 flex flex-col">
               <label
                 className={cn(
@@ -88,17 +98,16 @@ export default function SalarySheetFilters({ setFilterParams }: Props) {
                 Month and Year
               </label>
               <DatePicker
-                selected={form.watch("salary_month")} // Watch for form updates
+                selected={form.watch("salary_month")}
                 onChange={(date) => {
-                  form.setValue("salary_month", date); // Set the value
-                  form.trigger("salary_month"); // Trigger validation for the field
+                  form.setValue("salary_month", date);
+                  form.trigger("salary_month");
                 }}
                 dateFormat="MM/yyyy"
                 showMonthYearPicker
                 placeholderText="Select month and year"
                 className="border rounded p-2 w-full bg-none bg_remove"
               />
-
               {form.formState.errors.salary_month && (
                 <p className="text-red-500 text-sm">
                   {form.formState.errors.salary_month?.message}
@@ -143,92 +152,14 @@ export default function SalarySheetFilters({ setFilterParams }: Props) {
                 className="w-[245px]"
               />
             </div>
-
-            {/* <FormField
-              control={form.control}
-              name="organization_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Select Report Type</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={
-                      previousData?.organization?.id
-                        ? String(previousData.organization.id)
-                        : undefined
-                    }
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Bill Horizontal" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {organizationLoading ? (
-                        <Loading />
-                      ) : (
-                        organizationData?.map(
-                          (organization: OrganizationDropdownColumn) => (
-                            <SelectItem
-                              key={organization.id}
-                              value={String(organization.id)}
-                            >
-                              {organization.name}
-                            </SelectItem>
-                          )
-                        )
-                      )}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="organization_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Select Earn Deduction</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={
-                      previousData?.organization?.id
-                        ? String(previousData.organization.id)
-                        : undefined
-                    }
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Any" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {organizationLoading ? (
-                        <Loading />
-                      ) : (
-                        organizationData?.map(
-                          (organization: OrganizationDropdownColumn) => (
-                            <SelectItem
-                              key={organization.id}
-                              value={String(organization.id)}
-                            >
-                              {organization.name}
-                            </SelectItem>
-                          )
-                        )
-                      )}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
-          </div>
-          <div className="flex justify-end gap-4">
-            <Button variant="default" className="w-fit px-14">
-              Apply
-            </Button>
+            <div className="flex space-x-4 w-full pt-8">
+              <Button variant="outline" onClick={resetFilters} className="w-fit">
+                Reset Filters
+              </Button>
+              <Button variant="default" type="submit" className="w-fit 2xl:px-10">
+                Apply
+              </Button>
+            </div>
           </div>
         </form>
       </Form>

@@ -8,6 +8,7 @@ import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { SideNav } from "./side-nav";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface SidebarProps {
   className?: string;
@@ -112,14 +113,13 @@ export default function Sidebar({ className }: SidebarProps) {
               />
             </div>
           )}
-          <div
-            className={`${isOpen ? "mt-3" : "mt-8"} space-y-1 overflow-y-auto pr-3`}
-            style={{ maxHeight: "calc(100vh - 10rem)" }}
-          >
-            <SideNav
-              className="text-background opacity-0 transition-all duration-300 group-hover:z-50 group-hover:ml-4 group-hover:rounded group-hover:bg-foreground group-hover:p-2 group-hover:opacity-100"
-              items={filteredNavItems}
-            />
+          <div className={`${isOpen ? "mt-3" : "mt-8"}`}>
+            <ScrollArea className="h-[calc(100vh-10rem)] space-y-1 pr-4">
+              <SideNav
+                className="text-background opacity-0 transition-all duration-300 group-hover:z-50 group-hover:ml-4 group-hover:rounded group-hover:bg-foreground group-hover:p-2 group-hover:opacity-100"
+                items={filteredNavItems}
+              />
+            </ScrollArea>
           </div>
         </div>
       </div>

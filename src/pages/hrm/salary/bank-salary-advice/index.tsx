@@ -11,6 +11,8 @@ import {
 import { toast } from "sonner";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
+import { Heading } from "@/components/common/heading";
+import { Separator } from "@/components/ui/separator";
 
 const BankSalaryAdvice = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -51,7 +53,14 @@ const BankSalaryAdvice = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <Heading
+          title="Bank Salary Advice"
+          description="Manage Bank Salary Advice for you business"
+        />
+      </div>
+      <Separator />
       <div>
         <BankSalaryAdviceFilter
           selectedDate={selectedDate}

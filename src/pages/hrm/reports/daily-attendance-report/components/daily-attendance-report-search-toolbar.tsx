@@ -2,7 +2,11 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FilterIcon, CalendarIcon } from "lucide-react";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 
@@ -39,7 +43,7 @@ export default function DailyAttendanceReportSearchToolbar({
 
   return (
     <Card>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5 p-5">
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-6 p-5">
         <div className="space-y-2 flex flex-col">
           <label className="text-sm font-medium mt-1">Date *</label>
           <Popover open={openFromDate} onOpenChange={setOpenFromDate}>
@@ -49,6 +53,7 @@ export default function DailyAttendanceReportSearchToolbar({
                 className={`w-full justify-start text-left font-normal ${
                   !fromDate ? "text-muted-foreground" : ""
                 }`}
+                size={"sm"}
               >
                 {fromDate ? format(fromDate, "yyyy-MM-dd") : "Pick a date"}
                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
@@ -64,16 +69,15 @@ export default function DailyAttendanceReportSearchToolbar({
             </PopoverContent>
           </Popover>
         </div>
-      </div>
-
-      <div className="mt-4 flex justify-end gap-4">
-        <Button variant="outline" size="sm" onClick={handleResetFilters}>
-          Reset Filters
-        </Button>
-        <Button variant="default" size="sm" onClick={handleApplyFilters}>
-          <FilterIcon className="mr-2 h-4 w-4" />
-          Apply Filters
-        </Button>
+        <div className="pt-8 flex items-center gap-4">
+          <Button variant="outline" size="sm" onClick={handleResetFilters}>
+            Reset Filters
+          </Button>
+          <Button variant="default" size="sm" onClick={handleApplyFilters}>
+            <FilterIcon className="mr-2 h-4 w-4" />
+            Apply Filters
+          </Button>
+        </div>
       </div>
     </Card>
   );

@@ -60,9 +60,9 @@ export default function EmployeeSalaryBillReportFilter({
         className="w-full rounded-lg space-y-6"
       >
         <Card className="p-5">
-          <div className="grid gap-6 md:grid-cols-5">
+          <div className="grid gap-5 md:grid-cols-6">
             {/* Employee Selector */}
-            <div className="w-full">
+            <div className="w-[250px]">
               <FormSearchSelect<EmployeeColumn>
                 loading={employeeLoading}
                 data={employeeData}
@@ -71,7 +71,7 @@ export default function EmployeeSalaryBillReportFilter({
                 form={form}
                 name="employee_id"
                 title="Employee"
-                className="w-[295px]"
+                className="w-[250px]"
               />
             </div>
 
@@ -103,16 +103,16 @@ export default function EmployeeSalaryBillReportFilter({
                 </p>
               )}
             </div>
-          </div>
-          <div className="pt-7 col-span-3 flex justify-end mt-auto">
-            <Button
-              variant="default"
-              type="submit"
-              className="w-fit px-14 mt-[3px] capitalize"
-            >
-              {/* {employeeSalaryPayslipLoading ? "Applying..." : "Apply"} */}
-              apply
-            </Button>
+            <div className="pt-7 ">
+              <Button
+                variant="default"
+                type="submit"
+                className="w-fit px-14 mt-[3px] capitalize"
+              >
+                {/* {employeeSalaryPayslipLoading ? "Applying..." : "Apply"} */}
+                apply
+              </Button>
+            </div>
           </div>
         </Card>
       </form>
