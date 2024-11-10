@@ -1,4 +1,4 @@
-// import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,9 +17,10 @@ import {
   DesignationColumn,
   EmployeeClassColumn,
   // EmployeeColumn,
-  // EmployeeFormSchema,
+  EmployeeFormSchema,
   EmployeeFormValues,
   EmployeeGradeColumn,
+  EmployeeUpdateSchema,
   EmploymentStatusColumn,
   LocationColumn,
   OrganizationDropdownColumn,
@@ -80,10 +81,11 @@ import { Calendar } from "@/components/ui/calendar";
 import { EyeClosedIcon } from "@radix-ui/react-icons";
 import { Switch } from "@/components/ui/switch";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
-import { GenderColumn } from "../validators";
+import {  GenderColumn } from "../validators";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { serialize } from "object-to-formdata";
 import { Heading } from "@/components/common/heading";
+
 
 // interface EmployeeFormProps {
 // 	modalClose?: () => void;
@@ -156,56 +158,23 @@ export default function EmployeeForm() {
   // const countryData = countries?.data || [];
 
   const form = useForm<EmployeeFormValues>({
-    // resolver: zodResolver(EmployeeFormSchema),
-    defaultValues: {
-      /*       employee_unique_id: previousData?.employee_unique_id || "",
-      first_name: previousData?.first_name || "",
-      last_name: previousData?.last_name || "",
-      phone: previousData?.phone || "",
-      corporate_phone: previousData?.corporate_phone || "",
-      email: previousData?.email || "",
-      joining_date: previousData?.joining_date || "",
-      status: previousData?.status || "Active",
-      location_id: previousData?.location_id ,
-      organization_id: previousData?.organization_id.toString(),
-      work_place_id: previousData?.work_place_id. || 1,
-      department_id: previousData?.department_id || 1,
-      section_id: previousData?.section_id || 1,
-      designation_id: previousData?.designation_id || 1,
-      schedule_id: previousData?.schedule_id || 1,
-      employee_class_id: previousData?.employee_class_id || 1,
-      employee_grade_id: previousData?.employee_grade_id || 1,
-      employment_status_id: previousData?.employment_status_id || 1,
-      password: null,
-      gender_id: previousData?.gender_id || 1,
-      religion_id: previousData?.religion_id || 1,
-      blood_group_id: previousData?.blood_group_id || 1,
-      role_id: previousData?.role_id || 1,
-      leave_group_id: previousData?.leave_group_id || 1, */
-      //additional info
-      /* card_id: previousData?.card_id || null,
-      machine_id: previousData?.machine_id || null,
-      is_head_of_dept: previousData?.is_head_of_dept || 0,
-      // reporting_to_id: previousData?.reporting_to_id || null,
-      sorting_index: previousData?.sorting_index || 0,
-      nid_number: previousData?.nid_number || null,
-      fathers_name: previousData?.fathers_name || null,
-      mothers_name: previousData?.mothers_name || null,
-      payment_type: previousData?.payment_type || "Cash",
-      account_number: previousData?.account_number || null,
-      bank_name: previousData?.bank_name || null,
-      bank_branch: previousData?.bank_branch || null,
-      marital_status: previousData?.marital_status || "Married",
-      birth_date: previousData?.birth_date || null,
-      tin_number: previousData?.tin_number || null, */
-    },
+    resolver: zodResolver(previousData ? EmployeeUpdateSchema : EmployeeFormSchema ),
+    defaultValues: {},
   });
 
   useEffect(() => {
     if (previousData) {
       form.reset({
         ...previousData,
-        reporting_to_id: previousData.reporting_to_id?.toString(),
+        first_name: previousData?.first_name || "",
+				last_name: previousData?.last_name || "",
+        employee_unique_id: previousData?.employee_unique_id || "",
+        phone: previousData?.phone || "",
+        email: previousData?.email || "",
+        joining_date: previousData?.joining_date || "",
+      
+        corporate_phone: previousData?.corporate_phone || "",
+        // reporting_to_id: previousData.reporting_to_id?.toString(),
         location_id: previousData?.location?.id.toString(),
         organization_id: previousData?.organization?.id.toString(),
         work_place_id: previousData?.work_place?.id.toString(),
@@ -275,6 +244,8 @@ export default function EmployeeForm() {
     }
   }
 
+
+
   return (
     <>
       {isLoading || updateLoading ? (
@@ -289,7 +260,7 @@ export default function EmployeeForm() {
               description="Manage job candidates for you business"
             />
             <Button onClick={() => navigate("/hrm/employees-list")} size={"sm"}>
-               Employee List
+              Employee List
             </Button>
           </div>
 
@@ -520,7 +491,12 @@ export default function EmployeeForm() {
                                   name="password"
                                   render={({ field }) => (
                                     <FormItem>
-                                      <FormLabel>Password</FormLabel>
+                                      <FormLabel>
+                                        Password{" "}
+                                        <span className="text-xs text-muted-foreground">
+                                          (8+ characters, A-Z, a-z, 0-9)
+                                        </span>
+                                      </FormLabel>
                                       <div className="relative ">
                                         <FormControl className="">
                                           <Input
@@ -562,79 +538,33 @@ export default function EmployeeForm() {
                               render={({ field }) => (
                                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm h-10 mt-2">
                                   <div className="space-y-0.5">
-                                    <FormLabel>Active</FormLabel>
+                                    <FormLabel htmlFor="status-toggle mr-2">
+                                      Active
+                                    </FormLabel>
                                   </div>
                                   <FormControl>
                                     <Switch
-                                      className="!mt-0 "
+                                      className="!mt-0"
+                                      id="status-toggle"
                                       checked={field.value === "Active"}
-                                      onCheckedChange={(checked: boolean) =>
+                                      defaultChecked={
+                                        field.value === "Inactive"
+                                      }
+                                      onCheckedChange={(checked) =>
                                         field.onChange(
                                           checked ? "Active" : "Inactive"
                                         )
                                       }
+                                      aria-label="Toggle status"
                                     />
                                   </FormControl>
                                 </FormItem>
                               )}
                             />
                           </div>
-                          {/* 
-                                      <FormField
-                control={form.control}
-                name="discard_weekend_attendance"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm h-10">
-                    <div className="space-y-0.5">
-                      <FormLabel>Discard attendance on weekend</FormLabel>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        className="!mt-0 "
-                        checked={field.value === 1}
-                        onCheckedChange={(checked: boolean) =>
-                          field.onChange(checked ? 1 : 0)
-                        }
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              /> */}
 
                           <div className="grid grid-cols-3 gap-4">
                             {" "}
-                            {/*                           <FormField
-                            control={form.control}
-                            name="status"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Status</FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.status && previousData?.status
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Status" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    <SelectItem value={"Active"}>
-                                      Active
-                                    </SelectItem>
-                                    <SelectItem value={"Inactive"}>
-                                      Inactive
-                                    </SelectItem>
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
-                            {/*                         
-                        /> */}
                             <FormSearchSelect<LocationColumn>
                               loading={locationLoading}
                               data={locationData}
@@ -646,46 +576,6 @@ export default function EmployeeForm() {
                               title="Location"
                               className="w-[330px]"
                             />
-                            {/*                           <FormField
-                            control={form.control}
-                            name="location_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Location</FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.location?.id
-                                      ? (previousData?.location.id.toString())
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Location" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {locationLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      locationData?.map(
-                                        (location: LocationColumn) => (
-                                          <SelectItem
-                                            key={location.id}
-                                            value={String(location.id)}
-                                          >
-                                            {location.name}
-                                          </SelectItem>
-                                        )
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
                             <FormSearchSelect<OrganizationDropdownColumn>
                               loading={organizationLoading}
                               data={organizationData}
@@ -697,48 +587,6 @@ export default function EmployeeForm() {
                               className="w-[330px]"
                               title="Organization"
                             />
-                            {/*                           <FormField
-                            control={form.control}
-                            name="organization_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Organization name</FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.organization?.id
-                                      ? String(previousData.organization.id)
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Organization" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {organizationLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      organizationData?.map(
-                                        (
-                                          organization: OrganizationDropdownColumn
-                                        ) => (
-                                          <SelectItem
-                                            key={organization.id}
-                                            value={String(organization.id)}
-                                          >
-                                            {organization.name}
-                                          </SelectItem>
-                                        )
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
                             <FormSearchSelect<WorkPlaceColumn>
                               loading={workplaceLoading}
                               data={workplaceData}
@@ -750,47 +598,6 @@ export default function EmployeeForm() {
                               className="w-[330px]"
                               title="Work Place"
                             />
-                            {/* 
-                          <FormField
-                            control={form.control}
-                            name="work_place_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Work Place</FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.work_place?.id
-                                      ? String(previousData?.work_place?.id)
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Work Place" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {workplaceLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      workplaceData?.map(
-                                        (workplace: WorkPlaceColumn) => (
-                                          <SelectItem
-                                            key={workplace.id}
-                                            value={String(workplace.id)}
-                                          >
-                                            {workplace.name}
-                                          </SelectItem>
-                                        )
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
                             <FormSearchSelect<DepartmentColumn>
                               loading={departmentLoading}
                               data={departmentData}
@@ -802,46 +609,6 @@ export default function EmployeeForm() {
                               className="w-[330px]"
                               title="Department"
                             />
-                            {/*                           <FormField
-                            control={form.control}
-                            name="department_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Department name</FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.department?.id
-                                      ? String(previousData.department.id)
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Department" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {departmentLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      departmentData?.map(
-                                        (department: DepartmentColumn) => (
-                                          <SelectItem
-                                            key={department.id}
-                                            value={String(department.id)}
-                                          >
-                                            {department.name}
-                                          </SelectItem>
-                                        )
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
                             <FormSearchSelect<DesignationColumn>
                               loading={designationLoading}
                               data={designationData}
@@ -853,46 +620,6 @@ export default function EmployeeForm() {
                               className="w-[330px]"
                               title="Designation"
                             />
-                            {/*                           <FormField
-                            control={form.control}
-                            name="designation_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Designation Name</FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.designation?.id
-                                      ? String(previousData?.designation?.id)
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Designation" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {designationLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      designationData?.map(
-                                        (designation: DesignationColumn) => (
-                                          <SelectItem
-                                            key={designation.id}
-                                            value={String(designation.id)}
-                                          >
-                                            {designation.name}
-                                          </SelectItem>
-                                        )
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
                             <FormSearchSelect<SectionColumn>
                               loading={sectionLoading}
                               data={sectionData}
@@ -904,46 +631,6 @@ export default function EmployeeForm() {
                               className="w-[330px]"
                               title="Section"
                             />
-                            {/*                           <FormField
-                            control={form.control}
-                            name="section_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Section</FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.section?.id
-                                      ? String(previousData?.section?.id)
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Section" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {sectionLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      sectionData?.map(
-                                        (section: SectionColumn) => (
-                                          <SelectItem
-                                            key={section.id}
-                                            value={String(section.id)}
-                                          >
-                                            {section.name}
-                                          </SelectItem>
-                                        )
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
                             <FormSearchSelect<ScheduleColumn>
                               loading={scheduleLoading}
                               data={scheduleData}
@@ -955,46 +642,6 @@ export default function EmployeeForm() {
                               className="w-[330px]"
                               title="Schedule"
                             />
-                            {/*                           <FormField
-                            control={form.control}
-                            name="schedule_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Schedule</FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.schedule?.id
-                                      ? String(previousData?.schedule?.id)
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Schedule" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {scheduleLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      scheduleData?.map(
-                                        (schedule: ScheduleColumn) => (
-                                          <SelectItem
-                                            key={schedule.id}
-                                            value={String(schedule.id)}
-                                          >
-                                            {schedule.name}
-                                          </SelectItem>
-                                        )
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
                             <FormSearchSelect<EmployeeClassColumn>
                               loading={employeeClassLoading}
                               data={employeeClassData}
@@ -1006,49 +653,6 @@ export default function EmployeeForm() {
                               className="w-[330px]"
                               title="Employee Class"
                             />
-                            {/*                           <FormField
-                            control={form.control}
-                            name="employee_class_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Employee Class</FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.employee_class?.id
-                                      ? String(previousData?.employee_class?.id)
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Employee Class" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {employeeClassLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      employeeClassData?.map(
-                                        (
-                                          employeeClass: EmployeeClassColumn
-                                        ) => (
-                                          <SelectItem
-                                            key={employeeClass.id}
-                                            value={String(employeeClass.id)}
-                                          >
-                                            {employeeClass.name}
-                                          </SelectItem>
-                                        )
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-
-                          /> */}
                             <FormSearchSelect<EmployeeGradeColumn>
                               loading={employeeGradeLoading}
                               data={employeeGradeData}
@@ -1060,48 +664,6 @@ export default function EmployeeForm() {
                               className="w-[330px]"
                               title="Employee Grade"
                             />
-                            {/*                           <FormField
-                            control={form.control}
-                            name="employee_grade_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Employee Grade</FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.employee_grade?.id
-                                      ? String(previousData?.employee_grade?.id)
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Employee Class" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {employeeGradeLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      employeeGradeData?.map(
-                                        (
-                                          employeeGrade: EmployeeGradeColumn
-                                        ) => (
-                                          <SelectItem
-                                            key={employeeGrade.id}
-                                            value={String(employeeGrade.id)}
-                                          >
-                                            {employeeGrade.name}
-                                          </SelectItem>
-                                        )
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
                             <FormSearchSelect<EmploymentStatusColumn>
                               loading={employmentStatusLoading}
                               data={employmentStatusData}
@@ -1113,51 +675,6 @@ export default function EmployeeForm() {
                               className="w-[330px]"
                               title="Employment Status"
                             />
-                            {/*                           <FormField
-                            control={form.control}
-                            name="employment_status_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Employment Status</FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.employment_status?.id
-                                      ? String(
-                                          previousData?.employment_status.id
-                                        )
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Employment Status" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {employmentStatusLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      employmentStatusData?.map(
-                                        (
-                                          employment: EmploymentStatusColumn
-                                        ) => (
-                                          <SelectItem
-                                            key={employment.id}
-                                            value={String(employment.id)}
-                                          >
-                                            {employment.name}
-                                          </SelectItem>
-                                        )
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-
-                          /> */}
                             <FormSearchSelect<BloodGroupColumn>
                               loading={bloodGroupLoading}
                               data={bloodGroupData}
@@ -1169,46 +686,6 @@ export default function EmployeeForm() {
                               className="w-[330px]"
                               title="Blood Group"
                             />
-                            {/*                           <FormField
-                            control={form.control}
-                            name="blood_group_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Blood Group</FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.blood_group?.id
-                                      ? String(previousData?.blood_group.id)
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Blood Group" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {bloodGroupLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      bloodGroupData?.map(
-                                        (bloodGroup: BloodGroupColumn) => (
-                                          <SelectItem
-                                            key={bloodGroup.id}
-                                            value={String(bloodGroup.id)}
-                                          >
-                                            {bloodGroup.name}
-                                          </SelectItem>
-                                        )
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
                             <FormSearchSelect<ReligionColumn>
                               loading={religionLoading}
                               data={religionData}
@@ -1220,116 +697,6 @@ export default function EmployeeForm() {
                               className="w-[330px]"
                               title="Religion"
                             />
-                            {/*                           <FormField
-                            control={form.control}
-                            name="religion_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Religion</FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.religion?.id
-                                      ? String(previousData.religion.id)
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Religion" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {religionLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      religionData?.map(
-                                        (religion: DepartmentColumn) => (
-                                          <SelectItem
-                                            key={religion.id}
-                                            value={String(religion.id)}
-                                          >
-                                            {religion.name}
-                                          </SelectItem>
-                                        )
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
-                            {/* 
-                           <FormField
-          control={form.control}
-          name="gender_id"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>Notify me about...</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
-                >
-                  {
-                
-                    genderData?.map((gender: GenderColumn) => (
-                      <FormItem key={gender.id} className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value={String(gender.id)} />
-                    </FormControl>
-                    <FormLabel className="font-normal">
-                      {gender.name}
-                    </FormLabel>
-                  </FormItem>
-                    ))
-                  }
-                 
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-                            {/*                           <FormField
-                            control={form.control}
-                            name="gender_id"
-                            render={({ field }) => (
-                              <FormItem className="space-y-3">
-                                <FormLabel>Gender</FormLabel>
-                                <FormControl>
-                                  <RadioGroup
-                                    onValueChange={field.onChange}
-                                    defaultValue={
-                                      previousData?.gender?.id
-                                        ? String(previousData.gender.id)
-                                        : undefined
-                                    }
-                                    className="flex flex-col space-y-1"
-                                  >
-                                    {genderData?.map((gender: GenderColumn) => (
-                                      <FormItem
-                                        key={gender.id}
-                                        className="flex items-center space-x-3 space-y-0"
-                                      >
-                                        <FormControl>
-                                          <RadioGroupItem
-                                            value={String(gender.id)}
-                                          />
-                                        </FormControl>
-                                        <FormLabel className="font-normal">
-                                          {gender.name}
-                                        </FormLabel>
-                                      </FormItem>
-                                    ))}
-                                  </RadioGroup>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
                             <FormSearchSelect<GenderColumn>
                               loading={genderLoading}
                               data={genderData}
@@ -1341,47 +708,6 @@ export default function EmployeeForm() {
                               className="w-[330px]"
                               title="Gender"
                             />
-                            {/*                           <FormField
-                            control={form.control}
-                            name="gender_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Gender</FormLabel>
-
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.gender?.id
-                                      ? String(previousData.gender.id)
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Gender" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {genderLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      genderData?.map(
-                                        (gender: ReligionColumn) => (
-                                          <SelectItem
-                                            key={gender.id}
-                                            value={String(gender.id)}
-                                          >
-                                            {gender.name}
-                                          </SelectItem>
-                                        )
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
                             <FormSearchSelect<RoleColumn>
                               loading={roleLoading}
                               data={roleData}
@@ -1393,45 +719,6 @@ export default function EmployeeForm() {
                               className="w-[330px]"
                               title="Role"
                             />
-                            {/*                           <FormField
-                            control={form.control}
-                            name="role_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Role</FormLabel>
-
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.role?.id
-                                      ? String(previousData.role.id)
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Role" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {roleLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      roleData?.map((role: RoleColumn) => (
-                                        <SelectItem
-                                          key={role.id}
-                                          value={String(role.id)}
-                                        >
-                                          {role.name}
-                                        </SelectItem>
-                                      ))
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
                             <FormSearchSelect<LeaveGroupRow>
                               loading={LeaveGroupLoading}
                               data={leaveGroupData}
@@ -1443,47 +730,6 @@ export default function EmployeeForm() {
                               className="w-[330px]"
                               title="Leave Group"
                             />
-                            {/*                           <FormField
-                            control={form.control}
-                            name="leave_group_id"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Leave Group</FormLabel>
-
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={
-                                    previousData?.leave_group_id
-                                      ? String(previousData.leave_group_id)
-                                      : undefined
-                                  }
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Leave Group" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {LeaveGroupLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      leaveGroupData?.map(
-                                        (group: LeaveGroupRow) => (
-                                          <SelectItem
-                                            key={group.id}
-                                            value={String(group.id)}
-                                          >
-                                            {group.name}
-                                          </SelectItem>
-                                        )
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
                           </div>
                         </ScrollArea>
                         <div className="mt-2 flex justify-end gap-4">

@@ -90,7 +90,8 @@ export function AddAdditionalInfoForm({ previousData }: AddAdditionalInfoFormPro
         ...previousData,
 				first_name: previousData?.first_name || "",
 				last_name: previousData?.last_name || "",
-        reporting_to_id: previousData.reporting_to_id?.toString(),
+        // reporting_to_id: previousData.reporting_to_id?.toString(),
+				
         location_id: previousData?.location?.id.toString(),
         organization_id: previousData?.organization?.id.toString(),
         work_place_id: previousData?.work_place?.id.toString(),

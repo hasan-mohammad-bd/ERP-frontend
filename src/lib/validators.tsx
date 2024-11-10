@@ -1,4 +1,3 @@
-// import { image } from "html2canvas/dist/types/css/types/image";
 import { z } from "zod";
 
 // Department Form validation
@@ -832,7 +831,10 @@ export type NomineeColumn = z.infer<typeof nomineeColumn>;
 //employee
 
 export const EmployeeFormSchema = z.object({
-  employee_unique_id: z.string(),
+  
+  employee_unique_id: z.string({
+    required_error: "Employee ID is required.",
+  }),
 
   card_id: z.string().optional().nullable(),
   machine_id: z.string().optional().nullable(),
@@ -857,7 +859,7 @@ export const EmployeeFormSchema = z.object({
     .optional()
     .nullable(),
   role_id: z.string({
-    required_error: "Role ID is required.",
+    required_error: "Role is required.",
   }),
   joining_date: z.string().refine((value) => !isNaN(Date.parse(value)), {
     message: "Invalid joining date.",
@@ -868,40 +870,40 @@ export const EmployeeFormSchema = z.object({
     required_error: "Status is required.",
   }),
   location_id: z.string({
-    required_error: "Location ID is required.",
+    required_error: "Location is required.",
   }),
   organization_id: z.string({
-    required_error: "Organization ID is required.",
+    required_error: "Organization is required.",
   }),
   department_id: z.string({
-    required_error: "Department ID is required.",
+    required_error: "Department is required.",
   }),
   designation_id: z.string({
-    required_error: "Designation ID is required.",
+    required_error: "Designation is required.",
   }),
   work_place_id: z.string({
-    required_error: "Work place ID is required.",
+    required_error: "Work place is required.",
   }),
   section_id: z.string({
-    required_error: "Section ID is required.",
+    required_error: "Section is required.",
   }),
   schedule_id: z.string({
-    required_error: "Schedule ID is required.",
+    required_error: "Schedule is required.",
   }),
   employee_class_id: z.string({
-    required_error: "Employee class ID is required.",
+    required_error: "Employee class is required.",
   }),
   employee_grade_id: z.string({
-    required_error: "Employee grade ID is required.",
+    required_error: "Employee grade is required.",
   }),
   employment_status_id: z.string({
-    required_error: "Employment status ID is required.",
+    required_error: "Employment status is required.",
   }),
 
   leave_group_id: z.string({
-    required_error: "Leave group ID is required.",
+    required_error: "Leave group is required.",
   }),
-  reporting_to_id: z.string().optional().nullable(),
+  // reporting_to_id: z.string().optional().nullable(),
   /*   sorting_index: z.coerce
     .number()
     .int()
@@ -914,17 +916,18 @@ export const EmployeeFormSchema = z.object({
     .optional()
     .nullable(), */
   gender_id: z.string({
-    required_error: "Gender ID is required.",
+    required_error: "Gender is required.",
   }),
   religion_id: z.string({
-    required_error: "Religion ID is required.",
+    required_error: "Religion is required.",
   }),
   blood_group_id: z.string({
-    required_error: "Blood group ID is required.",
+    required_error: "Blood group is required.",
   }),
   fathers_name: z.string().optional().nullable(),
   mothers_name: z.string().optional().nullable(),
-  payment_type: z.enum(["Cash", "Bank"]).optional().nullable(),
+  payment_type: z.string().optional().nullable(),
+  
   account_number: z.string().optional().nullable(),
   bank_name: z.string().optional().nullable(),
   bank_branch: z.string().optional().nullable(),
@@ -954,51 +957,10 @@ export type EmployeeFormValues = z.infer<typeof EmployeeFormSchema>;
 
 //employee update schema
 
-export const EmployeeUpdateSchema = z.object({
-  card_id: z.string().optional().nullable(),
-  machine_id: z.string().optional().nullable(),
-  is_head_of_dept: z.number().optional().nullable(),
-  reporting_to_id: z.coerce.number().optional().nullable(),
-  // image: z.string().optional().nullable(),
-  // sorting_index: z.coerce
-  //   .number()
-  //   .int()
-  //   .min(0, {
-  //     message: "Sorting index must be at least 0.",
-  //   })
-  //   .max(9999, {
-  //     message: "Sorting index must be at most 9999.",
-  //   })
-  //   .optional()
-  //   .nullable(),
-  fathers_name: z.string().optional().nullable(),
-  mothers_name: z.string().optional().nullable(),
-  payment_type: z.enum(["Cash", "Bank"]).optional().nullable(),
-  account_number: z.string().optional().nullable(),
-  bank_name: z.string().optional().nullable(),
-  bank_branch: z.string().optional().nullable(),
-  nid_number: z.string().optional().nullable(),
-  birth_date: z
-    .string()
-    .refine(
-      (value) => {
-        const birthDate = new Date(value);
-        const now = new Date();
-        const diff = now.getTime() - birthDate.getTime();
-        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-        return age >= 10;
-      },
-      {
-        message: "Birth date must be at least 10 years old.",
-      }
-    )
-    .optional()
-    .nullable(),
-  tin_number: z.string().optional().nullable(),
-  marital_status: z.enum(["Married", "Unmarried"]).optional().nullable(),
-});
+export const EmployeeUpdateSchema = EmployeeFormSchema.omit({
+  password: true,
+})
 
-export type EmployeeUpdateFormValues = z.infer<typeof EmployeeUpdateSchema>;
 
 export const employeeColumn = z.object({
   id: z.coerce.number(),
