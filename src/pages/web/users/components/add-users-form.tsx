@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
+
 import { LocationColumn, OrganizationDropdownColumn } from "@/lib/validators";
 import {
   UsersFormSchema,
@@ -43,6 +43,7 @@ import FileUploadSingle from "@/components/common/file-upload-single";
 import { serialize } from "object-to-formdata";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
+import { useGetOrganizationsQuery } from "@/store/services/erp-main/api/organization";
 
 // import { Switch } from "@/components/ui/switch";
 
@@ -55,7 +56,7 @@ export function AddUsers({ modalClose, rowData: previousData }: AddUsersProps) {
   const [createUser, { isLoading }] = useCreateUserMutation();
   const [updateUser, { isLoading: updateLoading }] = useUpdateUserMutation();
   const { data: organizations, isLoading: organizationLoading } =
-    useGetOrganizationForDropDownQuery();
+  useGetOrganizationsQuery(`page=1&per_page=1000`);
 
   const { data: locations, isLoading: locationsLoading } = useGetLocationsQuery(
     "page=1&per_page=1000"
