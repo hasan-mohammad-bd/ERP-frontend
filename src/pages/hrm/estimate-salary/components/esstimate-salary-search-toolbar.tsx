@@ -31,6 +31,7 @@ import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 // import { RootState } from "@/store";
 
 type EstimateSalarySearchToolbarProps = {
@@ -53,6 +54,8 @@ export default function EstimateSalarySearchToolbar({
   const [estimateClicked, setEstimateClicked] = useState(false);
   const [estimateSalary] = useEstimateSalaryMutation();
   const [salaryGenerate] = useSalaryGenerateMutation(); // Hook for salary generation API
+  const navigate = useNavigate();
+
   const selectedEmployeeAction = useSelector(
     (state: any) => state.common.selectedEmployeeAction
   );
@@ -133,7 +136,7 @@ export default function EstimateSalarySearchToolbar({
     const salaryMonth = format(selectedDate, "yyyy-MM");
 
     try {
-      const response = await salaryGenerate({
+      await salaryGenerate({
         bank_advice_no: data.bank_advice_no,
         bank_date: format(data.bank_date!, "yyyy-MM-dd"),
         comment: data.note,
@@ -141,8 +144,9 @@ export default function EstimateSalarySearchToolbar({
         salary_month: salaryMonth,
       }).unwrap();
       toast.success("Salary Generated Successfully");
+      navigate("/hrm/salary-list");
       // Handle the response, potentially refreshing or showing a message
-      console.log("Salary generated successfully:", response);
+      // console.log("Salary generated successfully:", response);
     } catch (error) {
       console.error("Failed to generate salary:", error);
       handleErrors(error as ErrorResponse);

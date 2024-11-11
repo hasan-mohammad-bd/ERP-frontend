@@ -33,7 +33,7 @@ import {
   useUpdateScheduleMutation,
 } from "@/store/services/hrm/api/schedule";
 import { ErrorResponse } from "@/types";
-import formatTo24HourTime from "@/utils/format-dates";
+import { formatTo24HourTime } from "@/utils/format-dates";
 
 interface AddScheduleFormProps {
   modalClose: () => void;

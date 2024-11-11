@@ -51,6 +51,7 @@ import DailyAttendanceReport from "@/pages/hrm/reports/daily-attendance-report";
 // import AttendancePolicy from "@/pages/hrm/attendance-policy";
 import RoleAccess from "@/lib/access-control/role-access";
 import SalaryBillReport from "@/pages/hrm/reports/salary-bill-report";
+import SalaryList from "@/pages/hrm/salary/salary-list";
 import RoleAccessOutlet from "@/lib/access-control/role-access-outlet";
 import HRM_PendingApprovals from "@/pages/hrm/approvals/hrm-pending-approvals";
 import HRM_ApprovedApprovals from "@/pages/hrm/approvals/hrm-approved-approvals";
@@ -396,6 +397,15 @@ const hrmRoutes = {
       element: withFallback(
         <RoleAccess roles={["salaries"]} showUnauthorizedPage={true}>
           <SalaryBreakUp />
+        </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "salary-list",
+      element: withFallback(
+        <RoleAccess roles={["salaries"]} showUnauthorizedPage={true}>
+          <SalaryList />
         </RoleAccess>
       ),
       errorElement: withFallback(<ErrorPage />),

@@ -201,6 +201,14 @@ const hrmNavItems: NavItem[] = [
     isChildren: true,
     children: [
       {
+        title: "Salary List",
+        icon: CalendarCheck2,
+        color: "text-sky-500",
+        href: "/hrm/salary-list",
+        permissions: ["salaries"],
+      }
+      ,
+      {
         title: "Salary Breakup",
         icon: CalendarCheck2,
         color: "text-sky-500",

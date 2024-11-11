@@ -84,7 +84,7 @@ export function AddDesignationForm({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter department name" {...field} />
+                    <Input placeholder="Enter designation name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

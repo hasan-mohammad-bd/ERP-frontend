@@ -43,6 +43,15 @@ export const getFormattedDateTime = (date: string) => {
 };
 
 
+/**
+ * Formats a given date string to "MMMM yyyy" format.
+ * @param {string} date - A date string in the format "yyyy-MM-dd".
+ * @returns {string} - The formatted date string in "MMMM yyyy" format (e.g., "January 2023").
+ */
+export const getFormattedMonthYear = (date: string): string => {
+  return format(date, "MMMM yyyy");
+};
+
 
 /**
  * The function `getFormattedTime` takes a time string in "HH:mm:ss" format, parses it into a Date
@@ -65,7 +74,7 @@ export const getFormattedTime = (time: string) => {
  * @param {string | Date} time - The time to format (e.g., "15:00:00" or "15:00").
  * @returns {string | null} - The formatted time as "HH:mm" or null if invalid.
  */
-function formatTo24HourTime(time: string | Date | undefined): string | null {
+export function formatTo24HourTime(time: string | Date | undefined): string | null {
   let dateObj: Date;
 
   // Attempt to parse "HH:mm:ss" format, and fall back to "HH:mm" if needed
@@ -86,5 +95,3 @@ function formatTo24HourTime(time: string | Date | undefined): string | null {
   // Format the date to "HH:mm"
   return format(dateObj, 'HH:mm');
 }
-
-export default formatTo24HourTime;

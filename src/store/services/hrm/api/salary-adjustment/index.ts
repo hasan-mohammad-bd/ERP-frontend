@@ -1,11 +1,12 @@
 import { hrmApi } from "../..";
-import { SalaryColumnDataType } from "../salaries/types";
+import { SalariesRow } from "../salaries/types";
 import { salaryAdjustmentFormValues } from "./types";
+import { PaginationInfo } from "@/types";
 
 const salaryAdjustmentAPI = hrmApi.injectEndpoints({
   endpoints: (build) => ({
     createSalaryAdjustment: build.mutation<
-      { data: SalaryColumnDataType[] },
+      { data: SalariesRow[]; meta: PaginationInfo },
       salaryAdjustmentFormValues
     >({
       query: (salaryAdjustmentData) => ({

@@ -1,6 +1,7 @@
+import { ApprovalSchemaType } from "@/lib/validators/approvals";
 import { EmployeeColumn } from "@/pages/hrm/employee/employee-list/components/validators";
 
-export type SalaryColumnDataType = {
+export type SalariesRow = {
   id: number;
   allowance_current: number;
   allowance_total: number;
@@ -10,4 +11,6 @@ export type SalaryColumnDataType = {
   net_salary: number;
   salary_month: string;
   employee: EmployeeColumn; // Added Employee type as a property
+  // status: string;
+  approval: ApprovalSchemaType
 };

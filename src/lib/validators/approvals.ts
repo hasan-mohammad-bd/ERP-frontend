@@ -16,3 +16,5 @@ export const approvalSchema = z.object({
   module: z.string(), // Module as a string
   created_at: z.string().datetime(), // Created at as an ISO date string
 });
+
+export type ApprovalSchemaType = z.infer<typeof approvalSchema>;
