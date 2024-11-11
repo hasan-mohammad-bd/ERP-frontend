@@ -244,7 +244,7 @@ export default function EmployeeForm() {
     }
   }
 
-
+console.log(form.formState.errors)
 
   return (
     <>

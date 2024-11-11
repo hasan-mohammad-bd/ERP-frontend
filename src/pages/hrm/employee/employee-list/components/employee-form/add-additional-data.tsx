@@ -14,7 +14,9 @@ import { toast } from "sonner";
 import {
 	EmployeeColumn,
 	// EmployeeFormSchema,
+	// EmployeeFormSchema,
 	EmployeeFormValues,
+	EmployeeUpdateSchema,
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
 
@@ -28,6 +30,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useEffect, useState } from "react";
 import { serialize } from "object-to-formdata";
 import FileUploadSingle from "@/components/common/file-upload-single";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface AddAdditionalInfoFormProps {
 	previousData?: EmployeeColumn;
@@ -40,7 +43,7 @@ export function AddAdditionalInfoForm({ previousData }: AddAdditionalInfoFormPro
 		useUpdateEmployeeMutation();
 
 	const form = useForm<EmployeeFormValues>({
-		// resolver: zodResolver(EmployeeFormSchema),
+		resolver: zodResolver(EmployeeUpdateSchema),
 		defaultValues: {/* 
 			card_id: previousData?.card_id || null,
 			machine_id: previousData?.machine_id || null,
@@ -114,7 +117,7 @@ export function AddAdditionalInfoForm({ previousData }: AddAdditionalInfoFormPro
     }
   }, [previousData, form]);
 	
-
+console.log()
 	// console.log(previousData)
 
 	async function onSubmit(data: EmployeeFormValues) {
@@ -148,6 +151,7 @@ export function AddAdditionalInfoForm({ previousData }: AddAdditionalInfoFormPro
 				</div>
 			) : (
 				<div className="">
+
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)} className="pt-4">
 							<div className="space-y-2 grid grid-cols-5 gap-3 items-end">
