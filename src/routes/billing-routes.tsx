@@ -6,7 +6,6 @@ import {
   NotFoundPage,
 } from "./components";
 
-
 import Units from "@/pages/billing/units";
 import Category from "@/pages/billing/category";
 import ClassCategory from "@/pages/billing/child-category";
@@ -53,7 +52,6 @@ import CustomerLedgerReport from "@/pages/billing/reports/customer-ledger";
 import DueReceiveableReport from "@/pages/billing/reports/due-receiveable-report";
 import DueReceivedReport from "@/pages/billing/reports/due-received-report";
 
-
 import SupplierSummary from "@/pages/billing/reports/supplier-summary";
 import SupplierLedgerReport from "@/pages/billing/reports/supplier-ledger";
 import DuePayableReport from "@/pages/billing/reports/due-payable-report";
@@ -63,8 +61,7 @@ import InvoiceWiseProfitLoss from "@/pages/billing/reports/invoice-wise-profit-l
 import CustomerWiseProfitLoss from "@/pages/billing/reports/customer-wise-profit-loss";
 import SalesTaxReport from "@/pages/billing/reports/sales-tax-report";
 import PurchaseTaxReport from "@/pages/billing/reports/purchase-tax-report";
-
-
+import BillingDashboard from "@/pages/billing/dashboard-billing";
 
 const billingRoutes = {
   path: "billing/",
@@ -72,7 +69,8 @@ const billingRoutes = {
   children: [
     {
       index: true,
-      element: withFallback(<NotFoundPage />),
+      element: withFallback(<BillingDashboard />),
+      errorElement: withFallback(<ErrorPage />),
     },
 
     {
@@ -90,8 +88,7 @@ const billingRoutes = {
           element: withFallback(<AddCustomerForm />),
           errorElement: withFallback(<ErrorPage />),
         },
-
-      ]
+      ],
     },
 
     {
@@ -116,14 +113,11 @@ const billingRoutes = {
       ],
     },
 
-
     {
       path: "expenses",
       element: withFallback(<Expenses />),
       errorElement: withFallback(<ErrorPage />),
     },
-
-
 
     {
       path: "expenses",
@@ -147,16 +141,6 @@ const billingRoutes = {
       ],
     },
 
-
-
-
-
-
-
-
-
-
-
     {
       path: "units",
       element: withFallback(<Units />),
@@ -174,7 +158,6 @@ const billingRoutes = {
       element: withFallback(<SubCategory />),
       errorElement: withFallback(<ErrorPage />),
     },
-
 
     {
       path: "child-category",
@@ -249,8 +232,8 @@ const billingRoutes = {
           path: "add",
           element: withFallback(<AddManagePurchase />),
           errorElement: withFallback(<ErrorPage />),
-        }
-      ]
+        },
+      ],
     },
 
     {
@@ -394,13 +377,11 @@ const billingRoutes = {
       ],
     },
 
-
     {
       path: "master-sales",
       element: withFallback(<MasterSales />),
       errorElement: withFallback(<ErrorPage />),
     },
-
 
     {
       path: "product-sales",
@@ -413,8 +394,6 @@ const billingRoutes = {
       element: withFallback(<PurchaseReport />),
       errorElement: withFallback(<ErrorPage />),
     },
-
-
 
     {
       path: "stock-summary",
@@ -496,7 +475,6 @@ const billingRoutes = {
       element: withFallback(<PurchaseTaxReport />),
       errorElement: withFallback(<ErrorPage />),
     },
-
 
     {
       path: "*",
