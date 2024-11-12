@@ -9,27 +9,31 @@ import {
 
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
-import { EmployeeColumn } from "@/lib/validators";
 import { toast } from "sonner";
+import { CategoryFormValues } from "@/lib/validators/billing/category";
+import { Modal } from "@/components/common/modal";
+import { AddSubCategoryForm } from "./add-sub-category-form";
+import { useRemoveCategoryMutation } from "@/store/services/billing/api/category";
 
 interface CellActionProps {
-  data: EmployeeColumn;
+  data: CategoryFormValues;
 }
 
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
-  // const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
-  const handleDepartmentDelete = async (id: number) => {
-    // try {
-    //   await deleteEmployee(id);
-    //   setAlertModalOpen(false);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  const [deleteCategory, { isLoading: deleteLoading }] =
+    useRemoveCategoryMutation();
 
-    console.log(id);
-    toast.success("Item deleted successfully");
+  const handleCategoryDelete = async (id: number) => {
+    try {
+      await deleteCategory(id);
+      toast.success("Category deleted successfully");
+      setAlertModalOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -41,9 +45,7 @@ export function CellAction({ data }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-              // onClick={() => navigate(`/billing/supplier/edit/${data.id}`)}
-
-              // onClick={() => toggleModal()}
+              onClick={() => setUpdateModalOpen(true)}
             >
               <Pencil className="h-4 w-4 text-foreground" />
             </Button>
@@ -76,27 +78,25 @@ export function CellAction({ data }: CellActionProps) {
       <AlertModal
         title="Are you sure?"
         description="This action cannot be undone."
-        name={data.first_name}
+        name={data.name}
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
-        onConfirm={() => handleDepartmentDelete(data.id)}
-        loading={false}
+        onConfirm={() => handleCategoryDelete(data?.id)}
+        loading={deleteLoading}
       />
 
-      {/* {updateModalOpen && (
+      {updateModalOpen && (
         <Modal
-          title="Update Leave Request"
+          title="Update Sub Category"
           isOpen={updateModalOpen}
           toggleModal={() => setUpdateModalOpen(false)}
-          className="w-3/5 max-w-3xl"
-
         >
-          <AttendancePolicyForm
+          <AddSubCategoryForm
             data={data}
             modalClose={() => setUpdateModalOpen(false)}
           />
         </Modal>
-      )} */}
+      )}
     </div>
   );
 }

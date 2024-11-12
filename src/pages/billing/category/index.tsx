@@ -22,7 +22,7 @@ const Category = () => {
 
   // Correct API call to get category data
   const { data, isLoading } = useGetCategoryQuery(
-    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+    `type=main&per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
 
   const categories = data?.data || []; // Fallback to empty array if no data
@@ -44,17 +44,15 @@ const Category = () => {
           </div>
           <Separator />
           {isLoading && <ListSkeleton />}
-          {categories.length > 0 && !isLoading && (
-            <div>
-              <DataTable
-                columns={categoryColumns} // Ensure the columns match your data structure
-                data={categories} // Pass the correct data to the DataTable
-                paginationInfo={paginationInfo}
-                pagination={pagination}
-                setPagination={setPagination}
-              />
-            </div>
-          )}
+          <div>
+            <DataTable
+              columns={categoryColumns} // Ensure the columns match your data structure
+              data={categories} // Pass the correct data to the DataTable
+              paginationInfo={paginationInfo}
+              pagination={pagination}
+              setPagination={setPagination}
+            />
+          </div>
         </div>
       </div>
 

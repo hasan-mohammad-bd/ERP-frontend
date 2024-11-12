@@ -1,9 +1,11 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
-import { EmployeeColumn } from "@/lib/validators";
 import { CellAction } from "./cell-action";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CategoryFormValues } from "@/lib/validators/billing/category";
 
-export const SubCategoryColumns: ColumnDef<EmployeeColumn>[] = [
+export const SubCategoryColumns: ColumnDef<CategoryFormValues>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -30,9 +32,33 @@ export const SubCategoryColumns: ColumnDef<EmployeeColumn>[] = [
   },
 
   {
-    accessorKey: "sub-category",
-    header: "Subcategory Name",
-    cell: () => <>Demo amount</>,
+    accessorKey: "image",
+    header: "Image",
+    cell: ({ row }) => (
+      <Avatar className="h-9 w-9">
+        <AvatarImage src={row.getValue("image")} alt="Category Image" />
+        <AvatarFallback>CI</AvatarFallback> {/* Fallback if image fails */}
+      </Avatar>
+    ),
+  },
+
+  {
+    accessorKey: "name",
+    header: "Sub Category Name",
+  },
+
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const statusValue = row.getValue("status");
+
+      return statusValue === 1 ? (
+        <Badge variant="secondary">Active</Badge>
+      ) : (
+        <Badge variant="destructive">Inactive</Badge>
+      );
+    },
   },
 
   {

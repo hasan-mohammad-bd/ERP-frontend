@@ -66,7 +66,6 @@ export function AddCategoryForm({
         name: previousData.data.name || "",
         description: previousData.data.description || "",
         status: previousData.data.status === 1 ? 1 : 0,
-        image: previousData.data.image || "",
       });
     }
   }, [previousData, form]);
@@ -95,7 +94,7 @@ export function AddCategoryForm({
         {
           ...data,
           _method: previousData ? "PUT" : "POST",
-          image: uploadedImage || previousData?.data.image, // include previous image if none is uploaded
+          image: uploadedImage, // include previous image if none is uploaded
         },
         { indices: true }
       );

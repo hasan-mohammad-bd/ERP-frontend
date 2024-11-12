@@ -35,11 +35,8 @@ export const categoryColumns: ColumnDef<CategoryFormValues>[] = [
     accessorKey: "image",
     header: "Image",
     cell: ({ row }) => (
-      <Avatar className="h-12 w-12">
-        <AvatarImage
-          src={row.getValue("image")}
-          alt="Category Image"
-        />
+      <Avatar className="h-9 w-9">
+        <AvatarImage src={row.getValue("image")} alt="Category Image" />
         <AvatarFallback>CI</AvatarFallback> {/* Fallback if image fails */}
       </Avatar>
     ),

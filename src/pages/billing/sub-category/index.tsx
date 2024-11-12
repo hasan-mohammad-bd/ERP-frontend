@@ -8,45 +8,27 @@ import { Modal } from "@/components/common/modal";
 import { AddSubCategoryForm } from "./components/add-sub-category-form";
 import { SubCategoryColumns } from "./components/column";
 import { DataTable } from "@/components/ui/data-table/data-table";
-import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
 import { PaginationState } from "@tanstack/react-table";
 import ListSkeleton from "@/components/common/ListSkeleton";
 import { PaginationInfo } from "@/types";
-import { SubCategoryColumn } from "@/lib/validators/billing/child-category";
+import { useGetCategoryQuery } from "@/store/services/billing/api/category";
 
 const SubCategory = () => {
   const [isOpen, setIsOpen] = useState(false);
-  //   const [pagination, setPagination] = React.useState<PaginationState>({
-  //     pageIndex: 0,
-  //     pageSize: 10,
-  //   });
-
-  //   const { data, isLoading } = useGetLeaveTypesQuery(
-  //     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
-  //   );
-
-  //   const leaveType = data?.data || [];
-  //   console.log(leaveType)
-  //   const paginationInfo: PaginationInfo | undefined = data?.meta;
-
-  //   if (isLoading) return <Loading />;
 
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
 
-  const { data, isLoading } = useGetEmployeesQuery(
-    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+  // Correct API call to get category data
+  const { data, isLoading } = useGetCategoryQuery(
+    `type=sub&per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
 
-  const employees = data?.data || [];
+  const categories = data?.data || []; // Fallback to empty array if no data
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
-
-  const [selectedSubCategory, setSelectedSubCategory] = useState<
-    SubCategoryColumn | undefined
-  >(undefined);
 
   return (
     <>
@@ -63,11 +45,11 @@ const SubCategory = () => {
           </div>
           <Separator />
           {isLoading && <ListSkeleton />}
-          {employees && !isLoading && (
+          {categories && !isLoading && (
             <div>
               <DataTable
                 columns={SubCategoryColumns}
-                data={employees}
+                data={categories}
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}
@@ -79,16 +61,12 @@ const SubCategory = () => {
 
       {isOpen && (
         <Modal
-          title="Add Subcategory"
+          title="Add Sub Category"
           isOpen={isOpen}
           toggleModal={() => setIsOpen(false)}
           className="w-[480px]"
         >
-          <AddSubCategoryForm
-            modalClose={() => setIsOpen(false)}
-            selectedSubCategory={selectedSubCategory}
-            setSelectedSubCategory={setSelectedSubCategory}
-          />
+          <AddSubCategoryForm modalClose={() => setIsOpen(false)} />
         </Modal>
       )}
     </>

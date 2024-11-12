@@ -22,12 +22,12 @@ export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
-  const [deleteDepartment, { isLoading: deleteLoading }] =
+  const [deleteCategory, { isLoading: deleteLoading }] =
     useRemoveCategoryMutation();
 
   const handleCategoryDelete = async (id: number) => {
     try {
-      await deleteDepartment(id);
+      await deleteCategory(id);
       toast.success("Category deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
