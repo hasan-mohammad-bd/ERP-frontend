@@ -5,9 +5,20 @@ export const brandSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
-  short_code: z.string({
-    required_error: "Short code is required",
-  }),
+  description: z.string().optional().nullable(),
+  status: z.coerce
+    .number()
+    .int()
+    .min(0, {
+      message: "Status must be at least 0.",
+    })
+    .max(1, {
+      message: "Status must be at most 1.",
+    }),
+  image: z.string().optional(),
+  // short_code: z.string({
+  //   required_error: "Short code is required",
+  // }),
 });
 
 export type BrandFormValues = z.infer<typeof brandSchema>;

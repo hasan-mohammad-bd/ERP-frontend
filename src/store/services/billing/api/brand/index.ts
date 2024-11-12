@@ -1,16 +1,16 @@
 import {  inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
-import { BrandFormValues, BrandRow } from "@/lib/validators/billing/brand";
+import {  BrandRow } from "@/lib/validators/billing/brand";
 
 const brandApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
     getBrand: build.query<{ data: BrandRow[]; meta: PaginationInfo }, string>({
-      query: (params) => `unit?${params}`,
+      query: (params) => `brands?${params}`,
       providesTags: ["brand"],
     }),
-    createBrand: build.mutation<{ data: BrandRow }, BrandFormValues>({
+    createBrand: build.mutation<{ data: BrandRow }, FormData>({
       query: (newBrand) => ({
-        url: `brand`,
+        url: `brands`,
         method: "POST",
         body: newBrand,
       }),
@@ -18,18 +18,18 @@ const brandApi = inventoryApi.injectEndpoints({
     }),
     removeBrand: build.mutation<DeleteResponse, number>({
       query: (brandId) => ({
-        url: `brand/${brandId}`,
+        url: `brands/${brandId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["brand"],
     }),
     updateBrand: build.mutation<
       { data: BrandRow },
-      { brandId: number; updatedBrand: BrandFormValues }
+      { brandId: number; updatedBrand: FormData }
     >({
       query: ({ brandId, updatedBrand }) => ({
-        url: `brand/${brandId}`,
-        method: "PUT",
+        url: `brands/${brandId}`,
+        method: "POST",
         body: updatedBrand,
       }),
       invalidatesTags: ["brand"],
