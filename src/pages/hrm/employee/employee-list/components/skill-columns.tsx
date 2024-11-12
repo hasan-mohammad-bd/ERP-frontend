@@ -37,10 +37,10 @@ export const skillColumns: ColumnDef<SkillColumn>[] = [
 		accessorKey: "type",
 		header: "Proficiency level",
 	},
-	{
-		accessorKey: "description",
-		header: "Description",
-	},
+	// {
+	// 	accessorKey: "description",
+	// 	header: "Description",
+	// },
 	{
 		accessorKey: "start_date",
 		header: "Start date",

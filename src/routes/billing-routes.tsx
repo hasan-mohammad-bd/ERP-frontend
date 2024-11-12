@@ -9,7 +9,7 @@ import {
 import Units from "@/pages/billing/units";
 import Category from "@/pages/billing/category";
 import ClassCategory from "@/pages/billing/child-category";
-import Brand from "@/pages/billing/brand";
+
 import PurchaseOrder from "@/pages/billing/purchase-order";
 import { AddPurchaseOrderForm } from "@/pages/billing/purchase-order/components/add-purchase-order-form";
 import ItemAddForm from "@/pages/billing/items/add-item";
@@ -62,6 +62,9 @@ import CustomerWiseProfitLoss from "@/pages/billing/reports/customer-wise-profit
 import SalesTaxReport from "@/pages/billing/reports/sales-tax-report";
 import PurchaseTaxReport from "@/pages/billing/reports/purchase-tax-report";
 import BillingDashboard from "@/pages/billing/dashboard-billing";
+// import AttributeCategory from "@/pages/billing/attribute-category";
+import Brand from "@/pages/billing/brand";
+import AttributeCategory from "@/pages/billing/attribute-category";
 
 const billingRoutes = {
   path: "billing/",
@@ -376,6 +379,16 @@ const billingRoutes = {
         },
       ],
     },
+    {
+      path: "attribute-category",
+      element: withFallback(<AttributeCategory />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    // {
+    //   path: "attributes",
+    //   element: withFallback(<Attributes />),
+    //   errorElement: withFallback(<ErrorPage />),
+    // },
 
     {
       path: "master-sales",

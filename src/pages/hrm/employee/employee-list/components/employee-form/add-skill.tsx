@@ -28,6 +28,8 @@ import {
 } from "@/store/services/hrm/api/experience copy";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { skillColumns } from "../skill-columns";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface AddSkillFormProps {
   previousData?: EmployeeColumn;
@@ -53,7 +55,7 @@ export function AddSkillForm({
       name: skillData?.name || "",
       type: skillData?.type || "",
       start_date: skillData?.start_date || "",
-      end_date: skillData?.end_date || "",
+      end_date: skillData?.end_date || undefined,
       description: skillData?.description || "",
       // sorting_index: skillData?.sorting_index || 0,
 
@@ -81,13 +83,14 @@ export function AddSkillForm({
           modelClose();
         }
       } else {
-        await createSkill(data);
+        await createSkill(data).unwrap();
         toast.success("Skill created successfully");
         // modalClose();
         form.reset();
       }
     } catch (error) {
       console.log(error);
+      handleErrors(error as ErrorResponse);
     }
   }
 
@@ -194,7 +197,7 @@ export function AddSkillForm({
                           <Input
                             type="date"
                             placeholder="Enter End Date"
-                            value={field.value || ""}
+                            value={field.value || undefined}
                             onChange={(e) => field.onChange(e.target.value)}
                           />
                         </FormControl>

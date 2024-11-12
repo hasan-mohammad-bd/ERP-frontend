@@ -518,7 +518,8 @@ export type SkillFormValues = z.infer<typeof SkillFormSchema>;
 export const skillColumn = z.object({
   id: z.number(),
   name: z.string(),
-  type: z.string(),
+  type: z.string({
+    required_error: "Skill type is required.",}),
   start_date: z.string(),
   end_date: z.string().nullable(),
   description: z.string().nullable(),
