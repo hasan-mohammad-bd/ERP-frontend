@@ -1,10 +1,11 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
-import { EmployeeColumn } from "@/lib/validators";
 import { CellAction } from "./cell-action";
+import { UnitRow } from "@/lib/validators/billing/unit";
+import { renderStatus } from "@/lib/render-status";
 
 
-export const unitColumns: ColumnDef<EmployeeColumn>[] = [
+export const unitColumns: ColumnDef<UnitRow>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -23,7 +24,7 @@ export const unitColumns: ColumnDef<EmployeeColumn>[] = [
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
-        className="translate-y-[2px]"
+        className="translate-y-[2px] my-3"
       />
     ),
     enableSorting: false,
@@ -33,15 +34,16 @@ export const unitColumns: ColumnDef<EmployeeColumn>[] = [
   {
     accessorKey: "name",
     header: "Unit Name",
-    cell: () => <>Demo Unit</>
   },
   {
-    accessorKey: "sku",
+    accessorKey: "code",
     header: "Short Code",
-    cell: () => <>sc-123</>,
   },
- 
-
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => renderStatus(row.getValue("status")),
+  },
   {
     id: "actions",
     header: () => <div className="text-center">Actions</div>,

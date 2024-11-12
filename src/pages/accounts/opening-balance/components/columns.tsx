@@ -4,7 +4,7 @@ import { CellAction } from "./cell-action";
 import { EntryRow } from "@/lib/validators/accounts";
 import { CellActionVoucherDetails } from "@/components/common/accounts/entry/cell-action-voucher-details";
 import { FormatIndianCurrency } from "@/utils/indian-formate";
-import { renderApprovalStatus } from "@/lib/approval";
+import { renderApprovalStatus } from "@/lib/render-status";
 
 export const subAccountColumns: ColumnDef<EntryRow>[] = [
   {

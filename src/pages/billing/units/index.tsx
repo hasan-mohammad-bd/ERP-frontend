@@ -3,7 +3,6 @@ import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { DataTable } from "@/components/ui/data-table/data-table";
-import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
 import { unitColumns } from "./components/columns";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
@@ -11,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import ListSkeleton from "@/components/common/ListSkeleton";
 import { Modal } from "@/components/common/modal";
 import { AddUnitForm } from "./components/add-unit-form";
+import { useGetUnitsQuery } from "@/store/services/billing/api/unit";
 
 const Units = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,11 +19,11 @@ const Units = () => {
     pageSize: 10,
   });
 
-  const { data, isLoading } = useGetEmployeesQuery(
+  const { data, isLoading } = useGetUnitsQuery(
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
 
-  const employees = data?.data || [];
+  const units = data?.data || [];
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
@@ -41,12 +41,13 @@ const Units = () => {
             </Button>
           </div>
           <Separator />
-          {isLoading && <ListSkeleton />}
-          {employees && !isLoading && (
+          {isLoading ? (
+            <ListSkeleton />
+          ) : (
             <div>
               <DataTable
                 columns={unitColumns}
-                data={employees}
+                data={units}
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}

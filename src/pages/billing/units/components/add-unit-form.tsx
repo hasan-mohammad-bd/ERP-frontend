@@ -15,44 +15,52 @@ import { toast } from "sonner";
 import { ErrorResponse } from "@/types";
 import handleErrors from "@/lib/handle-errors";
 import { Loading } from "@/components/common/loading";
-import { UnitFormValues, UnitRow, unitSchema } from "@/lib/validators/billing/unit";
-import { useCreateUnitMutation, useUpdateUnitMutation } from "@/store/services/billing/api/unit";
-
-
+import {
+  UnitFormValues,
+  UnitRow,
+  unitSchema,
+} from "@/lib/validators/billing/unit";
+import {
+  useCreateUnitMutation,
+  useUpdateUnitMutation,
+} from "@/store/services/billing/api/unit";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface AddUnitProps {
   modalClose: () => void;
   data?: UnitRow;
 }
 
-export function AddUnitForm({
-  modalClose,
-  data: previousData,
-}: AddUnitProps) {
-   const [createUnit, { isLoading }] = useCreateUnitMutation();
-   const [updateUnit, { isLoading: updateLoading }] =
-    useUpdateUnitMutation();
+export function AddUnitForm({ modalClose, data: previousData }: AddUnitProps) {
+  const [createUnit, { isLoading }] = useCreateUnitMutation();
+  const [updateUnit, { isLoading: updateLoading }] = useUpdateUnitMutation();
   const form = useForm<UnitFormValues>({
     resolver: zodResolver(unitSchema),
     defaultValues: {
       name: previousData?.name || "",
-      short_code: previousData?.short_code || "",
-
+      code: previousData?.code || "",
+      status: previousData?.status === 0 ? 0 : 1,
     },
   });
 
-   async function onSubmit(data: UnitFormValues) {
+  async function onSubmit(data: UnitFormValues) {
     try {
       if (previousData) {
         await updateUnit({
-            unitId: previousData.id,
-            updatedUnit: data,
+          unitId: previousData.id,
+          updatedUnit: data,
         }).unwrap();
-        toast.success("Policy updated successfully");
+        toast.success("Unit updated successfully");
         modalClose();
       } else {
         await createUnit(data).unwrap();
-        toast.success("Policy created successfully");
+        toast.success("Unit created successfully");
         modalClose();
       }
     } catch (error) {
@@ -60,9 +68,7 @@ export function AddUnitForm({
       handleErrors(error as ErrorResponse);
     }
   }
-
-
-
+  
   return (
     <>
       {isLoading || updateLoading ? (
@@ -94,7 +100,7 @@ export function AddUnitForm({
               />
               <FormField
                 control={form.control}
-                name="short_code"
+                name="code"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Short Code</FormLabel>
@@ -109,8 +115,32 @@ export function AddUnitForm({
                   </FormItem>
                 )}
               />
+              {/* Status */}
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Status</FormLabel>
+                    <Select
+                      onValueChange={(value) => field.onChange(Number(value))}
+                      value={String(field.value)}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value={"1"}>Active</SelectItem>
+                        <SelectItem value={"0"}>Inactive</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-
 
             <div className="text-right">
               <Button variant="default" type="submit" className="w-fit mt-4">

@@ -1,7 +1,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { SalariesRow } from "@/store/services/hrm/api/salaries/types";
-import { renderApprovalStatus } from "@/lib/approval";
+import { renderApprovalStatus } from "@/lib/render-status";
 import { getFormattedMonthYear } from "@/utils/format-dates";
 
 export const salaryListColumns: ColumnDef<SalariesRow>[] = [

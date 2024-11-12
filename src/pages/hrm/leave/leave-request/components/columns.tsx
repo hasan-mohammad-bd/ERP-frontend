@@ -3,7 +3,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { LeaveRequestRow } from "@/lib/validators/hrm/leave";
 import { getFormattedDateTime } from "@/utils/format-dates";
-import { renderApprovalStatus } from "@/lib/approval";
+import { renderApprovalStatus } from "@/lib/render-status";
 
 export const attendanceColumns: ColumnDef<LeaveRequestRow>[] = [
   {

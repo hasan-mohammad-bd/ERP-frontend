@@ -80,7 +80,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  console.log(noToolbar);
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   // To Handle server side pagination

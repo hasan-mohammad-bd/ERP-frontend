@@ -14,6 +14,6 @@ export const inventoryApi = createApi({
 			return headers;
 		},
 	}),
-	tagTypes: ["unit","category","brand"],
+	tagTypes: ["units","category","brand"],
 	endpoints: () => ({}),
 });

@@ -5,50 +5,51 @@ import { UnitFormValues, UnitRow } from "@/lib/validators/billing/unit";
 
 const unitApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
-    getUnit: build.query<
+    getUnits: build.query<
       { data: UnitRow[]; meta: PaginationInfo },
       string
     >({
-      query: (params) => `unit?${params}`,
-      providesTags: ["unit"],
+      query: (params) => `units?${params}`,
+      providesTags: ["units"],
     }),
     createUnit: build.mutation<
       { data: UnitRow },
       UnitFormValues
     >({
       query: (newUnit) => ({
-        url: `unit`,
+        url: `units`,
         method: "POST",
         body: newUnit,
       }),
-      invalidatesTags: ["unit"],
-    }),
-    removeUnit: build.mutation<DeleteResponse, number>({
-      query: (unitId) => ({
-        url: `unit/${unitId}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["unit"],
+      invalidatesTags: ["units"],
     }),
     updateUnit: build.mutation<
       { data: UnitRow },
       { unitId: number, updatedUnit: UnitFormValues }
     >({
       query: ({ unitId, updatedUnit }) => ({
-        url: `unit/${unitId}`,
+        url: `units/${unitId}`,
         method: "PUT",
         body: updatedUnit,
       }),
-      invalidatesTags: ["unit"],
+      invalidatesTags: ["units"],
+    }),
+    removeUnit: build.mutation<DeleteResponse, number>({
+      query: (unitId) => ({
+        url: `units/${unitId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["units"],
     }),
   }),
   overrideExisting: false,
 });
 
 export const {
-  useGetUnitQuery,
+  useGetUnitsQuery,
+  useLazyGetUnitsQuery,
   useCreateUnitMutation,
-  useRemoveUnitMutation,
-  useUpdateUnitMutation
+  useUpdateUnitMutation,
+  useRemoveUnitMutation
 
 } = unitApi;
