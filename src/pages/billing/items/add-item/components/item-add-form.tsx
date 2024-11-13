@@ -25,6 +25,8 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
 import FileUpload from "@/components/common/file-uploader";
+import { PricingArea } from "./pricing-area";
+import PriceAndStockTable from "./price-and-stock-table";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -551,6 +553,12 @@ export default function ItemAddForm() {
               </div>
             </Card>
           </div>
+        </div>
+        <div>
+          <PricingArea />
+        </div>
+        <div className="mt-1">
+          <PriceAndStockTable />
         </div>
 
         <div className="flex justify-end space-x-4 mt-5">
