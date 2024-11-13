@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import {
@@ -22,7 +22,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { LocationColumn } from "@/lib/validators";
 import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
@@ -31,26 +31,38 @@ import {
   customerSchema,
 } from "@/lib/validators/billing/customer";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreateCustomerMutation } from "@/store/services/billing/api/customer";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
+import {
+  useGetCustomerQuery,
+  useUpdateCustomerMutation,
+} from "@/store/services/billing/api/customer";
+import { Loading } from "@/components/common/loading";
 import { toast } from "sonner";
 
-export function AddCustomerForm() {
+export default function EditCustomerForm() {
   const navigate = useNavigate();
+  const params = useParams();
+  const customerId = Number(params.id);
   const [openDatePickers, setOpenDatePickers] = useState({
     date: false,
   });
-  // const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
-  const [createCustomer, { isLoading: isCustomerCreateLoading }] =
-    useCreateCustomerMutation();
-
+  // Query to fetch locations data
   const { data: locations, isLoading: locationLoading } = useGetLocationsQuery(
     "page=1&per_page=1000"
   );
+  // Query to fetch customer data
+  const { data: customerData, isLoading: isCustomerLoading } =
+    useGetCustomerQuery(customerId, {
+      skip: !customerId,
+    });
   const locationData = locations?.data || [];
 
+  const [updateCustomer, { isLoading: isUpdateLoading }] =
+    useUpdateCustomerMutation();
+
+  // Toggle function for date picker
   const handleDatePickerToggle = (type: "date") => {
     setOpenDatePickers((prev) => ({
       ...prev,
@@ -58,50 +70,59 @@ export function AddCustomerForm() {
     }));
   };
 
+  // Initialize the form with zod resolver
   const customerform = useForm<CustomerFormType>({
     resolver: zodResolver(customerSchema),
-    defaultValues: {
-      name: "",
-      opening_balance: "",
-      email: "",
-      phone: "",
-      note: "",
-      company_name: "",
-      company_id: "",
-      work_phone: "",
-    },
+    defaultValues: {},
   });
 
+  // Reset the form only when `customerData` changes and has valid data
+  useEffect(() => {
+    if (customerData?.data) {
+      customerform.reset({
+        name: customerData?.data.name || "",
+        email: customerData?.data.email || "",
+        phone: customerData?.data.phone || "",
+        work_phone: customerData?.data.work_phone || "",
+        opening_balance: String(customerData?.data.opening_balance) || "",
+        note: customerData?.data.note || "",
+        date: customerData?.data.date || "",
+        company_name: customerData?.data.company_name || "",
+        company_id: customerData?.data.company_id || "",
+        location_id: String(customerData?.data.location.id) || "",
+      });
+    }
+  }, [customerData?.data, customerform]); // Removed customerform from dependencies
+
   async function onCustomerFormSubmit(data: CustomerFormType) {
+    console.log(data);
     try {
-      const response = await createCustomer({
-        ...data,
-        opening_balance: Number(data.opening_balance),
-        location_id: Number(data.location_id),
+      await updateCustomer({
+        updatedCustomer: {
+          ...data,
+          location_id: Number(data.location_id),
+          opening_balance: Number(data.opening_balance),
+        },
+        customerId: customerId,
       }).unwrap();
-      toast.success("Customer created successfully");
-      navigate(`/billing/customers/edit/${response.data.id}`);
-      customerform.reset();
+      toast.success("Customer updated successfully");
     } catch (error) {
       handleErrors(error as ErrorResponse);
       console.log(error);
     }
   }
 
+  if (isCustomerLoading) {
+    return <Loading />;
+  }
   return (
     <Tabs defaultValue="customer" className="max-w-[1000px] mx-auto mt-10">
       <TabsList className="grid w-full grid-cols-4">
         <TabsTrigger value="customer">Customer Details</TabsTrigger>
-        <TabsTrigger value="address" disabled>
-          Address
-        </TabsTrigger>
-        <TabsTrigger value="contact_person" disabled>
-          Contact Person
-        </TabsTrigger>
+        <TabsTrigger value="address">Address</TabsTrigger>
+        <TabsTrigger value="contact_person">Contact Person</TabsTrigger>
         {/* <TabsTrigger value="note">Note</TabsTrigger> */}
-        <TabsTrigger value="attachment" disabled>
-          Attachment
-        </TabsTrigger>
+        <TabsTrigger value="attachment">Attachment</TabsTrigger>
       </TabsList>
 
       <Form {...customerform}>
@@ -112,7 +133,7 @@ export function AddCustomerForm() {
           <TabsContent value="customer">
             <Card>
               <CardHeader>
-                <CardTitle>Add Customer </CardTitle>
+                <CardTitle>Edit Customer </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -315,7 +336,7 @@ export function AddCustomerForm() {
                     type="submit"
                     className="w-fit ml-2"
                   >
-                    {isCustomerCreateLoading ? "Saving..." : "Save"}
+                    {isUpdateLoading ? "Saving" : "Save"}
                   </Button>
                   <Button
                     variant="primary"

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { AddCustomerForm } from "./components/add-supplier-form";
 
-const Supplier = () => {
+const CustomerAddForm = () => {
   const navigate = useNavigate();
   // const [isOpen, setIsOpen] = useState(false);
   //   const [pagination, setPagination] = React.useState<PaginationState>({
@@ -46,4 +46,4 @@ const Supplier = () => {
   );
 };
 
-export default Supplier;
+export default CustomerAddForm;

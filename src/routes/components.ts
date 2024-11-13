@@ -6,18 +6,26 @@ export const Lobby = lazy(() => import("@/pages/lobby"));
 export const ErrorPage = lazy(() => import("@/pages/ErrorPage"));
 export const Dashboard = lazy(() => import("@/pages/dashboard"));
 export const NotFoundPage = lazy(() => import("@/pages/not-found"));
-export const PrivateOutlet = lazy(() => import("@/lib/access-control/private-outlet"));
+export const PrivateOutlet = lazy(
+  () => import("@/lib/access-control/private-outlet")
+);
 
 // HRM
 export const Department = lazy(() => import("@/pages/hrm/department"));
 export const Designation = lazy(() => import("@/pages/hrm/designation"));
-export const Employee = lazy(() => import("@/pages/hrm/employee/employee-list"));
+export const Employee = lazy(
+  () => import("@/pages/hrm/employee/employee-list")
+);
 export const Holiday = lazy(() => import("@/pages/hrm/holiday"));
 export const DailyAttendance = lazy(
   () => import("@/pages/hrm/daily-attendance")
 );
-export const EmployeeClass = lazy(() => import("@/pages/hrm/employee/employee-class"));
-export const EmployeeGrade = lazy(() => import("@/pages/hrm/employee/employee-grade"));
+export const EmployeeClass = lazy(
+  () => import("@/pages/hrm/employee/employee-class")
+);
+export const EmployeeGrade = lazy(
+  () => import("@/pages/hrm/employee/employee-grade")
+);
 // export const EmployeeSalary = lazy(
 //   () => import("@/pages/hrm/add-employee-salary")
 // );
@@ -73,17 +81,34 @@ export const AttendancePolicyMapping = lazy(
   () => import("@/pages/hrm/attendance-policy-mapping")
 );
 export const HRMDashboard = lazy(() => import("@/pages/hrm/dashboard-hrm"));
-export const LeaveSummary = lazy(() => import("@/pages/hrm/reports/leave-reports/leave-summary"));
-export const AddHolidayForm = lazy(() => import("@/pages/hrm/holiday/components/add-holiday-form"));
+export const LeaveSummary = lazy(
+  () => import("@/pages/hrm/reports/leave-reports/leave-summary")
+);
+export const AddHolidayForm = lazy(
+  () => import("@/pages/hrm/holiday/components/add-holiday-form")
+);
 export const EstimateSalary = lazy(() => import("@/pages/hrm/estimate-salary"));
-export const LeaveBalance = lazy(() => import("@/pages/hrm/reports/leave-reports/leave-balance"));
-export const LeaveUsagesReport = lazy(() => import("@/pages/hrm/reports/leave-reports/leave-usages"));
-export const LeaveTrend = lazy(() => import("@/pages/hrm/reports/leave-reports/leave-trend"));
-export const LeaveTypeSummary = lazy(() => import("@/pages/hrm/reports/leave-reports/leave-type-summary"));
-export const EmployeeForm = lazy(() => import("@/pages/hrm/employee/employee-list/components/employee-form"));
-export const AttendanceSummary = lazy(() => import("@/pages/hrm/reports/attendance-summary"));
-export const SalaryAdjustment = lazy(() => import("@/pages/hrm/salary/salary-adjustment"));
-
+export const LeaveBalance = lazy(
+  () => import("@/pages/hrm/reports/leave-reports/leave-balance")
+);
+export const LeaveUsagesReport = lazy(
+  () => import("@/pages/hrm/reports/leave-reports/leave-usages")
+);
+export const LeaveTrend = lazy(
+  () => import("@/pages/hrm/reports/leave-reports/leave-trend")
+);
+export const LeaveTypeSummary = lazy(
+  () => import("@/pages/hrm/reports/leave-reports/leave-type-summary")
+);
+export const EmployeeForm = lazy(
+  () => import("@/pages/hrm/employee/employee-list/components/employee-form")
+);
+export const AttendanceSummary = lazy(
+  () => import("@/pages/hrm/reports/attendance-summary")
+);
+export const SalaryAdjustment = lazy(
+  () => import("@/pages/hrm/salary/salary-adjustment")
+);
 
 // Accounts
 export const DashboardAccounts = lazy(
@@ -113,7 +138,11 @@ export const ContraVoucher = lazy(
   () => import("@/pages/accounts/contra-voucher")
 );
 
+//BILLING
+export const EditCustomerForm = lazy(
+  () => import("@/pages/billing/customers/edit-customer")
+);
 
-//All We Routes 
+//All We Routes
 export const Organization = lazy(() => import("@/pages/web/organization"));
 export const Location = lazy(() => import("@/pages/web/location"));

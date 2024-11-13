@@ -11,54 +11,27 @@ import { Separator } from "@/components/ui/separator";
 // import ListSkeleton from "@/components/common/ListSkeleton";
 import { useNavigate } from "react-router-dom";
 import { customerColumn } from "./components/column";
+import React from "react";
+import { PaginationState } from "@tanstack/react-table";
+import { useGetCustomersQuery } from "@/store/services/billing/api/customer";
+import { PaginationInfo } from "@/types";
+import ListSkeleton from "@/components/common/ListSkeleton";
 // import { SupplierColumns } from "./components/column";
 
 const Customers = () => {
   const navigate = useNavigate();
-  // const [pagination, setPagination] = React.useState<PaginationState>({
-  //   pageIndex: 0,
-  //   pageSize: 10,
-  // });
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
-  // const { data, isLoading } = useGetEmployeesQuery(
-  //   `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
-  // );
+  const { data, isLoading } = useGetCustomersQuery(
+    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+  );
 
-  const data = [
-    {
-      name: "Customer A",
-      companyName: "Company A",
-      email: "customerA@example.com",
-      workPhone: "123-456-7890",
-      receivablesBCY: "5000.00"
-    },
-    {
-      name: "Customer B",
-      companyName: "Company B",
-      email: "customerB@example.com",
-      workPhone: "234-567-8901",
-      receivablesBCY: "7500.00"
-    },
-    {
-      name: "Customer C",
-      companyName: "Company C",
-      email: "customerC@example.com",
-      workPhone: "345-678-9012",
-      receivablesBCY: "3200.00"
-    },
-    {
-      name: "Customer D",
-      companyName: "Company D",
-      email: "customerD@example.com",
-      workPhone: "456-789-0123",
-      receivablesBCY: "6000.00"
-    }
-  ];
-  
+  const customers = data?.data || [];
 
-  const employees = data
-
-  // const paginationInfo: PaginationInfo | undefined = data?.meta;
+  const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   return (
     <>
@@ -77,15 +50,15 @@ const Customers = () => {
             </Button>
           </div>
           <Separator />
-          {/* {isLoading && <ListSkeleton />} */}
-          {data && (
+          {isLoading && <ListSkeleton />}
+          {customers && (
             <div>
               <DataTable
                 columns={customerColumn}
-                data={employees}
-                // paginationInfo={paginationInfo}
-                // pagination={pagination}
-                // setPagination={setPagination}
+                data={customers}
+                paginationInfo={paginationInfo}
+                pagination={pagination}
+                setPagination={setPagination}
               />
             </div>
           )}

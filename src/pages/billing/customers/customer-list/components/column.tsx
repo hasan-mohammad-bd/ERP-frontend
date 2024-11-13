@@ -2,9 +2,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 // import { CustomerColumn } from "@/lib/validators"; // Changed to CustomerColumn for accuracy
 import { CellAction } from "./cell-action";
-import { FormatIndianCurrency } from "@/utils/indian-formate"; // Assuming you're formatting currency
+import { CustomerColumn } from "@/lib/validators/billing/customer";
 
-export const customerColumn: ColumnDef<any>[] = [
+export const customerColumn: ColumnDef<CustomerColumn>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -38,7 +38,7 @@ export const customerColumn: ColumnDef<any>[] = [
   {
     accessorKey: "companyName",
     header: "Company Name",
-    cell: ({ row }) => <>{row.original.companyName}</>, // Displaying company name
+    cell: ({ row }) => <>{row.original.company_name}</>, // Displaying company name
   },
   {
     accessorKey: "email",
@@ -48,13 +48,13 @@ export const customerColumn: ColumnDef<any>[] = [
   {
     accessorKey: "workPhone",
     header: "Work Phone",
-    cell: ({ row }) => <>{row.original.workPhone}</>, // Displaying work phone
+    cell: ({ row }) => <>{row.original.work_phone}</>, // Displaying work phone
   },
-  {
-    accessorKey: "receivablesBCY",
-    header: "Receivables (BCY)",
-    cell: ({ row }) => <FormatIndianCurrency amount={row.original.receivablesBCY as number} />, // Format currency
-  },
+  // {
+  //   accessorKey: "receivablesBCY",
+  //   header: "Receivables (BCY)",
+  //   cell: ({ row }) => <FormatIndianCurrency amount={row.original.id} />, // Format currency
+  // },
 
   {
     id: "actions",

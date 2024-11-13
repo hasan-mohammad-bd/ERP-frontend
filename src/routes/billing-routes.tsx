@@ -1,5 +1,6 @@
 import withFallback from "@/utils/with-fallback";
 import {
+  EditCustomerForm,
   // DashboardAccounts,
   ErrorPage,
   Layout,
@@ -90,6 +91,11 @@ const billingRoutes = {
         {
           path: "add",
           element: withFallback(<AddCustomerForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<EditCustomerForm />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
