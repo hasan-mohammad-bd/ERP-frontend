@@ -67,13 +67,13 @@ const billingNavItems: NavItem[] = [
         href: "/billing/attribute-category", 
         permissions: ["hrm"],
       },
-      // {
-      //   title: "Attributes",
-      //   icon: PlayIcon,
-      //   color: "text-sky-500",
-      //   href: "/billing/attribute-category", 
-      //   permissions: ["hrm"],
-      // },
+      {
+        title: "Attributes",
+        icon: PlayIcon,
+        color: "text-sky-500",
+        href: "/billing/attributes", 
+        permissions: ["hrm"],
+      },
 
       {
         title: "Brand",

@@ -65,6 +65,7 @@ import BillingDashboard from "@/pages/billing/dashboard-billing";
 // import AttributeCategory from "@/pages/billing/attribute-category";
 import Brand from "@/pages/billing/brand";
 import AttributeCategory from "@/pages/billing/attribute-category";
+import Attributes from "@/pages/billing/attributes";
 
 const billingRoutes = {
   path: "billing/",
@@ -384,11 +385,11 @@ const billingRoutes = {
       element: withFallback(<AttributeCategory />),
       errorElement: withFallback(<ErrorPage />),
     },
-    // {
-    //   path: "attributes",
-    //   element: withFallback(<Attributes />),
-    //   errorElement: withFallback(<ErrorPage />),
-    // },
+    {
+      path: "attributes",
+      element: withFallback(<Attributes />),
+      errorElement: withFallback(<ErrorPage />),
+    },
 
     {
       path: "master-sales",
