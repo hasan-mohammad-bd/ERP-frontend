@@ -16,6 +16,7 @@ import { LedgerRow } from "@/lib/validators/accounts";
 import { ProjectRow } from "@/lib/validators/accounts/projects";
 import SearchSelect from "@/components/common/search-select";
 import { LocationColumn } from "@/lib/validators";
+import { useAuth } from "@/store/hooks";
 
 const CashBook = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +26,7 @@ const CashBook = () => {
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
   const [location, setLocation] = React.useState<LocationColumn | undefined>();
   const [voucherType, setVoucherType] = React.useState<{type: string, title: string} | undefined>();
-
+  const { user } = useAuth();
   // Filters
   const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
     useGetLedgerAccountsQuery("page=1&per_page=1000");
@@ -63,6 +64,7 @@ const CashBook = () => {
   );
 
   const entriesData = data?.data || [];
+
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   if (isLoading) return <Loading />;
@@ -115,7 +117,7 @@ const CashBook = () => {
         </ReportsToolBar>
         <div className="flex-1 space-y-4 w-2/3 mx-auto">
           <Separator />
-          {entriesData && (
+          {entriesData && user && (
             <div>
               <DataTable
                 columns={cashBookColumns}
@@ -126,7 +128,7 @@ const CashBook = () => {
                 reportFormate={{
                   startDate,
                   endDate,
-                  company: "Akaar IT",
+                  company: user.organization.name,
                   reportType: "Cash Book Report",
                 }}
               />

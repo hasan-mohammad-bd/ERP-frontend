@@ -12,6 +12,7 @@ import TrialBalanceTable from "./components/trial-balance-table";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
 import { LedgerRow } from "@/lib/validators/accounts";
 import { ProjectRow } from "@/lib/validators/accounts/projects";
+import { useAuth } from "@/store/hooks";
 
 const TrialBalance = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +20,7 @@ const TrialBalance = () => {
   const [account, setAccount] = React.useState<LedgerRow | undefined>();
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
+  const { user } = useAuth();
 
   const formateStartDate = format(
     startDate ? startDate : new Date(),
@@ -71,7 +73,7 @@ const projectData = projects?.data || [];
         />
         <div className="flex-1 space-y-4 w-2/3 mx-auto">
           <Separator />
-          {trialBalance ? (
+          {trialBalance && user ? (
             <TrialBalanceTable
               tableData={trialBalance}
               totalCr={totalCr}
@@ -79,7 +81,7 @@ const projectData = projects?.data || [];
               reportFormate={{
                 startDate,
                 endDate,
-                company: "Akaar IT",
+                company: user.organization.name,
                 reportType: "Trial Balance",
               }}
             />

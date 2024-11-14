@@ -9,6 +9,7 @@ import IncomeStatementTable from "./components/incone-statement-table";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
 import { LedgerRow } from "@/lib/validators/accounts";
 import { ProjectRow } from "@/lib/validators/accounts/projects";
+import { useAuth } from "@/store/hooks";
 
 const IncomeStatement = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -16,6 +17,7 @@ const IncomeStatement = () => {
   const [account, setAccount] = React.useState<LedgerRow | undefined>();
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
+  const { user } = useAuth();
 
   const formateStartDate = format(
     startDate ? startDate : new Date(),
@@ -68,7 +70,7 @@ const IncomeStatement = () => {
         <div className="flex-1 space-y-4 w-2/3 mx-auto">
           <Separator />
 
-          {incomeStatement ? (
+          {incomeStatement && user ? (
             <IncomeStatementTable
               tableData={incomeStatement}
               summery={summery}
@@ -77,7 +79,7 @@ const IncomeStatement = () => {
               reportFormate={{
                 startDate,
                 endDate,
-                company: "Akaar IT",
+                company: user.organization.name,
                 reportType: "Income Statement",
               }}
             />

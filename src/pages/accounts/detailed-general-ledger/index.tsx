@@ -13,6 +13,7 @@ import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
 import { useGetSubAccountsQuery } from "@/store/services/accounts/api/sub-accounts";
 import { LedgerRow, SubAccountRow } from "@/lib/validators/accounts";
 import { ProjectRow } from "@/lib/validators/accounts/projects";
+import { useAuth } from "@/store/hooks";
 
 const DetailedGeneralLedger = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +25,7 @@ const DetailedGeneralLedger = () => {
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [endDate, setEndDate] = React.useState<Date | null>(new Date());
   // const [filtered, setFiltered] = React.useState<number | null>(null);
+  const { user } = useAuth();
     
   const [account, setAccount] = React.useState<LedgerRow | undefined>();
 
@@ -100,14 +102,14 @@ const DetailedGeneralLedger = () => {
         />
         <div className="flex-1 space-y-4 w-2/3 mx-auto">
           <Separator />
-          {detailedGeneralLedgerData && summery ? (
+          {detailedGeneralLedgerData && summery && user ? (
             <DetailedGeneralTable
               tableData={detailedGeneralLedgerData}
               summery={summery}
               reportFormate={{
                 startDate,
                 endDate,
-                company: "Akaar IT",
+                company: user.organization.name,
                 reportType: "Detailed General Ledger",
               }}
             />

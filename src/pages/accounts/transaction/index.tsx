@@ -12,6 +12,7 @@ import { format } from "date-fns";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
 import { LedgerRow } from "@/lib/validators/accounts";
 import { ProjectRow } from "@/lib/validators/accounts/projects";
+import { useAuth } from "@/store/hooks";
 
 const Transaction = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -23,6 +24,7 @@ const Transaction = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+  const { user } = useAuth();
 
   const formateStartDate = format(
     startDate ? startDate : new Date(),
@@ -75,7 +77,7 @@ const Transaction = () => {
         />
         <div className="flex-1 space-y-4 w-2/3 mx-auto">
           <Separator />
-          {detailedGeneralLedgerData && (
+          {detailedGeneralLedgerData && user && (
             <div>
               <DataTable
                 columns={detailedGeneralLedgerColumns}
@@ -87,7 +89,7 @@ const Transaction = () => {
                 reportFormate={{
                   startDate,
                   endDate,
-                  company: "Akaar IT",
+                  company: user?.organization?.name,
                   reportType: "Transaction Report",
                 }}
               />
