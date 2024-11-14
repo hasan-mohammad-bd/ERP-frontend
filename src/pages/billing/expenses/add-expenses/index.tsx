@@ -40,7 +40,6 @@ const Expenses = () => {
 
         </div>
       </div>
-
       <AddExpensesForm />
     </>
   );

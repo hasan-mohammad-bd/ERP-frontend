@@ -172,6 +172,13 @@ const billingNavItems: NavItem[] = [
         permissions: ["hrm"],
       },
       {
+        title: "Expenses Category",
+        icon: Clock,
+        href: "/billing/expenses-category",
+        color: "text-sky-500",
+        permissions: ["hrm"],
+      },
+      {
         title: "Expenses",
         icon: Clock,
         href: "/billing/expenses",

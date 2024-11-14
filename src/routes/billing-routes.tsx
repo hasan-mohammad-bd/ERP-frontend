@@ -67,6 +67,7 @@ import BillingDashboard from "@/pages/billing/dashboard-billing";
 import Brand from "@/pages/billing/brand";
 import AttributeCategory from "@/pages/billing/attribute-category";
 import Attributes from "@/pages/billing/attributes";
+import ExpensesCategory from "@/pages/billing/expenses-category";
 
 const billingRoutes = {
   path: "billing/",
@@ -121,6 +122,12 @@ const billingRoutes = {
           errorElement: withFallback(<ErrorPage />),
         },
       ],
+    },
+
+    {
+      path: "expenses-category",
+      element: withFallback(<ExpensesCategory />),
+      errorElement: withFallback(<ErrorPage />),
     },
 
     {
