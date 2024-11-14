@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-// import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,161 +13,254 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // import { toast } from "sonner";
 import { ErrorResponse } from "@/types";
 import handleErrors from "@/lib/handle-errors";
-// import { Loading } from "@/components/common/loading";
-// import {
-//   useCreateCategoryMutation,
-//   useUpdateCategoryMutation,
-// } from "@/store/services/billing/api/category";
-
+import {
+  CategoryFormValues,
+  CategoryRow,
+  SubCategoryFormValues,
+  subCategorySchema,
+} from "@/lib/validators/billing/category";
+import {
+  useCreateCategoryMutation,
+  useGetCategoryQuery,
+  useUpdateCategoryMutation,
+} from "@/store/services/billing/api/category";
+import { useEffect, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import FileUploadSingle from "@/components/common/file-upload-single";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import { toast } from "sonner";
+import { serialize } from "object-to-formdata";
+import { Loading } from "@/components/common/loading";
 import SearchSelect from "@/components/common/search-select";
-import { CategoryColumn, CategoryFormValues, CategoryRow, categorySchema, SubCategoryColumn } from "@/lib/validators/billing/child-category";
-
-// Define a new type that includes categoryId
-// type CreateCategoryPayload = CategoryFormValues & { categoryId?: number };
 
 type AddCategoryProps = {
   modalClose: () => void;
   data?: CategoryRow;
-
-  selectedCategory: CategoryColumn | undefined;
-  setSelectedCategory: (cate: CategoryColumn) => void;
-
-  selectedSubCategory: SubCategoryColumn | undefined;
-  setSelectedSubCategory: (subCate: SubCategoryColumn) => void;
 };
 
-export function AddClassCategoryForm({
+export function AddChildCategoryForm({
   modalClose,
   data: previousData,
-
-  selectedCategory,
-  setSelectedCategory,
-
-  selectedSubCategory,
-  setSelectedSubCategory,
 }: AddCategoryProps) {
-  const categoryName = {
-    data: [
-      { id: 1, name: "Category-1" },
-      { id: 2, name: "Category-2" },
-      { id: 3, name: "Category-3" },
-      { id: 4, name: "Category-4" },
-      { id: 5, name: "Category-5" },
-    ],
-  };
+  // Correct API call to get category data
 
-  const subCategoryName = {
-    data: [
-      { id: 1, name: "Sub Category-1" },
-      { id: 2, name: "Sub Category-2" },
-      { id: 3, name: "Sub Category-3" },
-      { id: 4, name: "Sub Category-4" },
-      { id: 5, name: "Sub Category-5" },
-    ],
-  };
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoryFormValues>();
 
-  // State to track selected category
-  // const [selectedCategory, setSelectedCategory] = useState<CategoryRow | null>(
-  //   null
-  // );
+  const [createCategory, { isLoading: createLoading }] =
+    useCreateCategoryMutation();
+  const [updateCategory, { isLoading: updateLoading }] =
+    useUpdateCategoryMutation();
 
-  // const [createCategory, { isLoading }] = useCreateCategoryMutation();
-  // const [updateCategory, { isLoading: updateLoading }] =
-  //   useUpdateCategoryMutation();
+  const { data: categoryData } = useGetCategoryQuery(`type=main`);
+  const { data: SubCategoryData, isLoading: isSubCategoryLoading } =
+    useGetCategoryQuery(`type=sub&parent_id=${selectedCategory?.id}`, {
+      skip: !selectedCategory?.id,
+    });
 
-  const form = useForm<CategoryFormValues>({
-    resolver: zodResolver(categorySchema),
+  const categories = categoryData?.data || [];
+  const subCategories = SubCategoryData?.data || [];
+
+  const form = useForm<SubCategoryFormValues>({
+    resolver: zodResolver(subCategorySchema),
     defaultValues: {
-      name: previousData?.name || "",
+      name: "",
+      description: "",
+      status: 1,
+      image: "",
     },
   });
 
-  async function onSubmit() {
+  useEffect(() => {
+    if (previousData) {
+      form.reset({
+        name: previousData.name || "",
+        description: previousData.description || "",
+        status: previousData.status,
+        parent_id: previousData.parent_id
+          ? String(previousData.parent_id)
+          : undefined,
+      });
+    }
+  }, [previousData, form]);
+
+  async function onSubmit(data: CategoryFormValues) {
     try {
-      if (previousData) {
-        // await updateCategory({
-        //   categoryId: previousData.id,
-        //   updatedCategory: data,
-        // }).unwrap();
-        // toast.success("Category updated successfully");
-        modalClose();
-      } else {
-        // // Create a payload with the categoryId if selectedCategory exists
-        // const payload: CreateCategoryPayload = {
-        //   ...data,
-        //   categoryId: selectedSubCategory?.id, // Add categoryId here
-        // };
-        // await createCategory(payload).unwrap();
-        // toast.success("Child Category created successfully");
-        modalClose();
+      // Validate the uploaded image if it exists
+      if (uploadedImage) {
+        const validImageTypes = ["image/jpeg", "image/png", "image/jpg"];
+
+        // Check if the file type is valid
+        if (!validImageTypes.includes(uploadedImage.type)) {
+          toast.error("The image must be a file of type: jpeg, png, jpg");
+          return;
+        }
+
+        // Check if the file size is within the limit (2 MB in this case)
+        if (uploadedImage.size > 2048 * 1024) {
+          toast.error("The image must not exceed 2 MB in size");
+          return;
+        }
       }
+
+      //Create formData to send to the API
+      const formData = serialize(
+        {
+          ...data,
+          _method: previousData ? "PUT" : "POST",
+          image: uploadedImage, // include previous image if none is uploaded
+        },
+        { indices: true }
+      );
+
+      if (previousData && previousData.id !== undefined) {
+        // Use formData here for updating category
+        await updateCategory({
+          categoryId: previousData.id,
+          updatedCategory: formData,
+        }).unwrap();
+        toast.success("Category updated successfully");
+      } else {
+        // Use formData here for creating a new category
+        await createCategory(formData).unwrap();
+        toast.success("Category created successfully");
+      }
+
+      modalClose();
     } catch (error) {
-      console.log(error);
       handleErrors(error as ErrorResponse);
+      console.log(error);
     }
   }
 
   return (
     <>
-      {/* {isLoading || updateLoading ? (
+      {createLoading || updateLoading ? (
         <div>
           <Loading />
         </div>
-      ) : ( */}
+      ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            {/* Form Fields */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              {/* Form Fields */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <FormLabel>Select Category</FormLabel>
+                  <SearchSelect
+                    items={categories || []}
+                    labelKey="name"
+                    valueKey="id"
+                    value={selectedCategory}
+                    placeholder="Select category"
+                    onSelect={setSelectedCategory}
+                    className="w-[300px]"
+                    size={"default"}
+                  />
+                </div>
+                <div>
+                  <FormSearchSelect<CategoryFormValues>
+                    loading={isSubCategoryLoading}
+                    data={subCategories}
+                    displayField="name"
+                    valueField="id"
+                    form={form}
+                    name={`parent_id`}
+                    title={"Select Sub Category"}
+                    className="w-[300px]"
+                    disabled={
+                      subCategories.length === 0 &&
+                      !form.getValues("parent_id")?.toString()
+                    }
+                  />
+                </div>
+              </div>
 
-              <div>
-                <p className="text-[14px] font-semibold mb-2">
-                  Select Category
-                </p>
-                <SearchSelect
-                  items={categoryName?.data || []}
-                  labelKey="name"
-                  valueKey="id"
-                  value={selectedCategory} // Bind selectedCategory state here
-                  placeholder="Select Category"
-                  onSelect={setSelectedCategory} // Set the selected category
-                  className=""
+              <div className="grid grid-cols-3 gap-5">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem className="col-span-2">
+                      <FormLabel>Child Category Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          className=""
+                          placeholder="Enter Child Category Name"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Status */}
+                <FormField
+                  control={form.control}
+                  name="status"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Status</FormLabel>
+                      <Select
+                        onValueChange={(value) =>
+                          field.onChange(value === "Active" ? 1 : 0)
+                        }
+                        value={field.value === 1 ? "Active" : "Inactive"}
+                        defaultValue="Active"
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Status" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value={"Active"}>Active</SelectItem>
+                          <SelectItem value={"Inactive"}>Inactive</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
 
-              <div>
-                <p className="text-[14px] font-semibold mb-2">
-                  Select Sub Category
-                </p>
-                <SearchSelect
-                  items={subCategoryName?.data || []}
-                  labelKey="name"
-                  valueKey="id"
-                  value={selectedSubCategory} // Bind selectedCategory state here
-                  placeholder="Select Sub Category"
-                  onSelect={setSelectedSubCategory} // Set the selected category
-                  className=""
-                />
-              </div>
-
+              {/* Description */}
               <FormField
                 control={form.control}
-                name="name"
+                name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Child Category Name</FormLabel>
+                    <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Input
-                        className=""
-                        placeholder="Enter Subcategory Name"
+                      <Textarea
+                        placeholder="Enter Description"
                         {...field}
+                        value={field.value || ""}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
 
+              {/* File Upload */}
+              <div className="space-y-2">
+                <FormLabel>Upload Image</FormLabel>
+                <FileUploadSingle
+                  image={previousData?.image}
+                  setUploadedFile={setUploadedImage} // Set the uploaded file
+                />
+              </div>
+            </div>
             <div className="text-right">
               <Button variant="default" type="submit" className="w-fit mt-4">
                 {previousData ? "Update" : "Add"}
@@ -176,7 +268,7 @@ export function AddClassCategoryForm({
             </div>
           </form>
         </Form>
-      {/* )} */}
+      )}
     </>
   );
 }

@@ -20,7 +20,7 @@ import {
 } from "@/store/services/billing/api/category";
 import {
   CategoryFormValues,
-  CategoryRow,
+  // CategoryRow,
   categorySchema,
 } from "@/lib/validators/billing/category";
 import FileUploadSingle from "@/components/common/file-upload-single";
@@ -37,7 +37,7 @@ import { serialize } from "object-to-formdata";
 
 interface AddCategoryProps {
   modalClose: () => void;
-  data?: CategoryRow; // If you want to pass an existing category to edit
+  data?: any; // If you want to pass an existing category to edit
 }
 
 export function AddCategoryForm({

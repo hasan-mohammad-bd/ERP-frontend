@@ -27,7 +27,7 @@ import { Loading } from "../../common/loading";
 // Define the types for your props
 interface FormSearchSelectProps<T> {
   name: string;
-  title?: string ;
+  title?: string;
   data: T[];
   loading?: boolean;
   className?: string;
@@ -36,7 +36,7 @@ interface FormSearchSelectProps<T> {
   displayField: keyof T;
   form: any;
   placeholder?: string;
-  disabled?: any
+  disabled?: any;
 }
 
 const FormSearchSelect = <T extends Record<string, any>>({
@@ -49,7 +49,7 @@ const FormSearchSelect = <T extends Record<string, any>>({
   valueField,
   displayField,
   placeholder = "Select an option",
-
+  disabled = false,
 }: FormSearchSelectProps<T>) => {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -69,7 +69,7 @@ const FormSearchSelect = <T extends Record<string, any>>({
         );
 
         return (
-          <FormItem   className={cn("w-full")}>
+          <FormItem className={cn("w-full")}>
             <FormLabel>{title}</FormLabel>
             <Popover open={open} onOpenChange={setOpen} modal={true}>
               <PopoverTrigger asChild>
@@ -81,6 +81,7 @@ const FormSearchSelect = <T extends Record<string, any>>({
                       "w-full justify-between",
                       !field.value && "text-muted-foreground"
                     )}
+                    disabled={disabled}
                   >
                     {selectedItem
                       ? String(selectedItem[displayField])
@@ -95,7 +96,6 @@ const FormSearchSelect = <T extends Record<string, any>>({
                     placeholder="Search..."
                     value={searchQuery}
                     onValueChange={setSearchQuery}
-                   
                   />
                   <CommandList>
                     <CommandEmpty>No results found.</CommandEmpty>

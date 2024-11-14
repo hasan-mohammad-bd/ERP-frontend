@@ -46,6 +46,11 @@ export const SubCategoryColumns: ColumnDef<CategoryFormValues>[] = [
     accessorKey: "name",
     header: "Sub Category Name",
   },
+  {
+
+    header: " Category Name",
+    cell: ({ row }) => <div>{row.original?.parent?.name}</div>,
+  },
 
   {
     accessorKey: "status",
