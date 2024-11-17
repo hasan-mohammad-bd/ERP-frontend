@@ -1,3 +1,4 @@
+import { CityColumn, CountryColumn } from "@/lib/validators";
 import { z } from "zod";
 
 type Location = {
@@ -47,7 +48,7 @@ export type CustomerFormTypeForAPI = z.infer<typeof customerSchemaForAPI>;
 export type CustomerShowType = CustomerFormTypeForAPI & {
   parent_id: number | null;
   files: any[]; // Replace `any` with actual file type if available
-  addresses: any[]; // Replace `any` with actual address type if available
+  addresses: AddressColumn[];
   location: {
     id: number;
     name: string;
@@ -81,4 +82,44 @@ export type CustomerShowType = CustomerFormTypeForAPI & {
     sorting_index: number | null;
     created_at: string; // ISO date string
   };
+};
+
+export type AddressColumn = {
+  id: number;
+  country_id: number;
+  attention: string;
+  post_code: string;
+  address: string;
+  type: string;
+  phone: string;
+  state: string;
+  country: CountryColumn;
+  city: CityColumn;
+};
+
+// Define the schema
+export const addressSchema = z.object({
+  country_id: z.string({ required_error: "Country is required" }),
+  city_id: z.string({ required_error: "City is required" }),
+  post_code: z
+    .string({ required_error: "Post code is required" })
+    .min(1, "Post code is required"),
+  address: z.string().optional().nullable(),
+  phone: z.string().optional().nullable(), // Add regex for phone validation if needed
+  attention: z.string().optional().nullable(),
+  state: z.string().optional().nullable(),
+});
+
+// Infer the TypeScript type from the schema
+export type AddressType = z.infer<typeof addressSchema>;
+
+export type AddressTypeApi = Omit<AddressType, "country_id" | "city_id"> & {
+  country_id: number;
+  city_id: number;
+  type: string;
+  contact_id: number;
+};
+
+export type UpdateAddressTypeApi = AddressTypeApi & {
+  model_id: number; // New field added
 };

@@ -39,6 +39,8 @@ import {
 } from "@/store/services/billing/api/customer";
 import { Loading } from "@/components/common/loading";
 import { toast } from "sonner";
+import { Addresses } from "./components/addresss";
+import CustomerContactPerson from "./components/contact-person";
 
 export default function EditCustomerForm() {
   const navigate = useNavigate();
@@ -354,21 +356,28 @@ export default function EditCustomerForm() {
       </Form>
 
       {/* Billing & shipping address */}
-      {/* <TabsContent value="address">
+      <TabsContent value="address">
         <Card>
           <CardHeader>
-            <CardTitle>Address</CardTitle>          </CardHeader>
+            <CardTitle>Address</CardTitle>
+          </CardHeader>
           <CardContent className="space-y-2">
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              Billing Address
-              <AddressForm form={form} namePrefix="billing" title="Billing" />
-
-              Shipping Address
-              <AddressForm form={form} namePrefix="shipping" title="Shipping" />
+            <div className="flex flex-col gap-5">
+              {/* Billing Address */}
+              <Addresses customer_id={customerId} />
             </div>
           </CardContent>
         </Card>
-      </TabsContent> */}
+      </TabsContent>
+      <TabsContent value="contact_person">
+        <Card>
+          <CardContent className="space-y-2">
+            <div className="flex flex-col gap-5">
+              <CustomerContactPerson customer_id={customerId} />
+            </div>
+          </CardContent>
+        </Card>
+      </TabsContent>
 
       {/* contact person */}
       {/* <TabsContent value="contact_person">
