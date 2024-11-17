@@ -10,7 +10,7 @@ const EmployeeDetails = ({
       <ul className="space-y-2.5">
         <li>
           <span className="font-bold">Name:</span> {employeeData.first_name}{" "}
-          {employeeData.first_name}
+          {employeeData?.last_name}
         </li>
         <li>
           <span className="font-bold">Designation:</span>{" "}

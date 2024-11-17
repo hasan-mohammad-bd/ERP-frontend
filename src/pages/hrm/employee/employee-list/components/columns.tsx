@@ -49,7 +49,7 @@ export const employeeColumns: ColumnDef<EmployeeColumn>[] = [
 
   {
     header: "Name",
-    cell: ({ row }) => row.original.first_name + " " + row.original.last_name,
+    cell: ({ row }) => row.original.last_name ? `${row.original.first_name} ${row.original.last_name}` : row.original.first_name,
   },
 
   {
