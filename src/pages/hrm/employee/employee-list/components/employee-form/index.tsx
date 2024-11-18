@@ -69,23 +69,15 @@ import { useGetLeaveGroupsQuery } from "@/store/services/hrm/api/leave-group";
 import { LeaveGroupRow } from "@/lib/validators/hrm/leave";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { format } from "date-fns";
-import { cn } from "@/utils";
-import { CalendarIcon, Eye } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
+import {  Eye } from "lucide-react";
 import { EyeClosedIcon } from "@radix-ui/react-icons";
 import { Switch } from "@/components/ui/switch";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
-import {  GenderColumn } from "../validators";
+import { GenderColumn } from "../validators";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { serialize } from "object-to-formdata";
 import { Heading } from "@/components/common/heading";
-
+import { DateTimePicker } from "@/components/ui/dayTimePicker";
 
 // interface EmployeeFormProps {
 // 	modalClose?: () => void;
@@ -167,12 +159,12 @@ export default function EmployeeForm() {
       form.reset({
         ...previousData,
         first_name: previousData?.first_name || "",
-				last_name: previousData?.last_name || "",
+        last_name: previousData?.last_name || "",
         employee_unique_id: previousData?.employee_unique_id || "",
         phone: previousData?.phone || "",
         email: previousData?.email || "",
         joining_date: previousData?.joining_date || "",
-      
+
         corporate_phone: previousData?.corporate_phone || "",
         // reporting_to_id: previousData.reporting_to_id?.toString(),
         location_id: previousData?.location?.id.toString(),
@@ -214,6 +206,7 @@ export default function EmployeeForm() {
   }, [previousData, form]);
 
   async function onSubmit(data: EmployeeFormValues) {
+    console.log(data);
     try {
       const formData = serialize(
         {
@@ -244,7 +237,7 @@ export default function EmployeeForm() {
     }
   }
 
-console.log(form.formState.errors)
+  console.log(form.formState.errors);
 
   return (
     <>
@@ -433,53 +426,23 @@ console.log(form.formState.errors)
                               control={form.control}
                               name="joining_date"
                               render={({ field }) => (
-                                <FormItem className="flex flex-col w-full">
-                                  <FormLabel className="mb-1">
-                                    Joining Date
-                                  </FormLabel>
-                                  <Popover>
-                                    <PopoverTrigger asChild>
-                                      <FormControl>
-                                        <Button
-                                          variant={"outline"}
-                                          className={cn(
-                                            " pl-3 text-left font-normal w-full",
-                                            !field.value &&
-                                              "text-muted-foreground"
-                                          )}
-                                        >
-                                          {field.value ? (
-                                            format(new Date(field.value), "PPP") // Ensure field.value is a Date object
-                                          ) : (
-                                            <span>Joining Date</span>
-                                          )}
-                                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                        </Button>
-                                      </FormControl>
-                                    </PopoverTrigger>
-                                    <PopoverContent
-                                      className="w-auto p-0"
-                                      align="start"
-                                    >
-                                      <Calendar
-                                        mode="single"
-                                        selected={
-                                          field.value
-                                            ? new Date(field.value)
-                                            : undefined
-                                        } // Convert string to Date
-                                        onSelect={(date) =>
-                                          field.onChange(date?.toISOString())
-                                        } // Save the Date as ISO string
-                                        // disabled={(date) =>
-                                        //   date > new Date() ||
-                                        //   date < new Date("1900-01-01")
-                                        // }
-                                        initialFocus
-                                      />
-                                    </PopoverContent>
-                                  </Popover>
-
+                                <FormItem className="flex flex-col">
+                                  <FormLabel className="mb-1">Joining Date</FormLabel>
+                                  <FormControl className="">
+                                    <DateTimePicker
+                                      {...field}
+                                      displayFormat={{ hour24: "yyyy/MM/dd" }}
+                                      value={
+                                        field.value
+                                          ? new Date(field.value)
+                                          : undefined}
+                                      // value={field.value}
+                                      onChange={(date) =>
+                                        field.onChange(date?.toISOString())}
+                                      granularity="day"
+                                      // hourCycle={12}
+                                    />
+                                  </FormControl>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -494,7 +457,7 @@ console.log(form.formState.errors)
                                       <FormLabel>
                                         Password{" "}
                                         <span className="text-xs text-muted-foreground">
-                                          (8+ characters, A-Z, a-z, 0-9)
+                                          (8+, A-Z, a-z, 0-9)
                                         </span>
                                       </FormLabel>
                                       <div className="relative ">
