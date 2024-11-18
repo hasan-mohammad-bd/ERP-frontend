@@ -11,24 +11,31 @@ import {
   Video,
   X,
 } from "lucide-react";
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 import { ScrollArea } from "../ui/scroll-area";
 
 interface ImageUploadProps {
-  setUploadedFiles: Dispatch<SetStateAction<File[]>>;
+  setFilesToUpload: Dispatch<SetStateAction<File[]>>;
+  filesToUpload: File[];
   uploadedFiles?: FilesType | null;
   onDeleteSuccess?: (file: FileType) => void;
 }
 
 export default function FileUpload({
-  setUploadedFiles,
+  setFilesToUpload,
+  filesToUpload,
+  // setFilesToUpload: propSetFilesToUpload,
+  // filesToUpload: propFilesToUpload,
   uploadedFiles,
   onDeleteSuccess,
 }: ImageUploadProps) {
-  const [filesToUpload, setFilesToUpload] = useState<File[]>([]);
+  // const [filesToUploadInner, setFilesToUploadInner] = useState<File[]>([]);
   const [removeMedia] = useRemoveAccountsMediaMutation();
+
+  // const filesToUpload = propFilesToUpload ?? filesToUploadInner;
+  // const setFilesToUpload = propSetFilesToUpload ?? setFilesToUploadInner;
 
   const getFileIconAndColor = (file: File) => {
     // This function remains the same, returning the correct icon and color for the file type
@@ -106,14 +113,14 @@ export default function FileUpload({
       setFilesToUpload((prevFiles) => [...prevFiles, ...acceptedFiles]);
 
       // Also send these files to the parent component using setUploadedFiles
-      setUploadedFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+      // setUploadedFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
     },
-    [setUploadedFiles]
+    [setFilesToUpload]
   );
 
   const removeFile = (file: File) => {
     setFilesToUpload((prevFiles) => prevFiles.filter((item) => item !== file));
-    setUploadedFiles((prevFiles) => prevFiles.filter((item) => item !== file));
+    // setUploadedFiles((prevFiles) => prevFiles.filter((item) => item !== file));
   };
   const removeUploadedFile = async (file: FileType) => {
     try {
@@ -211,16 +218,17 @@ export default function FileUpload({
 
                     <div className="w-full ml-2 space-y-1">
                       <div className="text-sm flex justify-between">
-                        <a 
-                         href={file.path} // Assuming file.file_url contains the URL to the file
-                         target="_blank"
-                         rel="noopener noreferrer"
-                        className="text-primary">
+                        <a
+                          href={file.path} // Assuming file.file_url contains the URL to the file
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary"
+                        >
                           {file.file_name.slice(0, 25)}
                         </a>
                       </div>
                     </div>
-                  </div>           
+                  </div>
                   <button
                     type="button"
                     onClick={() => removeUploadedFile(file)}

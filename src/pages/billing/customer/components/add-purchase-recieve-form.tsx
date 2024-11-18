@@ -386,7 +386,8 @@ export function AddPurchaseReceiveForm() {
                   <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
                     <FileUpload
-                      setUploadedFiles={setUploadedFiles}
+                      setFilesToUpload={setUploadedFiles}
+                      filesToUpload={uploadedFiles}
                       // uploadedFiles={previousData?.files}
                       // onDeleteSuccess={() => refetch()}
                     />
@@ -428,7 +429,6 @@ export function AddPurchaseReceiveForm() {
                       </TableCell>
                     </TableRow>
                   ))}
-
                 </TableBody>
               </Table>
             </Card>
@@ -442,7 +442,7 @@ export function AddPurchaseReceiveForm() {
                 Cancel
               </Button>
               <Button variant="default" type="submit" className="w-fit mt-4">
-                Received 
+                Received
               </Button>
             </div>
           </form>

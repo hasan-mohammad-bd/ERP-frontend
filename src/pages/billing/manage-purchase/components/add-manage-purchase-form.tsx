@@ -292,7 +292,8 @@ export function AddManagePurchase() {
                   <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
                     <FileUpload
-                      setUploadedFiles={setUploadedFiles}
+                      setFilesToUpload={setUploadedFiles}
+                      filesToUpload={uploadedFiles}
                       // uploadedFiles={previousData?.files}
                       // onDeleteSuccess={() => refetch()}
                     />
@@ -309,7 +310,13 @@ export function AddManagePurchase() {
               <Calculation />
             </div>
             <div className="text-right">
-              <Button onClick={()=>navigate("/billing/purchase-orders")} className="mr-2" variant="primary">Cancel</Button>
+              <Button
+                onClick={() => navigate("/billing/purchase-orders")}
+                className="mr-2"
+                variant="primary"
+              >
+                Cancel
+              </Button>
               <Button variant="default" type="submit" className="w-fit mt-4">
                 Add
               </Button>

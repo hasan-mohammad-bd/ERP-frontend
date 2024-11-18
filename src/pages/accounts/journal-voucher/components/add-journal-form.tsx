@@ -309,7 +309,8 @@ export function AddJournalForm() {
                   <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
                     <FileUpload
-                      setUploadedFiles={setUploadedFiles}
+                      setFilesToUpload={setUploadedFiles}
+                      filesToUpload={uploadedFiles}
                       uploadedFiles={previousData?.files}
                       onDeleteSuccess={() => refetch()}
                     />
@@ -424,7 +425,12 @@ export function AddJournalForm() {
                                   disabled={
                                     form.watch(`details.${index}.cr_amount`) > 0
                                   }
-                                  defaultValue={previousData?.details[index]?.dr_amount ? previousData?.details?.[index]?.dr_amount : 0}
+                                  defaultValue={
+                                    previousData?.details[index]?.dr_amount
+                                      ? previousData?.details?.[index]
+                                          ?.dr_amount
+                                      : 0
+                                  }
                                   min={0}
                                   placeholder="Debit amount"
                                 />
@@ -472,7 +478,12 @@ export function AddJournalForm() {
                                   disabled={
                                     form.watch(`details.${index}.dr_amount`) > 0
                                   }
-                                  defaultValue={previousData?.details[index]?.cr_amount ? previousData?.details?.[index]?.cr_amount : 0}
+                                  defaultValue={
+                                    previousData?.details[index]?.cr_amount
+                                      ? previousData?.details?.[index]
+                                          ?.cr_amount
+                                      : 0
+                                  }
                                   min={0}
                                   placeholder="Credit amount"
                                 />

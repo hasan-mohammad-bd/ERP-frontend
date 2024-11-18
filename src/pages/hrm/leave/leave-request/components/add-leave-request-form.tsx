@@ -236,7 +236,7 @@ export function AttendancePolicyForm({
       setSearchTerm(previousData?.employee_id.toString());
     }
   }, [previousData?.employee_id]);
-  const debouncedSearchText = useDebounce( searchTerm, 300);
+  const debouncedSearchText = useDebounce(searchTerm, 300);
 
   // Trigger server search when debounced text updates
   useEffect(() => {
@@ -266,26 +266,28 @@ export function AttendancePolicyForm({
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
                   /> */}
-                 {previousData?.employee_id ? (
-                  <>
-                  <FormLabel className="">Employee Name</FormLabel>
-                   <Input className="mt-2"  disabled value={previousData?.employee?.first_name} /> 
-                  </>
-                 ) : (
-                  <ServerSearchSelect<LeaveSummaryRow>
-                    
-                  data={searchResultData}
-                  displayField="first_name"
-                  valueField="id"
-                  form={form}
-                  name="employee_id"
-                  title="Employee"
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                  className="w-[360px]"
-                />
-                 )
-                 }
+                  {previousData?.employee_id ? (
+                    <>
+                      <FormLabel className="">Employee Name</FormLabel>
+                      <Input
+                        className="mt-2"
+                        disabled
+                        value={previousData?.employee?.first_name}
+                      />
+                    </>
+                  ) : (
+                    <ServerSearchSelect<LeaveSummaryRow>
+                      data={searchResultData}
+                      displayField="first_name"
+                      valueField="id"
+                      form={form}
+                      name="employee_id"
+                      title="Employee"
+                      searchTerm={searchTerm}
+                      setSearchTerm={setSearchTerm}
+                      className="w-[360px]"
+                    />
+                  )}
                   {/* 
                   <FormSearchSelect<LeaveSummaryRow>
                     data={searchResult?.data || []}
@@ -309,7 +311,11 @@ export function AttendancePolicyForm({
                       allowedLeaveType?.available?.total_days
                         ? `(Leave Left: ${allowedLeaveType?.available?.total_days} days)`
                         : ""
-                    } ${allowedLeaveType?.available?.total_hours ? `, ( ${allowedLeaveType?.available?.total_hours} hours)` : ""}` }
+                    } ${
+                      allowedLeaveType?.available?.total_hours
+                        ? `, ( ${allowedLeaveType?.available?.total_hours} hours)`
+                        : ""
+                    }`}
                     className="w-[290px]"
                   />
                 </div>
@@ -542,7 +548,8 @@ export function AttendancePolicyForm({
               <div className="space-y-2">
                 <FormLabel>Upload Files</FormLabel>
                 <FileUpload
-                  setUploadedFiles={setUploadedFiles}
+                  setFilesToUpload={setUploadedFiles}
+                  filesToUpload={uploadedFiles}
                   uploadedFiles={previousData?.files}
                   onDeleteSuccess={() => (refetch as () => void)()}
                 />
@@ -558,7 +565,8 @@ export function AttendancePolicyForm({
                   ) ||
                   !!(
                     allowedLeaveType?.available &&
-                    totalLeaveDaysWithPlusOne > allowedLeaveType.available.total_days
+                    totalLeaveDaysWithPlusOne >
+                      allowedLeaveType.available.total_days
                   )
                 }
                 variant="default"

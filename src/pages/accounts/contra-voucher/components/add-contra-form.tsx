@@ -341,7 +341,8 @@ export function AddContraForm() {
                   <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
                     <FileUpload
-                      setUploadedFiles={setUploadedFiles}
+                      setFilesToUpload={setUploadedFiles}
+                      filesToUpload={uploadedFiles}
                       uploadedFiles={previousData?.files}
                       onDeleteSuccess={() => refetch()}
                     />
@@ -504,7 +505,11 @@ export function AddContraForm() {
                                     event.target.value.replace(/,/g, "")
                                   )
                                 }
-                                defaultValue={previousData?.details[index]?.cr_amount ? previousData?.details[index].cr_amount : 0}
+                                defaultValue={
+                                  previousData?.details[index]?.cr_amount
+                                    ? previousData?.details[index].cr_amount
+                                    : 0
+                                }
                               />
                             </FormControl>
                             <FormMessage />

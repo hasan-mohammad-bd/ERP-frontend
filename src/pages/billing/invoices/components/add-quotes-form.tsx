@@ -99,10 +99,7 @@ export function AddInvoiceForm() {
             title={"Add Invoice"}
             description="Manage your sub accounts for you business"
           />
-          <Button
-            onClick={() => navigate("/billing/invoices")}
-            size={"sm"}
-          >
+          <Button onClick={() => navigate("/billing/invoices")} size={"sm"}>
             Invoices List
           </Button>
         </div>
@@ -179,7 +176,7 @@ export function AddInvoiceForm() {
                       </FormItem>
                     )}
                   />
-                                    <FormField
+                  <FormField
                     control={form.control}
                     name="supplierName"
                     render={({ field }) => (
@@ -217,7 +214,7 @@ export function AddInvoiceForm() {
                       </FormItem>
                     )}
                   />
-{/*                   <FormField
+                  {/*                   <FormField
                     control={form.control}
                     name="poDate"
                     render={({ field }) => (
@@ -231,7 +228,7 @@ export function AddInvoiceForm() {
                     )}
                   /> */}
 
-{/*                   <FormField
+                  {/*                   <FormField
                     control={form.control}
                     name="reference"
                     render={({ field }) => (
@@ -257,7 +254,7 @@ export function AddInvoiceForm() {
                       </FormItem>
                     )}
                   /> */}
-                                                      <FormField
+                  <FormField
                     control={form.control}
                     name="supplierName"
                     render={({ field }) => (
@@ -308,7 +305,7 @@ export function AddInvoiceForm() {
                       </FormItem>
                     )}
                   />
-{/*                   <FormField
+                  {/*                   <FormField
                     control={form.control}
                     name="paymentTerms"
                     render={({ field }) => (
@@ -346,7 +343,7 @@ export function AddInvoiceForm() {
                       </FormItem>
                     )}
                   /> */}
-{/*                   <FormField
+                  {/*                   <FormField
                     control={form.control}
                     name="paymentTerms"
                     render={({ field }) => (
@@ -391,26 +388,20 @@ export function AddInvoiceForm() {
                       <FormItem>
                         <FormLabel>Subject</FormLabel>
                         <FormControl>
-                          <Textarea
-                            placeholder="Type Subject."
-                            {...field}
-                          />
+                          <Textarea placeholder="Type Subject." {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                                                      <FormField
+                  <FormField
                     control={form.control}
                     name="note"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Customer Note</FormLabel>
                         <FormControl>
-                          <Textarea
-                            placeholder="Type Subject."
-                            {...field}
-                          />
+                          <Textarea placeholder="Type Subject." {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -452,7 +443,8 @@ export function AddInvoiceForm() {
                   <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
                     <FileUpload
-                      setUploadedFiles={setUploadedFiles}
+                      setFilesToUpload={setUploadedFiles}
+                      filesToUpload={uploadedFiles}
                       // uploadedFiles={previousData?.files}
                       // onDeleteSuccess={() => refetch()}
                     />
@@ -469,7 +461,13 @@ export function AddInvoiceForm() {
               <Calculation />
             </div>
             <div className="text-right">
-              <Button onClick={()=>navigate("/billing/invoices")} className="mr-2" variant="primary">Cancel</Button>
+              <Button
+                onClick={() => navigate("/billing/invoices")}
+                className="mr-2"
+                variant="primary"
+              >
+                Cancel
+              </Button>
               <Button variant="default" type="submit" className="w-fit mt-4">
                 Add
               </Button>

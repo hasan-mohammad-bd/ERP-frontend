@@ -41,6 +41,7 @@ import { Loading } from "@/components/common/loading";
 import { toast } from "sonner";
 import { Addresses } from "./components/addresss";
 import CustomerContactPerson from "./components/contact-person";
+import CustomerAttachment from "./components/attachment";
 
 export default function EditCustomerForm() {
   const navigate = useNavigate();
@@ -374,6 +375,15 @@ export default function EditCustomerForm() {
           <CardContent className="space-y-2">
             <div className="flex flex-col gap-5">
               <CustomerContactPerson customer_id={customerId} />
+            </div>
+          </CardContent>
+        </Card>
+      </TabsContent>
+      <TabsContent value="attachment">
+        <Card>
+          <CardContent className="space-y-2">
+            <div className="flex flex-col gap-5">
+              <CustomerAttachment customer_id={customerId} />
             </div>
           </CardContent>
         </Card>

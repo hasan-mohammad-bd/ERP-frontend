@@ -4,7 +4,7 @@ import { Heading } from "@/components/common/heading";
 import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { InputNumberFormat } from '@react-input/number-format';
+import { InputNumberFormat } from "@react-input/number-format";
 import {
   Form,
   FormControl,
@@ -106,10 +106,8 @@ export function AddPaymentForm() {
           cr_amount: detail.cr_amount,
           dr_amount: detail.dr_amount,
           note: detail.note,
-        })) ,
+        })),
         note: previousData?.note || "",
-        
-        
       });
     }
   }, [previousData, form]);
@@ -139,7 +137,7 @@ export function AddPaymentForm() {
     // setTotalCrAmount(totalCr);
   }, [details]);
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     const selectedAccounts = details.map((detail) =>
       Number(detail.ledger_account_id)
     );
@@ -266,21 +264,20 @@ export function AddPaymentForm() {
                         />
 
                         <div className="w-[200px]">
-                        <FormSearchSelect<LedgerRow>
-                          loading={ledgerAccountLoading}
-                          data={ledgerAccountData.filter(
-                            (ledgerAccount: LedgerRow) =>
-                              ledgerAccount.nature === "Cash" ||
-                              ledgerAccount.nature ===
-                                "Bank Accounts"
-                          )}
-                          displayField="name"
-                          valueField="id"
-                          form={form}
-                          name={`details.0.ledger_account_id`}
-                          title="Credit Account Head"
-                          className="w-[190px]"
-                        />
+                          <FormSearchSelect<LedgerRow>
+                            loading={ledgerAccountLoading}
+                            data={ledgerAccountData.filter(
+                              (ledgerAccount: LedgerRow) =>
+                                ledgerAccount.nature === "Cash" ||
+                                ledgerAccount.nature === "Bank Accounts"
+                            )}
+                            displayField="name"
+                            valueField="id"
+                            form={form}
+                            name={`details.0.ledger_account_id`}
+                            title="Credit Account Head"
+                            className="w-[190px]"
+                          />
                         </div>
                       </div>
                     </div>
@@ -306,7 +303,8 @@ export function AddPaymentForm() {
                     <div className="space-y-2">
                       <FormLabel>Upload Files</FormLabel>
                       <FileUpload
-                        setUploadedFiles={setUploadedFiles}
+                        setFilesToUpload={setUploadedFiles}
+                        filesToUpload={uploadedFiles}
                         uploadedFiles={previousData?.files}
                         onDeleteSuccess={() => refetch()}
                       />
@@ -324,22 +322,22 @@ export function AddPaymentForm() {
                         }`}
                       >
                         <div className={`w-[250px]`}>
-                        <FormSearchSelect<LedgerRow>
-                          loading={ledgerAccountLoading}
-                          data={ledgerAccountData.filter(
+                          <FormSearchSelect<LedgerRow>
+                            loading={ledgerAccountLoading}
+                            data={ledgerAccountData.filter(
                               (ledgerAccount: LedgerRow) =>
                                 ledgerAccount.nature !== "Cash" &&
-                                ledgerAccount.nature !==
-                                  "Bank Accounts"
+                                ledgerAccount.nature !== "Bank Accounts"
                             )}
-                          displayField="name"
-                          valueField="id"
-                          form={form}
-                          name={`details.${index}.ledger_account_id`}
-                          title={index === 1 ? "Debit Account Head" : undefined}
-                          className="w-[250px]"
-                        />
-
+                            displayField="name"
+                            valueField="id"
+                            form={form}
+                            name={`details.${index}.ledger_account_id`}
+                            title={
+                              index === 1 ? "Debit Account Head" : undefined
+                            }
+                            className="w-[250px]"
+                          />
                         </div>
                         <div className="w-[250px]">
                           <FormField
@@ -417,13 +415,19 @@ export function AddPaymentForm() {
                                   )}
                                 </FormLabel>
                                 <FormControl>
-                                <InputNumberFormat
+                                  <InputNumberFormat
                                     locales="en-IN"
                                     className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
                                     onChange={(event) =>
-                                      field.onChange(event.target.value.replace(/,/g, ""))
-                                    } 
-                                    defaultValue={previousData?.details?.[index]?.dr_amount? previousData.details[index].dr_amount : 0}
+                                      field.onChange(
+                                        event.target.value.replace(/,/g, "")
+                                      )
+                                    }
+                                    defaultValue={
+                                      previousData?.details?.[index]?.dr_amount
+                                        ? previousData.details[index].dr_amount
+                                        : 0
+                                    }
                                   />
                                   {/* <Input
                                    step="any"
@@ -460,9 +464,7 @@ export function AddPaymentForm() {
                             className=""
                             onClick={() => {
                               remove(index);
-                              const updatedAccounts = [
-                                ...ledgerAccountData,
-                              ];
+                              const updatedAccounts = [...ledgerAccountData];
                               updatedAccounts.splice(index, 1);
                               // setSelectedLedgerAccounts(updatedAccounts);
                             }}

@@ -4,7 +4,7 @@ import { Heading } from "@/components/common/heading";
 import { Loading } from "@/components/common/loading";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { InputNumberFormat } from '@react-input/number-format';
+import { InputNumberFormat } from "@react-input/number-format";
 import {
   Form,
   FormControl,
@@ -132,7 +132,6 @@ export function AddReceiptForm() {
   });
 
   useEffect(() => {
-
     const totalCr = details.reduce(
       (sum, detail) => sum + Number(detail.cr_amount || 0),
       0
@@ -140,7 +139,6 @@ export function AddReceiptForm() {
     // setTotalDrAmount(totalDr);
     setTotalCrAmount(totalCr);
   }, [details]);
-
 
   async function onSubmit(data: EntryFromValues) {
     const updateData = {
@@ -262,21 +260,20 @@ export function AddReceiptForm() {
                         />
 
                         <div className="w-[200px]">
-                        <FormSearchSelect<LedgerRow>
-                          loading={ledgerAccountLoading}
-                          data={ledgerAccountData.filter(
-                            (ledgerAccount: LedgerRow) =>
-                              ledgerAccount.nature === "Cash" ||
-                              ledgerAccount.nature ===
-                                "Bank Accounts"
-                          )}
-                          displayField="name"
-                          valueField="id"
-                          form={form}
-                          name={`details.0.ledger_account_id`}
-                          title="Debit Account Head"
-                          className="w-[190px]"
-                        />
+                          <FormSearchSelect<LedgerRow>
+                            loading={ledgerAccountLoading}
+                            data={ledgerAccountData.filter(
+                              (ledgerAccount: LedgerRow) =>
+                                ledgerAccount.nature === "Cash" ||
+                                ledgerAccount.nature === "Bank Accounts"
+                            )}
+                            displayField="name"
+                            valueField="id"
+                            form={form}
+                            name={`details.0.ledger_account_id`}
+                            title="Debit Account Head"
+                            className="w-[190px]"
+                          />
                           {/* <FormField
                             control={form.control}
                             name={`details.0.ledger_account_id`}
@@ -352,7 +349,8 @@ export function AddReceiptForm() {
                   <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
                     <FileUpload
-                      setUploadedFiles={setUploadedFiles}
+                      setFilesToUpload={setUploadedFiles}
+                      filesToUpload={uploadedFiles}
                       uploadedFiles={previousData?.files}
                       onDeleteSuccess={() => refetch()}
                     />
@@ -369,21 +367,22 @@ export function AddReceiptForm() {
                         }`}
                       >
                         <div className={`w-[250px]`}>
-                        <FormSearchSelect<LedgerRow>
-                          loading={ledgerAccountLoading}
-                          data={ledgerAccountData.filter(
-                            (ledgerAccount: LedgerRow) =>
-                              ledgerAccount.nature !== "Cash" &&
-                              ledgerAccount.nature !==
-                                "Bank Accounts"
-                          )}
-                          displayField="name"
-                          valueField="id"
-                          form={form}
-                          name={`details.${index}.ledger_account_id`}
-                          title={index === 1 ? "Credit Account Head" : undefined}
-                          className="w-[250px]"
-                        />
+                          <FormSearchSelect<LedgerRow>
+                            loading={ledgerAccountLoading}
+                            data={ledgerAccountData.filter(
+                              (ledgerAccount: LedgerRow) =>
+                                ledgerAccount.nature !== "Cash" &&
+                                ledgerAccount.nature !== "Bank Accounts"
+                            )}
+                            displayField="name"
+                            valueField="id"
+                            form={form}
+                            name={`details.${index}.ledger_account_id`}
+                            title={
+                              index === 1 ? "Credit Account Head" : undefined
+                            }
+                            className="w-[250px]"
+                          />
                           {/* <FormField
                             control={form.control}
                             name={`details.${index}.ledger_account_id`}
@@ -540,13 +539,20 @@ export function AddReceiptForm() {
                                   )}
                                 </FormLabel>
                                 <FormControl>
-                                <InputNumberFormat
+                                  <InputNumberFormat
                                     locales="en-IN"
                                     className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
                                     onChange={(event) =>
-                                      field.onChange(event.target.value.replace(/,/g, ""))
-                                    } 
-                                    defaultValue={previousData?.details[index]?.cr_amount? previousData?.details[index]?.cr_amount : 0}
+                                      field.onChange(
+                                        event.target.value.replace(/,/g, "")
+                                      )
+                                    }
+                                    defaultValue={
+                                      previousData?.details[index]?.cr_amount
+                                        ? previousData?.details[index]
+                                            ?.cr_amount
+                                        : 0
+                                    }
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -576,11 +582,8 @@ export function AddReceiptForm() {
                             className=""
                             onClick={() => {
                               remove(index);
-                              const updatedAccounts = [
-                                ...ledgerAccountData,
-                              ];
+                              const updatedAccounts = [...ledgerAccountData];
                               updatedAccounts.splice(index, 1);
-                             
                             }}
                           >
                             <Trash2 size={16} color="red" className="" />
@@ -589,7 +592,6 @@ export function AddReceiptForm() {
                       </div>
                     )
                 )}
-
 
                 <Button
                   variant="outline"
