@@ -40,7 +40,7 @@ const allowanceSchema = z.object({
 });
 
 type SalaryCategoryRow = z.infer<typeof allowanceSchema>;
-type SalaryFormData = {
+export type SalaryFormData = {
   allowance: SalaryCategoryRow[];
   deduction: SalaryCategoryRow[];
 };
@@ -178,7 +178,7 @@ const SalarySetup = () => {
               <Separator />
 
               <Card className="px-4 py-6">
-                <EmployeeDetails employeeData={salarySetupData.employee} />
+                <EmployeeDetails data={salarySetupData} />
                 <Table className="border">
                   <TableHeader className="border">
                     <TableRow className="border h-0">

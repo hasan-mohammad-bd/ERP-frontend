@@ -1,12 +1,17 @@
-import { EmployeeSchema } from "@/lib/validators/hrm/salary-setup-types";
+// import { EmployeeSchema } from "@/lib/validators/hrm/salary-setup-types";
 
 const EmployeeDetails = ({
-  employeeData,
+  data,
 }: {
-  employeeData: EmployeeSchema;
+  data: any;
+
+  
 }) => {
+
+  const employeeData = data?.employee || {};
   return (
     <div className="mb-3 flex justify-between">
+      
       <ul className="space-y-2.5">
         <li>
           <span className="font-bold">Name:</span> {employeeData.first_name}{" "}
@@ -32,8 +37,10 @@ const EmployeeDetails = ({
         </li>
         <li>
           <span className="font-bold">Basic:</span>{" "}
-          {/* {Number(employeeData.basePay).toFixed(2)} */}
-          2000.00
+          {/* {Number(employeeData).toFixed(2)} */}
+          {data.basic}
+          {/* 2000.00 */}
+          {console.log(data.basic, "employeeData")}
         </li>
         <li>
           <span className="font-bold">Bank A/C:</span>{" "}

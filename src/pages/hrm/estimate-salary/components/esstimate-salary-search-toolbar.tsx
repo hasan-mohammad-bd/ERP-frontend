@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
 import { useEstimateSalaryMutation } from "@/store/services/hrm/api/estimate-salary";
-import { useSalaryGenerateMutation } from "@/store/services/hrm/api/salary-generate"; // Import the salaryGenerate mutation
+import { useSalaryGenerateMutation } from "@/store/services/hrm/api/salary-generate";
 import MultipleSelector, { Option } from "@/components/ui/multiSelectSearch";
-import "react-datepicker/dist/react-datepicker.css"; // Import DatePicker styles
+import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { format } from "date-fns";
 import {
@@ -32,7 +32,6 @@ import { ErrorResponse } from "@/types";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import { RootState } from "@/store";
 
 type EstimateSalarySearchToolbarProps = {
   onShowEstimateSalary: (salaryData: EstimateSalaryColumn[]) => void;
@@ -53,16 +52,12 @@ export default function EstimateSalarySearchToolbar({
   const [employeeSearchTerm, setEmployeeSearchTerm] = useState("");
   const [estimateClicked, setEstimateClicked] = useState(false);
   const [estimateSalary] = useEstimateSalaryMutation();
-  const [salaryGenerate] = useSalaryGenerateMutation(); // Hook for salary generation API
+  const [salaryGenerate] = useSalaryGenerateMutation();
   const navigate = useNavigate();
 
   const selectedEmployeeAction = useSelector(
     (state: any) => state.common.selectedEmployeeAction
   );
-
-  console.log(selectedEmployees);
-
-  console.log(selectedEmployeeAction);
 
   useEffect(() => {
     if (selectedEmployeeAction.action === "salary-estimate-generate") {
@@ -90,6 +85,8 @@ export default function EstimateSalarySearchToolbar({
       bank_date: null,
       note: "",
     },
+    mode: "onSubmit",
+    reValidateMode: "onChange",
   });
 
   const handleSearch = async (query: string): Promise<Option[]> => {
@@ -119,10 +116,9 @@ export default function EstimateSalarySearchToolbar({
       }).unwrap();
       if (response.data) {
         onShowEstimateSalary(response.data);
-        setEstimateClicked(true); // Hide Estimate button and show new fields
+        setEstimateClicked(true);
       }
     } catch (error) {
-      console.error("Failed to fetch salary estimate:", error);
       handleErrors(error as ErrorResponse);
     }
   };
@@ -145,10 +141,7 @@ export default function EstimateSalarySearchToolbar({
       }).unwrap();
       toast.success("Salary Generated Successfully");
       navigate("/hrm/salary-list");
-      // Handle the response, potentially refreshing or showing a message
-      // console.log("Salary generated successfully:", response);
     } catch (error) {
-      console.error("Failed to generate salary:", error);
       handleErrors(error as ErrorResponse);
     }
   };
@@ -159,13 +152,12 @@ export default function EstimateSalarySearchToolbar({
         onSubmit={form.handleSubmit(
           estimateClicked ? handleGenerate : handleEstimate
         )}
-        className="w-full p-4 rounded-lg  space-y-6"
+        className="w-full p-4 rounded-lg space-y-6"
       >
         <h2 className="font-semibold mb-6">Estimate Salary</h2>
 
         <Card>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6 p-5">
-            {/* Employee Selector */}
             <div className="space-y-2">
               <label htmlFor="employees" className="text-sm font-medium">
                 Employees *
@@ -183,7 +175,6 @@ export default function EstimateSalarySearchToolbar({
               />
             </div>
 
-            {/* Month and Year Picker */}
             <div className="space-y-2 flex flex-col">
               <label className="text-sm font-medium mt-1">
                 Month and Year *
@@ -210,26 +201,36 @@ export default function EstimateSalarySearchToolbar({
               </div>
             ) : (
               <>
-                {/* Bank Advice No */}
                 <FormField
                   control={form.control}
                   name="bank_advice_no"
-                  render={({ field }) => (
+                  rules={{
+                    required: "Bank Advice No is required",
+                  }}
+                  render={({ field, fieldState }) => (
                     <FormItem>
                       <FormLabel>Bank Advice No</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter Bank Advice No" {...field} />
+                        <Input
+                          placeholder="Enter Bank Advice No"
+                          {...field}
+                          className={fieldState.invalid ? "border-red-500" : ""}
+                        />
                       </FormControl>
-                      <FormMessage />
+                      {fieldState.error && (
+                        <FormMessage>{fieldState.error.message}</FormMessage>
+                      )}
                     </FormItem>
                   )}
                 />
 
-                {/* Bank Date */}
                 <FormField
                   control={form.control}
                   name="bank_date"
-                  render={({ field }) => (
+                  rules={{
+                    required: "Bank Date is required",
+                  }}
+                  render={({ field, fieldState }) => (
                     <FormItem>
                       <FormLabel>Bank Date</FormLabel>
                       <Popover>
@@ -237,7 +238,7 @@ export default function EstimateSalarySearchToolbar({
                           <Button
                             variant="outline"
                             className={`w-full justify-start text-left font-normal ${
-                              !field.value && "text-muted-foreground"
+                              fieldState.invalid && "border-red-500"
                             }`}
                           >
                             {field.value
@@ -255,7 +256,9 @@ export default function EstimateSalarySearchToolbar({
                           />
                         </PopoverContent>
                       </Popover>
-                      <FormMessage />
+                      {fieldState.error && (
+                        <FormMessage>{fieldState.error.message}</FormMessage>
+                      )}
                     </FormItem>
                   )}
                 />
@@ -274,13 +277,11 @@ export default function EstimateSalarySearchToolbar({
                   )}
                 />
 
-                {/* Generate Button */}
-
                 <div className="pt-8">
                   <Button
                     variant="default"
                     type="submit"
-                    className="w-fit px-14  "
+                    className="w-fit px-14"
                   >
                     Generate
                   </Button>
