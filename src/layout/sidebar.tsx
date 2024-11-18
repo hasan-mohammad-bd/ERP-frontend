@@ -43,7 +43,7 @@ export default function Sidebar({ className }: SidebarProps) {
   // Filter items based on user roles
   const filterByRole = (items: NavItem[]): NavItem[] => {
     if (!user) return items;
-    const permissionSet = new Set(user.role.permissions);
+    const permissionSet = new Set(user.role?.permissions || []);
 
     return items.filter((item) => {
       const hasAccess = item.permissions?.some((permission: string) =>
