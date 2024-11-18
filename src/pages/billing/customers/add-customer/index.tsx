@@ -1,28 +1,12 @@
 import { Heading } from "@/components/common/heading";
-import { Separator } from "@radix-ui/react-dropdown-menu";
-// import { AddSupplierForm } from "./components/add-supplier-form";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { AddCustomerForm } from "./components/add-supplier-form";
+import { Separator } from "@/components/ui/separator";
 
 const CustomerAddForm = () => {
   const navigate = useNavigate();
-  // const [isOpen, setIsOpen] = useState(false);
-  //   const [pagination, setPagination] = React.useState<PaginationState>({
-  //     pageIndex: 0,
-  //     pageSize: 10,
-  //   });
-
-  //   const { data, isLoading } = useGetLeaveTypesQuery(
-  //     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
-  //   );
-
-  //   const leaveType = data?.data || [];
-  //   console.log(leaveType)
-  //   const paginationInfo: PaginationInfo | undefined = data?.meta;
-
-  //   if (isLoading) return <Loading />;
 
   return (
     <>
@@ -30,11 +14,11 @@ const CustomerAddForm = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="Supplier"
+              title="Customer Add"
               description="Manage all items for you business"
             />
-            <Button onClick={() => navigate("/billing/supplier")} size={"sm"}>
-              <ArrowLeft className="mr-2 h-4 w-4" /> Back To All Supplier
+            <Button onClick={() => navigate("/billing/customers")} size={"sm"}>
+              <ArrowLeft className="mr-2 h-4 w-4" /> Back To All Customer
             </Button>
           </div>
           <Separator />

@@ -1,6 +1,7 @@
 import withFallback from "@/utils/with-fallback";
 import {
   EditCustomerForm,
+  EditSupplierForm,
   // DashboardAccounts,
   ErrorPage,
   Layout,
@@ -31,14 +32,12 @@ import { AddRecurringInvoice } from "@/pages/billing/recurring-invoice/component
 import CreditNotes from "@/pages/billing/credit-notes";
 import { AddCreditNotes } from "@/pages/billing/credit-notes/components/add-credit-notes-form";
 import SupplierList from "@/pages/billing/supplier/supplier-list";
-import { AddSupplierForm } from "@/pages/billing/supplier/add-supplier/components/add-supplier-form";
 import Supplier from "@/pages/billing/supplier/add-supplier";
 import ExpensesList from "@/pages/billing/expenses/expenses-list";
 import Expenses from "@/pages/billing/expenses/add-expenses";
 import AddExpensesForm from "@/pages/billing/expenses/add-expenses/components/add-expenses-form";
 import SubCategory from "@/pages/billing/sub-category";
 import Customers from "@/pages/billing/customers/customer-list";
-import { AddCustomerForm } from "@/pages/billing/customers/add-customer/components/add-supplier-form";
 import ManagePurchase from "@/pages/billing/manage-purchase";
 import { AddManagePurchase } from "@/pages/billing/manage-purchase/components/add-manage-purchase-form";
 import MadePayment from "@/pages/billing/made-payment";
@@ -68,6 +67,7 @@ import Brand from "@/pages/billing/brand";
 import AttributeCategory from "@/pages/billing/attribute-category";
 import Attributes from "@/pages/billing/attributes";
 import ExpensesCategory from "@/pages/billing/expenses-category";
+import CustomerAddForm from "@/pages/billing/customers/add-customer";
 
 const billingRoutes = {
   path: "billing/",
@@ -91,7 +91,7 @@ const billingRoutes = {
         },
         {
           path: "add",
-          element: withFallback(<AddCustomerForm />),
+          element: withFallback(<CustomerAddForm />),
           errorElement: withFallback(<ErrorPage />),
         },
         {
@@ -118,7 +118,7 @@ const billingRoutes = {
         },
         {
           path: "edit/:id",
-          element: withFallback(<AddSupplierForm />),
+          element: withFallback(<EditSupplierForm />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],

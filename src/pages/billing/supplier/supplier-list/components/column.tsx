@@ -1,9 +1,9 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
-import { EmployeeColumn } from "@/lib/validators";
 import { CellAction } from "./cell-action";
+import { CustomerColumn } from "@/lib/validators/billing/customer";
 
-export const SupplierColumns: ColumnDef<EmployeeColumn>[] = [
+export const supplierColumn: ColumnDef<CustomerColumn>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -32,34 +32,28 @@ export const SupplierColumns: ColumnDef<EmployeeColumn>[] = [
   {
     accessorKey: "name",
     header: "Name",
-    cell: () => <>Demo Name</>,
+    cell: ({ row }) => <>{row.original.name}</>, // Displaying actual customer name
   },
   {
-    accessorKey: "company_name",
+    accessorKey: "companyName",
     header: "Company Name",
-    cell: () => <>Demo Company</>,
+    cell: ({ row }) => <>{row.original.company_name}</>, // Displaying company name
   },
-  {
-    accessorKey: "date",
-    header: "Date",
-    cell: () => <>10/20/2024</>,
-  },
-  {
-    accessorKey: "mobile_number",
-    header: "Mobile Number",
-    cell: () => <>01645958942</>,
-  },
-
   {
     accessorKey: "email",
-    header: "Email Address",
-    cell: () => <>Demo@Email.com</>,
+    header: "Email",
+    cell: ({ row }) => <>{row.original.email}</>, // Displaying email
+  },
+  {
+    accessorKey: "workPhone",
+    header: "Work Phone",
+    cell: ({ row }) => <>{row.original.work_phone}</>, // Displaying work phone
   },
 
   {
     id: "actions",
     header: () => <div className="text-center">Actions</div>,
     enableSorting: false,
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => <CellAction data={row.original} />, // Actions for each row
   },
 ];

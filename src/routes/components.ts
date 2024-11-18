@@ -142,6 +142,9 @@ export const ContraVoucher = lazy(
 export const EditCustomerForm = lazy(
   () => import("@/pages/billing/customers/edit-customer")
 );
+export const EditSupplierForm = lazy(
+  () => import("@/pages/billing/supplier/edit-supplier")
+);
 
 //All We Routes
 export const Organization = lazy(() => import("@/pages/web/organization"));

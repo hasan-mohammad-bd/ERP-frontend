@@ -1,12 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { useForm, useFieldArray } from "react-hook-form";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useForm } from "react-hook-form";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -18,100 +12,113 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-// import { Textarea } from "@/components/ui/textarea";
-import FileUpload from "@/components/common/file-uploader";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AddressForm } from "./AddressForm";
-import {
-  SupplierFormValues,
-  supplierSchema,
-} from "@/lib/validators/billing/supplier";
 import { useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
-//    import { Input } from "@/components/ui/input";
-
-// import { zodResolver } from "@hookform/resolvers/zod";
-
-// import { Plus,  } from "lucide-react"; // For icons
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { useNavigate } from "react-router-dom";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import { LocationColumn } from "@/lib/validators";
+import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
+import {
+  CustomerFormType,
+  customerSchema,
+} from "@/lib/validators/billing/customer";
+import { Textarea } from "@/components/ui/textarea";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
+import { toast } from "sonner";
+import { useCreateSupplierMutation } from "@/store/services/billing/api/supplier";
 
 export function AddSupplierForm() {
-  // const form = useForm<SupplierFormValues>({
-  //     resolver: zodResolver(supplierSchema),
-  //     defaultValues: {
-  //       suppliers: [{ name: "", email: "", mobile_number: "", note: "" }], // Start with one supplier
-  //     },
-  //   });
+  const navigate = useNavigate();
+  const [openDatePickers, setOpenDatePickers] = useState({
+    date: false,
+  });
 
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [createSupplier, { isLoading: isSupplierCreateLoading }] =
+    useCreateSupplierMutation();
 
-  console.log(uploadedFiles);
+  const { data: locations, isLoading: locationLoading } = useGetLocationsQuery(
+    "page=1&per_page=1000"
+  );
+  const locationData = locations?.data || [];
 
-  const form = useForm<SupplierFormValues>({
-    resolver: zodResolver(supplierSchema),
+  const handleDatePickerToggle = (type: "date") => {
+    setOpenDatePickers((prev) => ({
+      ...prev,
+      [type]: !prev[type],
+    }));
+  };
+
+  const supplierform = useForm<CustomerFormType>({
+    resolver: zodResolver(customerSchema),
     defaultValues: {
-      suppliers: [{ name: "", email: "", mobile_number: "", note: "" }], // Start with one supplier
+      name: "",
+      opening_balance: "",
+      email: "",
+      phone: "",
+      note: "",
+      company_name: "",
+      company_id: "",
+      work_phone: "",
     },
-    //  defaultValues: {
-    //    name: previousData?.name || "",
-    //    short_code: previousData?.short_code || "",
-    //  },
   });
 
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "suppliers", // Field name in the schema
-  });
-
-  async function onSubmit() {
-    // try {
-    //   if (previousData) {
-    //     await updateUnit({
-    //       unitId: previousData.id,
-    //       updatedUnit: data,
-    //     }).unwrap();
-    //     toast.success("Policy updated successfully");
-    //     modalClose();
-    //   } else {
-    //     await createUnit(data).unwrap();
-    //     toast.success("Policy created successfully");
-    //     modalClose();
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   handleErrors(error as ErrorResponse);
-    // }
+  async function onSupplierFormSubmit(data: CustomerFormType) {
+    try {
+      const response = await createSupplier({
+        ...data,
+        opening_balance: Number(data.opening_balance),
+        location_id: Number(data.location_id),
+      }).unwrap();
+      toast.success("Supplier created successfully");
+      navigate(`/billing/supplier/edit/${response.data.id}`);
+      supplierform.reset();
+    } catch (error) {
+      handleErrors(error as ErrorResponse);
+      console.log(error);
+    }
   }
 
   return (
     <Tabs defaultValue="supplier" className="max-w-[1000px] mx-auto mt-10">
       <TabsList className="grid w-full grid-cols-4">
         <TabsTrigger value="supplier">Supplier Details</TabsTrigger>
-        <TabsTrigger value="address">Address</TabsTrigger>
-        <TabsTrigger value="contact_person">Contact Person</TabsTrigger>
+        <TabsTrigger value="address" disabled>
+          Address
+        </TabsTrigger>
+        <TabsTrigger value="contact_person" disabled>
+          Contact Person
+        </TabsTrigger>
         {/* <TabsTrigger value="note">Note</TabsTrigger> */}
-        <TabsTrigger value="attachment">Attachment</TabsTrigger>
+        <TabsTrigger value="attachment" disabled>
+          Attachment
+        </TabsTrigger>
       </TabsList>
 
-      <Form {...form}>
+      <Form {...supplierform}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={supplierform.handleSubmit(onSupplierFormSubmit)}
           className="space-y-3 max-w-[1200px] mx-auto"
         >
           <TabsContent value="supplier">
             <Card>
               <CardHeader>
-                <CardTitle>Supplier </CardTitle>
-                <CardDescription>
-                  {/* Make changes to your account here. Click save when you're
-                  done. */}
-                </CardDescription>
+                <CardTitle>Add Supplier</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   {/* Form Fields */}
 
                   <FormField
-                    control={form.control}
+                    control={supplierform.control}
                     name="name"
                     render={({ field }) => (
                       <FormItem>
@@ -119,7 +126,7 @@ export function AddSupplierForm() {
                         <FormControl>
                           <Input
                             className=""
-                            placeholder="Enter Full Name"
+                            placeholder="Enter full name"
                             {...field}
                           />
                         </FormControl>
@@ -128,7 +135,7 @@ export function AddSupplierForm() {
                     )}
                   />
                   <FormField
-                    control={form.control}
+                    control={supplierform.control}
                     name="company_name"
                     render={({ field }) => (
                       <FormItem>
@@ -136,7 +143,7 @@ export function AddSupplierForm() {
                         <FormControl>
                           <Input
                             className=""
-                            placeholder="Enter Company Name"
+                            placeholder="Enter company name"
                             {...field}
                           />
                         </FormControl>
@@ -145,15 +152,15 @@ export function AddSupplierForm() {
                     )}
                   />
                   <FormField
-                    control={form.control}
+                    control={supplierform.control}
                     name="company_id"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Company Id</FormLabel>
+                        <FormLabel>Supplier Id</FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter company Id"
+                            placeholder="Enter supplier Id"
                             {...field}
                           />
                         </FormControl>
@@ -162,7 +169,7 @@ export function AddSupplierForm() {
                     )}
                   />
                   <FormField
-                    control={form.control}
+                    control={supplierform.control}
                     name="work_phone"
                     render={({ field }) => (
                       <FormItem>
@@ -179,15 +186,15 @@ export function AddSupplierForm() {
                     )}
                   />
                   <FormField
-                    control={form.control}
-                    name="mobile_number"
+                    control={supplierform.control}
+                    name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Mobile number</FormLabel>
+                        <FormLabel>Phone number</FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter mobile number"
+                            placeholder="Enter phone number"
                             {...field}
                           />
                         </FormControl>
@@ -196,7 +203,7 @@ export function AddSupplierForm() {
                     )}
                   />
                   <FormField
-                    control={form.control}
+                    control={supplierform.control}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
@@ -214,15 +221,14 @@ export function AddSupplierForm() {
                   />
 
                   <FormField
-                    control={form.control}
+                    control={supplierform.control}
                     name="opening_balance"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Opening Balance</FormLabel>
                         <FormControl>
                           <Input
-                            className=""
-                            placeholder="opening balance"
+                            placeholder="Enter opening balance"
                             {...field}
                           />
                         </FormControl>
@@ -232,224 +238,96 @@ export function AddSupplierForm() {
                   />
 
                   <FormField
-                    control={form.control}
-                    name="date"
+                    control={supplierform.control}
+                    name={`date`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Date</FormLabel>
+                        <Popover
+                          open={openDatePickers.date}
+                          onOpenChange={() => handleDatePickerToggle("date")}
+                        >
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={`w-full justify-start text-left font-normal ${
+                                !field.value && "text-muted-foreground"
+                              }`}
+                            >
+                              {field.value
+                                ? format(field.value, "PP")
+                                : "Pick a date"}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent
+                            className="w-auto p-0 z-[200]"
+                            align="start"
+                          >
+                            <Calendar
+                              mode="single"
+                              selected={
+                                field.value ? new Date(field.value) : undefined
+                              }
+                              onSelect={(date) => {
+                                field.onChange(
+                                  date ? format(date, "yyyy-MM-dd") : ""
+                                );
+                              }}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormSearchSelect<LocationColumn>
+                    loading={locationLoading}
+                    data={locationData}
+                    displayField="name"
+                    valueField="id"
+                    form={supplierform}
+                    name="location_id"
+                    placeholder="Location"
+                    title="Location"
+                    className="w-[300px]"
+                  />
+                  <FormField
+                    control={supplierform.control}
+                    name="note"
+                    render={({ field }) => (
+                      <FormItem className="col-span-2">
+                        <FormLabel>Note</FormLabel>
                         <FormControl>
-                          <Input
-                            type="date"
-                            placeholder="Enter date"
-                            value={
-                              field.value
-                                ? new Date(field.value)
-                                    .toISOString()
-                                    .split("T")[0]
-                                : ""
-                            }
-                            onChange={(e) =>
-                              field.onChange(new Date(e.target.value))
-                            }
-                          />
+                          <Textarea placeholder="Enter note" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
-              </CardContent>
-              {/* <CardFooter>
-            <Button>Save changes</Button>
-          </CardFooter> */}
-            </Card>
-          </TabsContent>
 
-          {/* Billing & shipping address */}
-          <TabsContent value="address">
-            <Card>
-              <CardHeader>
-                <CardDescription>{/* Description here */}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                  {/* Billing Address */}
-                  <AddressForm
-                    form={form}
-                    namePrefix="billing"
-                    title="Billing"
-                  />
-
-                  {/* Shipping Address */}
-                  <AddressForm
-                    form={form}
-                    namePrefix="shipping"
-                    title="Shipping"
-                  />
+                <div className="flex flex-row-reverse items-center pt-5">
+                  <Button
+                    variant="default"
+                    type="submit"
+                    className="w-fit ml-2"
+                  >
+                    {isSupplierCreateLoading ? "Saving..." : "Save"}
+                  </Button>
+                  <Button
+                    variant="primary"
+                    type="button"
+                    className="w-fit"
+                    onClick={() => navigate("/billing/supplier")}
+                  >
+                    Cancel
+                  </Button>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
-
-          {/* contact person */}
-          <TabsContent value="contact_person">
-            <Card>
-              <CardHeader>
-                <CardTitle>Contact Supplier</CardTitle>
-                {/* <CardDescription>Manage your supplier contacts here.</CardDescription> */}
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {fields.map((field, index) => (
-                  <div className="flex gap-4" key={field.id}>
-                    {/* Name field */}
-                    <FormField
-                      control={form.control}
-                      //   name={`suppliers.${index}.name`} // Reference to the dynamic field
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Name</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="text"
-                              placeholder="Enter name"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* Email field */}
-                    <FormField
-                      control={form.control}
-                      //   name={`suppliers.${index}.email`}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email Address</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="email"
-                              placeholder="Enter email address"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* Mobile number field */}
-                    <FormField
-                      control={form.control}
-                      //   name={`suppliers.${index}.mobile_number`}
-                      name="mobile_number"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Mobile number</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="text"
-                              placeholder="Enter mobile number"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* Note field */}
-                    <FormField
-                      control={form.control}
-                      //   name={`suppliers.${index}.note`}
-                      name="note"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Note</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="text"
-                              placeholder="Enter your note"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* Delete button */}
-                    {index >= 0 && (
-                      <div className="flex items-center mt-8">
-                        <Button
-                          variant="outline"
-                          className="text-red-600"
-                          type="button"
-                          onClick={() => remove(index)} // Remove the field
-                        >
-                          <Trash2 size={16} />
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                ))}
-
-                {/* Add Supplier button */}
-                <Button
-                  variant="outline"
-                  className="border border-dashed border-gray-700 w-full"
-                  type="button"
-                  onClick={() =>
-                    append({ name: "", email: "", mobile_number: "", note: "" })
-                  } // Append a new supplier field set
-                >
-                  <Plus size={16} /> <span className="ml-2">Add Supplier</span>
-                </Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Attachment */}
-          <TabsContent value="attachment">
-            <Card>
-              <CardHeader>
-                <CardTitle>Attachment </CardTitle>
-                <CardDescription>
-                  {/* Make changes to your account here. Click save when you're
-                  done. */}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="space-y-2">
-                  <FormLabel>Upload Files</FormLabel>
-                  <FileUpload
-                    setFilesToUpload={setUploadedFiles}
-                    filesToUpload={uploadedFiles}
-                    // uploadedFiles={previousData?.files}
-                    // onDeleteSuccess={() => ()}
-                  />
-                </div>
-              </CardContent>
-              {/* <CardFooter>
-            <Button>Save changes</Button>
-          </CardFooter> */}
-            </Card>
-          </TabsContent>
-          <div className="flex flex-row-reverse items-center !mb-2">
-            <Button variant="default" type="submit" className="w-fit ml-2">
-              Save
-            </Button>
-            <Button
-              variant="primary"
-              //   onClick={}
-              className="w-fit"
-            >
-              Cancel
-            </Button>
-          </div>
         </form>
       </Form>
     </Tabs>

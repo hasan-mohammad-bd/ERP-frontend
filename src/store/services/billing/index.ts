@@ -25,6 +25,7 @@ export const inventoryApi = createApi({
     "expenses-category",
     "contact-persons",
     "contact-attachments",
+    "suppliers",
   ],
   endpoints: () => ({}),
 });
