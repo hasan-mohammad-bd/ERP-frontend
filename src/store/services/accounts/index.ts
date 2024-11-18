@@ -36,7 +36,8 @@ export const accountApi = createApi({
     "dashboard-summery",
     "budgets",
     "check-books",
-	"accounts-approvals"
+    "accounts-approvals",
+    "taxes",
   ],
   endpoints: () => ({}),
 });
