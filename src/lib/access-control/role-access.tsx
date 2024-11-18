@@ -27,7 +27,7 @@ export default function RoleAccess({
   }
 
   // Check if user has the required roles
-  const hasAccess = hasPermission(user.role.permissions, roles, requireAll);
+  const hasAccess = hasPermission(user.role?.permissions || [], roles, requireAll);
 
   // Redirect to home if user lacks necessary roles
   if (!hasAccess) {

@@ -14,7 +14,7 @@ export default function RoleAccessOutlet({ roles, requireAll = false }: Readonly
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (!roles?.length || !hasPermission(user.role.permissions, roles, requireAll)) {
+  if (!roles?.length || !hasPermission(user.role?.permissions || [], roles, requireAll)) {
     return <Navigate to="/" replace />;
   }
 
