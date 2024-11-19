@@ -12,7 +12,10 @@ import { useForm } from "react-hook-form";
 import { DateTimePicker } from "@/components/ui/dayTimePicker";
 import MultipleSelector, { Option } from "@/components/ui/multiSelectSearch";
 import { Textarea } from "@/components/ui/textarea";
-import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
+import {
+  // useGetEmployeesQuery,
+  useLazyGetEmployeesQuery,
+} from "@/store/services/hrm/api/employee-list";
 import {
   useCreateAttendanceCheckInMutation,
   useCreateAttendanceCheckOutMutation,
@@ -33,11 +36,11 @@ interface AddAttendanceFormProps {
 
 export function AddAttendanceForm({ tab, modalClose }: AddAttendanceFormProps) {
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
-  const [employeeSearchTerm, setEmployeeSearchTerm] = useState("");
+  // const [employeeSearchTerm, setEmployeeSearchTerm] = useState("");
 
-  const { data: employeeList, isLoading: isLoadingEmployee } =
-    useGetEmployeesQuery(`per_page=15&page=1&text=${employeeSearchTerm}`);
-
+  // const { data: employeeList, isLoading: isLoadingEmployee } =
+  //   useGetEmployeesQuery(`per_page=15&page=1&text=${employeeSearchTerm}`);
+  const [triggerGetEmployees] = useLazyGetEmployeesQuery();
 
   const [createAttendanceCheckIn, { isLoading: isSubmittingCheckIn }] =
     useCreateAttendanceCheckInMutation(); // Check-in mutation
@@ -46,22 +49,49 @@ export function AddAttendanceForm({ tab, modalClose }: AddAttendanceFormProps) {
     useCreateAttendanceCheckOutMutation(); // Check-out mutation
 
   const form = useForm<attendanceCheckInFormValues>({
-    defaultValues: {},
+    defaultValues: {
+      date_time: new Date(),
+    },
   });
 
+  // const handleSearch = async (query: string): Promise<Option[]> => {
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       const res = employeeList?.data?.filter((option) =>
+  //         [option.first_name, option.last_name, option.email].some((field) =>
+  //           field?.toLowerCase().includes(query.toLowerCase())
+  //         )
+  //       );
+
+  //       resolve(
+  //         res?.map((item) => ({
+  //           value: String(item.id),
+  //           label: `${item.first_name} ${item.last_name} (${item.id})`,
+  //         })) || []
+  //       );
+  //     }, 300);
+  //   });
+  // };
+
   const handleSearch = async (query: string): Promise<Option[]> => {
-    setEmployeeSearchTerm(query);
+    const searchQuery = query.trim() || ""; // Use an empty string or default text
 
-    const options =
-      employeeList?.data?.map((item: EmployeeColumn) => ({
-        value: String(item.id),
-        label: item.first_name + " " + item.last_name + " (" + item.id + ")",
-      })) || [];
+    try {
+      const { data } = await triggerGetEmployees(
+        `per_page=15&page=1&text=${searchQuery}`
+      ).unwrap();
 
-    return options;
+      return (
+        data?.map((item: EmployeeColumn) => ({
+          value: String(item.id),
+          label: `${item.first_name} ${item.last_name} (${item.id})`,
+        })) || []
+      );
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+      return [];
+    }
   };
-
-
 
   const onSubmit = async (data: attendanceCheckInFormValues) => {
     try {
@@ -82,7 +112,7 @@ export function AddAttendanceForm({ tab, modalClose }: AddAttendanceFormProps) {
 
   return (
     <>
-      {isLoadingEmployee ? (
+      {isSubmittingCheckIn || isSubmittingCheckOut ? (
         <div className="h-56">
           <Loading />
         </div>
@@ -99,20 +129,55 @@ export function AddAttendanceForm({ tab, modalClose }: AddAttendanceFormProps) {
                 <FormItem>
                   <FormLabel>Employee Name</FormLabel>
                   <FormControl>
+                    {/* <MultipleSelector
+                      {...field}
+                      value={selectedOptions}
+                      onSearch={async (value) => {
+                        const res = await handleSearch(value);
+                        return res;
+                      }} // onChange={(options) => {
+                      //   setSelectedOptions(options);
+                      //   field.onChange(
+                      //     options.map((option) => parseInt(option.value))
+                      //   );
+                      // }}
+                      triggerSearchOnFocus
+                      hidePlaceholderWhenSelected
+                      placeholder="Search and select options"
+                      loadingIndicator={
+                        <p className="py-2 text-center leading-10 text-muted-foreground">
+                          loading...
+                        </p>
+                      }
+                      emptyIndicator={
+                        <p className="w-full text-center leading-10 text-muted-foreground">
+                          no results found.
+                        </p>
+                      }
+                    /> */}
                     <MultipleSelector
                       {...field}
                       value={selectedOptions}
-                      onSearch={handleSearch}
+                      onSearch={(value) => handleSearch(value || "")}
                       onChange={(options) => {
                         setSelectedOptions(options);
                         field.onChange(
                           options.map((option) => parseInt(option.value))
                         );
                       }}
+                      triggerSearchOnFocus
                       hidePlaceholderWhenSelected
                       placeholder="Search and select options"
-                      loadingIndicator={<span>Loading...</span>}
-                      emptyIndicator={<span>No options found</span>}
+                      loadingIndicator={
+                        <p className="py-2 text-center leading-10 text-muted-foreground">
+                          loading...
+                        </p>
+                      }
+                      emptyIndicator={
+                        <p className="w-full text-center leading-10 text-muted-foreground">
+                          no results found.
+                        </p>
+                      }
                     />
                   </FormControl>
                   <FormMessage />
