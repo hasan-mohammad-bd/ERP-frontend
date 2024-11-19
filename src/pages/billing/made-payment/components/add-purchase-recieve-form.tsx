@@ -253,10 +253,7 @@ export function AddMadePaymentForm() {
             title={"New Payment Made"}
             description="Manage your sub accounts for you business"
           />
-          <Button
-            onClick={() => navigate("/billing/made-payment")}
-            size={"sm"}
-          >
+          <Button onClick={() => navigate("/billing/made-payment")} size={"sm"}>
             Payment Made List
           </Button>
         </div>
@@ -307,7 +304,7 @@ export function AddMadePaymentForm() {
                       </FormItem>
                     )}
                   />
-                                    <FormField
+                  <FormField
                     control={form.control}
                     name="poNumber"
                     render={({ field }) => (
@@ -345,7 +342,7 @@ export function AddMadePaymentForm() {
                       </FormItem>
                     )}
                   />
-                                    <FormField
+                  <FormField
                     control={form.control}
                     name="totalReceivable"
                     render={({ field }) => (
@@ -448,7 +445,6 @@ export function AddMadePaymentForm() {
                     )}
                   />
 
-
                   <FormField
                     control={form.control}
                     name="note"
@@ -469,7 +465,8 @@ export function AddMadePaymentForm() {
                   <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
                     <FileUpload
-                      setUploadedFiles={setUploadedFiles}
+                      setFilesToUpload={setUploadedFiles}
+                      filesToUpload={uploadedFiles}
                       // uploadedFiles={previousData?.files}
                       // onDeleteSuccess={() => refetch()}
                     />

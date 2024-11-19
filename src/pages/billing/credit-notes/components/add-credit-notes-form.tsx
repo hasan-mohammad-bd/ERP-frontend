@@ -263,7 +263,8 @@ export function AddCreditNotes() {
                   <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
                     <FileUpload
-                      setUploadedFiles={setUploadedFiles}
+                      setFilesToUpload={setUploadedFiles}
+                      filesToUpload={uploadedFiles}
                       // uploadedFiles={previousData?.files}
                       // onDeleteSuccess={() => refetch()}
                     />

@@ -45,9 +45,18 @@ const customerSchemaForAPI = customerSchema.extend({
 export type CustomerFormType = z.infer<typeof customerSchema>;
 export type CustomerFormTypeForAPI = z.infer<typeof customerSchemaForAPI>;
 
+export type Attachment = {
+  id: number;
+  file_name: string;
+  path: string;
+  thumbnail: string;
+  file_type: string;
+  created_at: string;
+};
+
 export type CustomerShowType = CustomerFormTypeForAPI & {
   parent_id: number | null;
-  files: any[]; // Replace `any` with actual file type if available
+  files: Attachment[]; // Replace `any` with actual file type if available
   addresses: AddressColumn[];
   location: {
     id: number;

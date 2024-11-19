@@ -83,6 +83,13 @@ const accountsNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["settings"],
       },
+      {
+        title: "Tax",
+        icon: Settings,
+        href: "/accounts/tax",
+        color: "text-sky-500",
+        permissions: ["settings"],
+      },
     ],
   },
 
@@ -238,7 +245,6 @@ const accountsNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["settings", "entries"],
       },
-      
     ],
   },
 ];

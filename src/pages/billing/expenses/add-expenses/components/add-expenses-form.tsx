@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import FileUpload from "@/components/common/file-uploader";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
- // Assuming this exists
+// Assuming this exists
 
 // Dummy data for the expense categories
 const categoryData = [
@@ -121,10 +121,7 @@ const AddExpensesForm = () => {
                     <FormItem>
                       <FormLabel>Note</FormLabel>
                       <FormControl>
-                        <Textarea
-                          placeholder="Enter your note" {...field}
-
-                          />
+                        <Textarea placeholder="Enter your note" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -136,7 +133,10 @@ const AddExpensesForm = () => {
             <div className="w-full">
               <div className="space-y-2">
                 <FormLabel>Upload Files</FormLabel>
-                <FileUpload setUploadedFiles={setUploadedFiles} />
+                <FileUpload
+                  setFilesToUpload={setUploadedFiles}
+                  filesToUpload={uploadedFiles}
+                />
               </div>
             </div>
           </div>
@@ -149,8 +149,12 @@ const AddExpensesForm = () => {
                 key={field.id}
               >
                 {/* Replace Expense Category with FormSearchSelect */}
-                <div className={`${index === 0 ? "-translate-y-0" : "-translate-y-[8px]"}   w-full`}>
-                {index === 0 && <FormLabel>Expenses Category</FormLabel>}{" "}
+                <div
+                  className={`${
+                    index === 0 ? "-translate-y-0" : "-translate-y-[8px]"
+                  }   w-full`}
+                >
+                  {index === 0 && <FormLabel>Expenses Category</FormLabel>}{" "}
                   <FormSearchSelect
                     loading={false} // Assuming no loading state is needed here for now
                     data={categoryData}
