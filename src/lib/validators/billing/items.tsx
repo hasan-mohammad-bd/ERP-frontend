@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { brandRow } from "./brand";
 import { unitRow } from "./unit";
-import { userRow } from "../accounts/entry";
+import { files, userRow } from "../accounts/entry";
 import { organizationColumn } from "@/lib/validators";
 
 // Define the reusable CategorySchema
@@ -19,7 +19,7 @@ const CategorySchema = z.object({
 export const ItemSchema = z.object({
   item_nature: z.string(),
   name: z.string(),
-  images: z.string().url().optional(), 
+  images: files, 
   primary_unit_id: z.coerce.number(),
   secondary_unit_id: z.coerce.number(),
   primary_to_secondary_unit: z.coerce.number(),
@@ -48,7 +48,7 @@ export const itemRow = z.object({
   id: z.coerce.number(),
   item_nature: z.string(),
   name: z.string(),
-  images: z.string().url(),
+  images: files,
   category: CategorySchema,
   sub_category: CategorySchema,
   child_category: CategorySchema,
