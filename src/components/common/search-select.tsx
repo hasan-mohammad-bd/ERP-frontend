@@ -88,7 +88,7 @@ const SearchSelect = <T extends object>({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={cn("max-w-[300px] w-[212px] p-0", className)}>
+      <PopoverContent className={cn("max-w-[350px] w-[212px] p-0", className)}>
         <Command>
           <CommandInput
             onInput={handleInputChange}

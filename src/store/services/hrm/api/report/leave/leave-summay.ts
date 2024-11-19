@@ -10,7 +10,7 @@ const leaveSummaryApi = hrmApi.injectEndpoints({
       { data: LeaveSummaryRow[]; meta: PaginationInfo; leaves_type_summary: LeaveTypeSummaryRow[]  },
       string
     >({
-      query: (params) => `leave-reports/summary?${params}`,
+      query: (params) => `leave-reports/summary?per_page=5&${params}`,
       providesTags: ["leave-summary"],
     }),
   }),

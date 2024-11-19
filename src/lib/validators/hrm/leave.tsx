@@ -57,14 +57,13 @@ export type LeaveGroupRow = z.infer<typeof leaveGroupRow>;
 //leave request
 
 export const leaveRequestSchema = z.object({
-  employee_id: z.string(),
+  employee_id: z.coerce.number(),
   start_date_time: z.string(),
   end_date_time: z.string(),
   status: z.string(),
   subject: z.string().optional().nullable(),
   description: z.string().optional().nullable(),
   leave_type_id: z.string(),
-
   files: files,
 });
 
