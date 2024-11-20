@@ -22,46 +22,14 @@ import {
 } from "@/lib/validators/web/approval-group";
 
 import MultipleSelector, { Option } from "@/components/ui/multiSelectSearch";
-// import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
-// import { useGetUsersQuery } from "@/store/services/erp-main/api/users";
-// import { UsersRow } from "@/lib/validators/web/users";
+
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import PriceAndStockTable from "./price-and-stock-table";
+import { useGetAttributeCategoriesQuery } from "@/store/services/billing/api/attribute-category";
+import { AttributeCategoryRow } from "@/lib/validators/billing/attribute-category";
+import { useGetAttributesQuery } from "@/store/services/billing/api/attributes";
 
-const AttributeCategoryData = [
-  { id: 1, name: "Color" },
-  { id: 2, name: "Size" },
-  { id: 3, name: "Material" },
-  { id: 4, name: "Brand" },
-  { id: 5, name: "Style" },
-  { id: 6, name: "Pattern" },
-  { id: 7, name: "Fit" },
-  { id: 8, name: "Season" },
-  { id: 9, name: "Occasion" },
-  { id: 10, name: "Feature" },
-];
 
-const attributesData = [
-  { id: 1, name: "Red", category_id: 1 },
-  { id: 2, name: "Blue", category_id: 1 },
-  { id: 3, name: "Green", category_id: 1 },
-  { id: 4, name: "Small", category_id: 2 },
-  { id: 5, name: "Medium", category_id: 2 },
-  { id: 6, name: "Large", category_id: 2 },
-  { id: 7, name: "Cotton", category_id: 3 },
-  { id: 8, name: "Polyester", category_id: 3 },
-  { id: 9, name: "Leather", category_id: 3 },
-  { id: 10, name: "Nike", category_id: 4 },
-  { id: 11, name: "Adidas", category_id: 4 },
-  { id: 12, name: "Puma", category_id: 4 },
-  { id: 13, name: "Casual", category_id: 5 },
-  { id: 14, name: "Formal", category_id: 5 },
-  { id: 15, name: "Striped", category_id: 6 },
-  { id: 16, name: "Checked", category_id: 6 },
-  { id: 17, name: "Slim Fit", category_id: 7 },
-  { id: 18, name: "Regular Fit", category_id: 7 },
-  { id: 19, name: "Winter", category_id: 8 },
-  { id: 20, name: "Summer", category_id: 8 },
-];
 
 export function PricingArea() {
   // const [createApprovalGroup, { isLoading }] = useCreateApprovalGroupMutation();
@@ -71,9 +39,19 @@ export function PricingArea() {
     {}
   );
   const [employeeSearchTerm, setEmployeeSearchTerm] = useState("");
-  // const { data: employeeList } = useGetUsersQuery(
-  //   `per_page=15&page=1&text=${employeeSearchTerm}`
-  // );
+ 
+  const { data: attributeCategories, isLoading: AttributeCategoryLoading } = useGetAttributeCategoriesQuery(
+    `per_page=1000&page=1`
+  );
+
+  const { data: attributes, isLoading: AttributesLoading } = useGetAttributesQuery(
+    `per_page=1000&page=1`
+  );
+
+  const attributesCategoryData = attributeCategories?.data || [];
+
+  const attributesData = attributes?.data || [];
+
 
   console.log(employeeSearchTerm)
 
@@ -102,30 +80,20 @@ export function PricingArea() {
   }, [previousData, form]); */
 
   const {
-    fields: pricing,
-    append: appendPricing,
-    remove: removePricing,
+    fields: attribute_categories,
+    append: appendAttributeCategory,
+    remove: removeAttributeCategory,
   } = useFieldArray({
     control: form.control,
-    name: "pricing" as keyof FieldValue<ApprovalGroupFormValues>,
+    name: "attribute_categories" as keyof FieldValue<ApprovalGroupFormValues>,
   });
 
   useEffect(() => {
-    if (pricing.length === 0) {
-      appendPricing("");
+    if (attribute_categories.length === 0) {
+      appendAttributeCategory("");
     }
-  }, [pricing, appendPricing]);
+  }, [attribute_categories, appendAttributeCategory]);
 
-  const handleSearchAdmin = async (query: string): Promise<Option[]> => {
-    setEmployeeSearchTerm(query);
-    const options =
-      attributesData?.map((item: any) => ({
-        value: String(item.id),
-        label: `${item.name} (${item.id})`,
-      })) || [];
-
-    return options;
-  };
 
   async function onSubmit(data: any) {
     console.log(data)
@@ -140,32 +108,61 @@ export function PricingArea() {
       console.log(error);
     } */
   }
+  
+
+  const catchCategory = form.watch(`attribute_categories.${attribute_categories.length - 1}.attribute_category_id`);
+
+
+  console.log(catchCategory)
+
+  const filteredAttributes = attributesData.filter(
+    (item) => Number(catchCategory) === Number(item.attribute_category.id)
+  );
+
+  
+
+
+ 
+  const handleSearchAdmin = async (query: string): Promise<Option[]> => {
+    setEmployeeSearchTerm(query);
+    const options =
+    filteredAttributes?.map((item: any) => ({
+        value: String(item.id),
+        label: `${item.name} (${item.id})`,
+      })) || [];
+
+    return options;
+  };
 
   return (
     <>
       <Card className="p-5">
         <CardTitle className="mb-5">Add Pricing</CardTitle>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+          <form onSubmit={form.handleSubmit(onSubmit)}  className="space-y-3">
             <div className="grid grid-cols-2 gap-4">
               <div className="">
-                {pricing.map((field, index) => (
+                {attribute_categories.map((field, index) => (
                   <div className="flex gap-x-2" key={field.id}>
-                    <FormSearchSelect<any>
-                      // loading={departmentLoading}
-                      data={AttributeCategoryData}
+                    
+                    <FormSearchSelect<AttributeCategoryRow>
+                      loading={AttributeCategoryLoading}
+                      data={attributesCategoryData}
                       displayField="name"
                       valueField="id"
                       form={form}
-                      name={`pricing.${index}.attribute-category-id`}
+                      name={`attribute_categories.${index}.attribute_category_id`}
                       placeholder="Select Attribute Category"
                       className="w-[330px]"
                       title="Attribute Category"
+                      
+
                     />
+                  
                     <div className="w-full">
                       <FormField
                         control={form.control}
-                        name={`pricing.${index}.attributes`}
+                        name={`attribute_categories.${index}.attribute_ids`}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>{index === 0 && "Attributes"}</FormLabel>
@@ -175,6 +172,7 @@ export function PricingArea() {
                                 value={adminOptions[index]}
                                 onSearch={handleSearchAdmin}
                                 onChange={(options) => {
+                                  
                                   setAdminOptions((prev) => ({
                                     ...prev,
                                     [index]: options,
@@ -201,7 +199,7 @@ export function PricingArea() {
                       className={`flex items-center justify-center ${
                         index === 0 ? "!mt-8" : "!mt-0"
                       }`}
-                      onClick={() => removePricing(index)}
+                      onClick={() => removeAttributeCategory(index)}
                     >
                       <Trash2 size={16} className="text-red-500" />
                     </span>
@@ -209,11 +207,9 @@ export function PricingArea() {
                 ))}
                 <Button
                   type="button"
-                  onClick={() => appendPricing("")}
+                  onClick={() => appendAttributeCategory("")}
                   variant="secondary"
-                  className={`mt-2 space-x-2 border border-dashed border-gray-700 w-fit ${
-                    pricing.length === 5 && "hidden"
-                  }`}
+                  className={`mt-2 space-x-2 border border-dashed border-gray-700 w-fit `}
                 >
                   <Plus size={14} /> <span>Add Level</span>
                 </Button>
@@ -222,7 +218,7 @@ export function PricingArea() {
 
             <div className="flex justify-end">
               <Button
-                variant="default"
+                // variant="default"
                 type="submit"
                 className="flex justify-end mt-4"
               >
@@ -232,6 +228,10 @@ export function PricingArea() {
           </form>
         </Form>
       </Card>
+      <div className="mt-5">
+      <PriceAndStockTable />
+      </div>
+      
     </>
   );
 }

@@ -42,18 +42,18 @@ export const itemRows: ColumnDef<ItemRow>[] = [
   {
     accessorKey: "brand",
     header: "Brand",
-    cell: ({row}) => row.original.brand.name
+    cell: ({row}) => row?.original?.brand?.name
   },
 
   {
     accessorKey: "primary_unit",
     header: "Primary Unit",
-    cell: ({row}) => row.original.primary_unit.name
+    cell: ({row}) => row?.original.primary_unit?.name
   },
   {
     accessorKey: "type",
     header: "Item Type",
-    cell: ({row}) => row.original.item_nature
+    cell: ({row}) => row?.original?.item_nature
     
   },
 

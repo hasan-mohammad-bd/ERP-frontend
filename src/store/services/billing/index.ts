@@ -27,6 +27,7 @@ export const inventoryApi = createApi({
     "item",
     "contact-attachments",
     "suppliers",
+    "demoBarcode"
   ],
   endpoints: () => ({}),
 });

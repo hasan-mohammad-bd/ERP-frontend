@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -19,14 +19,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
 import FileUpload from "@/components/common/file-uploader";
 import { PricingArea } from "./pricing-area";
-import PriceAndStockTable from "./price-and-stock-table";
+
 import {
   useCreateItemMutation,
   useGetItemByIdQuery,
   useUpdateItemMutation,
 } from "@/store/services/billing/api/items";
 import { ItemFormValues, ItemSchema } from "@/lib/validators/billing/items";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ErrorResponse } from "@/types";
 import handleErrors from "@/lib/handle-errors";
 import { toast } from "sonner";
@@ -45,10 +45,11 @@ import { TaxRow } from "@/lib/validators/accounts/tax";
 import { Loading } from "@/components/common/loading";
 
 export default function ItemAddForm() {
+  const navigate = useNavigate();
   const params = useParams();
   const [itemType, setItemType] = useState<"Goods" | "Service">("Goods");
   const { data: dataById, refetch } = useGetItemByIdQuery(`${params.id}`);
-  const previousData = dataById?.data ;
+  const previousData = dataById?.data;
   const [createItem, { isLoading }] = useCreateItemMutation();
   const [updateItem, { isLoading: updateLoading }] = useUpdateItemMutation();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -77,11 +78,38 @@ export default function ItemAddForm() {
   const taxData = taxes?.data || [];
 
   const form = useForm<ItemFormValues>({
-    // resolver: zodResolver(ItemSchema),
+    resolver: zodResolver(ItemSchema),
     defaultValues: {
       name: previousData?.name || "",
     },
   });
+
+
+  useEffect(() => {
+    if (previousData) {
+      form.reset({
+        name: previousData.name,
+        category_id: previousData?.category?.id.toString() || undefined,
+        sub_category_id: previousData?.sub_category?.id.toString() || undefined,
+        child_category_id: previousData?.child_category?.id.toString() || undefined,
+        brand_id: previousData?.brand?.id.toString() || undefined,
+        // images: previousData?.images || [],
+        primary_unit_id: previousData.primary_unit.id.toString(),
+        secondary_unit_id: previousData.secondary_unit.id.toString(),
+        purchase_account_tax_id: previousData.purchase_account_tax_id.toString(),
+        sale_account_tax_id: previousData.sale_account_tax_id.toString(),
+        inventory_account_tax_id: previousData.inventory_account_tax_id.toString(),
+        purchase_account_id: previousData.purchase_account_id.toString(),
+        sale_account_id: previousData.sale_account_id.toString(),
+        inventory_account_id: previousData.inventory_account_id.toString(),
+        primary_to_secondary_unit: previousData.primary_to_secondary_unit,
+        track_inventory: previousData.track_inventory,
+        manufacture: previousData.manufacture,
+        allow_sale: previousData.allow_sale,
+        sku: previousData?.sku
+      })
+    }
+  }, [previousData, form]);
 
   const filteredSubCategories = subCategoryData.filter(
     (item) => Number(form.watch("category_id")) === Number(item.parent_id)
@@ -109,9 +137,11 @@ export default function ItemAddForm() {
         }).unwrap();
         toast.success("Item updated successfully");
         // modalClose();
+        navigate("/billing/items");
       } else {
         await createItem(formData).unwrap();
         toast.success("Employee class created successfully");
+        navigate("/billing/items");
         // modalClose();
       }
     } catch (error) {
@@ -119,6 +149,8 @@ export default function ItemAddForm() {
       handleErrors(error as ErrorResponse);
     }
   }
+
+
 
   console.log(form.formState.errors);
   return (
@@ -128,6 +160,7 @@ export default function ItemAddForm() {
           <Loading />
         </div>
       ) : (
+        <>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-3 gap-6">
@@ -165,7 +198,7 @@ export default function ItemAddForm() {
                         <FileUpload
                           setFilesToUpload={setUploadedFiles}
                           filesToUpload={uploadedFiles}
-                          uploadedFiles={ previousData?.images}
+                          uploadedFiles={previousData?.images}
                           onDeleteSuccess={() => refetch()}
                         />
                       </div>
@@ -289,8 +322,11 @@ export default function ItemAddForm() {
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
                             <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
+                              checked={field.value === 1}
+                              onCheckedChange={(checked) => {
+                                field.onChange(checked ? 1 : 0);
+                              }}
+                              defaultValue={previousData? previousData.track_inventory : 0}
                             />
                           </FormControl>
                           <div className="space-y-1 leading-none">
@@ -306,8 +342,10 @@ export default function ItemAddForm() {
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
                             <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
+                              checked={field.value === 1}
+                              onCheckedChange={(checked) => {
+                                field.onChange(checked ? 1 : 0);
+                              }}
                             />
                           </FormControl>
                           <div className="space-y-1 leading-none">
@@ -323,8 +361,10 @@ export default function ItemAddForm() {
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
                             <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
+                              checked={field.value === 1}
+                              onCheckedChange={(checked) => {
+                                field.onChange(checked ? 1 : 0);
+                              }}
                             />
                           </FormControl>
                           <div className="space-y-1 leading-none">
@@ -404,12 +444,7 @@ export default function ItemAddForm() {
                 </Card>
               </div>
             </div>
-            <div>
-              <PricingArea />
-            </div>
-            <div className="mt-1">
-              <PriceAndStockTable />
-            </div>
+
 
             <div className="flex justify-end space-x-4 mt-5">
               <Button variant="outline" onClick={() => form.reset()}>
@@ -419,6 +454,17 @@ export default function ItemAddForm() {
             </div>
           </form>
         </Form>
+        {itemType === "Goods" && (
+              <>
+                <div>
+                  <PricingArea />
+                </div>
+                <div className="mt-1">
+                 
+                </div>
+              </>
+            )}
+        </>
       )}
     </>
   );
