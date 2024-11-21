@@ -1,9 +1,9 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
-import { EmployeeColumn } from "@/lib/validators";
 import { CellAction } from "./cell-action";
+import { ItemRow } from "@/lib/validators/billing/items";
 
-export const itemColumns: ColumnDef<EmployeeColumn>[] = [
+export const itemRows: ColumnDef<ItemRow>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -32,28 +32,29 @@ export const itemColumns: ColumnDef<EmployeeColumn>[] = [
   {
     accessorKey: "name",
     header: "Item Name",
-    cell: () => <>Demo Product</>
+    
   },
   {
     accessorKey: "sku",
     header: "SKU",
-    cell: () => <>sk-123</>,
+
   },
   {
     accessorKey: "brand",
     header: "Brand",
-    cell: () => <>Demo Brand</>,
+    cell: ({row}) => row?.original?.brand?.name
   },
 
   {
     accessorKey: "primary_unit",
     header: "Primary Unit",
-    cell: () => <>Pcs</>,
+    cell: ({row}) => row?.original.primary_unit?.name
   },
   {
     accessorKey: "type",
     header: "Item Type",
-    cell: () => <>Demo Type</>,
+    cell: ({row}) => row?.original?.item_nature
+    
   },
 
   {

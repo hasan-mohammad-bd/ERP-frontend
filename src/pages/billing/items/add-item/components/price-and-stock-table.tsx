@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -11,265 +11,188 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Card } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
+import { StockItem } from "./item-add-form"
 
-interface StockItem {
-  sizeColor: string
-  barcode: string
-  purchasePrice: string
-  sellingPrice: string
-  discount: string
-  discountAmount: string
-  afterDiscount: string
-  openingStock: string
-  ospPrice: string
-  commissionType: string
-  commissionValue: string
-}
-
-export default function PriceAndStockTable() {
-  const [topValues, setTopValues] = useState({
-    purchasePrice: "",
-    sellingPrice: "",
-    discount: "",
-    discountAmount: "",
-    afterDiscount: "",
-    openingStock: "",
-    ospPrice: "",
-    amount: "",
+export default function PriceAndStockTable({ responseData, items, setItems }: any) {
+  console.log(responseData)
+  const [topValues, setTopValues] = useState<Partial<StockItem>>({
+    purchase_price: null,
+    selling_price: null,
+    discount: null,
+    discount_amount: null,
+    after_discount: null,
+    wholesale_price: null,
   })
 
-  const [items, setItems] = useState<StockItem[]>([
-    {
-      sizeColor: "Black - s",
-      barcode: "51437583",
-      purchasePrice: "150",
-      sellingPrice: "250",
-      discount: "0",
-      discountAmount: "0",
-      afterDiscount: "250",
-      openingStock: "10",
-      ospPrice: "250",
-      commissionType: "Amount $",
-      commissionValue: "0",
-    },
-    {
-      sizeColor: "Black - m",
-      barcode: "51437598",
-      purchasePrice: "150",
-      sellingPrice: "250",
-      discount: "0",
-      discountAmount: "0",
-      afterDiscount: "250",
-      openingStock: "10",
-      ospPrice: "250",
-      commissionType: "Amount $",
-      commissionValue: "0",
-    },
-    {
-      sizeColor: "White - s",
-      barcode: "51437601",
-      purchasePrice: "150",
-      sellingPrice: "250",
-      discount: "0",
-      discountAmount: "0",
-      afterDiscount: "250",
-      openingStock: "10",
-      ospPrice: "250",
-      commissionType: "Amount $",
-      commissionValue: "0",
-    },
-    {
-      sizeColor: "White - m",
-      barcode: "51437605",
-      purchasePrice: "150",
-      sellingPrice: "250",
-      discount: "0",
-      discountAmount: "0",
-      afterDiscount: "250",
-      openingStock: "10",
-      ospPrice: "250",
-      commissionType: "Amount $",
-      commissionValue: "0",
-    },
-  ])
+  console.log(items)
+
+  useEffect(() => {
+    if (responseData.length > 0) {
+      setItems(responseData)
+    }
+  }, [responseData, setItems])
 
   const handleApplyToAll = () => {
-    setItems(items.map(item => ({
+    setItems(items.map((item: StockItem) => ({
       ...item,
-      purchasePrice: topValues.purchasePrice || item.purchasePrice,
-      sellingPrice: topValues.sellingPrice || item.sellingPrice,
-      discount: topValues.discount || item.discount,
-      discountAmount: topValues.discountAmount || item.discountAmount,
-      afterDiscount: topValues.afterDiscount || item.afterDiscount,
-      openingStock: topValues.openingStock || item.openingStock,
-      ospPrice: topValues.ospPrice || item.ospPrice,
+      ...topValues,
     })))
   }
 
-  const handleTopValueChange = (field: string, value: string) => {
+  const handleTopValueChange = (field: keyof StockItem, value: number) => {
     setTopValues(prev => ({
       ...prev,
       [field]: value,
     }))
   }
 
-  const handleItemChange = (index: number, field: keyof StockItem, value: string) => {
+  const handleItemChange = (index: number, field: keyof StockItem, value: any) => {
     const newItems = [...items]
-    newItems[index][field] = value
+    newItems[index] = {
+      ...newItems[index],
+      [field]: value
+    }
     setItems(newItems)
   }
 
   return (
-    <Card>    <div className="p-4 space-y-4">
-    <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-9 gap-4">
-      <Input
-        placeholder="Purchase Price"
-        value={topValues.purchasePrice}
-        onChange={(e) => handleTopValueChange("purchasePrice", e.target.value)}
-      />
-      <Input
-        placeholder="Selling Price"
-        value={topValues.sellingPrice}
-        onChange={(e) => handleTopValueChange("sellingPrice", e.target.value)}
-      />
-      <Input
-        placeholder="Discount %"
-        value={topValues.discount}
-        onChange={(e) => handleTopValueChange("discount", e.target.value)}
-      />
-      <Input
-        placeholder="Discount Amount"
-        value={topValues.discountAmount}
-        onChange={(e) => handleTopValueChange("discountAmount", e.target.value)}
-      />
-      <Input
-        placeholder="After Discount"
-        value={topValues.afterDiscount}
-        onChange={(e) => handleTopValueChange("afterDiscount", e.target.value)}
-      />
-      <Input
-        placeholder="Opening Stock"
-        value={topValues.openingStock}
-        onChange={(e) => handleTopValueChange("openingStock", e.target.value)}
-      />
-      <Input
-        placeholder="Opening Stock Purchase"
-        value={topValues.ospPrice}
-        onChange={(e) => handleTopValueChange("ospPrice", e.target.value)}
-      />
-      <Input
-        placeholder="Amount"
-        value={topValues.amount}
-        onChange={(e) => handleTopValueChange("amount", e.target.value)}
-      />
-      <Button onClick={handleApplyToAll} className="bg-orange-500 hover:bg-orange-600">
-        Apply to All
-      </Button>
-    </div>
+    <Card>
+      <div className="p-4 space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-4 items-end">
+          <div>
+            <Label htmlFor="purchase_price">Purchase Price</Label>
+            <Input
+              id="purchase_price"
+              type="number"
+              value={topValues.purchase_price ?? ""}
+              onChange={(e) => handleTopValueChange("purchase_price", Number(e.target.value))}
+            />
+          </div>
+          <div>
+            <Label htmlFor="selling_price">Selling Price</Label>
+            <Input
+              id="selling_price"
+              type="number"
+              value={topValues.selling_price ?? ""}
+              onChange={(e) => handleTopValueChange("selling_price", Number(e.target.value))}
+            />
+          </div>
+          <div>
+            <Label htmlFor="discount">Discount %</Label>
+            <Input
+              id="discount"
+              type="number"
+              value={topValues.discount ?? ""}
+              onChange={(e) => handleTopValueChange("discount", Number(e.target.value))}
+            />
+          </div>
+          <div>
+            <Label htmlFor="discount_amount">Discount Amount</Label>
+            <Input
+              id="discount_amount"
+              type="number"
+              value={topValues.discount_amount ?? ""}
+              onChange={(e) => handleTopValueChange("discount_amount", Number(e.target.value))}
+            />
+          </div>
+          <div>
+            <Label htmlFor="after_discount">After Discount</Label>
+            <Input
+              id="after_discount"
+              type="number"
+              value={topValues.after_discount ?? ""}
+              onChange={(e) => handleTopValueChange("after_discount", Number(e.target.value))}
+            />
+          </div>
+          <div>
+            <Label htmlFor="wholesale_price">Wholesale Price</Label>
+            <Input
+              id="wholesale_price"
+              type="number"
+              value={topValues.wholesale_price ?? ""}
+              onChange={(e) => handleTopValueChange("wholesale_price", Number(e.target.value))}
+            />
+          </div>
+          <Button onClick={handleApplyToAll} className="bg-orange-500 hover:bg-orange-600">
+            Apply to All
+          </Button>
+        </div>
 
-    <div className="overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Size-Color</TableHead>
-            <TableHead>Barcode</TableHead>
-            <TableHead>Purchase Price</TableHead>
-            <TableHead>Selling Price</TableHead>
-            <TableHead>Discount(%)</TableHead>
-            <TableHead>Discount Amount</TableHead>
-            <TableHead>After Discount</TableHead>
-            <TableHead>Opening Stock</TableHead>
-            <TableHead>O.S.P. Price</TableHead>
-            <TableHead>Commission Type</TableHead>
-            <TableHead>Commission Value</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {items.map((item, index) => (
-            <TableRow key={item.barcode}>
-              <TableCell>{item.sizeColor}</TableCell>
-              <TableCell>
-                <Input
-                  value={item.barcode}
-                  onChange={(e) => handleItemChange(index, "barcode", e.target.value)}
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  value={item.purchasePrice}
-                  onChange={(e) => handleItemChange(index, "purchasePrice", e.target.value)}
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  value={item.sellingPrice}
-                  onChange={(e) => handleItemChange(index, "sellingPrice", e.target.value)}
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  value={item.discount}
-                  onChange={(e) => handleItemChange(index, "discount", e.target.value)}
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  value={item.discountAmount}
-                  onChange={(e) => handleItemChange(index, "discountAmount", e.target.value)}
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  value={item.afterDiscount}
-                  onChange={(e) => handleItemChange(index, "afterDiscount", e.target.value)}
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  value={item.openingStock}
-                  onChange={(e) => handleItemChange(index, "openingStock", e.target.value)}
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  value={item.ospPrice}
-                  onChange={(e) => handleItemChange(index, "ospPrice", e.target.value)}
-                />
-              </TableCell>
-              <TableCell>
-                <Select 
-                  value={item.commissionType}
-                  onValueChange={(value) => handleItemChange(index, "commissionType", value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Amount $">Amount $</SelectItem>
-                    <SelectItem value="Percentage">Percentage</SelectItem>
-                  </SelectContent>
-                </Select>
-              </TableCell>
-              <TableCell>
-                <Input
-                  value={item.commissionValue}
-                  onChange={(e) => handleItemChange(index, "commissionValue", e.target.value)}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
-  </div></Card>
-
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Barcode Attribute</TableHead>
+                <TableHead>Barcode</TableHead>
+                <TableHead>Purchase Price</TableHead>
+                <TableHead>Selling Price</TableHead>
+                <TableHead>Discount(%)</TableHead>
+                <TableHead>Discount Amount</TableHead>
+                <TableHead>After Discount</TableHead>
+                <TableHead>Wholesale Price</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.map((item: StockItem, index: number) => (
+                <TableRow key={item.barcode_attribute}>
+                  <TableCell>{item.barcode_attribute}</TableCell>
+                  <TableCell>
+                    <Input
+                      value={item.barcode || ''}
+                      onChange={(e) => handleItemChange(index, "barcode", e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Input
+                      value={item.purchase_price || ''}
+                      onChange={(e) => handleItemChange(index, "purchase_price", Number(e.target.value))}
+                      type="number"
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Input
+                      value={item.selling_price || ''}
+                      onChange={(e) => handleItemChange(index, "selling_price", Number(e.target.value))}
+                      type="number"
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Input
+                      value={item.discount || ''}
+                      onChange={(e) => handleItemChange(index, "discount", Number(e.target.value))}
+                      type="number"
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Input
+                      value={item.discount_amount || ''}
+                      onChange={(e) => handleItemChange(index, "discount_amount", Number(e.target.value))}
+                      type="number"
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Input
+                      value={item.after_discount || ''}
+                      onChange={(e) => handleItemChange(index, "after_discount", Number(e.target.value))}
+                      type="number"
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Input
+                      value={item.wholesale_price || ''}
+                      onChange={(e) => handleItemChange(index, "wholesale_price", Number(e.target.value))}
+                      type="number"
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+    </Card>
   )
 }
+

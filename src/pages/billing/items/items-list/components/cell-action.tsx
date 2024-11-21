@@ -6,16 +6,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
-import { EmployeeColumn } from "@/lib/validators";
 import { toast } from "sonner";
-
 import { useNavigate } from "react-router-dom";
+import { ItemRow } from "@/lib/validators/billing/items";
 
 interface CellActionProps {
-  data: EmployeeColumn;
+  data: ItemRow;
 }
 
 export function CellAction({ data }: CellActionProps) {
@@ -78,7 +76,7 @@ export function CellAction({ data }: CellActionProps) {
       <AlertModal
         title="Are you sure?"
         description="This action cannot be undone."
-        name={data.first_name}
+        name={data.name}
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
         onConfirm={() => handleDepartmentDelete(data.id)}

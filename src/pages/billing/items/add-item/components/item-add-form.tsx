@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Form,
@@ -15,560 +14,524 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
 import FileUpload from "@/components/common/file-uploader";
 import { PricingArea } from "./pricing-area";
+
+import {
+  useCreateItemMutation,
+  useGetItemByIdQuery,
+  useUpdateItemMutation,
+} from "@/store/services/billing/api/items";
+import { ItemFormValues, ItemSchema } from "@/lib/validators/billing/items";
+import { useNavigate, useParams } from "react-router-dom";
+import { ErrorResponse } from "@/types";
+import handleErrors from "@/lib/handle-errors";
+import { toast } from "sonner";
+// import { serialize } from "object-to-formdata";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import { UnitRow } from "@/lib/validators/billing/unit";
+import { useGetUnitsQuery } from "@/store/services/billing/api/unit";
+import { useGetCategoryQuery } from "@/store/services/billing/api/category";
+import { CategoryRow } from "@/lib/validators/billing/category";
+import { BrandRow } from "@/lib/validators/billing/brand";
+import { useGetBrandQuery } from "@/store/services/billing/api/brand";
+import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
+import { LedgerRow } from "@/lib/validators/accounts/balance-sheet";
+import { useGetTaxesQuery } from "@/store/services/accounts/api/tax";
+import { TaxRow } from "@/lib/validators/accounts/tax";
+import { Loading } from "@/components/common/loading";
 import PriceAndStockTable from "./price-and-stock-table";
 
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
-  primaryUnit: z.string(),
-  secondaryUnit: z.string(),
-  primaryToSecondaryRate: z.number(),
-  category: z.string(),
-  subCategory: z.string(),
-  childCategory: z.string(),
-  brand: z.string(),
-  sku: z.string(),
-  productType: z.enum(["general", "variant", "model"]),
-  trackInventory: z.boolean(),
-  manufacture: z.boolean(),
-  allowSale: z.boolean(),
-});
+export interface StockItem {
+  barcode_attribute: string;
+  barcode: string | null;
+  purchase_price: number | null;
+  selling_price: number | null;
+  discount: number | null;
+  discount_amount: number | null;
+  after_discount: number | null;
+  wholesale_price: number | null;
+  attribute_ids: number[];
+}
 
 export default function ItemAddForm() {
-  const [itemType, setItemType] = useState<"goods" | "service">("goods");
+  const [items, setItems] = useState<StockItem[]>([
+    {
+      barcode_attribute: "Default",
+      barcode: null,
+      purchase_price: null,
+      selling_price: null,
+      discount: null,
+      discount_amount: null,
+      after_discount: null,
+      wholesale_price: null,
+      attribute_ids: [],
+    },
+    // ... other items
+  ]);
+  // const [barcodeData, setBarcodeData] = useState([]);
+  const [attributeCategoriesData, setAttributeCategoriesData] = useState([]);
+  const [responseData, setResponseData] = useState([]);
+  console.log(attributeCategoriesData);
+  const navigate = useNavigate();
+  const params = useParams();
+  const [itemType, setItemType] = useState<"Goods" | "Service">("Goods");
+  const { data: dataById, refetch } = useGetItemByIdQuery(`${params.id}`);
+  const previousData = dataById?.data;
+  const [createItem, { isLoading }] = useCreateItemMutation();
+  const [updateItem, { isLoading: updateLoading }] = useUpdateItemMutation();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const { data: units, isLoading: unitsLoading } =
+    useGetUnitsQuery(`page=1&per_page=1000`);
+  const { data: childCategories, isLoading: childCategoriesLoading } =
+    useGetCategoryQuery(`type=child&per_page=1000&page=1`);
+  const { data: mainCategories, isLoading: mainCategoriesLoading } =
+    useGetCategoryQuery(`type=main&per_page=1000&page=1`);
+  const { data: subCategories, isLoading: subCategoriesLoading } =
+    useGetCategoryQuery(`type=sub&per_page=1000&page=1`);
+  const { data: brands, isLoading: brandsLoading } =
+    useGetBrandQuery(`page=1&per_page=1000`);
+  const { data: ledgerAccount, isLoading: ledgerAccountLoading } =
+    useGetLedgerAccountsQuery("page=1&per_page=1000");
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { data: taxes, isLoading: taxesLoading } =
+    useGetTaxesQuery(`per_page=1000&page=1`);
+
+  const unitesData = units?.data || [];
+  const childCategoryData = childCategories?.data || [];
+  const mainCategoryData = mainCategories?.data || [];
+  const subCategoryData = subCategories?.data || [];
+  const brandData = brands?.data || [];
+  const ledgerAccountData = ledgerAccount?.data || [];
+  const taxData = taxes?.data || [];
+
+  const form = useForm<ItemFormValues>({
+    resolver: zodResolver(ItemSchema),
     defaultValues: {
-      name: "",
-      secondaryUnit: "",
-      primaryUnit: "",
-      primaryToSecondaryRate: 0,
-      category: "",
-      subCategory: "",
-      childCategory: "",
-      brand: "",
-      sku: "",
-      productType: "general",
-      trackInventory: false,
-      manufacture: false,
-      allowSale: false,
+      name: previousData?.name || "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    console.log(uploadedFiles);
+  useEffect(() => {
+    if (previousData) {
+      form.reset({
+        name: previousData.name,
+        category_id: previousData?.category?.id.toString() || undefined,
+        sub_category_id: previousData?.sub_category?.id.toString() || undefined,
+        child_category_id:
+          previousData?.child_category?.id.toString() || undefined,
+        brand_id: previousData?.brand?.id.toString() || undefined,
+        // images: previousData?.images || [],
+        primary_unit_id: previousData.primary_unit.id.toString(),
+        secondary_unit_id: previousData.secondary_unit.id.toString(),
+        purchase_account_tax_id:
+          previousData.purchase_account_tax_id.toString(),
+        sale_account_tax_id: previousData.sale_account_tax_id.toString(),
+        inventory_account_tax_id:
+          previousData.inventory_account_tax_id.toString(),
+        purchase_account_id: previousData.purchase_account_id.toString(),
+        sale_account_id: previousData.sale_account_id.toString(),
+        inventory_account_id: previousData.inventory_account_id.toString(),
+        primary_to_secondary_unit: previousData.primary_to_secondary_unit,
+        track_inventory: previousData.track_inventory,
+        manufacture: previousData.manufacture,
+        allow_sale: previousData.allow_sale,
+        sku: previousData?.sku,
+      });
+    }
+  }, [previousData, form]);
+
+  const filteredSubCategories = subCategoryData.filter(
+    (item) => Number(form.watch("category_id")) === Number(item.parent_id)
+  );
+  const filteredChildCategories = childCategoryData.filter(
+    (item) => Number(form.watch("sub_category_id")) === Number(item.parent_id)
+  );
+
+  async function onSubmit(data: ItemFormValues) {
+    try {
+            const newData = {
+          ...data,
+          item_nature: itemType,
+          _method: previousData ? "PUT" : "POST",
+          attribute_categories:
+            itemType === "Goods" ? attributeCategoriesData : [],
+          barcodes: items,
+      };
+/*       const formData = serialize(
+        {
+          ...data,
+          item_nature: itemType,
+          _method: previousData ? "PUT" : "POST",
+          attribute_categories:
+            itemType === "Goods" ? attributeCategoriesData : JSON.stringify([]),
+          barcodes: items,
+          image: uploadedFiles,
+        },
+        { indices: true }
+      ); */
+      if (previousData) {
+        await updateItem({
+          itemId: previousData.id,
+          updatedItem: newData,
+        }).unwrap();
+        toast.success("Item updated successfully");
+        // modalClose();
+        navigate("/billing/items");
+      } else {
+        await createItem(newData).unwrap();
+        toast.success("Employee class created successfully");
+        navigate("/billing/items");
+        // modalClose();
+      }
+    } catch (error) {
+      console.log(error);
+      handleErrors(error as ErrorResponse);
+    }
   }
 
+  console.log(form.formState.errors);
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-2">
-            <Tabs
-              value={itemType}
-              onValueChange={(value) =>
-                setItemType(value as "goods" | "service")
-              }
+    <>
+      {isLoading || updateLoading ? (
+        <div className="h-[535px]">
+          <Loading />
+        </div>
+      ) : (
+        <>
+          <Form {...form}>
+            <form
+              id="itemForm"
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-6"
             >
-              <Card className="p-4 space-y-4">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="goods">Goods</TabsTrigger>
-                  <TabsTrigger value="service">Service</TabsTrigger>
-                </TabsList>
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Item Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter item name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid grid-cols-3 gap-6">
-                  {/* file Upload  */}
-                  <div className="space-y-2">
-                    <FormLabel>Upload Files</FormLabel>
-                    <FileUpload
-                      setFilesToUpload={setUploadedFiles}
-                      filesToUpload={uploadedFiles}
-                      // uploadedFiles={previousData?.files}
-                      // onDeleteSuccess={() => refetch()}
-                    />
-                  </div>
-                  <div className="col-span-2 grid grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="primaryUnit"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Primary Unit</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select primary unit" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="general">General</SelectItem>
-                              <SelectItem value="variant">Variant</SelectItem>
-                              <SelectItem value="model">Model</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="secondaryUnit"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Secondary Unit</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select secondary unit" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="general">General</SelectItem>
-                              <SelectItem value="variant">Variant</SelectItem>
-                              <SelectItem value="model">Model</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="primaryToSecondaryRate"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>1 Primary to Secondary Unit</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter rate" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-3 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="category"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Category</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a category" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="category1">
-                              Category 1
-                            </SelectItem>
-                            <SelectItem value="category2">
-                              Category 2
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="subCategory"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Sub-category</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a sub-category" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="subcategory1">
-                              Sub-category 1
-                            </SelectItem>
-                            <SelectItem value="subcategory2">
-                              Sub-category 2
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="childCategory"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Child Category</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a child category" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="childcategory1">
-                              Child Category 1
-                            </SelectItem>
-                            <SelectItem value="childcategory2">
-                              Child Category 2
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid grid-cols-3 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="brand"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Brand</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a brand" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="brand1">Brand 1</SelectItem>
-                            <SelectItem value="brand2">Brand 2</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="sku"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>SKU</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter SKU" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <TabsContent value="goods" className="mt-0">
-                    <FormField
-                      control={form.control}
-                      name="productType"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Item Type</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select item type" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="general">General</SelectItem>
-                              <SelectItem value="variant">Variant</SelectItem>
-                              <SelectItem value="model">Model</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </TabsContent>
-                  <TabsContent value="service"></TabsContent>
-                </div>
-              </Card>
-            </Tabs>
-          </div>
-          <div className="h-full">
-            <Card className="p-4 space-y-4">
-              <div className="space-y-2 mb-6">
-                <FormField
-                  control={form.control}
-                  name="trackInventory"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
+              <div className="grid grid-cols-3 gap-6">
+                <div className="col-span-2">
+                  <Tabs
+                    value={itemType}
+                    onValueChange={(value) =>
+                      setItemType(value as "Goods" | "Service")
+                    }
+                  >
+                    <Card className="p-4 space-y-4">
+                      <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger value="Goods">Goods</TabsTrigger>
+                        <TabsTrigger value="Service">Service</TabsTrigger>
+                      </TabsList>
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Item Name</FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="Enter item name"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
                         />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel>Track Inventory</FormLabel>
                       </div>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="manufacture"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel>Manufacture</FormLabel>
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="allowSale"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel>Allow Sale</FormLabel>
-                      </div>
-                    </FormItem>
-                  )}
-                />
-              </div>
+                      <div className="grid grid-cols-3 gap-6">
+                        {/* file Upload  */}
+                        <div className="space-y-2">
+                          <FormLabel>Upload Files</FormLabel>
+                          <FileUpload
+                            setFilesToUpload={setUploadedFiles}
+                            filesToUpload={uploadedFiles}
+                            uploadedFiles={previousData?.images}
+                            onDeleteSuccess={() => refetch()}
+                          />
+                        </div>
+                        <div className="col-span-2 grid grid-cols-2 gap-4">
+                          <FormSearchSelect<UnitRow>
+                            loading={unitsLoading}
+                            data={unitesData}
+                            displayField="name"
+                            valueField="id"
+                            form={form}
+                            name="primary_unit_id"
+                            placeholder="Select primary unit"
+                            title="Primary Unit"
+                            className="w-[330px]"
+                          />
+                          <FormSearchSelect<UnitRow>
+                            loading={unitsLoading}
+                            data={unitesData}
+                            displayField="name"
+                            valueField="id"
+                            form={form}
+                            name="secondary_unit_id"
+                            placeholder="Select primary unit"
+                            title="Primary Unit"
+                            className="w-[330px]"
+                          />
 
-              <div className="grid grid-cols-3 gap-4 items-end">
-                <FormField
-                  control={form.control}
-                  name="primaryUnit"
-                  render={({ field }) => (
-                    <FormItem className="col-span-2">
-                      <FormLabel>Purchase Account</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select purchase account" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="general">General</SelectItem>
-                          <SelectItem value="variant">Variant</SelectItem>
-                          <SelectItem value="model">Model</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="secondaryUnit"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel></FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="tax" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="general">General</SelectItem>
-                          <SelectItem value="variant">Variant</SelectItem>
-                          <SelectItem value="model">Model</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="grid grid-cols-3 gap-4 items-end">
-                <FormField
-                  control={form.control}
-                  name="primaryUnit"
-                  render={({ field }) => (
-                    <FormItem className="col-span-2">
-                      <FormLabel>Sale Account</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select sale account" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="general">General</SelectItem>
-                          <SelectItem value="variant">Variant</SelectItem>
-                          <SelectItem value="model">Model</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="secondaryUnit"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel></FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="tax" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="general">General</SelectItem>
-                          <SelectItem value="variant">Variant</SelectItem>
-                          <SelectItem value="model">Model</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="grid grid-cols-3 gap-4 items-end">
-                <FormField
-                  control={form.control}
-                  name="primaryUnit"
-                  render={({ field }) => (
-                    <FormItem className="col-span-2">
-                      <FormLabel>Inventory Account</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select inventory account" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="general">General</SelectItem>
-                          <SelectItem value="variant">Variant</SelectItem>
-                          <SelectItem value="model">Model</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="secondaryUnit"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel></FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="tax" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="general">General</SelectItem>
-                          <SelectItem value="variant">Variant</SelectItem>
-                          <SelectItem value="model">Model</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </Card>
-          </div>
-        </div>
-        <div>
-          <PricingArea />
-        </div>
-        <div className="mt-1">
-          <PriceAndStockTable />
-        </div>
+                          <FormField
+                            control={form.control}
+                            name="primary_to_secondary_unit"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>
+                                  1 Primary to Secondary Unit
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="number"
+                                    placeholder="Enter rate"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
 
-        <div className="flex justify-end space-x-4 mt-5">
-          <Button variant="outline" onClick={() => form.reset()}>
-            Cancel
-          </Button>
-          <Button type="submit">Save</Button>
-        </div>
-      </form>
-    </Form>
+                      <div className="grid grid-cols-3 gap-4">
+                        <FormSearchSelect<CategoryRow>
+                          loading={mainCategoriesLoading}
+                          data={mainCategoryData}
+                          displayField="name"
+                          valueField="id"
+                          form={form}
+                          name="category_id"
+                          placeholder="Select main category"
+                          title="Category"
+                          className="w-[330px]"
+                        />
+                        <FormSearchSelect<CategoryRow>
+                          loading={subCategoriesLoading}
+                          data={filteredSubCategories}
+                          displayField="name"
+                          valueField="id"
+                          form={form}
+                          name="sub_category_id"
+                          placeholder="Select Sub category"
+                          title="Sub Category"
+                          className="w-[330px]"
+                        />
+                        <FormSearchSelect<CategoryRow>
+                          loading={childCategoriesLoading}
+                          data={filteredChildCategories}
+                          displayField="name"
+                          valueField="id"
+                          form={form}
+                          name="child_category_id"
+                          placeholder="Select child category"
+                          title="Child Category"
+                          className="w-[330px]"
+                        />
+                      </div>
+                      <div className="grid grid-cols-3 gap-4">
+                        <FormSearchSelect<BrandRow>
+                          loading={brandsLoading}
+                          data={brandData}
+                          displayField="name"
+                          valueField="id"
+                          form={form}
+                          name="brand_id"
+                          placeholder="Select brand"
+                          title="Brand"
+                          className="w-[330px]"
+                        />
+                        <FormField
+                          control={form.control}
+                          name="sku"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>SKU</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Enter SKU" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <TabsContent
+                          value="goods"
+                          className="mt-0"
+                        ></TabsContent>
+                        <TabsContent value="service"></TabsContent>
+                      </div>
+                    </Card>
+                  </Tabs>
+                </div>
+                <div className="h-full">
+                  <Card className="p-4 space-y-4">
+                    <div className="space-y-2 mb-6">
+                      <FormField
+                        control={form.control}
+                        name="track_inventory"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value === 1}
+                                onCheckedChange={(checked) => {
+                                  field.onChange(checked ? 1 : 0);
+                                }}
+                                defaultValue={
+                                  previousData
+                                    ? previousData.track_inventory
+                                    : 0
+                                }
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel>Track Inventory</FormLabel>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="manufacture"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value === 1}
+                                onCheckedChange={(checked) => {
+                                  field.onChange(checked ? 1 : 0);
+                                }}
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel>Manufacture</FormLabel>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="allow_sale"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value === 1}
+                                onCheckedChange={(checked) => {
+                                  field.onChange(checked ? 1 : 0);
+                                }}
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel>Allow Sale</FormLabel>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 items-end">
+                      <FormSearchSelect<LedgerRow>
+                        loading={ledgerAccountLoading}
+                        data={ledgerAccountData}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="purchase_account_id"
+                        title="Purchase Account"
+                        className="w-[250px]"
+                      />
+                      <FormSearchSelect<TaxRow>
+                        loading={taxesLoading}
+                        data={taxData}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="purchase_account_tax_id"
+                        title="Purchase Tax"
+                        className="w-[250px]"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 items-end">
+                      <FormSearchSelect<LedgerRow>
+                        loading={ledgerAccountLoading}
+                        data={ledgerAccountData}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="sale_account_id"
+                        title="Sale Account"
+                        className="w-[250px]"
+                      />
+                      <FormSearchSelect<TaxRow>
+                        loading={taxesLoading}
+                        data={taxData}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="sale_account_tax_id"
+                        title="Sale Tax"
+                        className="w-[250px]"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 items-end">
+                      <FormSearchSelect<LedgerRow>
+                        loading={ledgerAccountLoading}
+                        data={ledgerAccountData}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="inventory_account_id"
+                        title="Inventory Account"
+                        className="w-[250px]"
+                      />
+                      <FormSearchSelect<TaxRow>
+                        loading={taxesLoading}
+                        data={taxData}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="inventory_account_tax_id"
+                        title="Inventory Tax"
+                        className="w-[250px]"
+                      />
+                    </div>
+                  </Card>
+                </div>
+              </div>
+            </form>
+          </Form>
+          <>
+            <div>
+              {itemType === "Goods" && (
+                <PricingArea
+                  setAttributeCategoriesData={setAttributeCategoriesData}
+                  // attributeCategoriesData={attributeCategoriesData}
+
+                  setResponseData={setResponseData}
+                />
+              )}
+            </div>
+            <div className="mt-1">
+              <PriceAndStockTable
+                setItems={setItems}
+                items={items}
+                responseData={responseData}
+              />
+            </div>
+            <div className="flex justify-end space-x-4 mt-5">
+              <Button variant="outline" onClick={() => form.reset()}>
+                Cancel
+              </Button>
+              <Button form="itemForm" type="submit">
+                Save
+              </Button>
+            </div>
+          </>
+        </>
+      )}
+    </>
   );
 }

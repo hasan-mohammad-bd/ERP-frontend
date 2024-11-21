@@ -2,8 +2,8 @@ import { z } from "zod";
 import { attributeCategoryRow } from "./attribute-category";
 
 export const attributeSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+  name: z.string().min(1, {
+    message: "Name must be at least 1 characters.",
   }),
   status: z.coerce
     .number()

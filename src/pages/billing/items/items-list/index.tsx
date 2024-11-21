@@ -3,13 +3,13 @@ import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { DataTable } from "@/components/ui/data-table/data-table";
-import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
-import { itemColumns } from "./components/columns";
+import { itemRows } from "./components/columns";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
 import { Separator } from "@/components/ui/separator";
 import ListSkeleton from "@/components/common/ListSkeleton";
 import { useNavigate } from "react-router-dom";
+import { useGetItemQuery } from "@/store/services/billing/api/items";
 
 const ItemList = () => {
   const navigate = useNavigate();
@@ -18,11 +18,11 @@ const ItemList = () => {
     pageSize: 10,
   });
 
-  const { data, isLoading } = useGetEmployeesQuery(
+  const { data, isLoading } = useGetItemQuery(
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
 
-  const employees = data?.data || [];
+  const fetchedData = data?.data || [];
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
@@ -41,11 +41,11 @@ const ItemList = () => {
           </div>
           <Separator />
           {isLoading && <ListSkeleton />}
-          {employees && !isLoading && (
+          {fetchedData && !isLoading && (
             <div>
               <DataTable
-                columns={itemColumns}
-                data={employees}
+                columns={itemRows}
+                data={fetchedData}
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}
