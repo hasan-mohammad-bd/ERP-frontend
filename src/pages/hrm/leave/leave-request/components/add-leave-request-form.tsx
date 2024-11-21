@@ -10,14 +10,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
-
 import {
   Popover,
   PopoverContent,
@@ -57,14 +49,11 @@ import {
 import { serialize } from "object-to-formdata";
 import { Loading } from "@/components/common/loading";
 import { useLazyGetLeaveSummaryQuery } from "@/store/services/hrm/api/report/leave/leave-summay";
-import { useDebounce } from "@/store/hooks/useDebounce";
 import {
   LeaveSummaryRow,
   LeaveTypes,
 } from "@/lib/validators/hrm/report/leave/leave-summary";
-// import EmployeeCombobox from "./server-search-select";
-// import SearchSelect from "./server-search-select";
-import ServerSearchSelect from "./server-search-select";
+import SearchSelect from "@/components/common/search-select";
 
 interface AddJobApplyFormProps {
   modalClose: () => void;
@@ -77,27 +66,16 @@ export function AttendancePolicyForm({
   data: previousData,
   refetch,
 }: AddJobApplyFormProps) {
-  const [trigger, { data: searchResult }] = useLazyGetLeaveSummaryQuery();
-  const [createLeaveRequestPolicy, { isLoading }] =
-    useCreateLeaveRequestMutation();
-  const [updateLeaveRequestPolicy, { isLoading: updateLoading }] =
+  const [getLeaveSummary, { data: leaveSummary }] =
+    useLazyGetLeaveSummaryQuery();
+  const [createLeaveRequest, { isLoading }] = useCreateLeaveRequestMutation();
+  const [updateLeaveRequest, { isLoading: updateLoading }] =
     useUpdateLeaveRequestMutation();
-  // const { data: employees, isLoading: employeeLoading } =
-  //   useGetEmployeesQuery(`page=1&per_page=1000`);
-  // const { data, isLoading: leaveTypeLoading } =
-  //   useGetLeaveTypesQuery(`per_page=1000&page=1`);
-
-  // console.log(data)
-
-  // const leaveTypeData = data?.data || [];
-
-  // console.log();
-  console.log(searchResult?.data);
 
   const form = useForm<LeaveRequestFormValues>({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
-      employee_id: previousData?.employee_id.toString() || "",
+      employee_id: previousData?.employee_id,
       start_date_time: previousData?.start_date_time || "",
       end_date_time: previousData?.end_date_time || "",
       subject: previousData?.subject || "",
@@ -116,9 +94,6 @@ export function AttendancePolicyForm({
   const [timeSchedule, setTimeSchedule] = useState(false);
   const [timeStart, setTimeStart] = useState(""); // New state for Time Start
   const [timeEnd, setTimeEnd] = useState(""); // New state for Time End
-  const [searchTerm, setSearchTerm] = useState<string>("");
-
-  console.log(searchTerm, "searchTerm");
 
   const status = ["Pending", "Canceled", "Approved", "Rejected"];
 
@@ -131,10 +106,10 @@ export function AttendancePolicyForm({
     }
   }, [previousData]);
 
-  const searchResultData = searchResult?.data || [];
+  const leaveSummaryData = leaveSummary?.data || [];
 
   const employeeId = form.watch("employee_id");
-  const foundEmployee = searchResultData.find(
+  const foundEmployee = leaveSummaryData.find(
     (item) => item.id === Number(employeeId)
   );
 
@@ -214,14 +189,14 @@ export function AttendancePolicyForm({
         { indices: true }
       );
       if (previousData) {
-        await updateLeaveRequestPolicy({
+        await updateLeaveRequest({
           leaveRequestId: previousData.id,
           updatedLeaveRequest: formData,
         }).unwrap();
         toast.success("Leave Request updated successfully");
         modalClose();
       } else {
-        await createLeaveRequestPolicy(formData).unwrap();
+        await createLeaveRequest(formData).unwrap();
         toast.success("Leave Request created successfully");
         modalClose();
       }
@@ -231,21 +206,12 @@ export function AttendancePolicyForm({
     }
   }
 
+  const [selectedEmployee, setSelectedEmployee] = useState<LeaveSummaryRow>();
   useEffect(() => {
     if (previousData?.employee_id) {
-      setSearchTerm(previousData?.employee_id.toString());
+      getLeaveSummary(`employee_id=${previousData?.employee_id}`);
     }
-  }, [previousData?.employee_id]);
-  const debouncedSearchText = useDebounce(searchTerm, 300);
-
-  // Trigger server search when debounced text updates
-  useEffect(() => {
-    if (debouncedSearchText) {
-      trigger && trigger(`text=${debouncedSearchText}`);
-    }
-  }, [debouncedSearchText, trigger, previousData?.employee_id]);
-
-  console.log(searchResultData, "searchResultData");
+  }, [previousData?.employee_id, getLeaveSummary]);
 
   return (
     <>
@@ -262,7 +228,7 @@ export function AttendancePolicyForm({
               <div className="flex items-end space-x-4">
                 <div className="w-full">
                   {/* <SearchSelect
-                    data={searchResultData}
+                    data={leaveSummaryData}
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
                   /> */}
@@ -276,18 +242,41 @@ export function AttendancePolicyForm({
                       />
                     </>
                   ) : (
-                    <ServerSearchSelect<LeaveSummaryRow>
-                      data={searchResultData}
-                      displayField="first_name"
-                      valueField="id"
-                      form={form}
+                    <FormField
+                      control={form.control}
                       name="employee_id"
-                      title="Employee"
-                      searchTerm={searchTerm}
-                      setSearchTerm={setSearchTerm}
-                      className="w-[360px]"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel>
+                            <p className="mt-2 mb-1">Employee Name *</p>
+                          </FormLabel>
+                          <FormControl>
+                            <SearchSelect
+                              items={leaveSummaryData}
+                              labelKey="first_name"
+                              valueKey="id"
+                              value={
+                                leaveSummaryData.find(
+                                  (item) => item.id === field.value
+                                ) || selectedEmployee
+                              }
+                              placeholder="Select Employee"
+                              onSelect={(value) => {
+                                setSelectedEmployee(value);
+                                field.onChange(value?.id); // Adjust if needed
+                              }}
+                              onChangeSearch={(searchText) =>
+                                getLeaveSummary(`text=${searchText}`)
+                              }
+                              size={"default"}
+                              className="w-[350px]"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
                     />
                   )}
+
                   {/* 
                   <FormSearchSelect<LeaveSummaryRow>
                     data={searchResult?.data || []}

@@ -44,7 +44,7 @@ export const attendanceColumns: ColumnDef<LeaveRequestRow>[] = [
   {
     accessorKey: "leave_type",
     header: "Leave type",
-    cell: ({ row }) => row.original.leave_type.name,
+    cell: ({ row }) => row.original.leave_type?.name,
   },
   {
     accessorKey: "start_date_time",

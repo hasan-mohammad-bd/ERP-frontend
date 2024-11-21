@@ -36,7 +36,7 @@ export const attendanceColumns: ColumnDef<LeaveGroupRow>[] = [
     accessorKey: "Leave Types",
     cell: ({ row }) =>
       row.original.leave_group_types.map((leave_type) => (
-        <div className="py-1">{leave_type.leave_type.name}</div>
+        <div className="py-1">{leave_type.leave_type?.name}</div>
       )),
   },
   {

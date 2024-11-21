@@ -257,7 +257,7 @@ export default function EmployeeForm() {
             </Button>
           </div>
 
-          <div className="w-4/6 mx-auto">
+          <div className="2xl:w-4/6 w-full mx-auto">
             <Tabs defaultValue="basic-info" className="">
               <TabsList className="grid w-full grid-cols-7">
                 <TabsTrigger value="basic-info">Basic Info</TabsTrigger>
