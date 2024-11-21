@@ -56,6 +56,7 @@ export const ItemSchema = z.object({
   sku: z.string({
     required_error: "SKU is required",
   }),
+  attribute_categories: z.any().optional(),
   // Optional fields
   images: z.any().optional(),
   category_id: z.string().optional(),
@@ -94,6 +95,7 @@ export const itemRow = z.object({
   created_at: z.string().datetime(),
   user: userRow,
   organization: organizationColumn,
+  
 });
 
 export type ItemRow = z.infer<typeof itemRow>;

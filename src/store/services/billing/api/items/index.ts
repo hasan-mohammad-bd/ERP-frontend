@@ -1,4 +1,4 @@
-import { ItemRow } from "@/lib/validators/billing/items";
+import { ItemFormValues, ItemRow } from "@/lib/validators/billing/items";
 import { inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
 
@@ -13,7 +13,7 @@ const itemApi = inventoryApi.injectEndpoints({
       query: (params) => `items/${params}`,
       providesTags: ["item"],
     }),
-    createItem: build.mutation<{ data: ItemRow }, FormData>({
+    createItem: build.mutation<{ data: ItemRow }, ItemFormValues>({
       query: (newItem) => ({
         url: `items`,
         method: "POST",
@@ -30,7 +30,7 @@ const itemApi = inventoryApi.injectEndpoints({
     }),
     updateItem: build.mutation<
       { data: ItemRow },
-      { itemId: number; updatedItem: FormData }
+      { itemId: number; updatedItem: ItemFormValues }
     >({
       query: ({ itemId, updatedItem }) => ({
         url: `items/${itemId}`,

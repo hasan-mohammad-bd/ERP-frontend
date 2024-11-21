@@ -24,15 +24,19 @@ import {
 import MultipleSelector, { Option } from "@/components/ui/multiSelectSearch";
 
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
-import PriceAndStockTable from "./price-and-stock-table";
+// import PriceAndStockTable from "./price-and-stock-table";
 import { useGetAttributeCategoriesQuery } from "@/store/services/billing/api/attribute-category";
 import { AttributeCategoryRow } from "@/lib/validators/billing/attribute-category";
 import { useGetAttributesQuery } from "@/store/services/billing/api/attributes";
+import { useGenerateDemoBarcodeMutation } from "@/store/services/billing/api/barcoad-generate-demo";
+import { ErrorResponse } from "@/types";
+import handleErrors from "@/lib/handle-errors";
+import { toast } from "sonner";
 
 
 
-export function PricingArea() {
-  // const [createApprovalGroup, { isLoading }] = useCreateApprovalGroupMutation();
+export function PricingArea({setAttributeCategoriesData, setResponseData}: any) {
+  const [generateDemoBarcode] = useGenerateDemoBarcodeMutation();
   // const [updateApprovalGroup, { isLoading: updateLoading }] = useUpdateApprovalGroupMutation();
 
   const [adminOptions, setAdminOptions] = useState<{ [key: number]: Option[] }>(
@@ -40,11 +44,12 @@ export function PricingArea() {
   );
   const [employeeSearchTerm, setEmployeeSearchTerm] = useState("");
  
+ 
   const { data: attributeCategories, isLoading: AttributeCategoryLoading } = useGetAttributeCategoriesQuery(
     `per_page=1000&page=1`
   );
 
-  const { data: attributes, isLoading: AttributesLoading } = useGetAttributesQuery(
+  const { data: attributes } = useGetAttributesQuery(
     `per_page=1000&page=1`
   );
 
@@ -96,17 +101,19 @@ export function PricingArea() {
 
 
   async function onSubmit(data: any) {
+    setAttributeCategoriesData(data.attribute_categories)
     console.log(data)
-    /*     try {
-      if (previousData) {
+        try {
+      const response = await generateDemoBarcode(data).unwrap();
+      toast.success("Barcode generated successfully");
+      setResponseData(response.data);
 
-      } else {
-
-      }
+      
+      console.log(response);
     } catch (error) {
       handleErrors(error as ErrorResponse);
       console.log(error);
-    } */
+    }
   }
   
 
@@ -229,7 +236,7 @@ export function PricingArea() {
         </Form>
       </Card>
       <div className="mt-5">
-      <PriceAndStockTable />
+      
       </div>
       
     </>
