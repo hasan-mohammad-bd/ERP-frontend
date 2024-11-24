@@ -161,7 +161,7 @@ export function PricingArea({setAttributeCategoriesData, setResponseData}: any) 
                       name={`attribute_categories.${index}.attribute_category_id`}
                       placeholder="Select Attribute Category"
                       className="w-[330px]"
-                      title="Attribute Category"
+                      title={index === 0 ? "Attributes Category" : ""}
                       
 
                     />

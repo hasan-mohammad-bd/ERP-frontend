@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -10,13 +10,32 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Card } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { StockItem } from "./item-add-form"
+} from "@/components/ui/table";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 
-export default function PriceAndStockTable({ responseData, items, setItems }: any) {
-  console.log(responseData)
+export interface StockItem {
+  barcode_attribute: string;
+  barcode: string;
+  purchase_price: number | null;
+  selling_price: number | null;
+  discount: number | null;
+  discount_amount: number | null;
+  after_discount: number | null;
+  wholesale_price: number | null;
+}
+
+interface PriceAndStockTableProps {
+  responseData: StockItem[];
+  items: any;
+  setItems: any;
+}
+
+export default function PriceAndStockTable({
+  responseData,
+  items,
+  setItems,
+}: PriceAndStockTableProps) {
   const [topValues, setTopValues] = useState<Partial<StockItem>>({
     purchase_price: null,
     selling_price: null,
@@ -24,38 +43,68 @@ export default function PriceAndStockTable({ responseData, items, setItems }: an
     discount_amount: null,
     after_discount: null,
     wholesale_price: null,
-  })
-
-  console.log(items)
+  });
 
   useEffect(() => {
     if (responseData.length > 0) {
-      setItems(responseData)
+      setItems(responseData);
     }
-  }, [responseData, setItems])
+  }, [responseData, setItems]);
+
+  const calculateValues = (values: Partial<StockItem>): Partial<StockItem> => {
+    const {  selling_price, discount, discount_amount } = values;
+    const newValues = { ...values };
+
+    if (selling_price) {
+      if (discount) {
+        // console.log("hello")
+        newValues.discount_amount = selling_price * (discount / 100);
+        newValues.after_discount = selling_price - newValues.discount_amount;
+      } else if (discount_amount) {
+        // console.log("hello2")
+        newValues.discount = (discount_amount / selling_price ) * 100;
+        newValues.after_discount = selling_price - discount_amount;
+       
+      } else {
+        newValues.after_discount = selling_price;
+      }
+    }
+
+    return newValues;
+  };
+
+
+
+
 
   const handleApplyToAll = () => {
-    setItems(items.map((item: StockItem) => ({
-      ...item,
-      ...topValues,
-    })))
-  }
+    const calculatedTopValues = calculateValues(topValues);
+    setTopValues(calculatedTopValues);
+    setItems(
+      items.map((item: StockItem) => ({
+        ...item,
+        ...calculatedTopValues,
+      }))
+    );
+  };
 
-  const handleTopValueChange = (field: keyof StockItem, value: number) => {
-    setTopValues(prev => ({
-      ...prev,
-      [field]: value,
-    }))
-  }
+  const handleTopValueChange = (field: keyof StockItem, value: number | null) => {
+    const newTopValues = { ...topValues, [field]: value };
+    const calculatedValues = calculateValues(newTopValues);
+    setTopValues(calculatedValues);
+  };
 
-  const handleItemChange = (index: number, field: keyof StockItem, value: any) => {
-    const newItems = [...items]
-    newItems[index] = {
-      ...newItems[index],
-      [field]: value
-    }
-    setItems(newItems)
-  }
+  const handleItemChange = (
+    index: number,
+    field: keyof StockItem,
+    value: any
+  ) => {
+    const newItems = [...items];
+    const newItemValues = { ...newItems[index], [field]: value };
+    const calculatedValues = calculateValues(newItemValues);
+    newItems[index] = calculatedValues;
+    setItems(newItems);
+  };
 
   return (
     <Card>
@@ -66,8 +115,10 @@ export default function PriceAndStockTable({ responseData, items, setItems }: an
             <Input
               id="purchase_price"
               type="number"
-              value={topValues.purchase_price ?? ""}
-              onChange={(e) => handleTopValueChange("purchase_price", Number(e.target.value))}
+              defaultValue={topValues.purchase_price ?? ""}
+              onChange={(e) =>
+                handleTopValueChange("purchase_price", e.target.value ? Number(e.target.value) : null)
+              }
             />
           </div>
           <div>
@@ -75,8 +126,10 @@ export default function PriceAndStockTable({ responseData, items, setItems }: an
             <Input
               id="selling_price"
               type="number"
-              value={topValues.selling_price ?? ""}
-              onChange={(e) => handleTopValueChange("selling_price", Number(e.target.value))}
+              defaultValue={topValues.selling_price ?? ""}
+              onChange={(e) =>
+                handleTopValueChange("selling_price", e.target.value ? Number(e.target.value) : null)
+              }
             />
           </div>
           <div>
@@ -84,8 +137,10 @@ export default function PriceAndStockTable({ responseData, items, setItems }: an
             <Input
               id="discount"
               type="number"
-              value={topValues.discount ?? ""}
-              onChange={(e) => handleTopValueChange("discount", Number(e.target.value))}
+              defaultValue={topValues.discount ?? ""}
+              onChange={(e) =>
+                handleTopValueChange("discount", e.target.value ? Number(e.target.value) : null)
+              }
             />
           </div>
           <div>
@@ -93,8 +148,10 @@ export default function PriceAndStockTable({ responseData, items, setItems }: an
             <Input
               id="discount_amount"
               type="number"
-              value={topValues.discount_amount ?? ""}
-              onChange={(e) => handleTopValueChange("discount_amount", Number(e.target.value))}
+              defaultValue={topValues.discount_amount ?? ""}
+              onChange={(e) =>
+                handleTopValueChange("discount_amount", e.target.value ? Number(e.target.value) : null)
+              }
             />
           </div>
           <div>
@@ -102,8 +159,8 @@ export default function PriceAndStockTable({ responseData, items, setItems }: an
             <Input
               id="after_discount"
               type="number"
-              value={topValues.after_discount ?? ""}
-              onChange={(e) => handleTopValueChange("after_discount", Number(e.target.value))}
+              defaultValue={topValues.after_discount ?? ""}
+              readOnly
             />
           </div>
           <div>
@@ -111,11 +168,16 @@ export default function PriceAndStockTable({ responseData, items, setItems }: an
             <Input
               id="wholesale_price"
               type="number"
-              value={topValues.wholesale_price ?? ""}
-              onChange={(e) => handleTopValueChange("wholesale_price", Number(e.target.value))}
+              defaultValue={topValues.wholesale_price ?? ""}
+              onChange={(e) =>
+                handleTopValueChange("wholesale_price", e.target.value ? Number(e.target.value) : null)
+              }
             />
           </div>
-          <Button onClick={handleApplyToAll} className="bg-orange-500 hover:bg-orange-600">
+          <Button
+            onClick={handleApplyToAll}
+            className="bg-orange-500 hover:bg-orange-600"
+          >
             Apply to All
           </Button>
         </div>
@@ -140,49 +202,81 @@ export default function PriceAndStockTable({ responseData, items, setItems }: an
                   <TableCell>{item.barcode_attribute}</TableCell>
                   <TableCell>
                     <Input
-                      value={item.barcode || ''}
-                      onChange={(e) => handleItemChange(index, "barcode", e.target.value)}
+                      value={item.barcode || ""}
+                      onChange={(e) =>
+                        handleItemChange(index, "barcode", e.target.value)
+                      }
                     />
                   </TableCell>
                   <TableCell>
                     <Input
-                      value={item.purchase_price || ''}
-                      onChange={(e) => handleItemChange(index, "purchase_price", Number(e.target.value))}
+                      value={item.purchase_price || ""}
+                      onChange={(e) =>
+                        handleItemChange(
+                          index,
+                          "purchase_price",
+                          e.target.value ? Number(e.target.value) : null
+                        )
+                      }
                       type="number"
                     />
                   </TableCell>
                   <TableCell>
                     <Input
-                      value={item.selling_price || ''}
-                      onChange={(e) => handleItemChange(index, "selling_price", Number(e.target.value))}
+                      value={item.selling_price || ""}
+                      onChange={(e) =>
+                        handleItemChange(
+                          index,
+                          "selling_price",
+                          e.target.value ? Number(e.target.value) : null
+                        )
+                      }
                       type="number"
                     />
                   </TableCell>
                   <TableCell>
                     <Input
-                      value={item.discount || ''}
-                      onChange={(e) => handleItemChange(index, "discount", Number(e.target.value))}
+                      value={item.discount || ""}
+                      onChange={(e) =>
+                        handleItemChange(
+                          index,
+                          "discount",
+                          e.target.value ? Number(e.target.value) : null
+                        )
+                      }
                       type="number"
                     />
                   </TableCell>
                   <TableCell>
                     <Input
-                      value={item.discount_amount || ''}
-                      onChange={(e) => handleItemChange(index, "discount_amount", Number(e.target.value))}
+                      value={item.discount_amount || ""}
+                      onChange={(e) =>
+                        handleItemChange(
+                          index,
+                          "discount_amount",
+                          e.target.value ? Number(e.target.value) : null
+                        )
+                      }
                       type="number"
                     />
                   </TableCell>
                   <TableCell>
                     <Input
-                      value={item.after_discount || ''}
-                      onChange={(e) => handleItemChange(index, "after_discount", Number(e.target.value))}
+                      value={item.after_discount || ""}
+                      readOnly
                       type="number"
                     />
                   </TableCell>
                   <TableCell>
                     <Input
-                      value={item.wholesale_price || ''}
-                      onChange={(e) => handleItemChange(index, "wholesale_price", Number(e.target.value))}
+                      value={item.wholesale_price || ""}
+                      onChange={(e) =>
+                        handleItemChange(
+                          index,
+                          "wholesale_price",
+                          e.target.value ? Number(e.target.value) : null
+                        )
+                      }
                       type="number"
                     />
                   </TableCell>
@@ -193,6 +287,6 @@ export default function PriceAndStockTable({ responseData, items, setItems }: an
         </div>
       </div>
     </Card>
-  )
+  );
 }
 

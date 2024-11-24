@@ -58,7 +58,18 @@ export interface StockItem {
 }
 
 export default function ItemAddForm() {
-  const [items, setItems] = useState<StockItem[]>([
+
+  // const [barcodeData, setBarcodeData] = useState([]);
+  const [attributeCategoriesData, setAttributeCategoriesData] = useState([]);
+  const [responseData, setResponseData] = useState([]);
+  console.log(attributeCategoriesData);
+  const navigate = useNavigate();
+  const params = useParams();
+  const [itemType, setItemType] = useState<"Goods" | "Service">("Goods");
+  const { data: dataById, refetch } = useGetItemByIdQuery(`${params.id}`);
+  const previousData = dataById?.data;
+  // console.log(previousData)
+  const [items, setItems] = useState<StockItem[]>(previousData?.item_barcode ? previousData?.item_barcode : [
     {
       barcode_attribute: "Default",
       barcode: null,
@@ -72,15 +83,6 @@ export default function ItemAddForm() {
     },
     // ... other items
   ]);
-  // const [barcodeData, setBarcodeData] = useState([]);
-  const [attributeCategoriesData, setAttributeCategoriesData] = useState([]);
-  const [responseData, setResponseData] = useState([]);
-  console.log(attributeCategoriesData);
-  const navigate = useNavigate();
-  const params = useParams();
-  const [itemType, setItemType] = useState<"Goods" | "Service">("Goods");
-  const { data: dataById, refetch } = useGetItemByIdQuery(`${params.id}`);
-  const previousData = dataById?.data;
   const [createItem, { isLoading }] = useCreateItemMutation();
   const [updateItem, { isLoading: updateLoading }] = useUpdateItemMutation();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);

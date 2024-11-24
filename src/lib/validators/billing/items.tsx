@@ -67,6 +67,17 @@ export const ItemSchema = z.object({
 
 export type ItemFormValues = z.infer<typeof ItemSchema>;
 
+export const itemBarcode = z.object({
+  barcode_attribute: z.string().default("Default"), // Ensure it's a string and has a default value
+  barcode: z.string().nullable(), // Allows null value
+  purchase_price: z.number().nullable(), // Allows null value
+  selling_price: z.number().nullable(), // Allows null value
+  discount: z.number().nullable(), // Allows null value
+  discount_amount: z.number().nullable(), // Allows null value
+  after_discount: z.number().nullable(), // Allows null value
+  wholesale_price: z.number().nullable(), // Allows null value
+  attribute_ids: z.array(z.number()).default([]), // Array of numbers with a default empty array
+})
 
 
 // Define the main ItemSchema using CategorySchema
@@ -95,6 +106,7 @@ export const itemRow = z.object({
   created_at: z.string().datetime(),
   user: userRow,
   organization: organizationColumn,
+  item_barcode: z.array(itemBarcode)
   
 });
 
