@@ -1,9 +1,9 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
-import { EmployeeColumn } from "@/lib/validators";
 import { CellAction } from "./cell-action";
+import { Expense } from "@/lib/validators/billing/expenses";
 
-export const ExpensesColumns: ColumnDef<EmployeeColumn>[] = [
+export const ExpensesColumns: ColumnDef<Expense>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -30,30 +30,20 @@ export const ExpensesColumns: ColumnDef<EmployeeColumn>[] = [
   },
 
   {
-    accessorKey: "expenses_category",
-    header: "Expenses Category",
-    cell: () => <>Demo Category</>,
-  },
-  //   {
-  //     accessorKey: "sku",
-  //     header: "SKU",
-  //     cell: () => <>sk-123</>,
-  //   },
-  {
-    accessorKey: "amount",
-    header: "Amount",
-    cell: () => <>Demo amount</>,
-  },
-  {
     accessorKey: "date",
-    header: "Date",
-    cell: () => <>10/20/2024</>,
+    header: "Expenses Date",
+    cell: ({ row }) => <>{row.original.date}</>,
+  },
+  {
+    accessorKey: "total",
+    header: "Total",
+    cell: ({ row }) => <>{row.original.total}</>,
   },
 
   {
     accessorKey: "note",
     header: "Note",
-    cell: () => <>Demo note</>,
+    cell: ({ row }) => <>{row.original.note}</>,
   },
 
   {

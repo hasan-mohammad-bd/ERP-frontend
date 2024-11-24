@@ -8,7 +8,7 @@ const ledgerAccountApi = accountApi.injectEndpoints({
       { data: LedgerRow[]; meta: PaginationInfo },
       string | void
     >({
-      query: () => `ledger-accounts`,
+      query: (query) => `ledger-accounts?${query}`,
       providesTags: ["ledger-accounts"],
     }),
     createLedgerAccount: build.mutation<{ data: LedgerRow }, LedgerFromValues>({

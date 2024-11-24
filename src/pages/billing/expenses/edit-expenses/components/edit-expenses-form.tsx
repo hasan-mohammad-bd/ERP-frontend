@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 // import FileUpload from "@/components/common/file-uploader";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { LedgerRow } from "@/lib/validators/accounts";
 import {
@@ -31,28 +31,40 @@ import {
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { useGetExpensesCategoryQuery } from "@/store/services/billing/api/expenses-category";
-import { useCreateExpenseMutation } from "@/store/services/billing/api/expenses";
+import {
+  useGetExpenseQuery,
+  useUpdateExpenseMutation,
+} from "@/store/services/billing/api/expenses";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { toast } from "sonner";
 import { Loading } from "@/components/common/loading";
 // Assuming this exists
 
-const AddExpensesForm = () => {
+const EditExpensesForm = () => {
+  const params = useParams();
+  const expenseId = Number(params.id);
   const navigate = useNavigate();
   // const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [openDatePickers, setOpenDatePickers] = useState({
     date: false,
   });
 
-  // console.log(uploadedFiles);
-
   const { data: ledgerAccounts, isLoading: ledgerAccountLoading } =
     useGetLedgerAccountsQuery("type=Assets&nature=Cash&page=1&per_page=1000");
   const { data: expensesCategory, isLoading: expensesCategoryLoading } =
     useGetExpensesCategoryQuery("page=1&per_page=1000");
 
-  const [createExpense, { isLoading: isCreating }] = useCreateExpenseMutation();
+  const [updateExpense, { isLoading: isUpdating }] = useUpdateExpenseMutation();
+
+  const { data: expense, isLoading: expenseLoading } = useGetExpenseQuery(
+    expenseId,
+    {
+      skip: !expenseId,
+      refetchOnMountOrArgChange: expenseId,
+      refetchOnFocus: true,
+    }
+  );
 
   const ledgerAccountData = ledgerAccounts?.data || [];
   const expensesCategoryData = expensesCategory?.data || [];
@@ -78,6 +90,22 @@ const AddExpensesForm = () => {
     name: "details", // Field name in the schema
   });
 
+  // Update form defaults on fetch
+  useEffect(() => {
+    if (expense?.data) {
+      form.reset({
+        note: expense?.data.note,
+        ledger_account_id: String(expense?.data.ledger_account_id),
+        date: expense?.data.date,
+        details: expense?.data.details.map((detail) => ({
+          note: detail.note || "",
+          amount: detail.amount,
+          expense_category_id: String(detail.expense_category_id),
+        })),
+      });
+    }
+  }, [expense?.data, form]);
+
   // Watch amount fields to calculate total
   const amounts = form.watch("details"); // Watch the expenses array for changes
   const totalAmount = amounts.reduce((total, current) => {
@@ -94,25 +122,31 @@ const AddExpensesForm = () => {
 
   async function onSubmit(data: ExpensesFormValues) {
     try {
-      await createExpense({
-        ...data,
-        ledger_account_id: Number(data.ledger_account_id),
-        details: data.details.map((detail) => ({
-          ...detail,
-          expense_category_id: Number(detail.expense_category_id),
-          amount: Number(detail.amount),
-        })),
+      await updateExpense({
+        expenseId: Number(expense?.data.id),
+        updatedExpense: {
+          ...data,
+          ledger_account_id: Number(data.ledger_account_id),
+          details: data.details.map((detail) => ({
+            ...detail,
+            expense_category_id: Number(detail.expense_category_id),
+            amount: Number(detail.amount),
+          })),
+        },
       }).unwrap();
-      toast.success("Expense created successfully");
+      toast.success("Expense Updated successfully");
       navigate("/billing/expenses");
     } catch (error) {
       handleErrors(error as ErrorResponse);
     }
   }
 
+  if (expenseLoading) {
+    return <Loading />;
+  }
   return (
     <Card>
-      {isCreating ? (
+      {isUpdating ? (
         <Loading />
       ) : (
         <Form {...form}>
@@ -341,4 +375,4 @@ const AddExpensesForm = () => {
   );
 };
 
-export default AddExpensesForm;
+export default EditExpensesForm;

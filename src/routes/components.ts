@@ -145,6 +145,13 @@ export const EditCustomerForm = lazy(
 export const EditSupplierForm = lazy(
   () => import("@/pages/billing/supplier/edit-supplier")
 );
+export const ExpensesList = lazy(() => import("@/pages/billing/expenses"));
+export const AddExpense = lazy(
+  () => import("@/pages/billing/expenses/add-expenses")
+);
+export const EditExpense = lazy(
+  () => import("@/pages/billing/expenses/edit-expenses")
+);
 
 //All We Routes
 export const Organization = lazy(() => import("@/pages/web/organization"));

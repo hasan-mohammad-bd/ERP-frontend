@@ -1,11 +1,11 @@
 import { Heading } from "@/components/common/heading";
 import { Separator } from "@radix-ui/react-dropdown-menu";
-import AddExpensesForm from "./components/add-expenses-form";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import EditExpensesForm from "./components/edit-expenses-form";
 
-const AddExpense = () => {
+const EditExpense = () => {
   const navigate = useNavigate();
 
   return (
@@ -14,7 +14,7 @@ const AddExpense = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="Add Expense"
+              title="Edit Expense"
               description="Manage job apply for you business"
             />
             <Button onClick={() => navigate("/billing/expenses")} size={"sm"}>
@@ -24,9 +24,9 @@ const AddExpense = () => {
           <Separator />
         </div>
       </div>
-      <AddExpensesForm />
+      <EditExpensesForm />
     </>
   );
 };
 
-export default AddExpense;
+export default EditExpense;

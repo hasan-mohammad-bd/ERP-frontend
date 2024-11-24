@@ -1,8 +1,8 @@
 import { DeleteResponse, PaginationInfo } from "@/types";
 
 import {
-  CategoryFormValues,
   CategoryRow,
+  ExpenseCategoryRow,
 } from "@/lib/validators/billing/category";
 import { inventoryApi } from "../..";
 
@@ -17,7 +17,7 @@ const ExpensesCategoryApi = inventoryApi.injectEndpoints({
     }),
 
     createExpensesCategory: build.mutation<
-      { data: CategoryRow }, // Adjust the response type if necessary
+      { data: ExpenseCategoryRow }, // Adjust the response type if necessary
       FormData // Expect FormData here as well
     >({
       query: (formData) => ({
@@ -36,7 +36,7 @@ const ExpensesCategoryApi = inventoryApi.injectEndpoints({
       invalidatesTags: ["expenses-category"],
     }),
     updateExpensesCategory: build.mutation<
-      { data: CategoryRow },
+      { data: ExpenseCategoryRow },
       { expensesCategoryId: number; updatedExpensesCategory: FormData }
     >({
       query: ({ expensesCategoryId, updatedExpensesCategory }) => ({
@@ -51,9 +51,8 @@ const ExpensesCategoryApi = inventoryApi.injectEndpoints({
 });
 
 export const {
-
- useGetExpensesCategoryQuery,
- useCreateExpensesCategoryMutation,
- useRemoveExpensesCategoryMutation,
- useUpdateExpensesCategoryMutation,
+  useGetExpensesCategoryQuery,
+  useCreateExpensesCategoryMutation,
+  useRemoveExpensesCategoryMutation,
+  useUpdateExpensesCategoryMutation,
 } = ExpensesCategoryApi;

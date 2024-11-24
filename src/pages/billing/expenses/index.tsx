@@ -3,14 +3,13 @@ import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { DataTable } from "@/components/ui/data-table/data-table";
-import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
-
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
 import { Separator } from "@/components/ui/separator";
 import ListSkeleton from "@/components/common/ListSkeleton";
 import { useNavigate } from "react-router-dom";
 import { ExpensesColumns } from "./components/column";
+import { useGetExpensesQuery } from "@/store/services/billing/api/expenses";
 
 const ExpensesList = () => {
   const navigate = useNavigate();
@@ -19,11 +18,11 @@ const ExpensesList = () => {
     pageSize: 10,
   });
 
-  const { data, isLoading } = useGetEmployeesQuery(
+  const { data, isLoading } = useGetExpensesQuery(
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
 
-  const employees = data?.data || [];
+  const expensesData = data?.data || [];
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
@@ -45,11 +44,11 @@ const ExpensesList = () => {
           </div>
           <Separator />
           {isLoading && <ListSkeleton />}
-          {employees && !isLoading && (
+          {expensesData && !isLoading && (
             <div>
               <DataTable
                 columns={ExpensesColumns}
-                data={employees}
+                data={expensesData}
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}

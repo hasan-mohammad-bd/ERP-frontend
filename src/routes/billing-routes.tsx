@@ -1,9 +1,12 @@
 import withFallback from "@/utils/with-fallback";
 import {
+  AddExpense,
   EditCustomerForm,
+  EditExpense,
   EditSupplierForm,
   // DashboardAccounts,
   ErrorPage,
+  ExpensesList,
   Layout,
   NotFoundPage,
 } from "./components";
@@ -33,9 +36,6 @@ import CreditNotes from "@/pages/billing/credit-notes";
 import { AddCreditNotes } from "@/pages/billing/credit-notes/components/add-credit-notes-form";
 import SupplierList from "@/pages/billing/supplier/supplier-list";
 import Supplier from "@/pages/billing/supplier/add-supplier";
-import ExpensesList from "@/pages/billing/expenses/expenses-list";
-import Expenses from "@/pages/billing/expenses/add-expenses";
-import AddExpensesForm from "@/pages/billing/expenses/add-expenses/components/add-expenses-form";
 import SubCategory from "@/pages/billing/sub-category";
 import Customers from "@/pages/billing/customers/customer-list";
 import ManagePurchase from "@/pages/billing/manage-purchase";
@@ -132,12 +132,6 @@ const billingRoutes = {
 
     {
       path: "expenses",
-      element: withFallback(<Expenses />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-
-    {
-      path: "expenses",
       errorElement: withFallback(<ErrorPage />),
       children: [
         {
@@ -147,12 +141,12 @@ const billingRoutes = {
         },
         {
           path: "add",
-          element: withFallback(<Expenses />),
+          element: withFallback(<AddExpense />),
           errorElement: withFallback(<ErrorPage />),
         },
         {
           path: "edit/:id",
-          element: withFallback(<AddExpensesForm />),
+          element: withFallback(<EditExpense />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],

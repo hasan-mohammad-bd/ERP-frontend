@@ -16,10 +16,11 @@ import handleErrors from "@/lib/handle-errors";
 import { Loading } from "@/components/common/loading";
 import {
   // CategoryFormValues,
-  CategoryRow,
   // categoryRowSchema,
-  categorySchema,
+  ExpenseCategoryRow,
+  ExpenseCategoryRowForm,
   extendedCategorySchema,
+  extendedExpenseCategorySchema,
 } from "@/lib/validators/billing/category";
 import FileUploadSingle from "@/components/common/file-upload-single";
 import { useState } from "react";
@@ -44,7 +45,7 @@ import { LedgerGroupArrayRow } from "@/lib/validators/accounts";
 
 interface AddCategoryProps {
   modalClose: () => void;
-  data?: CategoryRow; // If you want to pass an existing category to edit
+  data?: ExpenseCategoryRow; // If you want to pass an existing category to edit
 }
 
 export function AddCategoryForm({
@@ -61,9 +62,11 @@ export function AddCategoryForm({
     useGetLedgerGroupsArrayQuery("page=1&per_page=1000&type=Expenses");
   const ledgerGroupData = ledgerGroup?.data || [];
 
-  const schema = previousData ? extendedCategorySchema : categorySchema;
+  const schema = previousData
+    ? extendedCategorySchema
+    : extendedExpenseCategorySchema;
 
-  const form = useForm<CategoryRow>({
+  const form = useForm<ExpenseCategoryRowForm>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: previousData?.name || "",
@@ -75,7 +78,7 @@ export function AddCategoryForm({
 
   console.log(form.formState.errors);
 
-  async function onSubmit(data: CategoryRow) {
+  async function onSubmit(data: ExpenseCategoryRowForm) {
     console.log("data", data);
     try {
       // Validate the uploaded image if it exists

@@ -9,13 +9,13 @@ import {
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
-import { CategoryFormValues, CategoryRow } from "@/lib/validators/billing/category";
+import { ExpenseCategoryRow } from "@/lib/validators/billing/category";
 import { Modal } from "@/components/common/modal";
 import { AddCategoryForm } from "./add-category-form";
 import { useRemoveExpensesCategoryMutation } from "@/store/services/billing/api/expenses-category";
 
 interface CellActionProps {
-  data: CategoryRow; // Data type as defined
+  data: ExpenseCategoryRow; // Data type as defined
 }
 
 export function CellAction({ data }: CellActionProps) {
@@ -23,8 +23,7 @@ export function CellAction({ data }: CellActionProps) {
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
   const [deleteCategory, { isLoading: deleteLoading }] =
-  useRemoveExpensesCategoryMutation();
-
+    useRemoveExpensesCategoryMutation();
 
   const handleCategoryDelete = async (id: number) => {
     try {

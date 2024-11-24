@@ -1,55 +1,55 @@
 import { z } from "zod";
 
+type ExpenseDetail = {
+  id: number;
+  amount: string;
+  note: string;
+  expense_category_id: number;
+};
+
+export type Expense = {
+  id: number;
+  date: string;
+  total: string;
+  note: string;
+  invoice_prifix: string;
+  invoice_suffix: number;
+  invoice_number: string;
+  payment_account_id: number;
+  ledger_account_id: number;
+  details: ExpenseDetail[];
+};
+
 export const expensesSchema = z.object({
-//    name: z.string().min(2, {
-//          message: "Name must be at least 2 characters.",
-//        }),
-//   company_name: z.string().min(2, {
-//     message: "Company name must be at least 2 characters.",
-//   }),
-//   company_id: z.coerce
-//     .number()
-//     .int()
-//     .min(0, {
-//       message: "Company ID must be at least 0.",
-//     })
-//     .max(9999, {
-//       message: "Company ID must be at most 9999.",
-//     }),
+  ledger_account_id: z.string({ required_error: "Account is required" }),
 
-  payfrom: z.string().min(2, {
-         message: "payfrom must be at least 2 characters.",
-            }),
-
-  date: z.date({
-    invalid_type_error: "Invalid date format.",
-  }),
+  date: z.string({ required_error: "Date is required" }).date(),
   note: z.string().optional(),
-
-  expenses: z.array(
-    z.object({
-      expenses_category: z.string(),
-      note: z.string(),
-      amount: z.string(),
-      attachment: z.string()
-    })
-  ),
-
-
+  total: z.number(),
+  details: z
+    .array(
+      z.object({
+        expense_category_id: z
+          .string({ required_error: "Category is required" })
+          .min(1, "Category is required"),
+        note: z.string().optional(),
+        amount: z.string({ required_error: "Amount is required" }),
+        attachment: z.string().optional(),
+      })
+    )
+    .min(1, "At least one expense detail is required"),
 });
 
 export type ExpensesFormValues = z.infer<typeof expensesSchema>;
 
-export const expenseRow = expensesSchema.extend({
-  id: z.coerce
-    .number()
-    .int()
-    .min(0, {
-      message: "Id must be at least 0.",
-    })
-    .max(9999, {
-      message: "Id must be at most 9999.",
-    }),
-});
-
-export type ExpensesRow = z.infer<typeof expenseRow>;
+export type ExpensesFormValuesAPI = Omit<
+  ExpensesFormValues,
+  "ledger_account_id" | "details"
+> & {
+  ledger_account_id: number;
+  details: {
+    expense_category_id: number;
+    note?: string;
+    amount: number;
+  }[];
+};

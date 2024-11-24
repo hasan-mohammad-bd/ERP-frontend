@@ -9,29 +9,33 @@ import {
 
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
-import { EmployeeColumn } from "@/lib/validators";
 import { toast } from "sonner";
 
 import { useNavigate } from "react-router-dom";
+import { Expense } from "@/lib/validators/billing/expenses";
+import { useRemoveExpenseMutation } from "@/store/services/billing/api/expenses";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface CellActionProps {
-  data: EmployeeColumn;
+  data: Expense;
 }
 
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleDepartmentDelete = async (id: number) => {
-    // try {
-    //   await deleteEmployee(id);
-    //   setAlertModalOpen(false);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  const [deleteExpense, { isLoading: isDeleting }] = useRemoveExpenseMutation();
 
-    console.log(id);
-    toast.success("Item deleted successfully");
+  const handleDepartmentDelete = async (id: number) => {
+    try {
+      await deleteExpense(id);
+      setAlertModalOpen(false);
+      toast.success("Item deleted successfully");
+    } catch (error) {
+      console.log(error);
+      handleErrors(error as ErrorResponse);
+    }
   };
 
   return (
@@ -43,7 +47,7 @@ export function CellAction({ data }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-              onClick={() => navigate(`/billing/supplier/edit/${data.id}`)}
+              onClick={() => navigate(`/billing/expenses/edit/${data.id}`)}
 
               // onClick={() => toggleModal()}
             >
@@ -78,11 +82,11 @@ export function CellAction({ data }: CellActionProps) {
       <AlertModal
         title="Are you sure?"
         description="This action cannot be undone."
-        name={data.first_name}
+        name={"This Expense"}
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
         onConfirm={() => handleDepartmentDelete(data.id)}
-        loading={false}
+        loading={isDeleting}
       />
     </div>
   );
