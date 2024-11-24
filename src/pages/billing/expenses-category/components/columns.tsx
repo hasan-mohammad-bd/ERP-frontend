@@ -3,9 +3,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CategoryFormValues } from "@/lib/validators/billing/category";
+import { CategoryFormValues, CategoryRow } from "@/lib/validators/billing/category";
 
-export const categoryColumns: ColumnDef<CategoryFormValues>[] = [
+export const categoryColumns: ColumnDef<CategoryRow>[] = [
   {
     id: "select",
     header: ({ table }) => (

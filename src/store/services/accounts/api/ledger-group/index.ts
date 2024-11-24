@@ -19,7 +19,7 @@ const ledgerGroupApi = accountApi.injectEndpoints({
       { data: LedgerGroupArrayRow[]; meta: PaginationInfo },
       string | void
     >({
-      query: () => `ledger-groups`,
+      query: (query) => `ledger-groups?${query}`,
       providesTags: ["ledger-groups-array"],
     }),
     createLedgerGroup: build.mutation<

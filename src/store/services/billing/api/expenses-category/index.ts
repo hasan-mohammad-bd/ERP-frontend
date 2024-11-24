@@ -9,7 +9,7 @@ import { inventoryApi } from "../..";
 const ExpensesCategoryApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
     getExpensesCategory: build.query<
-      { data: CategoryFormValues[]; meta: PaginationInfo },
+      { data: CategoryRow[]; meta: PaginationInfo },
       string
     >({
       query: (params) => `expense-categories?${params}`,

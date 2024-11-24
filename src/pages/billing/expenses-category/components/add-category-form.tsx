@@ -15,9 +15,11 @@ import { ErrorResponse } from "@/types";
 import handleErrors from "@/lib/handle-errors";
 import { Loading } from "@/components/common/loading";
 import {
-  CategoryFormValues,
+  // CategoryFormValues,
   CategoryRow,
+  // categoryRowSchema,
   categorySchema,
+  extendedCategorySchema,
 } from "@/lib/validators/billing/category";
 import FileUploadSingle from "@/components/common/file-upload-single";
 import { useState } from "react";
@@ -34,6 +36,11 @@ import {
   useCreateExpensesCategoryMutation,
   useUpdateExpensesCategoryMutation,
 } from "@/store/services/billing/api/expenses-category";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+// import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
+// import { LocationColumn } from "@/lib/validators";
+import { useGetLedgerGroupsArrayQuery } from "@/store/services/accounts/api/ledger-group";
+import { LedgerGroupArrayRow } from "@/lib/validators/accounts";
 
 interface AddCategoryProps {
   modalClose: () => void;
@@ -50,17 +57,26 @@ export function AddCategoryForm({
   const [updateExpensesCategory, { isLoading: updateLoading }] =
     useUpdateExpensesCategoryMutation();
 
-  const form = useForm<CategoryFormValues>({
-    resolver: zodResolver(categorySchema),
+  const { data: ledgerGroup, isLoading: ledgerGroupLoading } =
+    useGetLedgerGroupsArrayQuery("page=1&per_page=1000&type=Expenses");
+  const ledgerGroupData = ledgerGroup?.data || [];
+
+  const schema = previousData ? extendedCategorySchema : categorySchema;
+
+  const form = useForm<CategoryRow>({
+    resolver: zodResolver(schema),
     defaultValues: {
       name: previousData?.name || "",
       description: previousData?.description || "",
       status: previousData?.status === 1 ? 1 : 0,
+      ledger_group_id: previousData?.ledger_group_id || "",
     },
   });
 
+  console.log(form.formState.errors);
 
-  async function onSubmit(data: CategoryFormValues) {
+  async function onSubmit(data: CategoryRow) {
+    console.log("data", data);
     try {
       // Validate the uploaded image if it exists
       if (uploadedImage) {
@@ -88,6 +104,7 @@ export function AddCategoryForm({
         },
         { indices: true }
       );
+      formData.append("ledger_group_id", data.ledger_group_id);
 
       if (previousData && previousData.id !== undefined) {
         // Use formData here for updating category
@@ -162,6 +179,20 @@ export function AddCategoryForm({
                   )}
                 />
               </div>
+
+              {!previousData && (
+                <FormSearchSelect<LedgerGroupArrayRow>
+                  loading={ledgerGroupLoading}
+                  data={ledgerGroupData}
+                  displayField="name"
+                  valueField="id"
+                  form={form}
+                  name="ledger_group_id"
+                  placeholder="Select Ledger Group"
+                  title="Ledger Group"
+                  className="w-[462px]"
+                />
+              )}
 
               {/* Description*/}
               <FormField
