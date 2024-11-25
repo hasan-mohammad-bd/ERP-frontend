@@ -35,7 +35,7 @@ import { toast } from "sonner";
 
 
 
-export function PricingArea({setAttributeCategoriesData, setResponseData}: any) {
+export function PricingArea({setAttributeCategoriesData, setResponseData, previousData}: any) {
   const [generateDemoBarcode] = useGenerateDemoBarcodeMutation();
   // const [updateApprovalGroup, { isLoading: updateLoading }] = useUpdateApprovalGroupMutation();
 
@@ -70,6 +70,22 @@ export function PricingArea({setAttributeCategoriesData, setResponseData}: any) 
     // resolver: zodResolver(approvalGroupSchema),
     defaultValues: {},
   });
+
+  console.log(previousData?.attribute_categories)
+
+  useEffect(() => {
+    if (previousData) {
+      form.reset({
+        attribute_categories: previousData.attribute_categories.map((item: any) => {
+          return {
+            attribute_category_id: item.id.toString(),
+            attribute_ids: item.attribute_ids.map((id: any) => id),
+          }
+        }),
+
+      });
+    }
+  }, [previousData, form]);
 
   /*   useEffect(() => {
 

@@ -69,7 +69,7 @@ export default function ItemAddForm() {
   const { data: dataById, refetch } = useGetItemByIdQuery(`${params.id}`);
   const previousData = dataById?.data;
   // console.log(previousData)
-  const [items, setItems] = useState<StockItem[]>(previousData?.item_barcode ? previousData?.item_barcode : [
+  const [items, setItems] = useState<StockItem[]>( [
     {
       barcode_attribute: "Default",
       barcode: null,
@@ -83,6 +83,14 @@ export default function ItemAddForm() {
     },
     // ... other items
   ]);
+
+  useEffect(() => {
+   if(previousData){
+     setItems(previousData?.item_barcode);
+    //  setAttributeCategoriesData(previousData?.attribute_categories);
+   } 
+  },[previousData?.item_barcode ]);
+
   const [createItem, { isLoading }] = useCreateItemMutation();
   const [updateItem, { isLoading: updateLoading }] = useUpdateItemMutation();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -152,6 +160,9 @@ export default function ItemAddForm() {
   const filteredChildCategories = childCategoryData.filter(
     (item) => Number(form.watch("sub_category_id")) === Number(item.parent_id)
   );
+
+  console.log(previousData)
+
 
   async function onSubmit(data: ItemFormValues) {
     try {
@@ -511,7 +522,7 @@ export default function ItemAddForm() {
                 <PricingArea
                   setAttributeCategoriesData={setAttributeCategoriesData}
                   // attributeCategoriesData={attributeCategoriesData}
-
+                  previousData={previousData}
                   setResponseData={setResponseData}
                 />
               )}
