@@ -60,7 +60,7 @@ export default function EmployeeSalaryBillReportFilter({
         className="w-full rounded-lg space-y-6"
       >
         <Card className="p-5">
-          <div className="grid gap-5 md:grid-cols-6">
+          <div className="grid gap-5 2xl:grid-cols-6 grid-cols-4">
             {/* Employee Selector */}
             <div className="w-[250px]">
               <FormSearchSelect<EmployeeColumn>
@@ -76,7 +76,7 @@ export default function EmployeeSalaryBillReportFilter({
             </div>
 
             {/* Month and Year Picker */}
-            <div className="space-y-2 flex flex-col">
+            <div className="space-y-2 flex flex-col 2xl:ml-0 ml-5">
               <label
                 className={cn(
                   "text-sm font-medium mt-1",

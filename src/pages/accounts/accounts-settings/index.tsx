@@ -44,7 +44,7 @@ const AccountSettings = () => {
               <div>
                 <h3 className="font-semibold text-lg mb-3">Currencies</h3>
 
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid 2xl:grid-cols-4 grid-cols-3 gap-4">
                   <Card>
                     <div className="p-4 ">
                       <div className="flex justify-between items-center mb-3">

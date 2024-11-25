@@ -100,7 +100,7 @@ const DetailedGeneralLedger = () => {
             loadingDataThree: contactsLoading,
           }}
         />
-        <div className="flex-1 space-y-4 w-2/3 mx-auto">
+        <div className="flex-1 space-y-4 2xl:w-2/3 mx-auto">
           <Separator />
           {detailedGeneralLedgerData && summery && user ? (
             <DetailedGeneralTable

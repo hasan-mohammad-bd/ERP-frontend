@@ -409,7 +409,7 @@ export function AddOpeningBalanceForm() {
                             <FormControl>
                               <InputNumberFormat
                                 locales="en-IN"
-                                className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                className="border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
                                 onChange={(event) =>
                                   field.onChange(
                                     event.target.value.replace(/,/g, "")
@@ -460,7 +460,7 @@ export function AddOpeningBalanceForm() {
                             <FormControl>
                               <InputNumberFormat
                                 locales="en-IN"
-                                className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                className="border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
                                 onChange={(event) =>
                                   field.onChange(
                                     event.target.value.replace(/,/g, "")

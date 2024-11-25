@@ -54,7 +54,7 @@ const DetailedGeneralTable = ({ tableData, summery, reportFormate }: Props) => {
         {" "}
         <Table>
           <TableHeader>
-            <TableRow className="bg-gray-100">
+            <TableRow className="">
               <TableHead>Date</TableHead>
               <TableHead>Account</TableHead>
               <TableHead>Transaction Details</TableHead>

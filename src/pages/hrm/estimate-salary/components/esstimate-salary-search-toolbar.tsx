@@ -157,7 +157,7 @@ export default function EstimateSalarySearchToolbar({
         <h2 className="font-semibold mb-6">Estimate Salary</h2>
 
         <Card>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6 p-5">
+          <div className="grid gap-4  2xl:grid-cols-6 grid-cols-4 p-5">
             <div className="space-y-2">
               <label htmlFor="employees" className="text-sm font-medium">
                 Employees *

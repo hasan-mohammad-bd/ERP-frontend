@@ -206,10 +206,10 @@ export function AddReceiptForm() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-3  px-2 no-scrollbar"
               >
-                <div className="grid grid-cols-2 gap-16">
+                <div className="grid grid-cols-2 2xl:gap-16 gap-10">
                   <div>
-                    <div className="flex space-x-4">
-                      <div className="w-fit">
+                    <div className="2xl:flex gap-4">
+                      <div className="w-fit ">
                         <FormField
                           control={form.control}
                           name="date"
@@ -230,104 +230,57 @@ export function AddReceiptForm() {
                           )}
                         />
                       </div>
-                      <div className="w-fit flex space-x-4">
-                        <FormField
-                          control={form.control}
-                          name="entry_number"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Entry Number</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="text"
-                                  placeholder="Enter entry number"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <SelectWithSearch<ProjectRow>
-                          name="project_id"
-                          title={"Project"}
-                          data={projectData}
-                          loading={projectLoading}
-                          valueField="id"
-                          displayField="name"
-                          width="w-[195px]"
-                          form={form}
-                        />
 
-                        <div className="w-[200px]">
-                          <FormSearchSelect<LedgerRow>
-                            loading={ledgerAccountLoading}
-                            data={ledgerAccountData.filter(
-                              (ledgerAccount: LedgerRow) =>
-                                ledgerAccount.nature === "Cash" ||
-                                ledgerAccount.nature === "Bank Accounts"
-                            )}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name={`details.0.ledger_account_id`}
-                            title="Debit Account Head"
-                            className="w-[190px]"
-                          />
-                          {/* <FormField
+                      <div className="flex space-x-4 w-full 2xl:mt-0 mt-4 2xl:mb-2 mb-3">
+                        <div className="w-fit flex space-x-4">
+                          <FormField
                             control={form.control}
-                            name={`details.0.ledger_account_id`}
+                            name="entry_number"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>
-                                  Debit Account Head{" "}
-                                  <span className="text-red-500">*</span>
-                                </FormLabel>
-                                <Select
-                                  onValueChange={(value) => {
-                                    field.onChange(value);
-                                    const updatedAccounts = [
-                                      ...selectedLedgerAccounts,
-                                    ];
-                                    updatedAccounts[0] = Number(value);
-                                    setSelectedLedgerAccounts(updatedAccounts);
-                                  }}
-                                  value={(field.value || "").toString()}
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Ledger Account" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {ledgerAccountLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      ledgerAccountData
-                                        .filter(
-                                          (ledgerAccount: LedgerRow) =>
-                                            ledgerAccount.nature === "Cash" ||
-                                            ledgerAccount.nature ===
-                                              "Bank Accounts"
-                                        )
-                                        .map((ledgerAccount: LedgerRow) => (
-                                          <SelectItem
-                                            key={ledgerAccount.id}
-                                            value={String(ledgerAccount.id)}
-                                          >
-                                            {ledgerAccount.name}
-                                          </SelectItem>
-                                        ))
-                                    )}
-                                  </SelectContent>
-                                </Select>
+                                <FormLabel>Entry Number</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="text"
+                                    placeholder="Enter entry number"
+                                    {...field}
+                                  />
+                                </FormControl>
                                 <FormMessage />
                               </FormItem>
                             )}
-                          /> */}
+                          />
+                          <SelectWithSearch<ProjectRow>
+                            name="project_id"
+                            title={"Project"}
+                            data={projectData}
+                            loading={projectLoading}
+                            valueField="id"
+                            displayField="name"
+                            width="w-[195px]"
+                            form={form}
+                          />
+
+                          <div className="w-[200px]">
+                            <FormSearchSelect<LedgerRow>
+                              loading={ledgerAccountLoading}
+                              data={ledgerAccountData.filter(
+                                (ledgerAccount: LedgerRow) =>
+                                  ledgerAccount.nature === "Cash" ||
+                                  ledgerAccount.nature === "Bank Accounts"
+                              )}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name={`details.0.ledger_account_id`}
+                              title="Debit Account Head"
+                              className="w-[190px]"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
+
                     <FormField
                       control={form.control}
                       name="note"
@@ -345,6 +298,7 @@ export function AddReceiptForm() {
                       )}
                     />
                   </div>
+
                   {/* file Upload  */}
                   <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
@@ -383,61 +337,6 @@ export function AddReceiptForm() {
                             }
                             className="w-[250px]"
                           />
-                          {/* <FormField
-                            control={form.control}
-                            name={`details.${index}.ledger_account_id`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>
-                                  {index === 1 && (
-                                    <>
-                                      Credit Account Head{" "}
-                                      <span className="text-red-500">*</span>
-                                    </>
-                                  )}
-                                </FormLabel>
-                                <Select
-                                  onValueChange={(value) => {
-                                    field.onChange(value);
-                                    const updatedAccounts = [
-                                      ...selectedLedgerAccounts,
-                                    ];
-                                    updatedAccounts[index] = Number(value);
-                                    setSelectedLedgerAccounts(updatedAccounts);
-                                  }}
-                                  value={(field.value || "").toString()}
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select Ledger Account" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {ledgerAccountLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      ledgerAccountData
-                                        .filter(
-                                          (ledgerAccount: LedgerRow) =>
-                                            ledgerAccount.nature !== "Cash" &&
-                                            ledgerAccount.nature !==
-                                              "Bank Accounts"
-                                        )
-                                        .map((ledgerAccount: LedgerRow) => (
-                                          <SelectItem
-                                            key={ledgerAccount.id}
-                                            value={String(ledgerAccount.id)}
-                                          >
-                                            {ledgerAccount.name}
-                                          </SelectItem>
-                                        ))
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          /> */}
                         </div>
                         <div className="w-[250px]">
                           <FormField
@@ -500,30 +399,6 @@ export function AddReceiptForm() {
                           />
                         </div>
 
-                        {/*                 <div className="max-w-[120px]">
-                  <FormField
-                    control={form.control}
-                    name={`details.0.dr_amount`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{index === 0 && "Debit Amount"}</FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled={
-                              form.watch(`details.${index}.cr_amount`) > 0
-                            }
-                            min={0}
-                            type="number"
-                            placeholder="Debit amount"
-                            {...field}
-                            value={totalCrAmount}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div> */}
                         <div className="max-w-[180px]">
                           <FormField
                             control={form.control}
@@ -541,7 +416,7 @@ export function AddReceiptForm() {
                                 <FormControl>
                                   <InputNumberFormat
                                     locales="en-IN"
-                                    className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                    className="border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
                                     onChange={(event) =>
                                       field.onChange(
                                         event.target.value.replace(/,/g, "")

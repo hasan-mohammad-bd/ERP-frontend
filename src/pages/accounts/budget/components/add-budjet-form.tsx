@@ -208,7 +208,7 @@ export function AddBudgetForm() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-3 mb-auto  px-2 overflow-y-scroll no-scrollbar"
               >
-                <div className="grid grid-cols-3 gap-16">
+                <div className="grid 2xl:grid-cols-3 grid-cols-2 gap-16">
                   <div className="col-span-2">
                     <div className="flex gap-x-4">
                       <div className="!w-[200px]">
@@ -455,7 +455,7 @@ export function AddBudgetForm() {
                               <FormControl>
                                 <InputNumberFormat
                                   locales="en-IN"
-                                  className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                  className="border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
                                   onChange={(event) =>
                                     field.onChange(
                                       event.target.value.replace(/,/g, "")
@@ -502,7 +502,7 @@ export function AddBudgetForm() {
                               <FormControl>
                                 <InputNumberFormat
                                   locales="en-IN"
-                                  className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                  className="border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
                                   onChange={(event) =>
                                     field.onChange(
                                       event.target.value.replace(/,/g, "")

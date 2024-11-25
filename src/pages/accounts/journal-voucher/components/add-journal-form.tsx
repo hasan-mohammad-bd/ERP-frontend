@@ -234,7 +234,7 @@ export function AddJournalForm() {
               >
                 <div className="grid grid-cols-2 gap-16">
                   <div>
-                    <div className="flex gap-x-4">
+                    <div className="flex flex-wrap gap-x-4">
                       <div className="w-fit">
                         <FormField
                           control={form.control}
@@ -316,10 +316,13 @@ export function AddJournalForm() {
                     />
                   </div>
                 </div>
+
+
+                
                 {fields?.map((field, index) => (
                   <Card key={field.id} className="p-3">
                     <div className="flex w-full gap-x-3">
-                      <div className="w-[250px]">
+                      <div className="2xl:w-[250px] w-[200px]">
                         <FormSearchSelect<LedgerRow>
                           loading={ledgerAccountLoading}
                           data={ledgerAccountData}
@@ -328,10 +331,11 @@ export function AddJournalForm() {
                           form={form}
                           name={`details.${index}.ledger_account_id`}
                           title={index === 0 ? "ledger account" : undefined}
-                          className="w-[250px]"
+                          className="2xl:w-[250px] w-[205px]"
                         />
                       </div>
-                      <div className="w-[250px]">
+
+                      <div className="2xl:w-[250px] w-[200px]">
                         <FormField
                           control={form.control}
                           name={`details.${index}.sub_account_id`}
@@ -397,7 +401,7 @@ export function AddJournalForm() {
                         )}
                       </div>
 
-                      <div className="max-w-[180px] relative">
+                      <div className="2xl:max-w-[180px] max-w-[150px] relative">
                         <FormField
                           control={form.control}
                           name={`details.${index}.dr_amount`}
@@ -416,7 +420,7 @@ export function AddJournalForm() {
                               <FormControl>
                                 <InputNumberFormat
                                   locales="en-IN"
-                                  className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                  className="border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
                                   onChange={(event) =>
                                     field.onChange(
                                       event.target.value.replace(/,/g, "")
@@ -452,7 +456,7 @@ export function AddJournalForm() {
                         )}
                       </div>
 
-                      <div className="max-w-[180px]">
+                      <div className="2xl:max-w-[180px] max-w-[150px]">
                         <FormField
                           control={form.control}
                           name={`details.${index}.cr_amount`}
@@ -469,7 +473,7 @@ export function AddJournalForm() {
                               <FormControl>
                                 <InputNumberFormat
                                   locales="en-IN"
-                                  className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                  className="border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
                                   onChange={(event) =>
                                     field.onChange(
                                       event.target.value.replace(/,/g, "")
@@ -633,6 +637,13 @@ export function AddJournalForm() {
                     </div>
                   </Card>
                 ))}
+
+
+
+
+
+
+
 
                 <Button
                   variant="outline"

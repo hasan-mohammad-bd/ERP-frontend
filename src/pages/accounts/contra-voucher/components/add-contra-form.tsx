@@ -197,10 +197,13 @@ export function AddContraForm() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-3 px-2 no-scrollbar"
               >
-                <div className="grid grid-cols-2 gap-16">
+                <div className="grid grid-cols-2 2xl:gap-16 gap-10">
+
+
+                 <div>
                   <div>
-                    <div className="flex">
-                      <div className="w-fit">
+                    <div className="2xl:flex gap-x-4 2xl:mb-0 mb-2">
+                      <div className="w-fit 2xl:mb-0 mb-3">
                         <FormField
                           control={form.control}
                           name="date"
@@ -221,7 +224,7 @@ export function AddContraForm() {
                           )}
                         />
                       </div>
-                      <div className="w-fit flex space-x-3 ml-3">
+                      <div className="w-fit flex space-x-3 2xl:ml-3">
                         <FormField
                           control={form.control}
                           name="entry_number"
@@ -337,6 +340,9 @@ export function AddContraForm() {
                       )}
                     />
                   </div>
+                 </div>
+
+                
                   {/* file Upload  */}
                   <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
@@ -499,7 +505,7 @@ export function AddContraForm() {
                             <FormControl>
                               <InputNumberFormat
                                 locales="en-IN"
-                                className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
+                                className="border border-gray-300 rounded-md px-2 py-2 text-sm w-full focus:outline-none"
                                 onChange={(event) =>
                                   field.onChange(
                                     event.target.value.replace(/,/g, "")

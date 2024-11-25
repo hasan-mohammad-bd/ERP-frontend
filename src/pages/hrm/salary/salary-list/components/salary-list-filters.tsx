@@ -47,7 +47,7 @@ export default function SalaryListFilters({ setFilterParams }: Props) {
     <Card className="p-6 my-4 w-full">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6 ">
-          <div className="grid grid-cols-6 gap-5">
+          <div className="grid 2xl:grid-cols-6 grid-cols-3 gap-5">
             <div className="space-y-2 flex flex-col">
               <label
                 className={cn(
