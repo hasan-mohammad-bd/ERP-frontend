@@ -152,6 +152,9 @@ export const AddExpense = lazy(
 export const EditExpense = lazy(
   () => import("@/pages/billing/expenses/edit-expenses")
 );
+export const PaymentTerms = lazy(
+  () => import("@/pages/billing/payment-terms")
+);
 
 //All We Routes
 export const Organization = lazy(() => import("@/pages/web/organization"));

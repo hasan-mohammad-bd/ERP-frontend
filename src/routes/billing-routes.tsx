@@ -9,6 +9,7 @@ import {
   ExpensesList,
   Layout,
   NotFoundPage,
+  PaymentTerms,
 } from "./components";
 
 import Units from "@/pages/billing/units";
@@ -386,6 +387,11 @@ const billingRoutes = {
           errorElement: withFallback(<ErrorPage />),
         },
       ],
+    },
+    {
+      path: "payment-terms",
+      element: withFallback(<PaymentTerms />),
+      errorElement: withFallback(<ErrorPage />),
     },
     {
       path: "attribute-category",

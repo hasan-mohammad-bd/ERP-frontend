@@ -10,7 +10,6 @@ import {
   Soup,
   UserRoundSearch,
   Users,
-
 } from "lucide-react";
 
 const billingNavItems: NavItem[] = [
@@ -64,14 +63,14 @@ const billingNavItems: NavItem[] = [
         title: "Attribute Category",
         icon: PlayIcon,
         color: "text-sky-500",
-        href: "/billing/attribute-category", 
+        href: "/billing/attribute-category",
         permissions: ["hrm"],
       },
       {
         title: "Attributes",
         icon: PlayIcon,
         color: "text-sky-500",
-        href: "/billing/attributes", 
+        href: "/billing/attributes",
         permissions: ["hrm"],
       },
 
@@ -90,8 +89,6 @@ const billingNavItems: NavItem[] = [
         href: "/billing/items",
         permissions: ["hrm"],
       },
-
-
     ],
   },
 
@@ -248,7 +245,13 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["hrm"],
       },
-
+      {
+        title: "Payment Terms",
+        icon: Soup,
+        href: "/billing/payment-terms",
+        color: "text-sky-500",
+        permissions: ["hrm"],
+      },
     ],
   },
 
@@ -296,10 +299,8 @@ const billingNavItems: NavItem[] = [
         href: "/billing/salary-sheet",
         permissions: ["hrm"],
       },
-
     ],
   },
-
 
   {
     title: "Reports",
@@ -435,7 +436,6 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["hrm"],
       },
-
     ],
   },
 
