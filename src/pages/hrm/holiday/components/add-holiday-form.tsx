@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Plus, Trash2, CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import { Calendar } from "@/components/ui/calendar"; // Assuming you have a Calendar component
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverTrigger,
@@ -46,8 +46,8 @@ export default function AddHolidayForm() {
       holidays: [
         {
           name: "",
-          start_date: undefined, // Changed to undefined
-          end_date: undefined, // Changed to undefined
+          start_date: null,
+          end_date: null,
           duration: "",
           note: "",
         },
@@ -70,8 +70,22 @@ export default function AddHolidayForm() {
   };
 
   const onSubmit = async (data: HolidayFormValues) => {
+    // Format dates before sending the payload
+    const formattedData = {
+      ...data,
+      holidays: data.holidays.map((holiday) => ({
+        ...holiday,
+        start_date: holiday.start_date
+          ? format(new Date(holiday.start_date), "yyyy-MM-dd")
+          : null,
+        end_date: holiday.end_date
+          ? format(new Date(holiday.end_date), "yyyy-MM-dd")
+          : null,
+      })),
+    };
+
     try {
-      await createHoliday(data);
+      await createHoliday(formattedData as any);
       toast.success("Holidays Created Successfully!");
       navigate("/hrm/holidays");
     } catch (error) {
@@ -87,24 +101,24 @@ export default function AddHolidayForm() {
       const newState = { ...prev };
       if (type === "fromDate") {
         newState.fromDate[index] = !newState.fromDate[index];
-        newState.toDate[index] = false; // Close To Date picker if opening From Date
+        newState.toDate[index] = false;
       } else {
         const fromDate = form.getValues(`holidays.${index}.start_date`);
         if (!fromDate) {
           setShowToDateError((prevError) => {
             const errorState = [...prevError];
-            errorState[index] = true; // Show error if trying to open To Date without From Date
+            errorState[index] = true;
             return errorState;
           });
         } else {
           newState.toDate[index] = !newState.toDate[index];
           setShowToDateError((prevError) => {
             const errorState = [...prevError];
-            errorState[index] = false; // Reset To Date error message when From Date is selected
+            errorState[index] = false;
             return errorState;
           });
         }
-        newState.fromDate[index] = false; // Close From Date picker
+        newState.fromDate[index] = false;
       }
       return newState;
     });
@@ -134,7 +148,7 @@ export default function AddHolidayForm() {
                 {fields.map((field, index) => (
                   <Card key={field.id} className="p-3">
                     <div className="flex w-full gap-x-3">
-                      {/* Holiday Name Field */}
+                      {/* Holiday Name */}
                       <div className="w-[215px]">
                         <FormField
                           control={form.control}
@@ -157,7 +171,7 @@ export default function AddHolidayForm() {
                         />
                       </div>
 
-                      {/* From Date Field */}
+                      {/* From Date */}
                       <div className="w-[250px]">
                         <FormField
                           control={form.control}
@@ -181,15 +195,12 @@ export default function AddHolidayForm() {
                                     }`}
                                   >
                                     {field.value
-                                      ? format(field.value, "PP")
+                                      ? format(new Date(field.value), "PP")
                                       : "Pick a date"}
                                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                   </Button>
                                 </PopoverTrigger>
-                                <PopoverContent
-                                  className="w-auto p-0"
-                                  align="start"
-                                >
+                                <PopoverContent className="w-auto p-0" align="start">
                                   <Calendar
                                     mode="single"
                                     selected={field.value ?? undefined}
@@ -219,7 +230,7 @@ export default function AddHolidayForm() {
                         />
                       </div>
 
-                      {/* To Date Field */}
+                      {/* To Date */}
                       <div className="w-[250px]">
                         <FormField
                           control={form.control}
@@ -241,15 +252,12 @@ export default function AddHolidayForm() {
                                     }`}
                                   >
                                     {field.value
-                                      ? format(field.value, "PP")
+                                      ? format(new Date(field.value), "PP")
                                       : "Pick a date"}
                                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                   </Button>
                                 </PopoverTrigger>
-                                <PopoverContent
-                                  className="w-auto p-0"
-                                  align="start"
-                                >
+                                <PopoverContent className="w-auto p-0" align="start">
                                   <Calendar
                                     mode="single"
                                     selected={field.value ?? undefined}
@@ -281,30 +289,26 @@ export default function AddHolidayForm() {
                               </Popover>
                               {showToDateError[index] && (
                                 <FormMessage>
-                                  Please select From Date first.
+                                  Please select a From Date first.
                                 </FormMessage>
                               )}
-                              <FormMessage />
                             </FormItem>
                           )}
                         />
                       </div>
 
-                      {/* Duration Field */}
-                      <div className="w-[112px]">
+                      {/* Duration */}
+                      <div className="w-[150px]">
                         <FormField
                           control={form.control}
                           name={`holidays.${index}.duration`}
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>{index === 0 && "Duration"}</FormLabel>
+                              <FormLabel>
+                                {index === 0 && "Duration"}
+                              </FormLabel>
                               <FormControl>
-                                <Input
-                                  type="text"
-                                  placeholder="Duration"
-                                  {...field}
-                                  disabled
-                                />
+                                <Input type="text" disabled {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -312,8 +316,8 @@ export default function AddHolidayForm() {
                         />
                       </div>
 
-                      {/* Note Field */}
-                      <div className="flex-1">
+                      {/* Note */}
+                      <div className="w-[300px]">
                         <FormField
                           control={form.control}
                           name={`holidays.${index}.note`}
@@ -334,57 +338,41 @@ export default function AddHolidayForm() {
                       </div>
 
                       {/* Remove Button */}
-                      <div className={`${index === 0 ? "mt-10" : "mt-4"}`}>
-                        <FormItem>
-                          <span
-                            onClick={() => remove(index)}
-                            className="cursor-pointer"
-                          >
-                            <Trash2 size={16} color="red" />
-                          </span>
-                        </FormItem>
+                      <div>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          className="mt-6"
+                          onClick={() => remove(index)}
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Remove
+                        </Button>
                       </div>
                     </div>
                   </Card>
                 ))}
 
-                {/* Add Holiday Button */}
-                <Button
-                  variant="outline"
-                  className="border border-dashed border-gray-700 w-full"
-                  type="button"
-                  onClick={() => {
-                    append({
-                      name: "",
-                      start_date: undefined, // Changed to undefined
-                      end_date: undefined, // Changed to undefined
-                      duration: "",
-                      note: "",
-                    });
-                    setOpenDatePickers((prev) => ({
-                      fromDate: [...prev.fromDate, false],
-                      toDate: [...prev.toDate, false],
-                    }));
-                  }}
-                >
-                  <Plus size={16} /> <span className="ml-2">Add Holiday</span>
-                </Button>
-
-                {/* Save and Back Buttons */}
-                <div className="flex flex-row-reverse items-center !mb-2">
+                <div className="flex justify-end items-center space-x-3">
                   <Button
-                    variant="default"
-                    type="submit"
-                    className="w-fit ml-2"
+                    type="button"
+                    variant="secondary"
+                    size={"sm"}
+                    onClick={() =>
+                      append({
+                        name: "",
+                        start_date: null,
+                        end_date: null,
+                        duration: "",
+                        note: "",
+                      })
+                    }
                   >
-                    Save
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Row
                   </Button>
-                  <Button
-                    variant="primary"
-                    onClick={() => navigate("/hrm/holidays")}
-                    className="w-fit"
-                  >
-                    Back
+                  <Button type="submit" size={"sm"} disabled={isLoading}>
+                    Save
                   </Button>
                 </div>
               </form>

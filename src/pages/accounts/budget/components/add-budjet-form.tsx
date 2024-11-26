@@ -276,7 +276,7 @@ export function AddBudgetForm() {
                           valueField="id"
                           form={form}
                           name="project_id"
-                          title="Project"
+                          title="Source"
                           className="w-[230px]"
                         />
                       </div>

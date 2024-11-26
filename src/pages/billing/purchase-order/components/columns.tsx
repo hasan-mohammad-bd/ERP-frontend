@@ -2,8 +2,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { FormatIndianCurrency } from "@/utils/indian-formate";
+import { PurchaseOrderRow } from "@/lib/validators/billing/purchase-order";
 
-export const purchaseOrderColumns: ColumnDef<any>[] = [
+export const purchaseOrderColumns: ColumnDef<PurchaseOrderRow>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -52,11 +53,11 @@ export const purchaseOrderColumns: ColumnDef<any>[] = [
     accessorKey: "suppliers",
     header: "Suppliers",
   },
-  {
-    accessorKey: "amount",
-    header: "Amount",
-    cell: ({ row }) => <FormatIndianCurrency amount={row.original.amount as number} />,
-  },
+  // {
+  //   accessorKey: "amount",
+  //   header: "Amount",
+  //   cell: ({ row }) => <FormatIndianCurrency amount={row?.original?.amount as number} />,
+  // },
   {
     id: "actions",
     header: () => <div className="text-center">Actions</div>,

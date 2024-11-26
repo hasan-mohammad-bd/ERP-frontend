@@ -211,107 +211,96 @@ export function AddPaymentForm() {
                 className="space-y-3 px-2 no-scrollbar"
               >
                 <div className="grid grid-cols-2 2xl:gap-16 gap-10">
-                
-                <div>
-
-
-                <div>
-                    <div className="2xl:flex gap-x-4 2xl:mb-0 mb-2">
-                      <div className="w-fit 2xl:mb-0 mb-3">
-                        <FormField
-                          control={form.control}
-                          name="date"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>
-                                Date <span className="text-red-500">*</span>
-                              </FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="date"
-                                  placeholder="Enter date"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                      <div className="w-fit flex space-x-4">
-                        <FormField
-                          control={form.control}
-                          name="entry_number"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Entry Number</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="text"
-                                  placeholder="Enter entry number"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <SelectWithSearch<ProjectRow>
-                          name="project_id"
-                          title={"Project"}
-                          data={projectData}
-                          loading={projectLoading}
-                          valueField="id"
-                          displayField="name"
-                          width="w-[195px]"
-                          form={form}
-                        />
-
-                        <div className="w-[200px]">
-                          <FormSearchSelect<LedgerRow>
-                            loading={ledgerAccountLoading}
-                            data={ledgerAccountData.filter(
-                              (ledgerAccount: LedgerRow) =>
-                                ledgerAccount.nature === "Cash" ||
-                                ledgerAccount.nature === "Bank Accounts"
+                  <div>
+                    <div>
+                      <div className="2xl:flex gap-x-4 2xl:mb-0 mb-2">
+                        <div className="w-fit 2xl:mb-0 mb-3">
+                          <FormField
+                            control={form.control}
+                            name="date"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>
+                                  Date <span className="text-red-500">*</span>
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="date"
+                                    placeholder="Enter date"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
                             )}
-                            displayField="name"
-                            valueField="id"
-                            form={form}
-                            name={`details.0.ledger_account_id`}
-                            title="Credit Account Head"
-                            className="w-[190px]"
                           />
                         </div>
-                      </div>
-                    </div>
-                    <FormField
-                      control={form.control}
-                      name="note"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Description</FormLabel>
-                          <FormControl>
-                            <Textarea
-                              placeholder="Type your message here."
-                              {...field}
+                        <div className="w-fit flex space-x-4">
+                          <FormField
+                            control={form.control}
+                            name="entry_number"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Entry Number</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="text"
+                                    placeholder="Enter entry number"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <SelectWithSearch<ProjectRow>
+                            name="project_id"
+                            title={"Source"}
+                            data={projectData}
+                            loading={projectLoading}
+                            valueField="id"
+                            displayField="name"
+                            width="w-[195px]"
+                            form={form}
+                            
+                          />
+
+                          <div className="w-[200px]">
+                            <FormSearchSelect<LedgerRow>
+                              loading={ledgerAccountLoading}
+                              data={ledgerAccountData.filter(
+                                (ledgerAccount: LedgerRow) =>
+                                  ledgerAccount.nature === "Cash" ||
+                                  ledgerAccount.nature === "Bank Accounts"
+                              )}
+                              displayField="name"
+                              valueField="id"
+                              form={form}
+                              name={`details.0.ledger_account_id`}
+                              title="Credit Account Head"
+                              className="w-[190px]"
                             />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-               
-               
+                          </div>
+                        </div>
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name="note"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder="Type your message here."
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                   </div>
-
-                </div>
-                       
-                  
-
-
-
-
 
                   <div>
                     {/* file Upload  */}

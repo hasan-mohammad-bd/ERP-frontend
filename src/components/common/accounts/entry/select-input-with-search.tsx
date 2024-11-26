@@ -72,7 +72,7 @@ const SelectWithSearch = <T,>({
                   >
                     {selectedItem
                       ? String(selectedItem[displayField])
-                      : "Select Project"}
+                      : "Select Options"}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </FormControl>

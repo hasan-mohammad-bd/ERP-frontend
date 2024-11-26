@@ -10,6 +10,10 @@ import { DataTable } from "@/components/ui/data-table/data-table";
 
 import { useNavigate } from "react-router-dom";
 import { purchaseOrderColumns } from "./components/columns";
+import { useGetPurchaseOrdersQuery } from "@/store/services/billing/api/purchase-order";
+import React from "react";
+import { PaginationState } from "@tanstack/react-table";
+import { PaginationInfo } from "@/types";
 
 
 const data = [
@@ -59,18 +63,19 @@ const data = [
 const PurchaseOrder = () => {
   // const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  // const [pagination, setPagination] = React.useState<PaginationState>({
-  //   pageIndex: 0,
-  //   pageSize: 10,
-  // });
-  // const { data, isLoading } = useGetEntriesQuery(
-  //   `per_page=${pagination.pageSize}&page=${
-  //     pagination.pageIndex + 1
-  //   }&type=opening balance`
-  // );
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
+  const { data, isLoading } = useGetPurchaseOrdersQuery(
+    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+  );
 
-  // const openingBalance = data?.data || [];
+  const fetchedData = data?.data || [];
+
+  const paginationInfo: PaginationInfo | undefined = data?.meta;
+  console.log("fetchedData", fetchedData);
 
   // const paginationInfo: PaginationInfo | undefined = data?.meta;
   // if (isLoading) return <Loading />;
@@ -96,10 +101,10 @@ const PurchaseOrder = () => {
             <div>
               <DataTable
                 columns={purchaseOrderColumns}
-                data={data}
-                // paginationInfo={paginationInfo}
-                // pagination={paginationInfo && pagination}
-                // setPagination={paginationInfo && setPagination}
+                data={fetchedData}
+                paginationInfo={paginationInfo}
+                pagination={paginationInfo && pagination}
+                setPagination={paginationInfo && setPagination}
               />
             </div>
           )}

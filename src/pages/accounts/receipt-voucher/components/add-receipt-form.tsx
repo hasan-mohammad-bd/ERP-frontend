@@ -252,7 +252,7 @@ export function AddReceiptForm() {
                           />
                           <SelectWithSearch<ProjectRow>
                             name="project_id"
-                            title={"Project"}
+                            title={"Source"}
                             data={projectData}
                             loading={projectLoading}
                             valueField="id"

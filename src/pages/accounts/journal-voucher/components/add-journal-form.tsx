@@ -283,8 +283,9 @@ export function AddJournalForm() {
                           valueField="id"
                           form={form}
                           name="project_id"
-                          title="Project"
+                          title="Source"
                           className="w-[250px]"
+                          placeholder="Select Source"
                         />
                       </div>
                     </div>

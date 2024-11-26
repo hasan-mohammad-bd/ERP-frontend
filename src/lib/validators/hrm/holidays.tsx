@@ -4,12 +4,8 @@ import { z } from "zod";
 export const holidaySchema = z.object({
   id: z.coerce.number().optional(),
   name: z.string().min(1, "Holiday name is required"),
-  start_date: z.date().optional().refine((date) => date !== undefined && !isNaN(date.getTime()), {
-    message: "From Date is required",
-  }),
-  end_date: z.date().optional().refine((date) => date !== undefined && !isNaN(date.getTime()), {
-    message: "To Date is required",
-  }),
+  start_date: z.date().nullable(), // Changed from z.date() to z.string()
+  end_date: z.date().nullable(),
   duration: z.string().optional(), // Optional since it might be calculated
   note: z.string().min(1, "Note is required"),
 });
