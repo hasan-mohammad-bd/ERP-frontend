@@ -12,84 +12,108 @@ import {
 } from "@/components/ui/form";
 
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-// import { toast } from "sonner";
-
-import { ScrollArea } from "@/components/ui/scroll-area";
-
-// search
 
 import { useState } from "react";
-import SearchProduct from "./search-product";
+import SearchProduct, { ExtendedItemRow } from "./search-product";
 import FileUpload from "@/components/common/file-uploader";
 import Calculation from "./calculation";
-
-const suppliers = [
-  { id: "1", name: "Acme Corp" },
-  { id: "2", name: "Globex Corporation" },
-  { id: "3", name: "Soylent Corp" },
-  { id: "4", name: "Initech" },
-  { id: "5", name: "Umbrella Corporation" },
-];
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { useGetCustomersQuery } from "@/store/services/billing/api/customer";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import { CustomerColumn } from "@/lib/validators/billing/customer";
+import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
+import { ProjectRow } from "@/lib/validators/accounts/projects";
+import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
+import { EmployeeColumn } from "@/lib/validators";
+import {
+  QuotationFieldsType,
+  quotationSchema,
+} from "@/lib/validators/billing/quotation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCreateQuotationMutation } from "@/store/services/billing/api/quotations";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
+import { toast } from "sonner";
 
 export function AddQuoteForm() {
   const navigate = useNavigate();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedProducts, setSelectedProducts] = useState<ExtendedItemRow[]>(
+    []
+  );
+  console.log(selectedProducts);
 
-  console.log(uploadedFiles);
-  const form = useForm<any>({
-    // resolver: zodResolver(openingBalanceSchema),
-    defaultValues: {},
+  const [openDatePickers, setOpenDatePickers] = useState({
+    quote_date: false,
+    expire_date: false,
+    estimated_delivery_date: false,
   });
 
-  async function onSubmit(data: any) {
+  const handleDatePickerToggle = (
+    type: "quote_date" | "expire_date" | "estimated_delivery_date"
+  ) => {
+    setOpenDatePickers((prev) => ({
+      ...prev,
+      [type]: !prev[type],
+    }));
+  };
+
+  const { data: customerData, isLoading: isCustomerLoading } =
+    useGetCustomersQuery("page=1&per_page=1000");
+  const { data: projectsData, isLoading: projectLoading } =
+    useGetProjectsQuery(`per_page=1000&page=1`);
+  const { data: EmployeeData, isLoading: employeeLoading } =
+    useGetEmployeesQuery(`per_page=1000&page=1`);
+
+  const customers = customerData?.data || [];
+  const projects = projectsData?.data || [];
+  const employees = EmployeeData?.data || [];
+
+  const [createQuotation, { isLoading: isCreating }] =
+    useCreateQuotationMutation();
+
+  console.log(uploadedFiles);
+  const form = useForm<QuotationFieldsType>({
+    resolver: zodResolver(quotationSchema),
+    defaultValues: {
+      total: 0,
+    },
+  });
+
+  async function onSubmit(data: QuotationFieldsType) {
     console.log(data);
+    try {
+      await createQuotation({
+        ...data,
+        details: selectedProducts.map((product) => ({
+          unit_id: product.unit.id,
+          item_id: product.id,
+          item_barcode_id: Number(product.barcode),
+          price: product.unit.selling_price,
+          after_discount: product.unit.after_discount,
+          total: product.total,
+          qty: product.quantity,
+          discount: product.unit.discount,
+          note: "",
+        })),
+      }).unwrap();
+      toast.success("Quotation created successfully");
+      navigate("/billing/quotes");
+    } catch (error) {
+      handleErrors(error as ErrorResponse);
+    }
   }
-
-  const filteredSuppliers = suppliers.filter((supplier) =>
-    supplier.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // to conduct search
-
-  /*   const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.forEach((file) => {
-      Papa.parse(file, {
-        complete: (result) => {
-          const newProducts: Product[] = result.data
-            .slice(1) // Skip header row
-            .map((row: any, index) => ({
-              id: (allProducts.length + index + 1).toString(),
-              name: row[0],
-              barcode: row[1],
-              stock: row[2],
-              purchasePrice: parseFloat(row[3]),
-              sellingPrice: parseFloat(row[4]),
-              ppp: parseFloat(row[5]),
-              pMrp: parseFloat(row[6]),
-              quantity: 1,
-              subTotal: parseFloat(row[4]), // Assuming selling price as initial subtotal
-              discount: 0,
-              total: parseFloat(row[4]) // Assuming selling price as initial total
-            }))
-          setAllProducts(prev => [...prev, ...newProducts])
-        },
-        header: true,
-        skipEmptyLines: true
-      })
-    })
-  }, [allProducts]) */
 
   return (
     <>
@@ -112,70 +136,17 @@ export function AddQuoteForm() {
             <div className="">
               <Card className="p-3">
                 <div className="grid grid-cols-3 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="supplierName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Customer Name</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a customer" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <Input
-                              placeholder="Search customer..."
-                              className="mb-2"
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                            <ScrollArea className="h-[200px]">
-                              {filteredSuppliers.map((supplier) => (
-                                <SelectItem
-                                  key={supplier.id}
-                                  value={supplier.id}
-                                >
-                                  {supplier.name}
-                                </SelectItem>
-                              ))}
-                            </ScrollArea>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                  <FormSearchSelect<CustomerColumn>
+                    loading={isCustomerLoading}
+                    data={customers}
+                    displayField="name"
+                    valueField="id"
+                    form={form}
+                    name="contact_id"
+                    placeholder="Select Customer"
+                    title="Customer Name"
+                    className="w-full"
                   />
-                  <FormField
-                    control={form.control}
-                    name="poNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Quote</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Quote-0001" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  {/*                   <FormField
-                    control={form.control}
-                    name="poDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>PO Date</FormLabel>
-                        <FormControl>
-                          <Input type="date" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
 
                   <FormField
                     control={form.control}
@@ -190,108 +161,173 @@ export function AddQuoteForm() {
                       </FormItem>
                     )}
                   />
+
                   <FormField
                     control={form.control}
-                    name="deliveryDate"
+                    name={`date`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Quote Date</FormLabel>
-                        <FormControl>
-                          <Input type="date" {...field} />
-                        </FormControl>
+                        <Popover
+                          open={openDatePickers.quote_date}
+                          onOpenChange={() =>
+                            handleDatePickerToggle("quote_date")
+                          }
+                        >
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={`w-full justify-start text-left font-normal ${
+                                !field.value && "text-muted-foreground"
+                              }`}
+                            >
+                              {field.value
+                                ? format(field.value, "PP")
+                                : "Pick a date"}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent
+                            className="w-auto p-0 z-[200]"
+                            align="start"
+                          >
+                            <Calendar
+                              mode="single"
+                              selected={
+                                field.value ? new Date(field.value) : undefined
+                              }
+                              onSelect={(date) => {
+                                field.onChange(
+                                  date ? format(date, "yyyy-MM-dd") : ""
+                                );
+                              }}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                   <FormField
                     control={form.control}
-                    name="paymentTerms"
+                    name={`expire_date`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Expire Date</FormLabel>
-                        <FormControl>
-                          <Input type="date" {...field} />
-                        </FormControl>
+                        <Popover
+                          open={openDatePickers.expire_date}
+                          onOpenChange={() =>
+                            handleDatePickerToggle("expire_date")
+                          }
+                        >
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={`w-full justify-start text-left font-normal ${
+                                !field.value && "text-muted-foreground"
+                              }`}
+                            >
+                              {field.value
+                                ? format(field.value, "PP")
+                                : "Pick a date"}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent
+                            className="w-auto p-0 z-[200]"
+                            align="start"
+                          >
+                            <Calendar
+                              mode="single"
+                              selected={
+                                field.value ? new Date(field.value) : undefined
+                              }
+                              onSelect={(date) => {
+                                field.onChange(
+                                  date ? format(date, "yyyy-MM-dd") : ""
+                                );
+                              }}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                   <FormField
                     control={form.control}
-                    name="paymentTerms"
+                    name={`estimated_delivery`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Sales Person</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
+                        <FormLabel>Estimated Delivery Date</FormLabel>
+                        <Popover
+                          open={openDatePickers.estimated_delivery_date}
+                          onOpenChange={() =>
+                            handleDatePickerToggle("estimated_delivery_date")
+                          }
                         >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Sells person" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <Input
-                              placeholder="Search items..."
-                              className="mb-2"
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={`w-full justify-start text-left font-normal ${
+                                !field.value && "text-muted-foreground"
+                              }`}
+                            >
+                              {field.value
+                                ? format(field.value, "PP")
+                                : "Pick a date"}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent
+                            className="w-auto p-0 z-[200]"
+                            align="start"
+                          >
+                            <Calendar
+                              mode="single"
+                              selected={
+                                field.value ? new Date(field.value) : undefined
+                              }
+                              onSelect={(date) => {
+                                field.onChange(
+                                  date ? format(date, "yyyy-MM-dd") : ""
+                                );
+                              }}
+                              initialFocus
                             />
-                            <ScrollArea className="h-[200px]">
-                              {filteredSuppliers.map((supplier) => (
-                                <SelectItem
-                                  key={supplier.id}
-                                  value={supplier.id}
-                                >
-                                  {supplier.name}
-                                </SelectItem>
-                              ))}
-                            </ScrollArea>
-                          </SelectContent>
-                        </Select>
+                          </PopoverContent>
+                        </Popover>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <FormField
-                    control={form.control}
-                    name="paymentTerms"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Project Name</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Project" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <Input
-                              placeholder="Search Items"
-                              className="mb-2"
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                            <ScrollArea className="h-[200px]">
-                              {filteredSuppliers.map((supplier) => (
-                                <SelectItem
-                                  key={supplier.id}
-                                  value={supplier.id}
-                                >
-                                  {supplier.name}
-                                </SelectItem>
-                              ))}
-                            </ScrollArea>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+
+                  <FormSearchSelect<EmployeeColumn>
+                    loading={employeeLoading}
+                    data={employees}
+                    displayField="first_name"
+                    valueField="id"
+                    form={form}
+                    name="sales_person_id"
+                    placeholder="Select Sells person"
+                    title="Sales Person"
+                    className="w-full"
                   />
+
+                  <FormSearchSelect<ProjectRow>
+                    loading={projectLoading}
+                    data={projects}
+                    displayField="name"
+                    valueField="id"
+                    form={form}
+                    name="project_id"
+                    placeholder="Select Project"
+                    title="Project Name"
+                    className="w-full"
+                  />
+
                   <FormField
                     control={form.control}
                     name="subject"
@@ -321,7 +357,7 @@ export function AddQuoteForm() {
 
                   <FormField
                     control={form.control}
-                    name="termsAndConditions"
+                    name="terms_conditions"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Terms and conditions</FormLabel>
@@ -349,11 +385,21 @@ export function AddQuoteForm() {
             </div>
             {/* product Search */}
             <Card className="mb-4">
-              <SearchProduct />
+              <SearchProduct
+                setSelectedProducts={setSelectedProducts}
+                selectedProducts={selectedProducts}
+              />
             </Card>
             {/* calculation */}
             <div className="flex justify-end">
-              <Calculation />
+              <Calculation
+                form={form}
+                subTotal={Number(
+                  selectedProducts
+                    .reduce((acc, product) => acc + product.total, 0)
+                    .toFixed(2)
+                )}
+              />
             </div>
             <div className="text-right">
               <Button
@@ -364,7 +410,7 @@ export function AddQuoteForm() {
                 Cancel
               </Button>
               <Button variant="default" type="submit" className="w-fit mt-4">
-                Add
+                {isCreating ? "Creating..." : "Add"}
               </Button>
             </div>
           </form>

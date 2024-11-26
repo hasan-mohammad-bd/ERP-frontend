@@ -2,8 +2,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { FormatIndianCurrency } from "@/utils/indian-formate";
+import { QuotationRow } from "@/lib/validators/billing/quotation";
 
-export const quotesColumns: ColumnDef<any>[] = [
+export const quotesColumns: ColumnDef<QuotationRow>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -31,27 +32,33 @@ export const quotesColumns: ColumnDef<any>[] = [
   {
     accessorKey: "date",
     header: "Date",
+    cell: ({ row }) => <>{row.original.date}</>,
   },
   {
-    accessorKey: "quoteNumber",
+    accessorKey: "invoice_number",
     header: "Quote Number",
+    cell: ({ row }) => <>{row.original.invoice_number}</>,
   },
   {
-    accessorKey: "referenceNumber",
+    accessorKey: "reference",
     header: "Reference Number",
+    cell: ({ row }) => <>{row.original.reference}</>,
   },
   {
-    accessorKey: "customerName",
+    accessorKey: "contacts",
     header: "Customer Name",
+    cell: ({ row }) => <>{row.original.contacts.name}</>,
   },
-  {
-    accessorKey: "status",
-    header: "Status",
-  },
+  // {
+  //   accessorKey: "status",
+  //   header: "Status",
+  // },
   {
     accessorKey: "amount",
     header: "Amount",
-    cell: ({ row }) => <FormatIndianCurrency amount={row.original.amount as number} />,
+    cell: ({ row }) => (
+      <FormatIndianCurrency amount={Number(row.original.total)} />
+    ),
   },
   {
     id: "actions",
