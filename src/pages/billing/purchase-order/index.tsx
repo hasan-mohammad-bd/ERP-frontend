@@ -16,7 +16,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
 
 
-const data = [
+/* const data = [
   {
     sl: 1,
     date: "2024-10-01",
@@ -57,7 +57,7 @@ const data = [
     amount: 6000.00,
     action: "Pending"
   }
-];
+]; */
 
 
 const PurchaseOrder = () => {
@@ -68,7 +68,7 @@ const PurchaseOrder = () => {
     pageSize: 10,
   });
 
-  const { data, isLoading } = useGetPurchaseOrdersQuery(
+  const { data } = useGetPurchaseOrdersQuery(
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
 

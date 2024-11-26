@@ -8,13 +8,13 @@ import {
 } from "@/components/ui/tooltip";
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
-import { EntryRow } from "@/lib/validators/accounts";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useRemoveEntryMutation } from "@/store/services/accounts/api/entries";
+import { PurchaseOrderRow } from "@/lib/validators/billing/purchase-order";
 
 interface CellActionProps {
-  rowData: EntryRow;
+  rowData: PurchaseOrderRow;
 }
 
 export function CellAction({ rowData }: CellActionProps) {
@@ -78,7 +78,7 @@ export function CellAction({ rowData }: CellActionProps) {
       <AlertModal
         title="Are you sure?"
         description="This action cannot be undone."
-        name={rowData.entry_number}
+        name={"name"}
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
         onConfirm={() => handleDepartmentDelete(rowData.id)}
