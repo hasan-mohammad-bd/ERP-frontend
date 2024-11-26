@@ -69,6 +69,7 @@ import AttributeCategory from "@/pages/billing/attribute-category";
 import Attributes from "@/pages/billing/attributes";
 import ExpensesCategory from "@/pages/billing/expenses-category";
 import CustomerAddForm from "@/pages/billing/customers/add-customer";
+import InvoiceUI from "@/pages/billing/invoiceUI";
 
 const billingRoutes = {
   path: "billing/",
@@ -500,6 +501,12 @@ const billingRoutes = {
     {
       path: "purchase-tax-report",
       element: withFallback(<PurchaseTaxReport />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "invoice-ui",
+      element: withFallback(<InvoiceUI />),
       errorElement: withFallback(<ErrorPage />),
     },
 
