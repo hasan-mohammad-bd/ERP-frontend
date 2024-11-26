@@ -42,3 +42,17 @@ export function handleErrors(errorResponse: ErrorResponse) {
 }
 
 export default handleErrors;
+
+export interface ErrorDetail {
+    message: string;
+    type: string;
+  }
+
+
+export function handleFormErrors(errors: ErrorDetail) {
+    Object.values(errors).forEach((error) => {
+      if (error.message) {
+        toast.error(error.message);
+      }
+    });
+  }

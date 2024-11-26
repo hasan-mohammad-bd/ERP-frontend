@@ -63,7 +63,7 @@ import { useGetRolesQuery } from "@/store/services/erp-main/api/role";
 import { AddAdditionalInfoForm } from "./add-additional-data";
 import { AddSkillForm } from "./add-skill";
 import { AddNomineeForm } from "./add-nominee";
-import handleErrors from "@/lib/handle-errors";
+import handleErrors, { ErrorDetail, handleFormErrors } from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { useGetLeaveGroupsQuery } from "@/store/services/hrm/api/leave-group";
 import { LeaveGroupRow } from "@/lib/validators/hrm/leave";
@@ -236,8 +236,9 @@ export default function EmployeeForm() {
       handleErrors(error as ErrorResponse);
     }
   }
+  handleFormErrors(form.formState.errors as ErrorDetail);
+	console.log(form.formState.errors)
 
-  console.log(form.formState.errors);
 
   return (
     <>

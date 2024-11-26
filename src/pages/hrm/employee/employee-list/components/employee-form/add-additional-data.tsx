@@ -31,10 +31,14 @@ import { useEffect, useState } from "react";
 import { serialize } from "object-to-formdata";
 import FileUploadSingle from "@/components/common/file-upload-single";
 import { zodResolver } from "@hookform/resolvers/zod";
+import handleErrors, { ErrorDetail, handleFormErrors } from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface AddAdditionalInfoFormProps {
 	previousData?: EmployeeColumn;
 }
+
+
 
 export function AddAdditionalInfoForm({ previousData }: AddAdditionalInfoFormProps) {
 	const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -110,7 +114,7 @@ export function AddAdditionalInfoForm({ previousData }: AddAdditionalInfoFormPro
         blood_group_id: previousData?.blood_group?.id.toString(),
         role_id: previousData?.user?.role?.id.toString(),
         leave_group_id: previousData?.leave_group?.id?.toString(),
-				image: previousData?.image?.includes("amarsolution.xyz") ? previousData?.image : null
+				// image: previousData?.image?.includes("amarsolution.xyz") ? previousData?.image : null
 				
 			
       });
@@ -120,12 +124,18 @@ export function AddAdditionalInfoForm({ previousData }: AddAdditionalInfoFormPro
 console.log()
 	// console.log(previousData)
 
+	
+
+
 	async function onSubmit(data: EmployeeFormValues) {
+		console.log(data);
 		try {
 			const formData = serialize(
         {
           ...data,
           _method: "PUT",
+					role_id: previousData?.user?.role?.id,
+
           image: uploadedFile,
         },
         { indices: true }
@@ -134,14 +144,19 @@ console.log()
 				await updateEmployee({
 					employeeId: previousData.id,
 					updatedEmployee: formData,
-				});
+				}).unwrap();
 
 				toast.success("Employee updated successfully");
 			}
 		} catch (error) {
 			console.log(error);
+			handleErrors(error as ErrorResponse);
 		}
 	}
+
+
+handleFormErrors(form.formState.errors as ErrorDetail);
+	console.log(form.formState.errors)
 
 	return (
 		<>
