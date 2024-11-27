@@ -70,6 +70,7 @@ import Attributes from "@/pages/billing/attributes";
 import ExpensesCategory from "@/pages/billing/expenses-category";
 import CustomerAddForm from "@/pages/billing/customers/add-customer";
 import InvoiceUI from "@/pages/billing/invoiceUI";
+import QuotationDetailsUI from "@/pages/billing/quotation-details-ui";
 
 const billingRoutes = {
   path: "billing/",
@@ -510,6 +511,11 @@ const billingRoutes = {
       errorElement: withFallback(<ErrorPage />),
     },
 
+    {
+      path: "quotation-qetails-ui",
+      element: withFallback(<QuotationDetailsUI />),
+      errorElement: withFallback(<ErrorPage />),
+    },
     {
       path: "*",
       element: withFallback(<NotFoundPage />),
