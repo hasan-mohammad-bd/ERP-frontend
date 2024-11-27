@@ -2,9 +2,6 @@
 export interface SearchBarcodeItemUnit {
   id: number;
   name: string;
-  code: string;
-  stock: number;
-  purchase_price: number;
   selling_price: number;
   discount: number;
   discount_amount: number;
@@ -18,9 +15,11 @@ export interface SearchBarcodeItem {
   name: string;
   barcode: string;
   barcode_attribute: string;
-  item_nature: string;
-  image: string;
-  sku: string;
   primary_unit: SearchBarcodeItemUnit;
   secondary_unit: SearchBarcodeItemUnit;
+}
+
+export interface UpdateSearchBarcodeItem
+  extends Omit<SearchBarcodeItem, "primary_unit" | "secondary_unit"> {
+  unit: SearchBarcodeItemUnit;
 }

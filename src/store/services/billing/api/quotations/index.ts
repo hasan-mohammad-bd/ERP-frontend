@@ -1,4 +1,4 @@
-import { ItemFormValues, ItemRow } from "@/lib/validators/billing/items";
+import { ItemRow } from "@/lib/validators/billing/items";
 import { inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
 import {
@@ -15,8 +15,8 @@ const quotationApi = inventoryApi.injectEndpoints({
       query: (params) => `quotations?${params}`,
       providesTags: ["quotations"],
     }),
-    getItemById: build.query<{ data: ItemRow }, string>({
-      query: (params) => `quotations/${params}`,
+    getQuotationById: build.query<{ data: QuotationRow }, number>({
+      query: (quotationId) => `quotations/${quotationId}`,
       providesTags: ["quotations"],
     }),
     createQuotation: build.mutation<{ data: ItemRow }, QuotationFormDataType>({
@@ -27,20 +27,20 @@ const quotationApi = inventoryApi.injectEndpoints({
       }),
       invalidatesTags: ["quotations"],
     }),
-    removeItem: build.mutation<DeleteResponse, number>({
-      query: (itemId) => ({
-        url: `quotations/${itemId}`,
+    removeQuotation: build.mutation<DeleteResponse, number>({
+      query: (quotationId) => ({
+        url: `quotations/${quotationId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["quotations"],
     }),
-    updateItem: build.mutation<
+    updateQuotation: build.mutation<
       { data: ItemRow },
-      { itemId: number; updatedItem: ItemFormValues }
+      { itemId: number; updatedItem: QuotationFormDataType }
     >({
       query: ({ itemId, updatedItem }) => ({
         url: `quotations/${itemId}`,
-        method: "POST",
+        method: "PUT",
         body: updatedItem,
       }),
       invalidatesTags: ["quotations"],
@@ -51,8 +51,8 @@ const quotationApi = inventoryApi.injectEndpoints({
 
 export const {
   useGetQuotationsQuery,
-  useGetItemByIdQuery,
+  useGetQuotationByIdQuery,
   useCreateQuotationMutation,
-  useRemoveItemMutation,
-  useUpdateItemMutation,
+  useRemoveQuotationMutation,
+  useUpdateQuotationMutation,
 } = quotationApi;

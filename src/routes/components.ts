@@ -152,8 +152,14 @@ export const AddExpense = lazy(
 export const EditExpense = lazy(
   () => import("@/pages/billing/expenses/edit-expenses")
 );
-export const PaymentTerms = lazy(
-  () => import("@/pages/billing/payment-terms")
+export const PaymentTerms = lazy(() => import("@/pages/billing/payment-terms"));
+
+export const Quotes = lazy(() => import("@/pages/billing/quotes"));
+export const AddQuoteForm = lazy(
+  () => import("@/pages/billing/quotes/components/add-quotes-form")
+);
+export const EditQuoteForm = lazy(
+  () => import("@/pages/billing/quotes/components/edit-quotes-form")
 );
 
 //All We Routes

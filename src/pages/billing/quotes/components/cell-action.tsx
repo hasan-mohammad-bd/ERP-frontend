@@ -10,8 +10,10 @@ import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { useRemoveEntryMutation } from "@/store/services/accounts/api/entries";
 import { QuotationRow } from "@/lib/validators/billing/quotation";
+import { useRemoveQuotationMutation } from "@/store/services/billing/api/quotations";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface CellActionProps {
   rowData: QuotationRow;
@@ -20,15 +22,17 @@ interface CellActionProps {
 export function CellAction({ rowData }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
 
-  const [removeEntry, { isLoading: deleteLoading }] = useRemoveEntryMutation();
+  const [removeQuotation, { isLoading: deleteLoading }] =
+    useRemoveQuotationMutation();
   const navigation = useNavigate();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
-      await removeEntry(id);
-      toast.success("Opening Balance deleted successfully");
+      await removeQuotation(id).unwrap();
+      toast.success("Item deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
+      handleErrors(error as ErrorResponse);
       console.log(error);
     }
   };
@@ -42,7 +46,7 @@ export function CellAction({ rowData }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-              onClick = {() => navigation(`/billing/purchase-orders/edit/${rowData.id}`)}
+              onClick={() => navigation(`/billing/quotes/edit/${rowData.id}`)}
 
               // onClick={() => toggleModal()}
             >
@@ -78,14 +82,12 @@ export function CellAction({ rowData }: CellActionProps) {
       <AlertModal
         title="Are you sure?"
         description="This action cannot be undone."
-        name={"Quotation"}
+        name={"This Quotation"}
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
         onConfirm={() => handleDepartmentDelete(rowData.id)}
         loading={deleteLoading}
       />
-
-
     </div>
   );
 }

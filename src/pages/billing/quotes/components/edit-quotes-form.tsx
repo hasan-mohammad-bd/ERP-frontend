@@ -15,9 +15,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchProduct, { ExtendedItemRow } from "./search-product";
 // import FileUpload from "@/components/common/file-uploader";
 import Calculation from "./calculation";
@@ -34,27 +34,31 @@ import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { CustomerColumn } from "@/lib/validators/billing/customer";
 import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
 import { ProjectRow } from "@/lib/validators/accounts/projects";
-// import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
-// import { EmployeeColumn } from "@/lib/validators";
 import {
   QuotationFieldsType,
   quotationSchema,
 } from "@/lib/validators/billing/quotation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCreateQuotationMutation } from "@/store/services/billing/api/quotations";
+import {
+  useGetQuotationByIdQuery,
+  useUpdateQuotationMutation,
+} from "@/store/services/billing/api/quotations";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { toast } from "sonner";
 import { useGetUsersQuery } from "@/store/services/erp-main/api/users";
 import { UsersRow } from "@/lib/validators/web/users";
+import { Loading } from "@/components/common/loading";
+// import { UpdateSearchBarcodeItem } from "@/lib/validators/billing/search-barcode-item";
 
-export default function AddQuoteForm() {
+export default function EditQuoteForm() {
+  const params = useParams();
+  const quotationId = Number(params.id);
   const navigate = useNavigate();
   // const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<ExtendedItemRow[]>(
     []
   );
-  console.log(selectedProducts);
 
   const [openDatePickers, setOpenDatePickers] = useState({
     quote_date: false,
@@ -78,12 +82,15 @@ export default function AddQuoteForm() {
   const { data: EmployeeData, isLoading: employeeLoading } =
     useGetUsersQuery(`per_page=1000&page=1`);
 
+  const { data: quotationData, isLoading: quotationLoading } =
+    useGetQuotationByIdQuery(quotationId, { skip: !quotationId });
+
   const customers = customerData?.data || [];
   const projects = projectsData?.data || [];
   const employees = EmployeeData?.data || [];
 
-  const [createQuotation, { isLoading: isCreating }] =
-    useCreateQuotationMutation();
+  const [updateQuotation, { isLoading: isUpdating }] =
+    useUpdateQuotationMutation();
 
   // console.log(uploadedFiles);
   const form = useForm<QuotationFieldsType>({
@@ -93,41 +100,104 @@ export default function AddQuoteForm() {
     },
   });
 
-  async function onSubmit(data: QuotationFieldsType) {
-    console.log(data);
-    try {
-      await createQuotation({
-        ...data,
-        details: selectedProducts.map((product) => {
-          const discountedPrice =
-            product.unit.selling_price * (1 - product.unit.discount / 100); // Price after discount
+  useEffect(() => {
+    if (quotationData) {
+      form.reset({
+        ...quotationData.data,
+        note: quotationData.data.note || "",
+        subject: quotationData.data.subject || "",
+        terms_conditions: quotationData.data.terms_conditions || "",
+        contact_id: String(quotationData.data.contacts.id),
+        project_id: String(quotationData.data.project_id),
+        sales_person_id: String(quotationData.data.salesPerson.id),
+        discount: Number(quotationData.data.discount),
+        total: Number(quotationData.data.total),
+        shipping_charges: Number(quotationData.data.shipping_charges),
+      });
 
-          return {
-            unit_id: product.unit.id,
-            item_id: product.id,
-            item_barcode_id: Number(product.id),
-            price: product.unit.selling_price,
-            after_discount: discountedPrice, // Update to reflect price after discount
-            total: discountedPrice * product.quantity, // Update total to use discounted price
-            qty: product.quantity,
-            discount: product.unit.discount,
-            note: "",
-          };
-        }),
+      setSelectedProducts(
+        quotationData.data.quotation_details.map((detail) => ({
+          barcode: String(detail.item_barcode.barcode),
+          id: detail.item_barcode.id,
+          barcode_attribute: detail.item_barcode.barcode_attribute,
+          name: detail.item.name,
+          secondary_unit: {
+            wholesale_price: Number(detail.item_barcode.wholesale_price),
+            after_discount: Number(detail.item_barcode.after_discount),
+            discount: Number(detail.item_barcode.discount),
+            discount_amount: Number(detail.item_barcode.discount_amount),
+            id: detail.unit.id,
+            name: detail.item.name,
+            selling_price: Number(detail.item_barcode.selling_price),
+          },
+          finalPrice: Number(detail.total),
+          quantity: Number(detail.qty),
+          subTotal: Number(detail.item_barcode.after_discount),
+          total: Number(detail.total),
+
+          primary_unit: {
+            wholesale_price: Number(detail.item_barcode.wholesale_price),
+            after_discount: Number(detail.item_barcode.after_discount),
+            discount: Number(detail.item_barcode.discount),
+            discount_amount: Number(detail.item_barcode.discount_amount),
+            id: detail.unit.id,
+            name: detail.item.name,
+            selling_price: Number(detail.item_barcode.selling_price),
+          },
+          unit: {
+            wholesale_price: Number(detail.item_barcode.wholesale_price),
+            after_discount: Number(detail.item_barcode.after_discount),
+            discount: Number(detail.item_barcode.discount),
+            discount_amount: Number(detail.item_barcode.discount_amount),
+            id: detail.unit.id,
+            name: detail.item.name,
+            selling_price: Number(detail.item_barcode.selling_price),
+          },
+        }))
+      );
+    }
+  }, [form, quotationData]);
+
+  async function onSubmit(data: QuotationFieldsType) {
+    try {
+      await updateQuotation({
+        itemId: quotationId,
+        updatedItem: {
+          ...data,
+          details: selectedProducts.map((product) => {
+            const discountedPrice =
+              product.unit.selling_price * (1 - product.unit.discount / 100); // Price after discount
+
+            return {
+              unit_id: product.unit.id,
+              item_id: product.id,
+              item_barcode_id: Number(product.id),
+              price: product.unit.selling_price,
+              after_discount: discountedPrice, // Update to reflect price after discount
+              total: discountedPrice * product.quantity, // Update total to use discounted price
+              qty: product.quantity,
+              discount: product.unit.discount,
+              note: "",
+            };
+          }),
+        },
       }).unwrap();
-      toast.success("Quotation created successfully");
+      toast.success("Quotation updated successfully");
       navigate("/billing/quotes");
     } catch (error) {
       handleErrors(error as ErrorResponse);
     }
   }
 
+  if (quotationLoading) {
+    return <Loading />;
+  }
   return (
     <>
       <div>
         <div className="flex items-center justify-between mb-4">
           <Heading
-            title={"Add Quote"}
+            title={"Edit Quote"}
             description="Manage your sub accounts for you business"
           />
           <Button onClick={() => navigate("/billing/quotes")} size={"sm"}>
@@ -395,7 +465,7 @@ export default function AddQuoteForm() {
               <SearchProduct
                 setSelectedProducts={setSelectedProducts}
                 selectedProducts={selectedProducts}
-                previousData={false}
+                previousData={true}
               />
             </Card>
             {/* calculation */}
@@ -419,7 +489,7 @@ export default function AddQuoteForm() {
                 Cancel
               </Button>
               <Button variant="default" type="submit" className="w-fit mt-4">
-                {isCreating ? "Creating..." : "Add"}
+                {isUpdating ? "Updating..." : "Update"}
               </Button>
             </div>
           </form>

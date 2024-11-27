@@ -26,6 +26,7 @@ import {
 interface SearchProductProps {
   selectedProducts: ExtendedItemRow[];
   setSelectedProducts: Dispatch<SetStateAction<ExtendedItemRow[]>>;
+  previousData: boolean;
 }
 
 // Add `unit` to the ExtendedItemRow interface
@@ -40,6 +41,7 @@ export interface ExtendedItemRow extends SearchBarcodeItem {
 export default function SearchProduct({
   selectedProducts,
   setSelectedProducts,
+  previousData,
 }: SearchProductProps) {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -128,7 +130,7 @@ export default function SearchProduct({
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="p-4">
       <div className="mb-4 relative z-30">
         <div className="flex items-center space-x-2">
           <span className="h-4 px-4 py-[18px] border border-gray-300 flex justify-center items-center rounded-md">
@@ -174,11 +176,8 @@ export default function SearchProduct({
             {[
               "Product Name",
               "Unit",
-              "Stock",
-              "Purchase Price",
-              "Selling Price",
+              "Price",
               "P.O. Quantity",
-              "Sub Total",
               "Discount",
               "Total",
               "Action",
@@ -190,7 +189,7 @@ export default function SearchProduct({
         <TableBody>
           {selectedProducts?.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={9} className="text-center py-5">
+              <TableCell colSpan={11} className="text-center py-5">
                 No products selected yet.
               </TableCell>
             </TableRow>
@@ -199,42 +198,79 @@ export default function SearchProduct({
               {selectedProducts.map((product) => (
                 <TableRow key={product.id}>
                   <TableCell>
-                    {product.name}
+                    {`${product.name} (${product.barcode_attribute})`}
                     <br />
                     <span className="text-sm text-gray-500">
                       Barcode: {product.barcode}
                     </span>
                   </TableCell>
                   <TableCell>
-                    <Select
-                      onValueChange={(value) =>
-                        updateUnit(
-                          product.id,
-                          product.primary_unit.id === Number(value)
-                            ? product.primary_unit
-                            : product.secondary_unit
-                        )
-                      }
-                      defaultValue={product.unit.id.toString()}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Unit" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {[product.primary_unit, product.secondary_unit]?.map(
-                          (unit: SearchBarcodeItemUnit) => (
-                            <SelectItem key={unit.id} value={String(unit.id)}>
-                              {unit.name}
-                            </SelectItem>
-                          )
-                        )}
-                      </SelectContent>
-                    </Select>
+                    {previousData ? (
+                      product.unit.name
+                    ) : (
+                      <div className="w-64">
+                        <Select
+                          onValueChange={(value) =>
+                            updateUnit(
+                              product.id,
+                              product.primary_unit.id === Number(value)
+                                ? product.primary_unit
+                                : product.secondary_unit
+                            )
+                          }
+                          defaultValue={product.unit.id.toString()}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Unit" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {[
+                              product.primary_unit,
+                              product.secondary_unit,
+                            ]?.map((unit: SearchBarcodeItemUnit) => (
+                              <SelectItem key={unit.id} value={String(unit.id)}>
+                                {unit.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
                   </TableCell>
-                  <TableCell>{product.unit.stock}</TableCell>
-                  <TableCell>{product.unit.purchase_price}</TableCell>
-                  <TableCell>{product.unit.selling_price}</TableCell>
-
+                  <TableCell>
+                    <div className="w-48">
+                      <Input
+                        id="price"
+                        type="number"
+                        className="w-full"
+                        value={product.unit.selling_price || ""} // Leave empty if no value
+                        onChange={(e) => {
+                          const newPrice =
+                            e.target.value === ""
+                              ? ""
+                              : parseFloat(e.target.value); // Keep empty or parse value
+                          setSelectedProducts((products) =>
+                            products.map((p) =>
+                              p.id === product.id
+                                ? {
+                                    ...p,
+                                    unit: {
+                                      ...p.unit,
+                                      selling_price: newPrice || 0,
+                                    }, // Update price, fallback to 0 internally
+                                    subTotal: (newPrice || 0) * p.quantity, // Recalculate subTotal
+                                    total:
+                                      (newPrice || 0) *
+                                      p.quantity *
+                                      (1 - (p.unit.discount || 0) / 100), // Recalculate total
+                                  }
+                                : p
+                            )
+                          );
+                        }}
+                      />
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-2">
                       <Button
@@ -256,8 +292,39 @@ export default function SearchProduct({
                       </Button>
                     </div>
                   </TableCell>
-                  <TableCell>{product.subTotal.toFixed(2)}</TableCell>
-                  <TableCell>{product.unit.discount.toFixed(2)}</TableCell>
+                  <TableCell>
+                    <div className="w-32">
+                      <Input
+                        id="discount"
+                        type="number"
+                        value={product.unit.discount || ""} // Leave empty if no value
+                        onChange={(e) => {
+                          // Parse the input value
+                          const inputValue = e.target.value;
+                          const newDiscount =
+                            inputValue === ""
+                              ? 0
+                              : Math.min(parseFloat(inputValue), 100); // Ensure discount <= 100
+
+                          setSelectedProducts((products) =>
+                            products.map((p) =>
+                              p.id === product.id
+                                ? {
+                                    ...p,
+                                    unit: { ...p.unit, discount: newDiscount }, // Update discount
+                                    total:
+                                      (p.unit.selling_price || 0) *
+                                      p.quantity *
+                                      (1 - newDiscount / 100), // Recalculate total
+                                  }
+                                : p
+                            )
+                          );
+                        }}
+                      />
+                    </div>
+                  </TableCell>
+
                   <TableCell>{product.total.toFixed(2)}</TableCell>
                   <TableCell>
                     <Button

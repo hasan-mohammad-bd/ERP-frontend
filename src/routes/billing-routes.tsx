@@ -1,8 +1,10 @@
 import withFallback from "@/utils/with-fallback";
 import {
   AddExpense,
+  AddQuoteForm,
   EditCustomerForm,
   EditExpense,
+  EditQuoteForm,
   EditSupplierForm,
   // DashboardAccounts,
   ErrorPage,
@@ -10,6 +12,7 @@ import {
   Layout,
   NotFoundPage,
   PaymentTerms,
+  Quotes,
 } from "./components";
 
 import Units from "@/pages/billing/units";
@@ -23,8 +26,6 @@ import ItemList from "@/pages/billing/items/items-list";
 import PurchaseReceive from "@/pages/billing/purchase-receive";
 import { AddPurchaseReceiveForm } from "@/pages/billing/purchase-receive/components/add-purchase-recieve-form";
 // import Customers from "@/pages/billing/customer";
-import { AddQuoteForm } from "@/pages/billing/quotes/components/add-quotes-form";
-import Quotes from "@/pages/billing/quotes";
 import Invoice from "@/pages/billing/invoices";
 import { AddInvoiceForm } from "@/pages/billing/invoices/components/add-quotes-form";
 import SalesReceipt from "@/pages/billing/sales-receipts";
@@ -284,6 +285,11 @@ const billingRoutes = {
         {
           path: "add",
           element: withFallback(<AddQuoteForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<EditQuoteForm />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
