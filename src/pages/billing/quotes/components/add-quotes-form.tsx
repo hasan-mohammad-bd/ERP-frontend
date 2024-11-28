@@ -111,7 +111,7 @@ export default function AddQuoteForm() {
             total: discountedPrice * product.quantity, // Update total to use discounted price
             qty: product.quantity,
             discount: product.unit.discount,
-            note: "",
+            note: product.note || "",
           };
         }),
       }).unwrap();

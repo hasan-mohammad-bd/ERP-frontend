@@ -35,6 +35,7 @@ export interface ExtendedItemRow extends SearchBarcodeItem {
   subTotal: number;
   total: number;
   finalPrice: number;
+  note?: string;
   unit: SearchBarcodeItemUnit; // New field to store the selected unit
 }
 
@@ -158,7 +159,8 @@ export default function SearchProduct({
                       subTotal: item.primary_unit.selling_price,
                       total: item.primary_unit.selling_price,
                       finalPrice: item.primary_unit.selling_price,
-                      unit: item.primary_unit, // Default to primary unit
+                      unit: item.primary_unit, // Default to primary unit,
+                      note: "",
                     })
                   }
                 >
@@ -180,6 +182,7 @@ export default function SearchProduct({
               "P.O. Quantity",
               "Discount",
               "Total",
+              "Note",
               "Action",
             ].map((header) => (
               <TableHead key={header}>{header}</TableHead>
@@ -326,6 +329,25 @@ export default function SearchProduct({
                   </TableCell>
 
                   <TableCell>{product.total.toFixed(2)}</TableCell>
+                  <TableCell>
+                    <div className="w-64">
+                      <Input
+                        id="note"
+                        type="text"
+                        value={product.note || ""} // Leave empty if no value
+                        onChange={(e) => {
+                          setSelectedProducts((products) =>
+                            products.map((p) =>
+                              p.id === product.id
+                                ? { ...p, note: e.target.value } // Update note
+                                : p
+                            )
+                          );
+                        }}
+                      />
+                    </div>
+                  </TableCell>
+
                   <TableCell>
                     <Button
                       size="icon"

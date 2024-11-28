@@ -5,14 +5,14 @@ import { z } from "zod";
 
 export type QuotationRow = {
   id: number;
-  contacts: CustomerColumn;
+  contact: CustomerColumn;
   invoice_number: string;
   reference: string;
   date: string;
   estimated_delivery: string;
   expire_date: string;
   project_id: number;
-  salesPerson: EmployeeColumn;
+  sales_person: EmployeeColumn;
   subject: string;
   note: string;
   terms_conditions: string;

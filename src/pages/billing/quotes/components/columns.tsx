@@ -47,7 +47,7 @@ export const quotesColumns: ColumnDef<QuotationRow>[] = [
   {
     accessorKey: "contacts",
     header: "Customer Name",
-    cell: ({ row }) => <>{row.original.contacts.name}</>,
+    cell: ({ row }) => <>{row.original.contact.name}</>,
   },
   // {
   //   accessorKey: "status",

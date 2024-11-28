@@ -13,9 +13,11 @@ export default function Calculation({ form, subTotal }: CalculationProps) {
 
   // Watching form fields
   const discount = watch("discount");
+  const shippingCharges = watch("shipping_charges"); // Watch shipping charges field
 
   // Calculating totals
-  const total = subTotal - (subTotal * (discount ?? 0)) / 100;
+  const discountedAmount = (subTotal * (discount ?? 0)) / 100;
+  const total = subTotal - discountedAmount + (shippingCharges ?? 0); // Include shipping charges
   setValue("total", total);
 
   return (
@@ -66,6 +68,41 @@ export default function Calculation({ form, subTotal }: CalculationProps) {
           <span>
             {discount ? ((subTotal * (discount ?? 0)) / 100).toFixed(2) : 0}
           </span>
+        </div>
+        <div className="flex justify-between items-center">
+          <Label htmlFor="shipping_charges" className="font-medium">
+            Shipping Charges
+          </Label>
+          <div className="flex items-center">
+            <Input
+              id="shipping_charges"
+              type="number"
+              className="w-32 mr-2"
+              disabled={!subTotal}
+              value={
+                shippingCharges !== null && shippingCharges !== undefined
+                  ? shippingCharges
+                  : ""
+              }
+              onChange={(e) => {
+                const rawValue = e.target.value;
+
+                if (rawValue === "") {
+                  setValue("shipping_charges", undefined);
+                  return;
+                }
+
+                const value = Math.max(0, parseFloat(rawValue) || 0); // Ensure non-negative values
+                setValue("shipping_charges", value);
+              }}
+              onBlur={() => {
+                if (!shippingCharges) {
+                  setValue("shipping_charges", 0); // Default to 0
+                }
+              }}
+            />
+          </div>
+          <span>{shippingCharges ? shippingCharges.toFixed(2) : "0.00"}</span>
         </div>
         <div className="flex justify-between items-center font-semibold">
           <span>Total</span>

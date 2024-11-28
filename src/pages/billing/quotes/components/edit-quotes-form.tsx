@@ -107,9 +107,9 @@ export default function EditQuoteForm() {
         note: quotationData.data.note || "",
         subject: quotationData.data.subject || "",
         terms_conditions: quotationData.data.terms_conditions || "",
-        contact_id: String(quotationData.data.contacts.id),
+        contact_id: String(quotationData.data.contact.id),
         project_id: String(quotationData.data.project_id),
-        sales_person_id: String(quotationData.data.salesPerson.id),
+        sales_person_id: String(quotationData.data.sales_person.id),
         discount: Number(quotationData.data.discount),
         total: Number(quotationData.data.total),
         shipping_charges: Number(quotationData.data.shipping_charges),
@@ -121,10 +121,11 @@ export default function EditQuoteForm() {
           id: detail.item_barcode.id,
           barcode_attribute: detail.item_barcode.barcode_attribute,
           name: detail.item.name,
+          note: detail.note || "",
           secondary_unit: {
             wholesale_price: Number(detail.item_barcode.wholesale_price),
             after_discount: Number(detail.item_barcode.after_discount),
-            discount: Number(detail.item_barcode.discount),
+            discount: Number(detail.discount),
             discount_amount: Number(detail.item_barcode.discount_amount),
             id: detail.unit.id,
             name: detail.item.name,
@@ -138,7 +139,7 @@ export default function EditQuoteForm() {
           primary_unit: {
             wholesale_price: Number(detail.item_barcode.wholesale_price),
             after_discount: Number(detail.item_barcode.after_discount),
-            discount: Number(detail.item_barcode.discount),
+            discount: Number(detail.discount),
             discount_amount: Number(detail.item_barcode.discount_amount),
             id: detail.unit.id,
             name: detail.item.name,
@@ -147,7 +148,7 @@ export default function EditQuoteForm() {
           unit: {
             wholesale_price: Number(detail.item_barcode.wholesale_price),
             after_discount: Number(detail.item_barcode.after_discount),
-            discount: Number(detail.item_barcode.discount),
+            discount: Number(detail.discount),
             discount_amount: Number(detail.item_barcode.discount_amount),
             id: detail.unit.id,
             name: detail.item.name,
@@ -173,11 +174,11 @@ export default function EditQuoteForm() {
               item_id: product.id,
               item_barcode_id: Number(product.id),
               price: product.unit.selling_price,
-              after_discount: discountedPrice, // Update to reflect price after discount
-              total: discountedPrice * product.quantity, // Update total to use discounted price
+              after_discount: Number(discountedPrice.toFixed(2)),
+              total: Number((discountedPrice * product.quantity).toFixed(2)),
               qty: product.quantity,
               discount: product.unit.discount,
-              note: "",
+              note: product.note || "",
             };
           }),
         },

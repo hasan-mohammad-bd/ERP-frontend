@@ -12,41 +12,6 @@ import { useState } from "react";
 import { PaginationInfo } from "@/types";
 import { Loading } from "@/components/common/loading";
 
-// const data = [
-//   {
-//     date: "2024-10-01",
-//     quoteNumber: "Q-12345",
-//     referenceNumber: "REF-001",
-//     customerName: "Customer A",
-//     status: "Confirmed",
-//     amount: 5000.0,
-//   },
-//   {
-//     date: "2024-10-03",
-//     quoteNumber: "Q-12346",
-//     referenceNumber: "REF-002",
-//     customerName: "Customer B",
-//     status: "Pending",
-//     amount: 7500.0,
-//   },
-//   {
-//     date: "2024-10-06",
-//     quoteNumber: "Q-12347",
-//     referenceNumber: "REF-003",
-//     customerName: "Customer C",
-//     status: "Confirmed",
-//     amount: 3200.0,
-//   },
-//   {
-//     date: "2024-10-09",
-//     quoteNumber: "Q-12348",
-//     referenceNumber: "REF-004",
-//     customerName: "Customer D",
-//     status: "Pending",
-//     amount: 6000.0,
-//   },
-// ];
-
 const Quotes = () => {
   const navigate = useNavigate();
   const [pagination, setPagination] = useState<PaginationState>({
