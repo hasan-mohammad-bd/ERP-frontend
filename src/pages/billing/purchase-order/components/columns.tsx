@@ -2,6 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 // import { FormatIndianCurrency } from "@/utils/indian-formate";
+// import { QuotationRow } from "@/lib/validators/billing/quotation";
 import { PurchaseOrderRow } from "@/lib/validators/billing/purchase-order";
 
 export const purchaseOrderColumns: ColumnDef<PurchaseOrderRow>[] = [
@@ -30,34 +31,41 @@ export const purchaseOrderColumns: ColumnDef<PurchaseOrderRow>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "sl",
-    header: "Sl",
-  },
-  {
     accessorKey: "date",
     header: "Date",
+    cell: ({ row }) => <>{row.original.date}</>,
   },
   {
-    accessorKey: "deliveryDate",
+    accessorKey: "invoice_number",
+    header: "Invoice Number",
+    cell: ({ row }) => <>{row.original.invoice_number}</>,
+  },
+  {
+    accessorKey: "delivery_date",
     header: "Delivery Date",
+    // cell: ({ row }) => <>{row.original.reference}</>,
   },
   {
-    accessorKey: "poInvoiceNo",
-    header: "P.O. Invoice No",
+    accessorKey: "due_date",
+    header: "Due Date",
+    // cell: ({ row }) => <>{row?.original?.contacts?.name}</>,
   },
   {
-    accessorKey: "businessBranch",
-    header: "Business Branch",
+    accessorKey: "discount",
+    header: "Discount",
+    // cell: ({ row }) => <>{row?.original?.contacts?.name}</>,
   },
   {
-    accessorKey: "suppliers",
-    header: "Suppliers",
+    accessorKey: "shipping_charges",
+    header: "Shipping Charges",
+    // cell: ({ row }) => <>{row?.original?.contacts?.name}</>,
   },
-  // {
-  //   accessorKey: "amount",
-  //   header: "Amount",
-  //   cell: ({ row }) => <FormatIndianCurrency amount={row?.original?.amount as number} />,
-  // },
+  {
+    accessorKey: "total",
+    header: "Total",
+    // cell: ({ row }) => <>{row?.original?.contacts?.name}</>,
+  },
+
   {
     id: "actions",
     header: () => <div className="text-center">Actions</div>,

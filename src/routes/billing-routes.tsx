@@ -19,8 +19,8 @@ import Units from "@/pages/billing/units";
 import Category from "@/pages/billing/category";
 import ClassCategory from "@/pages/billing/child-category";
 
-import PurchaseOrder from "@/pages/billing/purchase-order";
-import { AddPurchaseOrderForm } from "@/pages/billing/purchase-order/components/add-purchase-order-form";
+
+
 import ItemAddForm from "@/pages/billing/items/add-item";
 import ItemList from "@/pages/billing/items/items-list";
 import PurchaseReceive from "@/pages/billing/purchase-receive";
@@ -72,6 +72,9 @@ import ExpensesCategory from "@/pages/billing/expenses-category";
 import CustomerAddForm from "@/pages/billing/customers/add-customer";
 import InvoiceUI from "@/pages/billing/invoiceUI";
 import QuotationDetailsUI from "@/pages/billing/quotation-details-ui";
+import PurchaseOrder from "@/pages/billing/purchase-order";
+import AddPurchaseOrderForm from "@/pages/billing/purchase-order/components/add-purchase-order";
+import EditPurchaseOrder from "@/pages/billing/purchase-order/components/edit-quotes-form";
 
 const billingRoutes = {
   path: "billing/",
@@ -197,6 +200,11 @@ const billingRoutes = {
         {
           path: "add",
           element: withFallback(<AddPurchaseOrderForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<EditPurchaseOrder />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
