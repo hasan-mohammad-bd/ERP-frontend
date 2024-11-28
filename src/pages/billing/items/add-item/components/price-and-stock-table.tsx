@@ -44,6 +44,7 @@ export default function PriceAndStockTable({
     after_discount: null,
     wholesale_price: null,
   });
+  const [activeFirstFiled, setActiveFirstField] = useState<string | null>(null);
 
   useEffect(() => {
     if (responseData.length > 0) {
@@ -51,27 +52,42 @@ export default function PriceAndStockTable({
     }
   }, [responseData, setItems]);
 
-  const calculateValues = (values: Partial<StockItem>): Partial<StockItem> => {
-    const {  selling_price, discount, discount_amount } = values;
+  const calculateValues = (values: Partial<StockItem>, field?: keyof StockItem): Partial<StockItem> => {
+    const { selling_price, discount, discount_amount } = values;
     const newValues = { ...values };
-
-    if (selling_price) {
-      if (discount) {
-        // console.log("hello")
-        newValues.discount_amount = selling_price * (discount / 100);
-        newValues.after_discount = selling_price - newValues.discount_amount;
-      } else if (discount_amount) {
-        // console.log("hello2")
-        newValues.discount = (discount_amount / selling_price ) * 100;
-        newValues.after_discount = selling_price - discount_amount;
-       
-      } else {
-        newValues.after_discount = selling_price;
+  
+    if (field === "selling_price" || field === "discount" || field === "discount_amount") {
+      if (selling_price) {
+        // Handle discount changes
+        if (field === "discount" && typeof discount === "number" && discount >= 0) {
+          !activeFirstFiled && setActiveFirstField("discount");
+          newValues.discount_amount = selling_price * (discount / 100);
+          newValues.after_discount = selling_price - newValues.discount_amount;
+        }
+  
+        // Handle discount_amount changes
+        if (field === "discount_amount" && typeof discount_amount === "number" && discount_amount >= 0) {
+          !activeFirstFiled && setActiveFirstField("discount_amount");
+          newValues.discount = (discount_amount / selling_price) * 100;
+          newValues.after_discount = selling_price - discount_amount;
+        }
+  
+        // Fallback: No discount or discount_amount provided
+        if (
+          (discount === null || discount === undefined) &&
+          (discount_amount === null || discount_amount === undefined)
+        ) {
+          newValues.after_discount = selling_price;
+        }
       }
     }
-
+  
+    // If the field isn't related to these calculations, no changes
     return newValues;
   };
+
+  
+  
 
 
 
@@ -90,7 +106,7 @@ export default function PriceAndStockTable({
 
   const handleTopValueChange = (field: keyof StockItem, value: number | null) => {
     const newTopValues = { ...topValues, [field]: value };
-    const calculatedValues = calculateValues(newTopValues);
+    const calculatedValues = calculateValues(newTopValues, field);
     setTopValues(calculatedValues);
   };
 
@@ -101,7 +117,7 @@ export default function PriceAndStockTable({
   ) => {
     const newItems = [...items];
     const newItemValues = { ...newItems[index], [field]: value };
-    const calculatedValues = calculateValues(newItemValues);
+    const calculatedValues = calculateValues(newItemValues,  field);
     newItems[index] = calculatedValues;
     setItems(newItems);
   };
@@ -141,6 +157,7 @@ export default function PriceAndStockTable({
               onChange={(e) =>
                 handleTopValueChange("discount", e.target.value ? Number(e.target.value) : null)
               }
+              disabled={activeFirstFiled === "discount_amount"}
             />
           </div>
           <div>
@@ -152,6 +169,7 @@ export default function PriceAndStockTable({
               onChange={(e) =>
                 handleTopValueChange("discount_amount", e.target.value ? Number(e.target.value) : null)
               }
+              disabled={activeFirstFiled === "discount"}
             />
           </div>
           <div>
@@ -160,7 +178,7 @@ export default function PriceAndStockTable({
               id="after_discount"
               type="number"
               defaultValue={topValues.after_discount ?? ""}
-              readOnly
+              // readOnly
             />
           </div>
           <div>
@@ -245,6 +263,7 @@ export default function PriceAndStockTable({
                         )
                       }
                       type="number"
+                      disabled={activeFirstFiled === "discount_amount"}
                     />
                   </TableCell>
                   <TableCell>
@@ -258,12 +277,13 @@ export default function PriceAndStockTable({
                         )
                       }
                       type="number"
+                      disabled={activeFirstFiled === "discount"}
                     />
                   </TableCell>
                   <TableCell>
                     <Input
-                      value={item.after_discount || ""}
-                      readOnly
+                      defaultValue={item.after_discount || ""}
+                      // readOnly
                       type="number"
                     />
                   </TableCell>

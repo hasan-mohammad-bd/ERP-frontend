@@ -1,6 +1,5 @@
 import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import { Card } from "@/components/ui/card";
-// import React from "react";
 
 const QuotationDetailsUI = () => {
   return (

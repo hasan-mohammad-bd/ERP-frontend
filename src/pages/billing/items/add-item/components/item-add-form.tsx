@@ -87,6 +87,7 @@ export default function ItemAddForm() {
   useEffect(() => {
    if(previousData){
      setItems(previousData?.item_barcode);
+     setItemType(previousData?.item_nature )
     //  setAttributeCategoriesData(previousData?.attribute_categories);
    } 
   },[previousData?.item_barcode ]);

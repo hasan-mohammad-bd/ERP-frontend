@@ -83,7 +83,7 @@ export const itemBarcode = z.object({
 // Define the main ItemSchema using CategorySchema
 export const itemRow = z.object({
   id: z.coerce.number(),
-  item_nature: z.string(),
+  item_nature: z.enum(["Service", "Goods"]),
   name: z.string(),
   images: files,
   category: CategorySchema,

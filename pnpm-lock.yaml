@@ -128,6 +128,9 @@ importers:
       object-to-formdata:
         specifier: ^4.5.1
         version: 4.5.1
+      pnpm:
+        specifier: ^9.14.2
+        version: 9.14.2
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -2460,6 +2463,11 @@ packages:
   pirates@4.0.6:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
     engines: {node: '>= 6'}
+
+  pnpm@9.14.2:
+    resolution: {integrity: sha512-biuvd9Brk2IpQVLIUcTyeO3jerHro6Vf2jF6SheyCfTbuXP7JQp3q8Rjo0H8sfF/F8+iQJHE6zGc2g2bhCeDhw==}
+    engines: {node: '>=18.12'}
+    hasBin: true
 
   postcss-import@15.1.0:
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
@@ -5420,6 +5428,8 @@ snapshots:
   pify@2.3.0: {}
 
   pirates@4.0.6: {}
+
+  pnpm@9.14.2: {}
 
   postcss-import@15.1.0(postcss@8.4.41):
     dependencies:
