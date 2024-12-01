@@ -58,6 +58,7 @@ interface DataTableProps<TData, TValue> {
   className?: string | null;
   children?: React.ReactNode;
   noToolbar?: boolean;
+  onChangeSearch?: (value: string) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -72,6 +73,7 @@ export function DataTable<TData, TValue>({
   onBulkSelectChange,
   reportFormate,
   noToolbar,
+  onChangeSearch,
   children,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
@@ -161,6 +163,7 @@ export function DataTable<TData, TValue>({
               table={table}
               bulkActions={bulkActions}
               onBulkSelectChange={onBulkSelectChange}
+              onChangeSearch={onChangeSearch}
             />
           ) : null}
         </>

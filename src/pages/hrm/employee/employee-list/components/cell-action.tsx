@@ -24,8 +24,8 @@ interface CellActionProps {
 }
 
 export function CellAction({ data }: CellActionProps) {
-  console.log(data);
-  console.log(data.id);
+  // console.log(data);
+  // console.log(data.id);
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   // const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);

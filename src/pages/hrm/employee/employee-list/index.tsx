@@ -53,11 +53,12 @@ const Employee = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const { data, isLoading } = useGetEmployeesQuery(
     `per_page=${pagination.pageSize}&page=${
       pagination.pageIndex + 1
-    }&${filterParams}`
+    }&text=${searchTerm}&${filterParams}`
   );
   // console.log("🚀 ~ Employee ~ data:", data);
   // Set appropriate bulk action type here
@@ -129,6 +130,7 @@ const Employee = () => {
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}
+                onChangeSearch={setSearchTerm}
               />
             </div>
           )}
