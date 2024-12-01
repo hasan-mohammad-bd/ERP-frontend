@@ -1,6 +1,5 @@
 import { locationColumn } from "@/lib/validators";
-import {z} from "zod";
-
+import { z } from "zod";
 
 const adminSchema = z.object({
   id: z.coerce.number().nullable(),
@@ -32,12 +31,9 @@ export const approvalGroupSchema = z.object({
   // created_at: z.string().datetime(),
 });
 
-
-
-
 // export type ApprovalFormValues = z.infer<typeof approvalGroupSchema>;
 
-export const approvalGroupRow = approvalGroupSchema
+export const approvalGroupRow = approvalGroupSchema;
 
 export type ApprovalGroupRow = z.infer<typeof approvalGroupRow>;
 
@@ -93,20 +89,26 @@ const detailsSchema = z.object({
   created_at: z.string().datetime(),
 });
 
-export type DetailsApprovalGroupRow = z.infer<typeof detailsSchema>; 
+export type DetailsApprovalGroupRow = z.infer<typeof detailsSchema>;
 
 //for update / create
 
 const LevelSchema2 = z.object({
   level: z.coerce.number(),
-  admin_ids: z.array(z.coerce.number()),
+  admin_ids: z
+    .array(z.coerce.number().min(1, "Minimum 1 Admin is required."))
+    .min(1, "Minimum 1 Admin is required."),
 });
 
 export const approvalGroupsSchema = z.object({
-  name: z.string(),
-  type: z.string(),
+  name: z.string().min(2, "Name must be at least 2 characters."),
+  type: z.string().min(1, "Type is required."),
   location_id: z.string().nullable(),
-  membars: z.array(z.number()),
+  membars: z
+    .array(z.number(), {
+      required_error: "Minimum 1 member is required.",
+    })
+    .min(1, { message: "Minimum 1 member is required." }),
   level_count: z.coerce.number(),
   levels: z.array(LevelSchema2),
 });

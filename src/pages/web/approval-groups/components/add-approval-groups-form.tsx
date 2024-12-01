@@ -30,6 +30,7 @@ import {
 } from "@/store/services/erp-main/api/approval-groups";
 import {
   ApprovalGroupFormValues,
+  approvalGroupsSchema,
   // DetailsApprovalGroupRow,
   // approvalGroupSchema,
 } from "@/lib/validators/web/approval-group";
@@ -41,7 +42,7 @@ import { useGetUsersQuery } from "@/store/services/erp-main/api/users";
 import { UsersRow } from "@/lib/validators/web/users";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedEmployeeAction } from "@/store/services/erp-main/slices/commonSlice";
-
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface Catalog {
   name: string;
@@ -50,78 +51,94 @@ interface Catalog {
 export function AddApprovalGroups() {
   const dispatch = useDispatch();
   const [createApprovalGroup, { isLoading }] = useCreateApprovalGroupMutation();
-  const [updateApprovalGroup, { isLoading: updateLoading }] = useUpdateApprovalGroupMutation();
-  const { data: locations, isLoading: locationLoading } = useGetLocationsQuery("page=1&per_page=1000");
-  const { data: catalog, isLoading: catalogLoading } = useGetCatalogQuery("page=1&per_page=1000");
+  const [updateApprovalGroup, { isLoading: updateLoading }] =
+    useUpdateApprovalGroupMutation();
+  const { data: locations, isLoading: locationLoading } = useGetLocationsQuery(
+    "page=1&per_page=1000"
+  );
+  const { data: catalog, isLoading: catalogLoading } = useGetCatalogQuery(
+    "page=1&per_page=1000"
+  );
 
-  const catalogData =  catalog?.["approval-type"] || [];
+  const catalogData = catalog?.["approval-type"] || [];
   const locationData = locations?.data || [];
   const selectedUserAction = useSelector(
     (state: any) => state.common.selectedEmployeeAction
   );
 
-
-
-
-
   const [membarsOptions, setMembarsOptions] = useState<Option[]>([]);
-  const [adminOptions, setAdminOptions] = useState<{ [key: number]: Option[] }>({});
+  const [adminOptions, setAdminOptions] = useState<{ [key: number]: Option[] }>(
+    {}
+  );
   const [employeeSearchTerm, setEmployeeSearchTerm] = useState("");
-  const { data: employeeList} = useGetUsersQuery(
+  const { data: employeeList } = useGetUsersQuery(
     `per_page=15&page=1&text=${employeeSearchTerm}`
-    
   );
 
-  console.log(membarsOptions)
-
+  // console.log(membarsOptions);
 
   // const users = data?.data || [];
   // const { data: employeeList } = useGetEmployeesQuery(`per_page=15&page=1&search=${employeeSearchTerm}`);
 
   const { id } = useParams();
-  const { data } = useGetApprovalGroupByIdQuery(`${id}`);
-  const previousData = data?.data ;
+  const { data } = useGetApprovalGroupByIdQuery(`${id}`, { skip: !id });
+  const previousData = data?.data;
   const navigate = useNavigate();
-console.log(previousData)
+  // console.log(previousData);
   const form = useForm<ApprovalGroupFormValues>({
-    // resolver: zodResolver(approvalGroupSchema),
-    defaultValues: 
-    {
-       name: previousData?.name || "",
+    resolver: zodResolver(approvalGroupsSchema),
+    defaultValues: {
+      name: previousData?.name || "",
       location_id: previousData?.location_id?.toString() || null,
       type: previousData?.type || "",
-      membars: previousData?.members?.map((item: { id: number }) => item.id) || [],
-      level_count: previousData?.level_count ,
-      levels: previousData?.levels?.map((item: { level: number; admin_ids: number[] } ) => ({ level: item.level, admin_ids: item.admin_ids })) || [],
-     } 
+      membars:
+        previousData?.members?.map((item: { id: number }) => item.id) || [],
+      level_count: previousData?.level_count,
+      levels:
+        previousData?.levels?.map(
+          (item: { level: number; admin_ids: number[] }) => ({
+            level: item.level,
+            admin_ids: item.admin_ids,
+          })
+        ) || [],
+    },
   });
 
   useEffect(() => {
-    console.log("Previous Data:", previousData); 
+    // console.log("Previous Data:", previousData);
     if (previousData) {
       form.reset({
         name: previousData.name || "",
         location_id: previousData.location_id?.toString() || null,
         type: previousData.type || "",
-        membars: previousData.members?.map((item : { id: number }) => item.id) || [],
+        membars:
+          previousData.members?.map((item: { id: number }) => item.id) || [],
         level_count: previousData.level_count,
-        levels: previousData.levels?.map((item : { level: number; admin_ids: number[] }) => ({ 
-          level: item.level, 
-          admin_ids: item.admin_ids 
-        })) || [],
+        levels:
+          previousData.levels?.map(
+            (item: { level: number; admin_ids: number[] }) => ({
+              level: item.level,
+              admin_ids: item.admin_ids,
+            })
+          ) || [],
       });
-    } 
+    }
   }, [previousData, form]);
 
-
   useEffect(() => {
-    if (!previousData && selectedUserAction.action === "approval-groups-select") {
+    if (
+      !previousData &&
+      selectedUserAction.action === "approval-groups-select"
+    ) {
       const uniqueUsers = selectedUserAction.payload.map((item: UsersRow) => ({
         value: String(item.id),
         label: `${item.name}(${item.id})`,
       }));
       setMembarsOptions(uniqueUsers);
-      form.setValue("membars", selectedUserAction.payload.map((item: UsersRow) => item.id));
+      form.setValue(
+        "membars",
+        selectedUserAction.payload.map((item: UsersRow) => item.id)
+      );
     }
   }, [selectedUserAction, previousData, form]);
 
@@ -145,34 +162,34 @@ console.log(previousData)
   }, [levels.length, form]);
 
   useEffect(() => {
-    if(previousData) {
-      previousData.members?.map((item:{id: number, name: string}) => {
+    if (previousData) {
+      previousData.members?.map((item: { id: number; name: string }) => {
         setMembarsOptions((prev) => [
           ...prev,
           {
             value: String(item.id),
             label: `${item.name} (${item.id})`,
           },
-        ])
-      })
+        ]);
+      });
     }
   }, [previousData, form]);
 
-
   useEffect(() => {
-    if(previousData) {
-      previousData.levels?.map((item:{level: number, admins: { id: number, name: string }[]}) => {
-        setAdminOptions((prev) => ({
-          ...prev,
-          [item.level - 1]: item.admins?.map((admin) => ({
-            value: String(admin.id),
-            label: `${admin.name} (${admin.id})`,
-          })
-        ),
-        }));
-      })
+    if (previousData) {
+      previousData.levels?.map(
+        (item: { level: number; admins: { id: number; name: string }[] }) => {
+          setAdminOptions((prev) => ({
+            ...prev,
+            [item.level - 1]: item.admins?.map((admin) => ({
+              value: String(admin.id),
+              label: `${admin.name} (${admin.id})`,
+            })),
+          }));
+        }
+      );
     }
-    },[ previousData, form]);
+  }, [previousData, form]);
 
   useEffect(() => {
     if (levels.length === 0) {
@@ -180,29 +197,30 @@ console.log(previousData)
     }
   }, [levels, appendLevels]);
 
-
-
   const handleSearchMembars = async (query: string): Promise<Option[]> => {
     setEmployeeSearchTerm(query);
-    const options = employeeList?.data?.map((item: UsersRow) => ({
-      value: String(item.id),
-      label: `${item.name} (${item.id})`,
-    })) || [];
+    const options =
+      employeeList?.data?.map((item: UsersRow) => ({
+        value: String(item.id),
+        label: `${item.name} (${item.id})`,
+      })) || [];
     return options;
   };
 
-  const handleSearchAdmin = async (query: string):Promise<Option[]> => {
+  const handleSearchAdmin = async (query: string): Promise<Option[]> => {
     setEmployeeSearchTerm(query);
-    const options = employeeList?.data?.map((item: UsersRow) => ({
-      value: String(item.id),
-      label: `${item.name} (${item.id})`,
-    })) || [];
-  
+    const options =
+      employeeList?.data?.map((item: UsersRow) => ({
+        value: String(item.id),
+        label: `${item.name} (${item.id})`,
+      })) || [];
+
     return options;
   };
-
+  // console.log(form.formState.errors);
+  console.log(form.getValues("levels"));
   async function onSubmit(data: ApprovalGroupFormValues) {
-
+    console.log(data);
     try {
       if (previousData) {
         await updateApprovalGroup({
@@ -326,51 +344,57 @@ console.log(previousData)
                         )}
                       />
                       <div className="w-full">
-                      <FormField
-                        control={form.control}
-                        name={`levels.${index}.admin_ids`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{index === 0 && "Admin"}</FormLabel>
-                            <FormControl>
-                              <MultipleSelector
-                                {...field}
-                                value={adminOptions[index]}
-                                onSearch={handleSearchAdmin}
-                                onChange={(options) => {
-                                  setAdminOptions((prev) => ({
-                                    ...prev,
-                                    [index]: options,
-                                  }));
-                                  field.onChange(
-                                    options.map((option) => parseInt(option.value))
-                                  );
-                                }}
-                                hidePlaceholderWhenSelected
-                                placeholder="Search and select options"
-                                loadingIndicator={<span>Loading...</span>}
-                                emptyIndicator={<span>No options found</span>}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                        <FormField
+                          control={form.control}
+                          name={`levels.${index}.admin_ids`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>{index === 0 && "Admin"}</FormLabel>
+                              <FormControl>
+                                <MultipleSelector
+                                  {...field}
+                                  value={adminOptions[index]}
+                                  onSearch={handleSearchAdmin}
+                                  onChange={(options) => {
+                                    setAdminOptions((prev) => ({
+                                      ...prev,
+                                      [index]: options,
+                                    }));
+                                    field.onChange(
+                                      options.map((option) =>
+                                        parseInt(option.value)
+                                      )
+                                    );
+                                  }}
+                                  hidePlaceholderWhenSelected
+                                  placeholder="Search and select options"
+                                  loadingIndicator={<span>Loading...</span>}
+                                  emptyIndicator={<span>No options found</span>}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                       </div>
 
-               
-                      <span className={`flex items-center justify-center ${index === 0 ? "!mt-8" : "!mt-0"}`} onClick={() => removeLevels(index)}>
+                      <span
+                        className={`flex items-center justify-center ${
+                          index === 0 ? "!mt-8" : "!mt-0"
+                        }`}
+                        onClick={() => removeLevels(index)}
+                      >
                         <Trash2 size={16} className="text-red-500" />
                       </span>
-                  
-
                     </div>
                   ))}
                   <Button
                     type="button"
                     onClick={() => appendLevels("")}
                     variant="secondary"
-                    className={`mt-2 space-x-2 border border-dashed border-gray-700 w-fit ${levels.length === 5 && "hidden"}`}
+                    className={`mt-2 space-x-2 border border-dashed border-gray-700 w-fit ${
+                      levels.length === 5 && "hidden"
+                    }`}
                   >
                     <Plus size={14} /> <span>Add Level</span>
                   </Button>
@@ -378,7 +402,11 @@ console.log(previousData)
               </div>
 
               <div>
-                <Button variant="default" type="submit" className="w-fit flex justify-end mt-4">
+                <Button
+                  variant="default"
+                  type="submit"
+                  className="w-fit flex justify-end mt-4"
+                >
                   {previousData ? "Update" : "Add"}
                 </Button>
               </div>

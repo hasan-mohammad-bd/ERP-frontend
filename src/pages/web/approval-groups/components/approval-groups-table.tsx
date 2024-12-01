@@ -22,7 +22,7 @@ interface Props {
 const ApprovalGroupsTable = ({ tableData }: Props) => {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [deleteOrganization, { isLoading: deleteLoading }] =
-  useRemoveApprovalGroupMutation();
+    useRemoveApprovalGroupMutation();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
@@ -34,7 +34,7 @@ const ApprovalGroupsTable = ({ tableData }: Props) => {
     }
   };
   const navigate = useNavigate();
-  console.log(tableData);
+  // console.log(tableData);
   return (
     <Card>
       <Table>
@@ -78,13 +78,18 @@ const ApprovalGroupsTable = ({ tableData }: Props) => {
                   )}
                   {/* Level cell with rowspan */}
                   {adminIndex === 0 && (
-                    <TableCell className="font-medium border border-gray-200" rowSpan={level.admins.length}>
+                    <TableCell
+                      className="font-medium border border-gray-200"
+                      rowSpan={level.admins.length}
+                    >
                       Level {level.level}
                     </TableCell>
                   )}
                   {/* Admin name and image */}
-                  <TableCell className="border border-gray-200">{admin.name || "Not specified"}</TableCell>
-{/*                   <TableCell className="border border-gray-200">
+                  <TableCell className="border border-gray-200">
+                    {admin.name || "Not specified"}
+                  </TableCell>
+                  {/*                   <TableCell className="border border-gray-200">
                     <img src={admin.image} alt="Admin" width="50" height="50" />
                   </TableCell> */}
                   {/* action column */}
