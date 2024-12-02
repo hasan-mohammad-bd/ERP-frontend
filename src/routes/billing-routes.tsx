@@ -2,9 +2,11 @@ import withFallback from "@/utils/with-fallback";
 import {
   AddExpense,
   AddQuoteForm,
+  AddSalesOrder,
   EditCustomerForm,
   EditExpense,
   EditQuoteForm,
+  EditSalesOrder,
   EditSupplierForm,
   // DashboardAccounts,
   ErrorPage,
@@ -13,13 +15,12 @@ import {
   NotFoundPage,
   PaymentTerms,
   Quotes,
+  SalesOrderList,
 } from "./components";
 
 import Units from "@/pages/billing/units";
 import Category from "@/pages/billing/category";
 import ClassCategory from "@/pages/billing/child-category";
-
-
 
 import ItemAddForm from "@/pages/billing/items/add-item";
 import ItemList from "@/pages/billing/items/items-list";
@@ -315,6 +316,27 @@ const billingRoutes = {
         {
           path: "add",
           element: withFallback(<AddInvoiceForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+      ],
+    },
+    {
+      path: "sales-orders/",
+      errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<SalesOrderList />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "add",
+          element: withFallback(<AddSalesOrder />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<EditSalesOrder />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],

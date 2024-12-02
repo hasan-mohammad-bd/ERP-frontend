@@ -161,6 +161,13 @@ export const AddQuoteForm = lazy(
 export const EditQuoteForm = lazy(
   () => import("@/pages/billing/quotes/components/edit-quotes-form")
 );
+export const SalesOrderList = lazy(() => import("@/pages/billing/sales-order"));
+export const AddSalesOrder = lazy(
+  () => import("@/pages/billing/sales-order/components/add-sales-order")
+);
+export const EditSalesOrder = lazy(
+  () => import("@/pages/billing/sales-order/components/edit-sales-order")
+);
 
 //All We Routes
 export const Organization = lazy(() => import("@/pages/web/organization"));

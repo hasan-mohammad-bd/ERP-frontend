@@ -130,6 +130,13 @@ const billingNavItems: NavItem[] = [
         permissions: ["hrm"],
       },
       {
+        title: "Sales Orders",
+        icon: Soup,
+        href: "/billing/sales-orders",
+        color: "text-sky-500",
+        permissions: ["hrm"],
+      },
+      {
         title: "Payment Received",
         icon: Soup,
         href: "/billing/payments-received",
