@@ -33,34 +33,32 @@ export const invoiceColumns: ColumnDef<any>[] = [
     header: "Date",
   },
   {
-    accessorKey: "invoiceNumber",
-    header: "Invoice#",
+    accessorKey: "invoice_number",
+    header: "Invoice Number",
   },
   {
-    accessorKey: "orderNumber",
-    header: "Order Number",
+    accessorKey: "subject",
+    header: "Subject",
   },
   {
-    accessorKey: "customerName",
-    header: "Customer Name",
+    accessorKey: "reference",
+    header: "Reference No",
+  },
+  {
+    accessorKey: "due_date",
+    header: "Due Date",
+  },
+  {
+    accessorKey: "total",
+    header: "Amount",
+    cell: ({ row }) => (
+      <FormatIndianCurrency amount={Number(row.original.total)} />
+    ),
   },
   {
     accessorKey: "status",
     header: "Status",
-  },
-  {
-    accessorKey: "dueDate",
-    header: "Due Date",
-  },
-  {
-    accessorKey: "amount",
-    header: "Amount",
-    cell: ({ row }) => <FormatIndianCurrency amount={row.original.amount as number} />,
-  },
-  {
-    accessorKey: "balanceDue",
-    header: "Balance Due",
-    cell: ({ row }) => <FormatIndianCurrency amount={row.original.balanceDue as number} />,
+    // cell: ({ row }) => <FormatIndianCurrency amount={row.original.balanceDue as number} />,
   },
   {
     id: "actions",

@@ -71,6 +71,7 @@ export const quotationSchema = z.object({
   shipping_charges: z.number().nonnegative().optional(),
   total: z.number({ message: "The total field is required." }).nonnegative(),
 });
+
 export type QuotationFieldsType = z.infer<typeof quotationSchema>;
 
 export const quotationFormDataTypeSchema = quotationSchema.extend({

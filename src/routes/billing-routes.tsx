@@ -28,7 +28,7 @@ import PurchaseReceive from "@/pages/billing/purchase-receive";
 import { AddPurchaseReceiveForm } from "@/pages/billing/purchase-receive/components/add-purchase-recieve-form";
 // import Customers from "@/pages/billing/customer";
 import Invoice from "@/pages/billing/invoices";
-import { AddInvoiceForm } from "@/pages/billing/invoices/components/add-quotes-form";
+
 import SalesReceipt from "@/pages/billing/sales-receipts";
 import { AddSalesReceiptForm } from "@/pages/billing/sales-receipts/components/add-sales-receipts-form";
 import PaymentsReceived from "@/pages/billing/payments-received";
@@ -73,6 +73,8 @@ import ExpensesCategory from "@/pages/billing/expenses-category";
 import CustomerAddForm from "@/pages/billing/customers/add-customer";
 import InvoiceUI from "@/pages/billing/invoiceUI";
 import QuotationDetailsUI from "@/pages/billing/quotation-details-ui";
+import AddInvoiceForm from "@/pages/billing/invoices/components/add-invoice-form";
+import EditInvoiceForm from "@/pages/billing/invoices/components/edit-invoice-form";
 import PurchaseOrder from "@/pages/billing/purchase-order";
 import AddPurchaseOrderForm from "@/pages/billing/purchase-order/components/add-purchase-order";
 import EditPurchaseOrder from "@/pages/billing/purchase-order/components/edit-quotes-form";
@@ -316,6 +318,11 @@ const billingRoutes = {
         {
           path: "add",
           element: withFallback(<AddInvoiceForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<EditInvoiceForm />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],

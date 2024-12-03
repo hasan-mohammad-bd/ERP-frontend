@@ -8,27 +8,31 @@ import {
 } from "@/components/ui/tooltip";
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
-import { EntryRow } from "@/lib/validators/accounts";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { useRemoveEntryMutation } from "@/store/services/accounts/api/entries";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
+import { InvoicesRow } from "@/lib/validators/billing/invoices";
+import { useRemoveSalesInvoicesMutation } from "@/store/services/billing/api/invoices";
 
 interface CellActionProps {
-  rowData: EntryRow;
+  rowData: InvoicesRow;
 }
 
 export function CellAction({ rowData }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
 
-  const [removeEntry, { isLoading: deleteLoading }] = useRemoveEntryMutation();
+  const [removeInvoices, { isLoading: deleteLoading }] =
+    useRemoveSalesInvoicesMutation();
   const navigation = useNavigate();
 
-  const handleDepartmentDelete = async (id: number) => {
+  const handleInvoiceDelete = async (id: number) => {
     try {
-      await removeEntry(id);
-      toast.success("Opening Balance deleted successfully");
+      await removeInvoices(id).unwrap();
+      toast.success("Item deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
+      handleErrors(error as ErrorResponse);
       console.log(error);
     }
   };
@@ -42,7 +46,7 @@ export function CellAction({ rowData }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-              onClick = {() => navigation(`/billing/purchase-orders/edit/${rowData.id}`)}
+              onClick={() => navigation(`/billing/invoices/edit/${rowData.id}`)}
 
               // onClick={() => toggleModal()}
             >
@@ -78,14 +82,12 @@ export function CellAction({ rowData }: CellActionProps) {
       <AlertModal
         title="Are you sure?"
         description="This action cannot be undone."
-        name={rowData.entry_number}
+        name={"This Invoice"}
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
-        onConfirm={() => handleDepartmentDelete(rowData.id)}
+        onConfirm={() => handleInvoiceDelete(rowData.id)}
         loading={deleteLoading}
       />
-
-
     </div>
   );
 }
