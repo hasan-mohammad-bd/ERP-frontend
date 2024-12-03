@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import {} from "@/lib/validators/accounts";
 import { Loading } from "@/components/common/loading";
 
 import {
@@ -28,7 +27,6 @@ import {
   useGetRoleByIdQuery,
   useUpdateRoleMutation,
 } from "@/store/services/erp-main/api/user-role";
-import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
 import { OrganizationDropdownColumn } from "@/lib/validators";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -38,6 +36,7 @@ import PermissionItems from "./PermissionItems";
 import { Card } from "@/components/ui/card";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
+import { useGetOrganizationsQuery } from "@/store/services/erp-main/api/organization";
 
 // import { Switch } from "@/components/ui/switch";
 
@@ -46,10 +45,12 @@ export function AddUserRoleForm() {
   const [createRole, { isLoading }] = useCreateRoleMutation();
   const { data: permissionsData } = useGetPermissionQuery();
   const [updateRole, { isLoading: updateLoading }] = useUpdateRoleMutation();
+
   const { data: organizations, isLoading: organizationLoading } =
-    useGetOrganizationForDropDownQuery();
+    useGetOrganizationsQuery(`page=1&per_page=1000`);
+
   const organizationData = organizations?.data || [];
-  const { data: getRoleById } = useGetRoleByIdQuery(`${id}`);
+  const { data: getRoleById } = useGetRoleByIdQuery(`${id}`, {skip: !id});
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
   const navigate = useNavigate();
 
@@ -89,7 +90,6 @@ export function AddUserRoleForm() {
         toast.success("Contact updated successfully");
         // modalClose();
         navigate("/web/role");
-        
       } else {
         await createRole(updatedData).unwrap();
         toast.success("Contact created successfully");
@@ -110,8 +110,9 @@ export function AddUserRoleForm() {
         </div>
       ) : (
         <Card className="w-1/2 mx-auto p-3">
-          <h1 className="text-xl font-bold mb-5">{previousData ? "Edit" : "Add"} User Role</h1>
-          {" "}
+          <h1 className="text-xl font-bold mb-5">
+            {previousData ? "Edit" : "Add"} User Role
+          </h1>{" "}
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
