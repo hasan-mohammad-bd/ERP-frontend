@@ -549,7 +549,7 @@ const billingRoutes = {
     },
 
     {
-      path: "invoice-ui",
+      path: "invoice-ui/:id",
       element: withFallback(<InvoiceUI />),
       errorElement: withFallback(<ErrorPage />),
     },

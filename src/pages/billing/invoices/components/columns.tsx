@@ -2,6 +2,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { FormatIndianCurrency } from "@/utils/indian-formate";
+import { renderStatus } from "@/lib/render-status";
+import { Link } from "react-router-dom";
 
 export const invoiceColumns: ColumnDef<any>[] = [
   {
@@ -35,6 +37,14 @@ export const invoiceColumns: ColumnDef<any>[] = [
   {
     accessorKey: "invoice_number",
     header: "Invoice Number",
+    cell: ({ row }) => (
+      <Link
+        to={`/billing/invoice-ui/${row.original.id}`}
+        className="text-blue-600 hover:underline"
+      >
+        {row.original.invoice_number}
+      </Link>
+    ),
   },
   {
     accessorKey: "subject",
@@ -58,7 +68,7 @@ export const invoiceColumns: ColumnDef<any>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    // cell: ({ row }) => <FormatIndianCurrency amount={row.original.balanceDue as number} />,
+    cell: ({ row }) => renderStatus(row.original?.status),
   },
   {
     id: "actions",
