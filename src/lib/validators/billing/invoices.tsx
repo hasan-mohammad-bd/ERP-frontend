@@ -1,9 +1,10 @@
 import { z } from "zod";
-import { EmployeeColumn } from "@/lib/validators";
+import { EmployeeColumn, OrganizationColumn } from "@/lib/validators";
 import { UnitRow } from "./unit";
 import { CustomerColumn } from "./customer";
 import { PurchaseOrderRow } from "./purchase-order";
 import { PaymentTermRow } from "./payment-terms";
+import { UsersRow } from "../web/users";
 
 // Define types for your quotation row
 export type InvoicesRow = {
@@ -25,10 +26,11 @@ export type InvoicesRow = {
   note: string;
   terms_conditions: string;
   status: number;
-  sales_person: EmployeeColumn;
+  sales_person: UsersRow;
   contact: CustomerColumn;
   sales_order: PurchaseOrderRow;
   payment_term: PaymentTermRow;
+  organization: OrganizationColumn;
   details: {
     id: number;
     qty: number;

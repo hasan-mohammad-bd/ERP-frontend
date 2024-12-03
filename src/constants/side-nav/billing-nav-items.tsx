@@ -443,20 +443,6 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["hrm"],
       },
-      {
-        title: "Invoice UI",
-        icon: Settings,
-        href: "invoice-ui",
-        color: "text-sky-500",
-        permissions: ["hrm"],
-      },
-      {
-        title: "Quotation Details UI",
-        icon: Settings,
-        href: "quotation-qetails-ui",
-        color: "text-sky-500",
-        permissions: ["hrm"],
-      },
     ],
   },
 
