@@ -38,6 +38,9 @@ export default function EmployeeProfile() {
   } = previousData || {};
   return (
     <div className="container mx-auto py-6">
+            <div className="flex justify-end">
+      <Button className="mb-4 " onClick={() => navigate("/hrm/employees-list")}>Back</Button>
+      </div>
       <Card className="w-full mx-auto">
         <CardContent className="p-6">
           <div className="flex flex-col md:flex-row gap-6">
@@ -295,9 +298,7 @@ export default function EmployeeProfile() {
       {previousData?.employee_nominee && (
         <NomineeInformation nomineeData={previousData?.employee_nominee} />
       )}
-      <div className="flex justify-end">
-      <Button className="mt-4 " onClick={() => navigate("/hrm/employees-list")}>Employee List</Button>
-      </div>
+
      
     </div>
   );
