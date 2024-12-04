@@ -555,7 +555,7 @@ const billingRoutes = {
     },
 
     {
-      path: "quotation-qetails-ui",
+      path: "quotation-details-ui/:id",
       element: withFallback(<QuotationDetailsUI />),
       errorElement: withFallback(<ErrorPage />),
     },

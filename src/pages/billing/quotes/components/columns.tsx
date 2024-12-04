@@ -3,6 +3,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { FormatIndianCurrency } from "@/utils/indian-formate";
 import { QuotationRow } from "@/lib/validators/billing/quotation";
+import { Link } from "react-router-dom";
 
 export const quotesColumns: ColumnDef<QuotationRow>[] = [
   {
@@ -35,9 +36,16 @@ export const quotesColumns: ColumnDef<QuotationRow>[] = [
     cell: ({ row }) => <>{row.original.date}</>,
   },
   {
-    accessorKey: "invoice_number",
+    accessorKey: "quote_number",
     header: "Quote Number",
-    cell: ({ row }) => <>{row.original.invoice_number}</>,
+    cell: ({ row }) => (
+      <Link
+        to={`/billing/quotation-details-ui/${row.original.id}`}
+        className="text-blue-600 hover:underline"
+      >
+        {row.original.invoice_number}
+      </Link>
+    ),
   },
   {
     accessorKey: "reference",
