@@ -7,13 +7,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { Pencil, Trash2, CircleDollarSign } from "lucide-react";
+import { Pencil, Trash2, CircleDollarSign, ZoomIn } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { EmployeeColumn } from "@/lib/validators";
 import { toast } from "sonner";
 // import { EmployeeForm } from "./employee-form";
 import { Modal } from "@/components/common/modal";
-import ProductDetails from "./productDetails";
+import ProductDetails from "./employee-profile";
 import { useRemoveEmployeeMutation } from "@/store/services/hrm/api/employee-list";
 import { useNavigate } from "react-router-dom";
 import handleErrors from "@/lib/handle-errors";
@@ -80,6 +80,23 @@ export function CellAction({ data }: CellActionProps) {
           </TooltipTrigger>
           <TooltipContent>
             <p>Update Employee</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:bg-secondary"
+              onClick={() => navigate(`/hrm/employees-list/show/${data.id}`)}
+            >
+              <ZoomIn className="h-4 w-4 text-foreground" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Employee Details</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

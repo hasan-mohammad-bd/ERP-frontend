@@ -56,6 +56,7 @@ import RoleAccessOutlet from "@/lib/access-control/role-access-outlet";
 import HRM_PendingApprovals from "@/pages/hrm/approvals/hrm-pending-approvals";
 import HRM_ApprovedApprovals from "@/pages/hrm/approvals/hrm-approved-approvals";
 import HRM_RejectedApprovals from "@/pages/hrm/approvals/hrm-rejected-approvals";
+import EmployeeProfile from "@/pages/hrm/employee/employee-list/components/employee-profile";
 
 const hrmRoutes = {
   path: "hrm/",
@@ -103,6 +104,15 @@ const hrmRoutes = {
           element: withFallback(
             <RoleAccess roles={["employees.edit"]} showUnauthorizedPage={true}>
               <EmployeeForm />
+            </RoleAccess>
+          ),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "show/:id",
+          element: withFallback(
+            <RoleAccess roles={["employees.show"]} showUnauthorizedPage={true}>
+              <EmployeeProfile />
             </RoleAccess>
           ),
           errorElement: withFallback(<ErrorPage />),
