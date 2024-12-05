@@ -71,13 +71,13 @@ import AttributeCategory from "@/pages/billing/attribute-category";
 import Attributes from "@/pages/billing/attributes";
 import ExpensesCategory from "@/pages/billing/expenses-category";
 import CustomerAddForm from "@/pages/billing/customers/add-customer";
-import InvoiceUI from "@/pages/billing/invoiceUI";
 import QuotationDetailsUI from "@/pages/billing/quotation-details-ui";
 import AddInvoiceForm from "@/pages/billing/invoices/components/add-invoice-form";
 import EditInvoiceForm from "@/pages/billing/invoices/components/edit-invoice-form";
 import PurchaseOrder from "@/pages/billing/purchase-order";
 import AddPurchaseOrderForm from "@/pages/billing/purchase-order/components/add-purchase-order";
 import EditPurchaseOrder from "@/pages/billing/purchase-order/components/edit-quotes-form";
+import InvoiceUI from "@/pages/billing/invoices/components/invoiceUI";
 
 const billingRoutes = {
   path: "billing/",
@@ -325,6 +325,11 @@ const billingRoutes = {
           element: withFallback(<EditInvoiceForm />),
           errorElement: withFallback(<ErrorPage />),
         },
+        {
+          path: "view/:id",
+          element: withFallback(<InvoiceUI />),
+          errorElement: withFallback(<ErrorPage />),
+        },
       ],
     },
     {
@@ -549,13 +554,7 @@ const billingRoutes = {
     },
 
     {
-      path: "invoice-ui/:id",
-      element: withFallback(<InvoiceUI />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-
-    {
-      path: "quotation-details-ui/:id",
+      path: "quotation-qetails-ui",
       element: withFallback(<QuotationDetailsUI />),
       errorElement: withFallback(<ErrorPage />),
     },

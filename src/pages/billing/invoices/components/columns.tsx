@@ -39,7 +39,7 @@ export const invoiceColumns: ColumnDef<any>[] = [
     header: "Invoice Number",
     cell: ({ row }) => (
       <Link
-        to={`/billing/invoice-ui/${row.original.id}`}
+        to={`/billing/invoices/view/${row.original.id}`}
         className="text-blue-600 hover:underline"
       >
         {row.original.invoice_number}
