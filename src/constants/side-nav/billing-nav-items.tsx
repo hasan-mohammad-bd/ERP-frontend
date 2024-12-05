@@ -259,6 +259,14 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["hrm"],
       },
+      {
+        title: "Warehouse",
+        icon: PlayIcon,
+        color: "text-sky-500",
+        href: "/billing/warehouse",
+        permissions: ["hrm"],
+      },
+
     ],
   },
 

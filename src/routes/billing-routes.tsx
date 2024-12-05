@@ -78,6 +78,7 @@ import PurchaseOrder from "@/pages/billing/purchase-order";
 import AddPurchaseOrderForm from "@/pages/billing/purchase-order/components/add-purchase-order";
 import EditPurchaseOrder from "@/pages/billing/purchase-order/components/edit-quotes-form";
 import InvoiceUI from "@/pages/billing/invoices/components/invoiceUI";
+import WareHouse from "@/pages/billing/warehouse";
 
 const billingRoutes = {
   path: "billing/",
@@ -556,6 +557,11 @@ const billingRoutes = {
     {
       path: "quotation-qetails-ui",
       element: withFallback(<QuotationDetailsUI />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "warehouse",
+      element: withFallback(<WareHouse />),
       errorElement: withFallback(<ErrorPage />),
     },
     {
