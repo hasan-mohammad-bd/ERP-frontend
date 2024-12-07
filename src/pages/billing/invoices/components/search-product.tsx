@@ -30,7 +30,11 @@ interface SearchProductProps {
 }
 
 // Add `unit` to the ExtendedItemRow interface
-export interface ExtendedItemRow extends SearchBarcodeItem {
+export interface ExtendedItemRow
+  extends Omit<
+    SearchBarcodeItem,
+    "purchase_account_tax" | "sale_account_tax" | "inventory_account_tax"
+  > {
   quantity: number;
   subTotal: number;
   total: number;

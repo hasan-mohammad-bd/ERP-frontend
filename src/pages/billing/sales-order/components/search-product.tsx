@@ -22,6 +22,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useGetTaxesQuery } from "@/store/services/accounts/api/tax";
+import { TaxRow } from "@/lib/validators/accounts/tax";
 
 interface SearchProductProps {
   selectedProducts: ExtendedItemRow[];
@@ -30,13 +32,14 @@ interface SearchProductProps {
 }
 
 // Add `unit` to the ExtendedItemRow interface
-export interface ExtendedItemRow extends SearchBarcodeItem {
+export interface ExtendedItemRow extends Omit<SearchBarcodeItem, "purchase_account_tax" | "inventory_account_tax"> {
   quantity: number;
   subTotal: number;
   total: number;
   finalPrice: number;
   note?: string;
   unit: SearchBarcodeItemUnit; // New field to store the selected unit
+  tax: TaxRow;
 }
 
 export default function SearchProduct({
@@ -52,7 +55,11 @@ export default function SearchProduct({
       skip: !searchTerm,
     }
   );
+
+  const { data: taxes } = useGetTaxesQuery(`per_page=1000&page=1`);
+
   const itemsData = data?.data || [];
+  const taxData = taxes?.data || [];
 
   const selectProduct = (product: ExtendedItemRow) => {
     const alreadySelected = selectedProducts.find(
@@ -62,7 +69,7 @@ export default function SearchProduct({
       const selectedUnit = product.primary_unit; // Default to primary unit
       const quantity = 1;
       const subTotal = selectedUnit.selling_price * quantity;
-      const total = subTotal * (1 - selectedUnit.discount / 100);
+      const total = subTotal;
       const finalPrice = total;
 
       setSelectedProducts((prev) => [
@@ -98,8 +105,7 @@ export default function SearchProduct({
                 product.unit.selling_price *
                 (increment
                   ? product.quantity + 1
-                  : Math.max(1, product.quantity - 1)) *
-                (1 - product.unit.discount / 100),
+                  : Math.max(1, product.quantity - 1)),
             }
           : product
       )
@@ -114,10 +120,7 @@ export default function SearchProduct({
               ...product,
               unit: newUnit, // Update the unit
               subTotal: newUnit.selling_price * product.quantity,
-              total:
-                newUnit.selling_price *
-                product.quantity *
-                (1 - newUnit.discount / 100),
+              total: newUnit.selling_price * product.quantity,
             }
           : product
       )
@@ -161,6 +164,15 @@ export default function SearchProduct({
                       finalPrice: item.primary_unit.selling_price,
                       unit: item.primary_unit, // Default to primary unit,
                       note: "",
+                      tax: taxData.find(
+                        (tax) => tax.id === item.sale_account_tax.id
+                      ) ?? {
+                        name: "",
+                        amount: "",
+                        description: "",
+                        status: 0,
+                        id: 0,
+                      },
                     })
                   }
                 >
@@ -180,7 +192,7 @@ export default function SearchProduct({
               "Unit",
               "Price",
               "P.O. Quantity",
-              "Discount",
+              "Tax",
               "Total",
               "Note",
               "Action",
@@ -262,10 +274,7 @@ export default function SearchProduct({
                                       selling_price: newPrice || 0,
                                     }, // Update price, fallback to 0 internally
                                     subTotal: (newPrice || 0) * p.quantity, // Recalculate subTotal
-                                    total:
-                                      (newPrice || 0) *
-                                      p.quantity *
-                                      (1 - (p.unit.discount || 0) / 100), // Recalculate total
+                                    total: (newPrice || 0) * p.quantity, // Recalculate total without discount
                                   }
                                 : p
                             )
@@ -295,36 +304,46 @@ export default function SearchProduct({
                       </Button>
                     </div>
                   </TableCell>
-                  <TableCell>
-                    <div className="w-32">
-                      <Input
-                        id="discount"
-                        type="number"
-                        value={product.unit.discount || ""} // Leave empty if no value
-                        onChange={(e) => {
-                          // Parse the input value
-                          const inputValue = e.target.value;
-                          const newDiscount =
-                            inputValue === ""
-                              ? 0
-                              : Math.min(parseFloat(inputValue), 100); // Ensure discount <= 100
 
+                  <TableCell>
+                    <div className="w-64">
+                      <Select
+                        onValueChange={(value) => {
                           setSelectedProducts((products) =>
                             products.map((p) =>
                               p.id === product.id
                                 ? {
                                     ...p,
-                                    unit: { ...p.unit, discount: newDiscount }, // Update discount
-                                    total:
-                                      (p.unit.selling_price || 0) *
-                                      p.quantity *
-                                      (1 - newDiscount / 100), // Recalculate total
+                                    tax: taxData.find(
+                                      (tax: TaxRow) =>
+                                        tax.id.toString() === value
+                                    ) ?? {
+                                      name: "",
+                                      amount: "",
+                                      description: "",
+                                      status: 0,
+                                      id: 0,
+                                    },
                                   }
                                 : p
                             )
                           );
                         }}
-                      />
+                        defaultValue={
+                          product.sale_account_tax.id.toString() || undefined
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Tax" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {taxData?.map((tax: TaxRow) => (
+                            <SelectItem key={tax.id} value={String(tax.id)}>
+                              {tax.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </TableCell>
 

@@ -1,3 +1,5 @@
+import { TaxRow } from "../accounts/tax";
+
 // Type for the unit object (primary and secondary unit share the same structure)
 export interface SearchBarcodeItemUnit {
   id: number;
@@ -17,6 +19,9 @@ export interface SearchBarcodeItem {
   barcode_attribute: string;
   primary_unit: SearchBarcodeItemUnit;
   secondary_unit: SearchBarcodeItemUnit;
+  sale_account_tax: TaxRow;
+  purchase_account_tax: TaxRow;
+  inventory_account_tax: TaxRow;
 }
 
 export interface UpdateSearchBarcodeItem

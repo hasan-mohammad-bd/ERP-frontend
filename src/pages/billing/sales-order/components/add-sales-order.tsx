@@ -43,15 +43,27 @@ import { UsersRow } from "@/lib/validators/web/users";
 import { ProjectRow } from "@/lib/validators/accounts/projects";
 import { useGetPaymentTermsQuery } from "@/store/services/billing/api/payment-terms";
 import { PaymentTermRow } from "@/lib/validators/billing/payment-terms";
-import { useGetQuotationsQuery } from "@/store/services/billing/api/quotations";
-import { QuotationRow } from "@/lib/validators/billing/quotation";
+// import { useGetQuotationsQuery } from "@/store/services/billing/api/quotations";
+// import { QuotationRow } from "@/lib/validators/billing/quotation";
 import {
   salesOrderSchema,
   SalesOrderFormValues,
 } from "@/lib/validators/billing/sales-order";
 import { useCreateSalesOrderMutation } from "@/store/services/billing/api/sales-order";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-export default function AddPurchaseOrderForm() {
+const taxTypeData = [
+  { id: "inclusive", name: "Inclusive" },
+  { id: "exclusive", name: "Exclusive" },
+];
+
+export default function AddSaleOrderForm() {
   const navigate = useNavigate();
   const [selectedProducts, setSelectedProducts] = useState<ExtendedItemRow[]>(
     []
@@ -80,10 +92,10 @@ export default function AddPurchaseOrderForm() {
     useGetUsersQuery(`per_page=1000&page=1`);
   const { data: paymentTermsData, isLoading: paymentTermLoading } =
     useGetPaymentTermsQuery(`per_page=1000&page=1`);
-  const { data: quotationData, isLoading: quotationLoading } =
-    useGetQuotationsQuery(`per_page=1000&page=1`);
+  // const { data: quotationData, isLoading: quotationLoading } =
+  //   useGetQuotationsQuery(`per_page=1000&page=1`);
 
-  const quotations = quotationData?.data || [];
+  // const quotations = quotationData?.data || [];
 
   const customers = customerData?.data || [];
   const projects = projectsData?.data || [];
@@ -97,10 +109,21 @@ export default function AddPurchaseOrderForm() {
     resolver: zodResolver(salesOrderSchema),
     defaultValues: {
       total: 0,
+      tax_type: taxTypeData[1].id.toString(),
     },
   });
 
-  // console.log(selectedProducts);
+  // useEffect(() => {
+  //   if (selectedProducts.length > 0) {
+  //     const taxAmount = selectedProducts.reduce(
+  //       (acc, product) => acc + (Number(product.tax?.amount) || 0),
+  //       0
+  //     );
+  //     form.setValue("tax", taxAmount);
+  //   }
+  // }, [selectedProducts, form]);
+
+  console.log(selectedProducts);
   async function onSubmit(data: SalesOrderFormValues) {
     if (selectedProducts.length === 0) {
       return toast.error("Please select at least one product");
@@ -124,6 +147,7 @@ export default function AddPurchaseOrderForm() {
             qty: product.quantity,
             discount: product.unit.discount,
             note: product.note || "",
+            tax_id: product.tax.id,
           };
         }),
       }).unwrap();
@@ -133,7 +157,7 @@ export default function AddPurchaseOrderForm() {
       handleErrors(error as ErrorResponse);
     }
   }
-
+  console.log(form.formState.errors);
   return (
     <>
       <div>
@@ -359,7 +383,7 @@ export default function AddPurchaseOrderForm() {
                     className="w-full"
                   />
 
-                  <FormSearchSelect<QuotationRow>
+                  {/* <FormSearchSelect<QuotationRow>
                     loading={quotationLoading}
                     data={quotations}
                     displayField="invoice_number"
@@ -369,7 +393,37 @@ export default function AddPurchaseOrderForm() {
                     placeholder="Select Quotation"
                     title="Quotation"
                     className="w-full"
-                  />
+                  /> */}
+
+                  <div className="w-full">
+                    <FormField
+                      control={form.control}
+                      name="tax_type"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Tax Type</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={String(taxTypeData?.[1]?.id)}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select Tax Type" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {taxTypeData?.map((tax: any) => (
+                                <SelectItem key={tax.id} value={String(tax.id)}>
+                                  {tax.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
                   <FormField
                     control={form.control}
@@ -430,10 +484,12 @@ export default function AddPurchaseOrderForm() {
               <Calculation
                 form={form}
                 subTotal={Number(
-                  selectedProducts
-                    .reduce((acc, product) => acc + product.total, 0)
-                    .toFixed(2)
+                  selectedProducts.reduce(
+                    (acc, product) => acc + product.total,
+                    0
+                  )
                 )}
+                selectedProducts={selectedProducts}
               />
             </div>
             <div className="text-right">

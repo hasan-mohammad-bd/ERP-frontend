@@ -1,4 +1,7 @@
-import { PurchaseOrderRow } from "@/lib/validators/billing/purchase-order";
+import {
+  ExtendedPurchaseOrderRow,
+  PurchaseOrderRow,
+} from "@/lib/validators/billing/purchase-order";
 import { inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
 import { SalesOrderFormDataType } from "@/lib/validators/billing/sales-order";
@@ -6,13 +9,13 @@ import { SalesOrderFormDataType } from "@/lib/validators/billing/sales-order";
 const salesOrderApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
     getSalesOrders: build.query<
-      { data: PurchaseOrderRow[]; meta: PaginationInfo },
+      { data: ExtendedPurchaseOrderRow[]; meta: PaginationInfo },
       string
     >({
       query: (params) => `sales-orders?${params}`,
       providesTags: ["sales-orders"],
     }),
-    getSalesOrderById: build.query<{ data: PurchaseOrderRow }, number>({
+    getSalesOrderById: build.query<{ data: ExtendedPurchaseOrderRow }, number>({
       query: (salesOrderId) => `sales-orders/${salesOrderId}`,
       providesTags: ["sales-orders"],
     }),

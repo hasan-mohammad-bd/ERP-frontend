@@ -1,11 +1,10 @@
-import {z} from "zod";
-
+import { z } from "zod";
 
 export const purchaseOrderSchema = z.object({
   contact_id: z.string({ required_error: "The contact id field is required." }),
   subject: z.string().optional(),
   reference: z.string().optional(),
-  date: z.string(), 
+  date: z.string(),
   delivery_date: z.string(),
   due_date: z.string(),
   discount: z.number().nonnegative().optional(),
@@ -14,7 +13,7 @@ export const purchaseOrderSchema = z.object({
   note: z.string().optional(),
   terms_conditions: z.string().optional(),
   payment_term_id: z.coerce.number().optional(),
-/*   details: z.array(
+  /*   details: z.array(
     z.object({
       item_barcode_id: z.coerce.number(),
       unit_id: z.coerce.number(),
@@ -28,10 +27,7 @@ export const purchaseOrderSchema = z.object({
   ), */
 });
 
-
-
 export type PurchaseOrderFormValues = z.infer<typeof purchaseOrderSchema>;
-
 
 export const purchaseOrderFormDataTypeSchema = purchaseOrderSchema.extend({
   details: z.array(
@@ -57,8 +53,9 @@ export const purchaseOrderFormDataTypeSchema = purchaseOrderSchema.extend({
   ),
 });
 
-export type PurchaseOrderFormDataType = z.infer<typeof purchaseOrderFormDataTypeSchema>;
-
+export type PurchaseOrderFormDataType = z.infer<
+  typeof purchaseOrderFormDataTypeSchema
+>;
 
 const ContactSchema = z.object({
   id: z.coerce.number(),
@@ -109,6 +106,7 @@ const purchaseOrderDetails = z.array(
     note: z.string(),
     total: z.string(),
     created_at: z.string(),
+    sale_account_tax_id: z.number().optional(),
   })
 );
 
@@ -133,5 +131,8 @@ export const purchaseOrderRow = z.object({
   details: purchaseOrderDetails,
 });
 
-export type PurchaseOrderRow  = z.infer<typeof purchaseOrderRow>;
+export type PurchaseOrderRow = z.infer<typeof purchaseOrderRow>;
 
+export type ExtendedPurchaseOrderRow = z.infer<typeof purchaseOrderRow> & {
+  tax: number; // Add the new `tax` field
+};

@@ -108,13 +108,13 @@ const billingNavItems: NavItem[] = [
         permissions: ["hrm"],
       },
 
-      {
-        title: "Quotes",
-        icon: CalendarCheck2,
-        color: "text-sky-500",
-        href: "/billing/quotes",
-        permissions: ["hrm"],
-      },
+      // {
+      //   title: "Quotes",
+      //   icon: CalendarCheck2,
+      //   color: "text-sky-500",
+      //   href: "/billing/quotes",
+      //   permissions: ["hrm"],
+      // },
       {
         title: "Invoices",
         icon: Clock,

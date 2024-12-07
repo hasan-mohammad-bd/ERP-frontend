@@ -56,6 +56,7 @@ import { UsersRow } from "@/lib/validators/web/users";
 import { ProjectRow } from "@/lib/validators/accounts/projects";
 import { PaymentTermRow } from "@/lib/validators/billing/payment-terms";
 import { QuotationRow } from "@/lib/validators/billing/quotation";
+import { useGetTaxesQuery } from "@/store/services/accounts/api/tax";
 
 export default function EditSalesOrder() {
   const params = useParams();
@@ -90,6 +91,10 @@ export default function EditSalesOrder() {
     useGetPaymentTermsQuery(`per_page=1000&page=1`);
   const { data: quotationData, isLoading: quotationLoading } =
     useGetQuotationsQuery(`per_page=1000&page=1`);
+
+  const { data: taxes } = useGetTaxesQuery(`per_page=1000&page=1`);
+
+  const taxData = taxes?.data || [];
 
   const quotations = quotationData?.data || [];
 
@@ -133,6 +138,29 @@ export default function EditSalesOrder() {
           barcode_attribute: detail.item_barcode.barcode_attribute,
           name: detail.item.name,
           note: detail.note || "",
+          // sale_account_tax: {
+          //   id: detail.sale_account_tax_id ? detail.sale_account_tax_id : 0,
+          //   name: "",
+          //   amount: "10",
+          //   description: "",
+          //   status: 0,
+          // },
+          sale_account_tax: taxData.find(
+            (tax) => tax.id === detail.sale_account_tax_id
+          ) ?? {
+            name: "",
+            amount: "",
+            description: "",
+            status: 0,
+            id: 0,
+          },
+          tax: taxData.find((tax) => tax.id === detail.sale_account_tax_id) ?? {
+            name: "",
+            amount: "",
+            description: "",
+            status: 0,
+            id: 0,
+          },
           secondary_unit: {
             wholesale_price: Number(detail.item_barcode.wholesale_price),
             after_discount: Number(detail.item_barcode.after_discount),
@@ -146,7 +174,6 @@ export default function EditSalesOrder() {
           quantity: Number(detail.qty),
           subTotal: Number(detail.item_barcode.after_discount),
           total: Number(detail.total),
-
           primary_unit: {
             wholesale_price: Number(detail.item_barcode.wholesale_price),
             after_discount: Number(detail.item_barcode.after_discount),
@@ -192,6 +219,7 @@ export default function EditSalesOrder() {
               qty: product.quantity,
               discount: product.unit.discount,
               note: product.note || "",
+              tax_id: product.tax.id,
             };
           }),
         },
@@ -506,6 +534,7 @@ export default function EditSalesOrder() {
                     .reduce((acc, product) => acc + product.total, 0)
                     .toFixed(2)
                 )}
+                selectedProducts={selectedProducts}
               />
             </div>
             <div className="text-right">

@@ -9,6 +9,9 @@ export const salesOrderSchema = z.object({
   due_date: z.string().optional(),
   discount: z.number().nonnegative().optional(),
   shipping_charges: z.number().nonnegative().optional(),
+  sub_total: z
+    .number({ required_error: "The Sub total field is required." })
+    .nonnegative(),
   total: z
     .number({ required_error: "The total field is required." })
     .nonnegative(),
@@ -18,6 +21,8 @@ export const salesOrderSchema = z.object({
   quotation_id: z.string().optional().nullable(),
   project_id: z.string().optional().nullable(),
   sales_person_id: z.string().optional().nullable(),
+  tax_type: z.string({ required_error: "The tax type field is required." }),
+  tax: z.number({ required_error: "Tax is required." }),
 });
 
 export type SalesOrderFormValues = z.infer<typeof salesOrderSchema>;
@@ -42,6 +47,7 @@ export const salesOrderFormDataTypeSchema = salesOrderSchema.extend({
         .number({ required_error: "The total is required." })
         .nonnegative(),
       note: z.string().optional(),
+      tax_id: z.number(),
     })
   ),
 });

@@ -1,25 +1,54 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UseFormReturn } from "react-hook-form";
-// import { QuotationFieldsType } from "@/lib/validators/billing/quotation";
 import { SalesOrderFormValues } from "@/lib/validators/billing/sales-order";
+import { ExtendedItemRow } from "./search-product";
 
 interface CalculationProps {
   form: UseFormReturn<SalesOrderFormValues>;
   subTotal: number;
+  selectedProducts: ExtendedItemRow[];
 }
 
-export default function Calculation({ form, subTotal }: CalculationProps) {
+export default function Calculation({
+  form,
+  subTotal,
+  selectedProducts,
+}: CalculationProps) {
   const { watch, setValue } = form;
 
-  // Watching form fields
   const discount = watch("discount");
-  const shippingCharges = watch("shipping_charges"); // Watch shipping charges field
+  const tax_type = watch("tax_type");
 
-  // Calculating totals
-  const discountedAmount = (subTotal * (discount ?? 0)) / 100;
-  const total = subTotal - discountedAmount + (shippingCharges ?? 0); // Include shipping charges
+  let discountedAmount = 0;
+  let totalTaxAmount = 0;
+
+  if (selectedProducts && selectedProducts.length > 0) {
+    selectedProducts?.forEach((product) => {
+      const productDiscount = (product.total * (discount ?? 0)) / 100;
+      const discountedPrice = product.total - productDiscount;
+      const productTax =
+        (discountedPrice * (Number(product.tax?.amount) || 0)) / 100;
+
+      discountedAmount += productDiscount;
+      totalTaxAmount += productTax;
+    });
+  }
+
+  // Calculating the final total
+  const total = Math.round(
+    subTotal -
+      discountedAmount +
+      (tax_type === "inclusive" ? 0 : totalTaxAmount)
+  );
+  // const total =
+  //   subTotal -
+  //   discountedAmount +
+  //   (tax_type === "inclusive" ? 0 : totalTaxAmount);
+
   setValue("total", total);
+  setValue("sub_total", subTotal);
+  setValue("tax", totalTaxAmount);
 
   return (
     <div className="w-full max-w-lg p-6 border rounded-lg shadow">
@@ -46,7 +75,7 @@ export default function Calculation({ form, subTotal }: CalculationProps) {
 
                 // Allow empty string temporarily for editing
                 if (rawValue === "") {
-                  setValue("discount", undefined); // Set null to represent an empty state
+                  setValue("discount", undefined); // Set undefined for empty state
                   return;
                 }
 
@@ -63,48 +92,15 @@ export default function Calculation({ form, subTotal }: CalculationProps) {
                 }
               }}
             />
-
             <span>%</span>
           </div>
-          <span>
-            {discount ? ((subTotal * (discount ?? 0)) / 100).toFixed(2) : 0}
-          </span>
+          <span>{discountedAmount.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between items-center">
-          <Label htmlFor="shipping_charges" className="font-medium">
-            Shipping Charges
-          </Label>
-          <div className="flex items-center">
-            <Input
-              id="shipping_charges"
-              type="number"
-              className="w-32 mr-2"
-              disabled={!subTotal}
-              value={
-                shippingCharges !== null && shippingCharges !== undefined
-                  ? shippingCharges
-                  : ""
-              }
-              onChange={(e) => {
-                const rawValue = e.target.value;
-
-                if (rawValue === "") {
-                  setValue("shipping_charges", undefined);
-                  return;
-                }
-
-                const value = Math.max(0, parseFloat(rawValue) || 0); // Ensure non-negative values
-                setValue("shipping_charges", value);
-              }}
-              onBlur={() => {
-                if (!shippingCharges) {
-                  setValue("shipping_charges", 0); // Default to 0
-                }
-              }}
-            />
-          </div>
-          <span>{shippingCharges ? shippingCharges.toFixed(2) : "0.00"}</span>
+        <div className="flex justify-between items-center font-semibold">
+          <span>Tax</span>
+          <span>{totalTaxAmount.toFixed(2)}</span>
         </div>
+
         <div className="flex justify-between items-center font-semibold">
           <span>Total</span>
           <span>{total ? total.toFixed(2) : 0}</span>
