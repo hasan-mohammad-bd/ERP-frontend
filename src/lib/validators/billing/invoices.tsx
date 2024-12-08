@@ -23,6 +23,8 @@ export type InvoicesRow = {
   payment_term_id: string;
   sales_order_id: string;
   total: number;
+  sub_total: number;
+  tax: number;
   note: string;
   terms_conditions: string;
   status: number;
