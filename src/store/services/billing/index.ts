@@ -35,6 +35,7 @@ export const inventoryApi = createApi({
     "purchaseOrder",
     "invoices",
     "sales-orders",
+    "sales-order",
     "warehouses"
   ],
   endpoints: () => ({}),

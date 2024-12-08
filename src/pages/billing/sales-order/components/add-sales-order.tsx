@@ -13,13 +13,9 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-
-import { useState } from "react";
-import SearchProduct, { ExtendedItemRow } from "./search-product";
-import Calculation from "./calculation";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -29,27 +25,20 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
-import { CustomerColumn } from "@/lib/validators/billing/customer";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { toast } from "sonner";
 import { useGetCustomersQuery } from "@/store/services/billing/api/customer";
-import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
-import { useGetUsersQuery } from "@/store/services/erp-main/api/users";
-import { UsersRow } from "@/lib/validators/web/users";
-import { ProjectRow } from "@/lib/validators/accounts/projects";
-import { useGetPaymentTermsQuery } from "@/store/services/billing/api/payment-terms";
-import { PaymentTermRow } from "@/lib/validators/billing/payment-terms";
-// import { useGetQuotationsQuery } from "@/store/services/billing/api/quotations";
-// import { QuotationRow } from "@/lib/validators/billing/quotation";
 import {
   salesOrderSchema,
   SalesOrderFormValues,
-} from "@/lib/validators/billing/sales-order";
-import { useCreateSalesOrderMutation } from "@/store/services/billing/api/sales-order";
+} from "@/lib/validators/billing/billing-transactions";
+import {
+  useCreateSalesOrderMutation,
+  useGetSalesOrderByIdQuery,
+  useUpdateSalesOrderMutation,
+} from "@/store/services/billing/api/sales-order";
 import {
   Select,
   SelectContent,
@@ -57,17 +46,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-const taxTypeData = [
-  { id: "inclusive", name: "Inclusive" },
-  { id: "exclusive", name: "Exclusive" },
-];
+import { TAX_TYPES } from "@/constants/billing";
+import BillingSummaryShow from "../../../../components/common/billing/billing-summary-show";
+import ProductBarcodeSearch, {
+  type BarcodeLineItemType,
+} from "@/components/common/billing/product-barcode-search";
+import { formatToTwoDecimalPlaces } from "@/utils/formate-number";
 
 export default function AddSaleOrderForm() {
   const navigate = useNavigate();
-  const [selectedProducts, setSelectedProducts] = useState<ExtendedItemRow[]>(
-    []
-  );
+  const [selectedProducts, setSelectedProducts] = useState<
+    BarcodeLineItemType[]
+  >([]);
 
   const [openDatePickers, setOpenDatePickers] = useState({
     sales_order_date: false,
@@ -86,88 +76,156 @@ export default function AddSaleOrderForm() {
 
   const { data: customerData, isLoading: isCustomerLoading } =
     useGetCustomersQuery("page=1&per_page=1000");
-  const { data: projectsData, isLoading: projectLoading } =
-    useGetProjectsQuery(`per_page=1000&page=1`);
-  const { data: EmployeeData, isLoading: employeeLoading } =
-    useGetUsersQuery(`per_page=1000&page=1`);
-  const { data: paymentTermsData, isLoading: paymentTermLoading } =
-    useGetPaymentTermsQuery(`per_page=1000&page=1`);
-  // const { data: quotationData, isLoading: quotationLoading } =
-  //   useGetQuotationsQuery(`per_page=1000&page=1`);
-
-  // const quotations = quotationData?.data || [];
 
   const customers = customerData?.data || [];
-  const projects = projectsData?.data || [];
-  const employees = EmployeeData?.data || [];
-  const paymentTerms = paymentTermsData?.data || [];
 
-  const [createSalesOrder, { isLoading: isCreating }] =
-    useCreateSalesOrderMutation();
+  const [createSalesOrder] = useCreateSalesOrderMutation();
 
   const form = useForm<SalesOrderFormValues>({
     resolver: zodResolver(salesOrderSchema),
     defaultValues: {
       total: 0,
-      tax_type: taxTypeData[1].id.toString(),
+      tax_type: TAX_TYPES[1].id.toString(),
     },
   });
 
-  // useEffect(() => {
-  //   if (selectedProducts.length > 0) {
-  //     const taxAmount = selectedProducts.reduce(
-  //       (acc, product) => acc + (Number(product.tax?.amount) || 0),
-  //       0
-  //     );
-  //     form.setValue("tax", taxAmount);
-  //   }
-  // }, [selectedProducts, form]);
+  // For update
+  const params = useParams();
+  const salesOrderId = Number(params.id);
+  const { data: salesOrderData } = useGetSalesOrderByIdQuery(salesOrderId, {
+    skip: !salesOrderId,
+  });
 
-  console.log(selectedProducts);
+  const [updateSalesOrder] = useUpdateSalesOrderMutation(); // For update
+
+  const salesOrder = salesOrderData?.data || undefined;
+  // console.log(salesOrder, "salesOrderData");
+
+  useEffect(() => {
+    if (salesOrder) {
+      const details: BarcodeLineItemType[] = salesOrder.details.map(
+        (detail) => ({
+          barcodeId: detail.item_barcode.id,
+          quantity: detail.qty,
+          price: detail.price,
+          tax: detail.tax || undefined,
+          units: [],
+          unit: detail.unit,
+          barcode: detail.item_barcode.barcode,
+          name: detail.item.name,
+          barcodeAttribute: detail.item_barcode.barcode_attribute,
+          note: detail.note,
+        })
+      );
+      setSelectedProducts(details);
+      form.reset({
+        discount: salesOrder.discount,
+        tax_type: salesOrder.tax_type,
+        total: salesOrder.total,
+        contact_id: String(salesOrder.contact.id),
+        date: salesOrder.date || "",
+        due_date: salesOrder.due_date || "",
+        delivery_date: salesOrder.delivery_date || "",
+        note: salesOrder.note || "",
+        terms_conditions: salesOrder.terms_conditions || "",
+        sub_total: salesOrder.sub_total,
+        reference: salesOrder.reference || "",
+        tax: salesOrder.tax,
+      });
+    }
+  }, [salesOrder, form]);
+  // end of update
+
+  const discount = form.watch("discount");
+  const tax_type = form.watch("tax_type");
+
+  // console.log(selectedProducts, "selectedProducts");
+
+  // Calculating business logics
+  let subTotal = 0;
+  let discountedAmount = 0;
+  let totalTaxAmount = 0;
+
+  if (selectedProducts && selectedProducts.length > 0) {
+    selectedProducts?.forEach((product) => {
+      const total = product.price * product.quantity;
+      const productDiscount = (total * (discount ?? 0)) / 100;
+      const discountedPrice = total - productDiscount;
+      const productTax =
+        (discountedPrice * (Number(product.tax?.amount) || 0)) / 100;
+
+      subTotal += total;
+      discountedAmount += productDiscount;
+      totalTaxAmount += productTax;
+    });
+  }
+
+  let grandTotal =
+    subTotal -
+    discountedAmount +
+    (tax_type === "inclusive" ? 0 : totalTaxAmount);
+
+  // Rounding off
+  subTotal = formatToTwoDecimalPlaces(subTotal);
+  discountedAmount = formatToTwoDecimalPlaces(discountedAmount);
+  totalTaxAmount = formatToTwoDecimalPlaces(totalTaxAmount);
+  grandTotal = formatToTwoDecimalPlaces(grandTotal);
+
+  // Setting the form values
+  form.setValue("sub_total", subTotal);
+  form.setValue("tax", totalTaxAmount);
+  form.setValue("total", grandTotal);
+
   async function onSubmit(data: SalesOrderFormValues) {
     if (selectedProducts.length === 0) {
       return toast.error("Please select at least one product");
     }
-    try {
-      await createSalesOrder({
-        ...data,
-        discount: data.discount || 0,
-        shipping_charges: data.shipping_charges || 0,
-        details: selectedProducts.map((product) => {
-          const discountedPrice =
-            product.unit.selling_price * (1 - product.unit.discount / 100); // Price after discount
+    const payload: SalesOrderFormValues = {
+      ...data,
+      // discount: data.discount || 0,
+      // shipping_charges: data.shipping_charges || 0,
+      details: selectedProducts.map((product) => {
+        return {
+          item_barcode_id: product.barcodeId,
+          tax_id: product.tax?.id,
+          unit_id: product.unit.id,
+          qty: product.quantity,
+          price: product.price,
+          total: product.price * product.quantity,
+          note: product.note || "",
+        };
+      }),
+    };
+    // console.log(payload, "payload");
 
-          return {
-            unit_id: product.unit.id,
-            item_id: product.id,
-            item_barcode_id: Number(product.id),
-            price: product.unit.selling_price,
-            after_discount: discountedPrice, // Update to reflect price after discount
-            total: discountedPrice * product.quantity, // Update total to use discounted price
-            qty: product.quantity,
-            discount: product.unit.discount,
-            note: product.note || "",
-            tax_id: product.tax.id,
-          };
-        }),
-      }).unwrap();
-      toast.success("Sales order created successfully");
-      navigate("/billing/sales-orders");
+    try {
+      if (!salesOrder) {
+        await createSalesOrder(payload).unwrap();
+        toast.success("Quote created successfully");
+      } else {
+        await updateSalesOrder({
+          salesOrderId: salesOrderId,
+          updatedSalesOrder: payload,
+        }).unwrap();
+        toast.success("Quote updated successfully");
+      }
+      navigate("/billing/quotes");
     } catch (error) {
       handleErrors(error as ErrorResponse);
     }
   }
-  console.log(form.formState.errors);
+  // console.log(form.formState.errors, "form errors");
+
   return (
     <>
       <div>
         <div className="flex items-center justify-between mb-4">
           <Heading
-            title={"Add Sales Order"}
+            title={salesOrder ? "Edit Quote" : "Add quote"}
             description="Manage your sub accounts for you business"
           />
-          <Button onClick={() => navigate("/billing/sales-orders")} size={"sm"}>
-            Sales Order List
+          <Button onClick={() => navigate("/billing/quotes")} size={"sm"}>
+            quotes List
           </Button>
         </div>
 
@@ -179,7 +237,7 @@ export default function AddSaleOrderForm() {
             <div className="">
               <Card className="p-3">
                 <div className="grid grid-cols-3 gap-4">
-                  <FormSearchSelect<CustomerColumn>
+                  <FormSearchSelect
                     loading={isCustomerLoading}
                     data={customers}
                     displayField="name"
@@ -347,54 +405,6 @@ export default function AddSaleOrderForm() {
                     )}
                   />
 
-                  <FormSearchSelect<UsersRow>
-                    loading={employeeLoading}
-                    data={employees}
-                    displayField="name"
-                    valueField="id"
-                    form={form}
-                    name="sales_person_id"
-                    placeholder="Select Sales person"
-                    title="Sales Person"
-                    className="w-full"
-                  />
-
-                  <FormSearchSelect<ProjectRow>
-                    loading={projectLoading}
-                    data={projects}
-                    displayField="name"
-                    valueField="id"
-                    form={form}
-                    name="project_id"
-                    placeholder="Select Project"
-                    title="Project Name"
-                    className="w-full"
-                  />
-
-                  <FormSearchSelect<PaymentTermRow>
-                    loading={paymentTermLoading}
-                    data={paymentTerms}
-                    displayField="name"
-                    valueField="id"
-                    form={form}
-                    name="payment_terms"
-                    placeholder="Select Payment Terms"
-                    title="Payment Terms"
-                    className="w-full"
-                  />
-
-                  {/* <FormSearchSelect<QuotationRow>
-                    loading={quotationLoading}
-                    data={quotations}
-                    displayField="invoice_number"
-                    valueField="id"
-                    form={form}
-                    name="quotation_id"
-                    placeholder="Select Quotation"
-                    title="Quotation"
-                    className="w-full"
-                  /> */}
-
                   <div className="w-full">
                     <FormField
                       control={form.control}
@@ -404,7 +414,7 @@ export default function AddSaleOrderForm() {
                           <FormLabel>Tax Type</FormLabel>
                           <Select
                             onValueChange={field.onChange}
-                            defaultValue={String(taxTypeData?.[1]?.id)}
+                            defaultValue={String(TAX_TYPES?.[1]?.id)}
                           >
                             <FormControl>
                               <SelectTrigger>
@@ -412,7 +422,7 @@ export default function AddSaleOrderForm() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {taxTypeData?.map((tax: any) => (
+                              {TAX_TYPES?.map((tax: any) => (
                                 <SelectItem key={tax.id} value={String(tax.id)}>
                                   {tax.name}
                                 </SelectItem>
@@ -425,19 +435,6 @@ export default function AddSaleOrderForm() {
                     />
                   </div>
 
-                  <FormField
-                    control={form.control}
-                    name="subject"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Subject</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Type Subject." {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                   <FormField
                     control={form.control}
                     name="note"
@@ -473,36 +470,32 @@ export default function AddSaleOrderForm() {
             </div>
             {/* product Search */}
             <Card className="mb-4">
-              <SearchProduct
+              <ProductBarcodeSearch
                 setSelectedProducts={setSelectedProducts}
                 selectedProducts={selectedProducts}
-                previousData={false}
               />
             </Card>
             {/* calculation */}
             <div className="flex justify-end">
-              <Calculation
+              <BillingSummaryShow
                 form={form}
-                subTotal={Number(
-                  selectedProducts.reduce(
-                    (acc, product) => acc + product.total,
-                    0
-                  )
-                )}
-                selectedProducts={selectedProducts}
+                subTotal={subTotal}
+                discountedAmount={discountedAmount}
+                totalTaxAmount={totalTaxAmount}
+                grandTotal={grandTotal}
               />
             </div>
             <div className="text-right">
               <Button
                 type="button"
-                onClick={() => navigate("/billing/sales-orders")}
+                onClick={() => navigate("/billing/quotes")}
                 className="mr-2"
                 variant="primary"
               >
                 Cancel
               </Button>
               <Button variant="default" type="submit" className="w-fit mt-4">
-                {isCreating ? "Adding..." : "Add"}
+                {salesOrder ? "Update" : "Add"}
               </Button>
             </div>
           </form>

@@ -1,12 +1,12 @@
 import withFallback from "@/utils/with-fallback";
 import {
   AddExpense,
-  AddQuoteForm,
+  // AddQuoteForm,
   AddSalesOrder,
   EditCustomerForm,
   EditExpense,
-  EditQuoteForm,
-  EditSalesOrder,
+  // EditQuoteForm,
+  // EditSalesOrder,
   EditSupplierForm,
   // DashboardAccounts,
   ErrorPage,
@@ -14,7 +14,7 @@ import {
   Layout,
   NotFoundPage,
   PaymentTerms,
-  Quotes,
+  // Quotes,
   SalesOrderList,
 } from "./components";
 
@@ -284,24 +284,45 @@ const billingRoutes = {
         },
       ],
     },
+    // {
+    //   path: "quotes",
+    //   // element: withFallback(<Quotes />),
+    //   errorElement: withFallback(<ErrorPage />),
+    //   children: [
+    //     {
+    //       index: true,
+    //       element: withFallback(<Quotes />),
+    //       errorElement: withFallback(<ErrorPage />),
+    //     },
+    //     {
+    //       path: "add",
+    //       element: withFallback(<AddQuoteForm />),
+    //       errorElement: withFallback(<ErrorPage />),
+    //     },
+    //     {
+    //       path: "edit/:id",
+    //       element: withFallback(<EditQuoteForm />),
+    //       errorElement: withFallback(<ErrorPage />),
+    //     },
+    //   ],
+    // },
     {
-      path: "quotes",
-      // element: withFallback(<Quotes />),
+      path: "quotes/", // basically the sales order
       errorElement: withFallback(<ErrorPage />),
       children: [
         {
           index: true,
-          element: withFallback(<Quotes />),
+          element: withFallback(<SalesOrderList />),
           errorElement: withFallback(<ErrorPage />),
         },
         {
           path: "add",
-          element: withFallback(<AddQuoteForm />),
+          element: withFallback(<AddSalesOrder />),
           errorElement: withFallback(<ErrorPage />),
         },
         {
           path: "edit/:id",
-          element: withFallback(<EditQuoteForm />),
+          element: withFallback(<AddSalesOrder />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
@@ -333,27 +354,7 @@ const billingRoutes = {
         },
       ],
     },
-    {
-      path: "sales-orders/",
-      errorElement: withFallback(<ErrorPage />),
-      children: [
-        {
-          index: true,
-          element: withFallback(<SalesOrderList />),
-          errorElement: withFallback(<ErrorPage />),
-        },
-        {
-          path: "add",
-          element: withFallback(<AddSalesOrder />),
-          errorElement: withFallback(<ErrorPage />),
-        },
-        {
-          path: "edit/:id",
-          element: withFallback(<EditSalesOrder />),
-          errorElement: withFallback(<ErrorPage />),
-        },
-      ],
-    },
+    
     {
       path: "sales-receipts",
       // element: withFallback(<Invoice />),

@@ -47,7 +47,7 @@ export function CellAction({ rowData }: CellActionProps) {
               size="icon"
               className="hover:bg-secondary"
               onClick={() =>
-                navigation(`/billing/sales-orders/edit/${rowData.id}`)
+                navigation(`/billing/quotes/edit/${rowData.id}`)
               }
             >
               <Pencil className="h-4 w-4 text-foreground" />

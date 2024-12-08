@@ -33,14 +33,14 @@ const SalesOrder = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="Sales Orders"
+              title="All Quotes"
               description="Manage your sub accounts for you business"
             />
             <Button
-              onClick={() => navigate("/billing/sales-orders/add")}
+              onClick={() => navigate("/billing/quotes/add")}
               size={"sm"}
             >
-              <Plus className="mr-2 h-4 w-4" /> Add Sales Order
+              <Plus className="mr-2 h-4 w-4" /> Add quotes
             </Button>
           </div>
           <Separator />

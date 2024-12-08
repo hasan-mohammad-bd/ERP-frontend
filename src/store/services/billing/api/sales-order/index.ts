@@ -1,27 +1,22 @@
-import {
-  ExtendedPurchaseOrderRow,
-  PurchaseOrderRow,
-} from "@/lib/validators/billing/purchase-order";
+import { PurchaseOrderRow } from "@/lib/validators/billing/purchase-order";
 import { inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
-import { SalesOrderFormDataType } from "@/lib/validators/billing/sales-order";
+import { SalesOrderFormValues } from "@/lib/validators/billing/billing-transactions";
+import { SaleOrderResponse } from "@/lib/validators/billing/billing-responses";
 
 const salesOrderApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
-    getSalesOrders: build.query<
-      { data: ExtendedPurchaseOrderRow[]; meta: PaginationInfo },
-      string
-    >({
+    getSalesOrders: build.query<{ data: []; meta: PaginationInfo }, string>({
       query: (params) => `sales-orders?${params}`,
       providesTags: ["sales-orders"],
     }),
-    getSalesOrderById: build.query<{ data: ExtendedPurchaseOrderRow }, number>({
+    getSalesOrderById: build.query<{ data: SaleOrderResponse }, number>({
       query: (salesOrderId) => `sales-orders/${salesOrderId}`,
-      providesTags: ["sales-orders"],
+      providesTags: ["sales-order"],
     }),
     createSalesOrder: build.mutation<
       { data: PurchaseOrderRow },
-      SalesOrderFormDataType
+      SalesOrderFormValues
     >({
       query: (newPurchaseOrder) => ({
         url: `sales-orders`,
@@ -41,7 +36,7 @@ const salesOrderApi = inventoryApi.injectEndpoints({
       { data: PurchaseOrderRow },
       {
         salesOrderId: number;
-        updatedSalesOrder: SalesOrderFormDataType;
+        updatedSalesOrder: SalesOrderFormValues;
       }
     >({
       query: ({ salesOrderId, updatedSalesOrder }) => ({
@@ -49,7 +44,7 @@ const salesOrderApi = inventoryApi.injectEndpoints({
         method: "PUT",
         body: updatedSalesOrder,
       }),
-      invalidatesTags: ["sales-orders"],
+      invalidatesTags: ["sales-orders", "sales-order"],
     }),
   }),
   overrideExisting: false,
