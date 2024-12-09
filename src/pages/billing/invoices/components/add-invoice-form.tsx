@@ -11,16 +11,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { Textarea } from "@/components/ui/textarea";
-
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
-
-import { useState } from "react";
-import SearchProduct, { ExtendedItemRow } from "./search-product";
-
-import Calculation from "./calculation";
+import { Textarea } from "@/components/ui/textarea";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -29,39 +24,52 @@ import {
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import { UsersRow } from "@/lib/validators/web/users";
-
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { toast } from "sonner";
-import { useGetUsersQuery } from "@/store/services/erp-main/api/users";
-
-import { useCreateSalesInvoicesMutation } from "@/store/services/billing/api/invoices";
-import {
-  InvoiceFieldsType,
-  invoiceSchema,
-} from "@/lib/validators/billing/invoices";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
-import { CustomerColumn } from "@/lib/validators/billing/customer";
 import { useGetCustomersQuery } from "@/store/services/billing/api/customer";
-import { useGetPaymentTermsQuery } from "@/store/services/billing/api/payment-terms";
+import {
+  SalesInvoiceFormValues,
+  salesInvoiceSchema,
+} from "@/lib/validators/billing/billing-transactions";
 import { useGetSalesOrdersQuery } from "@/store/services/billing/api/sales-order";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { TAX_TYPES } from "@/constants/billing";
+import BillingSummaryShow from "../../../../components/common/billing/billing-summary-show";
+import ProductBarcodeSearch, {
+  type BarcodeLineItemType,
+} from "@/components/common/billing/product-barcode-search";
+import { formatToTwoDecimalPlaces } from "@/utils/formate-number";
+import { useGetWarehouseQuery } from "@/store/services/billing/api/warehouse";
+import {
+  useCreateSalesInvoicesMutation,
+  useGetSalesInvoicesByIdQuery,
+  useUpdateSalesInvoicesMutation,
+} from "@/store/services/billing/api/invoices";
+
 export default function AddInvoiceForm() {
   const navigate = useNavigate();
-  // const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [selectedProducts, setSelectedProducts] = useState<ExtendedItemRow[]>(
-    []
-  );
-  console.log(selectedProducts);
+  const [selectedProducts, setSelectedProducts] = useState<
+    BarcodeLineItemType[]
+  >([]);
 
   const [openDatePickers, setOpenDatePickers] = useState({
-    date: false,
+    sales_order_date: false,
+    delivery_date: false,
     due_date: false,
   });
 
-  const handleDatePickerToggle = (type: "date" | "due_date") => {
+  const handleDatePickerToggle = (
+    type: "sales_order_date" | "delivery_date" | "due_date"
+  ) => {
     setOpenDatePickers((prev) => ({
       ...prev,
       [type]: !prev[type],
@@ -70,76 +78,173 @@ export default function AddInvoiceForm() {
 
   const { data: customerData, isLoading: isCustomerLoading } =
     useGetCustomersQuery("page=1&per_page=1000");
-
-  const { data: EmployeeData, isLoading: employeeLoading } =
-    useGetUsersQuery(`per_page=1000&page=1`);
-
-  const { data: payemtTermsData, isLoading: isPaymentTermLoading } =
-    useGetPaymentTermsQuery(`page=1&per_page=1000`);
-
-  const { data: salesOrderData, isLoading: isSalesOrderLoading } =
+  const { data: salesOrdersData, isLoading: isSalesOrderLoading } =
     useGetSalesOrdersQuery(`page=1&per_page=1000`);
+  const { data: warehousesData, isLoading: isWarehousesLoading } =
+    useGetWarehouseQuery(`page=1&per_page=1000`);
 
+  const salesOrders = salesOrdersData?.data || [];
   const customers = customerData?.data || [];
+  const warehouses = warehousesData?.data || [];
 
-  const employees = EmployeeData?.data || [];
+  const [createSalesInvoice] = useCreateSalesInvoicesMutation();
 
-  const payemtTerms = payemtTermsData?.data || [];
-
-  const salesOrder = salesOrderData?.data || [];
-
-  console.log("salesOrder", salesOrder);
-
-  const [createInvoice, { isLoading: isCreating }] =
-    useCreateSalesInvoicesMutation();
-
-  // console.log(uploadedFiles);
-  const form = useForm<InvoiceFieldsType>({
-    resolver: zodResolver(invoiceSchema),
+  const form = useForm<SalesInvoiceFormValues>({
+    resolver: zodResolver(salesInvoiceSchema),
     defaultValues: {
       total: 0,
+      discount: 0,
+      shipping_charge: 0,
+      adjustment: 0,
+      tax_type: TAX_TYPES[1].id.toString(),
     },
   });
 
-  console.log(form.formState.errors);
+  // For update
+  const params = useParams();
+  const salesInvoiceId = Number(params.id);
+  const { data: salesInvoiceData } = useGetSalesInvoicesByIdQuery(
+    salesInvoiceId,
+    {
+      skip: !salesInvoiceId,
+    }
+  );
 
-  async function onSubmit(data: InvoiceFieldsType) {
-    console.log(data);
+  const [updateSalesInvoice] = useUpdateSalesInvoicesMutation(); // For update
+
+  const salesOrder = salesInvoiceData?.data || undefined;
+  // console.log(salesOrder, "salesOrderData");
+
+  useEffect(() => {
+    if (salesOrder) {
+      const details: BarcodeLineItemType[] = salesOrder.details.map(
+        (detail) => ({
+          barcodeId: detail.item_barcode?.id,
+          quantity: detail.qty,
+          price: detail.price,
+          tax: detail.tax || undefined,
+          units: [],
+          unit: detail.unit,
+          barcode: detail.item_barcode?.barcode,
+          name: detail.item?.name,
+          barcodeAttribute: detail.item_barcode?.barcode_attribute,
+          note: detail.note,
+        })
+      );
+      setSelectedProducts(details);
+      form.reset({
+        discount: salesOrder.discount,
+        tax_type: salesOrder.tax_type,
+        total: salesOrder.total,
+        contact_id: String(salesOrder.contact?.id),
+        date: salesOrder.date || "",
+        due_date: salesOrder.due_date || "",
+        delivery_date: salesOrder.delivery_date || "",
+        note: salesOrder.note || "",
+        terms_conditions: salesOrder.terms_conditions || "",
+        sub_total: salesOrder.sub_total,
+        reference: salesOrder.reference || "",
+        tax: salesOrder.tax,
+        shipping_charge: salesOrder.shipping_charge || 0,
+        adjustment: salesOrder.adjustment || 0,
+        warehouse_id: String(salesOrder.warehouse?.id),
+        sales_order_id: String(salesOrder.sales_order?.id),
+      });
+    }
+  }, [salesOrder, form]);
+  // end of update
+
+  const discount = form.watch("discount");
+  const tax_type = form.watch("tax_type");
+  const shipping_charges = form.watch("shipping_charge");
+  const adjustment = form.watch("adjustment");
+
+  // console.log(selectedProducts, "selectedProducts");
+
+  // Calculating business logics
+  let subTotal = 0;
+  let discountedAmount = 0;
+  let totalTaxAmount = 0;
+
+  if (selectedProducts && selectedProducts.length > 0) {
+    selectedProducts?.forEach((product) => {
+      const total = product.price * product.quantity;
+      const productDiscount = (total * (discount ?? 0)) / 100;
+      const discountedPrice = total - productDiscount;
+      const productTax =
+        (discountedPrice * (Number(product.tax?.amount) || 0)) / 100;
+
+      subTotal += total;
+      discountedAmount += productDiscount;
+      totalTaxAmount += productTax;
+    });
+  }
+
+  let grandTotal =
+    subTotal -
+    discountedAmount +
+    (tax_type === "inclusive" ? 0 : totalTaxAmount) +
+    (shipping_charges ? Number(shipping_charges) : 0) +
+    (adjustment ? Number(adjustment) : 0);
+
+  // Rounding off
+  subTotal = formatToTwoDecimalPlaces(subTotal);
+  discountedAmount = formatToTwoDecimalPlaces(discountedAmount);
+  totalTaxAmount = formatToTwoDecimalPlaces(totalTaxAmount);
+  grandTotal = formatToTwoDecimalPlaces(grandTotal);
+
+  // Setting the form values
+  form.setValue("sub_total", subTotal);
+  form.setValue("tax", totalTaxAmount);
+  form.setValue("total", grandTotal);
+
+  async function onSubmit(data: SalesInvoiceFormValues) {
+    if (selectedProducts.length === 0) {
+      return toast.error("Please select at least one product");
+    }
+    const payload: SalesInvoiceFormValues = {
+      ...data,
+      // discount: data.discount || 0,
+      // shipping_charge: data.shipping_charge || 0,
+      // adjustment: data.adjustment || 0,
+      details: selectedProducts.map((product) => {
+        return {
+          item_barcode_id: product.barcodeId,
+          tax_id: product.tax?.id,
+          unit_id: product.unit.id,
+          qty: product.quantity,
+          price: product.price,
+          total: product.price * product.quantity,
+          note: product.note || "",
+        };
+      }),
+    };
+    // console.log(payload, "payload");
+
     try {
-      await createInvoice({
-        ...data,
-        discount: data.discount || 0,
-        shipping_charges: data.shipping_charges || 0,
-        details: selectedProducts.map((product) => {
-          const discountedPrice =
-            product.unit.selling_price * (1 - product.unit.discount / 100); // Price after discount
-
-          return {
-            unit_id: product.unit.id,
-            item_id: product.id,
-            item_barcode_id: Number(product.id),
-            price: product.unit.selling_price,
-            after_discount: discountedPrice, // Update to reflect price after discount
-            total: discountedPrice * product.quantity, // Update total to use discounted price
-            qty: product.quantity,
-            discount: product.unit.discount,
-            note: "",
-          };
-        }),
-      }).unwrap();
-      toast.success("Invoice created successfully");
+      if (!salesOrder) {
+        await createSalesInvoice(payload).unwrap();
+        toast.success("Invoice created successfully");
+      } else {
+        await updateSalesInvoice({
+          itemId: salesInvoiceId,
+          updatedItem: payload,
+        }).unwrap();
+        toast.success("Invoice updated successfully");
+      }
       navigate("/billing/invoices");
     } catch (error) {
       handleErrors(error as ErrorResponse);
     }
   }
+  // console.log(form.formState.errors, "form errors");
 
   return (
     <>
       <div>
         <div className="flex items-center justify-between mb-4">
           <Heading
-            title={"Add Invoice"}
+            title={salesOrder ? "Edit Invoice" : "Add Invoice"}
             description="Manage your sub accounts for you business"
           />
           <Button onClick={() => navigate("/billing/invoices")} size={"sm"}>
@@ -155,7 +260,7 @@ export default function AddInvoiceForm() {
             <div className="">
               <Card className="p-3">
                 <div className="grid grid-cols-3 gap-4">
-                  <FormSearchSelect<CustomerColumn>
+                  <FormSearchSelect
                     loading={isCustomerLoading}
                     data={customers}
                     displayField="name"
@@ -168,7 +273,7 @@ export default function AddInvoiceForm() {
                   />
                   <FormSearchSelect
                     loading={isSalesOrderLoading}
-                    data={salesOrder}
+                    data={salesOrders}
                     displayField="invoice_number"
                     valueField="id"
                     form={form}
@@ -177,46 +282,47 @@ export default function AddInvoiceForm() {
                     title="Sales Order"
                     className="w-full"
                   />
-
                   <FormSearchSelect
-                    loading={isPaymentTermLoading}
-                    data={payemtTerms}
+                    loading={isWarehousesLoading}
+                    data={warehouses}
                     displayField="name"
                     valueField="id"
                     form={form}
-                    name="payment_term_id"
-                    placeholder="Select Payment Term"
-                    title="Payment Term"
+                    name="warehouse_id"
+                    placeholder="Select Warehouse"
+                    title="Warehouse"
                     className="w-full"
                   />
 
-                  <FormField
-                    control={form.control}
-                    name="reference"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Reference Number</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter reference" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="order_number"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Order Number</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter order number" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="w-full">
+                    <FormField
+                      control={form.control}
+                      name="tax_type"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Tax Type</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={String(TAX_TYPES?.[1]?.id)}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select Tax Type" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {TAX_TYPES?.map((tax: any) => (
+                                <SelectItem key={tax.id} value={String(tax.id)}>
+                                  {tax.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
                   <FormField
                     control={form.control}
@@ -225,8 +331,104 @@ export default function AddInvoiceForm() {
                       <FormItem>
                         <FormLabel>Date</FormLabel>
                         <Popover
-                          open={openDatePickers.date}
-                          onOpenChange={() => handleDatePickerToggle("date")}
+                          open={openDatePickers.sales_order_date}
+                          onOpenChange={() =>
+                            handleDatePickerToggle("sales_order_date")
+                          }
+                        >
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={`w-full justify-start text-left font-normal ${
+                                !field.value && "text-muted-foreground"
+                              }`}
+                            >
+                              {field.value
+                                ? format(field.value, "PP")
+                                : "Pick a date"}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent
+                            className="w-auto p-0 z-[200]"
+                            align="start"
+                          >
+                            <Calendar
+                              mode="single"
+                              selected={
+                                field.value ? new Date(field.value) : undefined
+                              }
+                              onSelect={(date) => {
+                                field.onChange(
+                                  date ? format(date, "yyyy-MM-dd") : ""
+                                );
+                              }}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`due_date`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Due Date</FormLabel>
+                        <Popover
+                          open={openDatePickers.due_date}
+                          onOpenChange={() =>
+                            handleDatePickerToggle("due_date")
+                          }
+                        >
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={`w-full justify-start text-left font-normal ${
+                                !field.value && "text-muted-foreground"
+                              }`}
+                            >
+                              {field.value
+                                ? format(field.value, "PP")
+                                : "Pick a date"}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent
+                            className="w-auto p-0 z-[200]"
+                            align="start"
+                          >
+                            <Calendar
+                              mode="single"
+                              selected={
+                                field.value ? new Date(field.value) : undefined
+                              }
+                              onSelect={(date) => {
+                                field.onChange(
+                                  date ? format(date, "yyyy-MM-dd") : ""
+                                );
+                              }}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`delivery_date`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Delivery Date</FormLabel>
+                        <Popover
+                          open={openDatePickers.delivery_date}
+                          onOpenChange={() =>
+                            handleDatePickerToggle("delivery_date")
+                          }
                         >
                           <PopoverTrigger asChild>
                             <Button
@@ -266,62 +468,16 @@ export default function AddInvoiceForm() {
 
                   <FormField
                     control={form.control}
-                    name={`due_date`}
+                    name="reference"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Due Date</FormLabel>
-                        <Popover
-                          open={openDatePickers.due_date}
-                          onOpenChange={() =>
-                            handleDatePickerToggle("due_date")
-                          }
-                        >
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant={"outline"}
-                              className={`w-full justify-start text-left font-normal ${
-                                !field.value && "text-muted-foreground"
-                              }`}
-                            >
-                              {field.value
-                                ? format(field.value, "PP")
-                                : "Pick due date"}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent
-                            className="w-auto p-0 z-[200]"
-                            align="start"
-                          >
-                            <Calendar
-                              mode="single"
-                              selected={
-                                field.value ? new Date(field.value) : undefined
-                              }
-                              onSelect={(date) => {
-                                field.onChange(
-                                  date ? format(date, "yyyy-MM-dd") : ""
-                                );
-                              }}
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
+                        <FormLabel>Reference</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter reference" {...field} />
+                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
-
-                  <FormSearchSelect<UsersRow>
-                    loading={employeeLoading}
-                    data={employees}
-                    displayField="name"
-                    valueField="id"
-                    form={form}
-                    name="sales_person_id"
-                    placeholder="Select Sells person"
-                    title="Sales Person"
-                    className="w-full"
                   />
 
                   <FormField
@@ -345,7 +501,7 @@ export default function AddInvoiceForm() {
                       <FormItem>
                         <FormLabel>Note</FormLabel>
                         <FormControl>
-                          <Input placeholder="Type Subject." {...field} />
+                          <Input placeholder="Type Note." {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -373,21 +529,21 @@ export default function AddInvoiceForm() {
             </div>
             {/* product Search */}
             <Card className="mb-4">
-              <SearchProduct
+              <ProductBarcodeSearch
                 setSelectedProducts={setSelectedProducts}
                 selectedProducts={selectedProducts}
-                previousData={false}
               />
             </Card>
             {/* calculation */}
             <div className="flex justify-end">
-              <Calculation
+              <BillingSummaryShow
                 form={form}
-                subTotal={Number(
-                  selectedProducts
-                    .reduce((acc, product) => acc + product.total, 0)
-                    .toFixed(2)
-                )}
+                subTotal={subTotal}
+                discountedAmount={discountedAmount}
+                totalTaxAmount={totalTaxAmount}
+                grandTotal={grandTotal}
+                includeShipping={true}
+                includeAdjustment={true}
               />
             </div>
             <div className="text-right">
@@ -400,7 +556,7 @@ export default function AddInvoiceForm() {
                 Cancel
               </Button>
               <Button variant="default" type="submit" className="w-fit mt-4">
-                {isCreating ? "Creating..." : "Add"}
+                {salesOrder ? "Update" : "Add"}
               </Button>
             </div>
           </form>

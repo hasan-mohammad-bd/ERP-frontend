@@ -4,8 +4,9 @@ import { CellAction } from "./cell-action";
 import { FormatIndianCurrency } from "@/utils/indian-formate";
 import { renderStatus } from "@/lib/render-status";
 import { Link } from "react-router-dom";
+import { SaleInvoiceResponse } from "@/lib/validators/billing/billing-responses";
 
-export const invoiceColumns: ColumnDef<any>[] = [
+export const invoiceColumns: ColumnDef<SaleInvoiceResponse>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -55,8 +56,8 @@ export const invoiceColumns: ColumnDef<any>[] = [
     header: "Reference No",
   },
   {
-    accessorKey: "due_date",
-    header: "Due Date",
+    accessorKey: "date",
+    header: "Date",
   },
   {
     accessorKey: "total",

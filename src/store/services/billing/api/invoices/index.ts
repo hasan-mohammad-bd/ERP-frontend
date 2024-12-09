@@ -1,35 +1,33 @@
 import { ItemRow } from "@/lib/validators/billing/items";
 import { inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
-
-import {
-  InvoiceFormDataType,
-  InvoicesRow,
-} from "@/lib/validators/billing/invoices";
+import { SaleInvoiceResponse } from "@/lib/validators/billing/billing-responses";
+import { SalesInvoiceFormValues } from "@/lib/validators/billing/billing-transactions";
 
 const invoicesApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
     getSalesInvoices: build.query<
-      { data: InvoicesRow[]; meta: PaginationInfo },
+      { data: SaleInvoiceResponse[]; meta: PaginationInfo },
       string
     >({
       query: (params) => `invoices?${params}`,
       providesTags: ["invoices"],
     }),
-    getSalesInvoicesById: build.query<{ data: InvoicesRow }, number>({
+    getSalesInvoicesById: build.query<{ data: SaleInvoiceResponse }, number>({
       query: (invoiceId) => `invoices/${invoiceId}`,
       providesTags: ["invoices"],
     }),
-    createSalesInvoices: build.mutation<{ data: ItemRow }, InvoiceFormDataType>(
-      {
-        query: (newQuotation) => ({
-          url: `invoices`,
-          method: "POST",
-          body: newQuotation,
-        }),
-        invalidatesTags: ["invoices"],
-      }
-    ),
+    createSalesInvoices: build.mutation<
+      { data: ItemRow },
+      SalesInvoiceFormValues
+    >({
+      query: (newQuotation) => ({
+        url: `invoices`,
+        method: "POST",
+        body: newQuotation,
+      }),
+      invalidatesTags: ["invoices"],
+    }),
     removeSalesInvoices: build.mutation<DeleteResponse, number>({
       query: (invoiceId) => ({
         url: `invoices/${invoiceId}`,
@@ -39,7 +37,7 @@ const invoicesApi = inventoryApi.injectEndpoints({
     }),
     updateSalesInvoices: build.mutation<
       { data: ItemRow },
-      { itemId: number; updatedItem: InvoiceFormDataType }
+      { itemId: number; updatedItem: SalesInvoiceFormValues }
     >({
       query: ({ itemId, updatedItem }) => ({
         url: `invoices/${itemId}`,

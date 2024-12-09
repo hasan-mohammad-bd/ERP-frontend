@@ -11,10 +11,10 @@ import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 // import { QuotationRow } from "@/lib/validators/billing/quotation";
-import { useRemoveQuotationMutation } from "@/store/services/billing/api/quotations";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { PurchaseOrderRow } from "@/lib/validators/billing/purchase-order";
+import { useRemovePurchaseOrderMutation } from "@/store/services/billing/api/purchase-order";
 
 interface CellActionProps {
   rowData: PurchaseOrderRow;
@@ -24,7 +24,7 @@ export function CellAction({ rowData }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
 
   const [removeQuotation, { isLoading: deleteLoading }] =
-    useRemoveQuotationMutation();
+    useRemovePurchaseOrderMutation();
   const navigation = useNavigate();
 
   const handleDepartmentDelete = async (id: number) => {
@@ -47,7 +47,9 @@ export function CellAction({ rowData }: CellActionProps) {
               variant="ghost"
               size="icon"
               className="hover:bg-secondary"
-              onClick={() => navigation(`/billing/purchase-orders/edit/${rowData.id}`)}
+              onClick={() =>
+                navigation(`/billing/purchase-orders/edit/${rowData.id}`)
+              }
 
               // onClick={() => toggleModal()}
             >

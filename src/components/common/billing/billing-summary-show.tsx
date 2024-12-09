@@ -14,6 +14,7 @@ interface BillingSummaryProps {
   totalTaxAmount: number;
   grandTotal: number;
   includeShipping?: boolean;
+  includeAdjustment?: boolean;
 }
 
 export default function BillingSummaryShow({
@@ -23,6 +24,7 @@ export default function BillingSummaryShow({
   totalTaxAmount,
   grandTotal,
   includeShipping = false,
+  includeAdjustment = false,
 }: BillingSummaryProps) {
   return (
     <div className="w-full max-w-lg p-6 border rounded-lg shadow">
@@ -59,19 +61,19 @@ export default function BillingSummaryShow({
 
         {includeShipping && (
           <div className="flex justify-between items-center">
-            <Label htmlFor="shipping_charges" className="font-medium">
-              Shipping Charges
+            <Label htmlFor="shipping_charge" className="font-medium">
+              Shipping Charge
             </Label>
             <div className="flex items-center gap-1">
               <FormField
                 control={form.control}
-                name="shipping_charges"
+                name="shipping_charge"
                 render={({ field }) => (
                   <FormItem className="">
                     <FormControl>
                       <Input
                         type="number"
-                        placeholder="Shipping charges"
+                        placeholder="Shipping charge"
                         {...field}
                       />
                     </FormControl>
@@ -80,7 +82,34 @@ export default function BillingSummaryShow({
                 )}
               />
             </div>
-            <span>{form.watch("shipping_charges") | 0}</span>
+            <span>{form.watch("shipping_charge") | 0}</span>
+          </div>
+        )}
+
+        {includeAdjustment && (
+          <div className="flex justify-between items-center">
+            <Label htmlFor="adjustment" className="font-medium">
+              Adjustment
+            </Label>
+            <div className="flex items-center gap-1">
+              <FormField
+                control={form.control}
+                name="adjustment"
+                render={({ field }) => (
+                  <FormItem className="">
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="Adjustment"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <span>{form.watch("adjustment") | 0}</span>
           </div>
         )}
 

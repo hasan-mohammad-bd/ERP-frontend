@@ -4,6 +4,7 @@ import { TaxRow } from "../accounts/tax";
 import { UsersRow } from "../web/users";
 import { PaymentTermRow } from "./payment-terms";
 import { UnitRow } from "./unit";
+import { WarehouseRow } from "./warehouse";
 
 export interface InvoiceLineItemType {
   id: number;
@@ -93,3 +94,11 @@ export interface Invoice {
 }
 
 export type SaleOrderResponse = Omit<Invoice, "shipping_charges">;
+
+export type SaleInvoiceResponse = Invoice & {
+  adjustment: number;
+  sales_person: UsersRow;
+  warehouse: WarehouseRow;
+  shipping_charge: number;
+  sales_order: SaleOrderResponse;
+};

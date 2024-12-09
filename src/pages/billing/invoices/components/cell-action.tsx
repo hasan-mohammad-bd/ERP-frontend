@@ -12,11 +12,11 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
-import { InvoicesRow } from "@/lib/validators/billing/invoices";
 import { useRemoveSalesInvoicesMutation } from "@/store/services/billing/api/invoices";
+import { SaleInvoiceResponse } from "@/lib/validators/billing/billing-responses";
 
 interface CellActionProps {
-  rowData: InvoicesRow;
+  rowData: SaleInvoiceResponse;
 }
 
 export function CellAction({ rowData }: CellActionProps) {

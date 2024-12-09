@@ -73,7 +73,6 @@ import ExpensesCategory from "@/pages/billing/expenses-category";
 import CustomerAddForm from "@/pages/billing/customers/add-customer";
 import QuotationDetailsUI from "@/pages/billing/quotation-details-ui";
 import AddInvoiceForm from "@/pages/billing/invoices/components/add-invoice-form";
-import EditInvoiceForm from "@/pages/billing/invoices/components/edit-invoice-form";
 import PurchaseOrder from "@/pages/billing/purchase-order";
 import AddPurchaseOrderForm from "@/pages/billing/purchase-order/components/add-purchase-order";
 import EditPurchaseOrder from "@/pages/billing/purchase-order/components/edit-quotes-form";
@@ -308,28 +307,6 @@ const billingRoutes = {
         },
       ],
     },
-    // {
-    //   path: "quotes",
-    //   // element: withFallback(<Quotes />),
-    //   errorElement: withFallback(<ErrorPage />),
-    //   children: [
-    //     {
-    //       index: true,
-    //       element: withFallback(<Quotes />),
-    //       errorElement: withFallback(<ErrorPage />),
-    //     },
-    //     {
-    //       path: "add",
-    //       element: withFallback(<AddQuoteForm />),
-    //       errorElement: withFallback(<ErrorPage />),
-    //     },
-    //     {
-    //       path: "edit/:id",
-    //       element: withFallback(<EditQuoteForm />),
-    //       errorElement: withFallback(<ErrorPage />),
-    //     },
-    //   ],
-    // },
     {
       path: "quotes/", // basically the sales order
       errorElement: withFallback(<ErrorPage />),
@@ -368,7 +345,7 @@ const billingRoutes = {
         },
         {
           path: "edit/:id",
-          element: withFallback(<EditInvoiceForm />),
+          element: withFallback(<AddInvoiceForm />),
           errorElement: withFallback(<ErrorPage />),
         },
         {
@@ -378,7 +355,7 @@ const billingRoutes = {
         },
       ],
     },
-    
+
     {
       path: "sales-receipts",
       // element: withFallback(<Invoice />),
