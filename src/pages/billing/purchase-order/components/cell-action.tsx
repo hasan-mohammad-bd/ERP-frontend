@@ -13,23 +13,23 @@ import { useNavigate } from "react-router-dom";
 // import { QuotationRow } from "@/lib/validators/billing/quotation";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
-import { PurchaseOrderRow } from "@/lib/validators/billing/purchase-order";
+import { PurchaseOrderResponse } from "@/lib/validators/billing/billing-responses";
 import { useRemovePurchaseOrderMutation } from "@/store/services/billing/api/purchase-order";
 
 interface CellActionProps {
-  rowData: PurchaseOrderRow;
+  rowData: PurchaseOrderResponse;
 }
 
 export function CellAction({ rowData }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
 
-  const [removeQuotation, { isLoading: deleteLoading }] =
+  const [removePurchaseOrder, { isLoading: deleteLoading }] =
     useRemovePurchaseOrderMutation();
   const navigation = useNavigate();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
-      await removeQuotation(id).unwrap();
+      await removePurchaseOrder(id).unwrap();
       toast.success("Item deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
@@ -57,7 +57,7 @@ export function CellAction({ rowData }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Update Opening Balance</p>
+            <p>Update Purchase Order</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -77,7 +77,7 @@ export function CellAction({ rowData }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Delete Opening Balance</p>
+            <p>Delete Purchase Order</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -85,7 +85,7 @@ export function CellAction({ rowData }: CellActionProps) {
       <AlertModal
         title="Are you sure?"
         description="This action cannot be undone."
-        name={"This Quotation"}
+        name={rowData.invoice_number}
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
         onConfirm={() => handleDepartmentDelete(rowData.id)}

@@ -94,6 +94,7 @@ export interface Invoice {
 }
 
 export type SaleOrderResponse = Omit<Invoice, "shipping_charges">;
+export type PurchaseOrderResponse = Invoice
 
 export type SaleInvoiceResponse = Invoice & {
   adjustment: number;

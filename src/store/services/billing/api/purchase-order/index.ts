@@ -1,19 +1,20 @@
 
-import { PurchaseOrderFormDataType,  PurchaseOrderRow } from "@/lib/validators/billing/purchase-order";
 import { inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
+import { PurchaseOrderFormValues } from "@/lib/validators/billing/billing-transactions";
+import { PurchaseOrderResponse } from "@/lib/validators/billing/billing-responses";
 
 const purchaseOrderApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
-    getPurchaseOrders: build.query<{ data: PurchaseOrderRow[]; meta: PaginationInfo }, string>({
+    getPurchaseOrders: build.query<{ data: PurchaseOrderResponse[]; meta: PaginationInfo }, string>({
       query: (params) => `purchase-orders?${params}`,
       providesTags: ["purchaseOrder"],
     }),
-    getPurchaseOrderById: build.query<{ data: PurchaseOrderRow }, number>({
+    getPurchaseOrderById: build.query<{ data: PurchaseOrderResponse }, number>({
       query: (purchaseOrderId) => `purchase-orders/${purchaseOrderId}`,
       providesTags: ["purchaseOrder"],
     }),
-    createPurchaseOrder: build.mutation<{ data: PurchaseOrderRow }, PurchaseOrderFormDataType>({
+    createPurchaseOrder: build.mutation<{ data: PurchaseOrderResponse }, PurchaseOrderFormValues>({
       query: (newPurchaseOrder) => ({
         url: `purchase-orders`,
         method: "POST",
@@ -29,8 +30,8 @@ const purchaseOrderApi = inventoryApi.injectEndpoints({
       invalidatesTags: ["purchaseOrder"],
     }),
     updatePurchaseOrder: build.mutation<
-      { data: PurchaseOrderRow },
-      { purchaseOrderId: number; updatedPurchaseOrder: PurchaseOrderFormDataType }
+      { data: PurchaseOrderResponse },
+      { purchaseOrderId: number; updatedPurchaseOrder: PurchaseOrderFormValues }
     >({
       query: ({ purchaseOrderId, updatedPurchaseOrder }) => ({
         url: `purchase-orders/${purchaseOrderId}`,

@@ -1,4 +1,3 @@
-import { PurchaseOrderRow } from "@/lib/validators/billing/purchase-order";
 import { inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
 import { SalesOrderFormValues } from "@/lib/validators/billing/billing-transactions";
@@ -15,7 +14,7 @@ const salesOrderApi = inventoryApi.injectEndpoints({
       providesTags: ["sales-order"],
     }),
     createSalesOrder: build.mutation<
-      { data: PurchaseOrderRow },
+      { data: SaleOrderResponse },
       SalesOrderFormValues
     >({
       query: (newPurchaseOrder) => ({
@@ -33,7 +32,7 @@ const salesOrderApi = inventoryApi.injectEndpoints({
       invalidatesTags: ["sales-orders"],
     }),
     updateSalesOrder: build.mutation<
-      { data: PurchaseOrderRow },
+      { data: SaleOrderResponse },
       {
         salesOrderId: number;
         updatedSalesOrder: SalesOrderFormValues;

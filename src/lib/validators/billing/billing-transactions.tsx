@@ -56,7 +56,8 @@ export const salesInvoiceSchema = billingTransactionCommonSchema.extend({
 });
 
 export const purchaseOrderSchema = billingTransactionCommonSchema.extend({
-  shipping_charges: z.number().nonnegative().optional(),
+  // shipping_charges: z.number().nonnegative().optional(),
+  
 });
 
 // payment_term_id: z.string().optional(),

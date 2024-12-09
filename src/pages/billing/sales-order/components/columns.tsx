@@ -1,9 +1,10 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import { PurchaseOrderRow } from "@/lib/validators/billing/purchase-order";
+import { SaleOrderResponse } from "@/lib/validators/billing/billing-responses";
 
-export const salesOrderColumns: ColumnDef<PurchaseOrderRow>[] = [
+
+export const salesOrderColumns: ColumnDef<SaleOrderResponse>[] = [
   {
     id: "select",
     header: ({ table }) => (

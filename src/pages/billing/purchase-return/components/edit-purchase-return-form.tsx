@@ -34,7 +34,7 @@ import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { CustomerColumn } from "@/lib/validators/billing/customer";
 
 
-import { zodResolver } from "@hookform/resolvers/zod";
+
 
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
@@ -42,7 +42,7 @@ import { toast } from "sonner";
 
 import { Loading } from "@/components/common/loading";
 import { useGetPurchaseOrderByIdQuery, useUpdatePurchaseOrderMutation } from "@/store/services/billing/api/purchase-order";
-import { PurchaseOrderFormValues, purchaseOrderSchema } from "@/lib/validators/billing/purchase-order";
+// import { PurchaseOrderFormValues, purchaseOrderSchema } from "@/lib/validators/billing/purchase-order";
 import { useGetSuppliersQuery } from "@/store/services/billing/api/supplier";
 // import { UpdateSearchBarcodeItem } from "@/lib/validators/billing/search-barcode-item";
 
@@ -88,8 +88,8 @@ export default function EditPurchaseReturn() {
     useUpdatePurchaseOrderMutation();
 
   // console.log(uploadedFiles);
-  const form = useForm<PurchaseOrderFormValues>({
-    resolver: zodResolver(purchaseOrderSchema),
+  const form = useForm<any>({
+    // resolver: zodResolver(),
     defaultValues: {
       total: 0,
     },
@@ -100,7 +100,7 @@ export default function EditPurchaseReturn() {
       form.reset({
         ...purchaseOrderData.data,
         note: purchaseOrderData.data.note ?? "",
-        subject: purchaseOrderData.data.subject ?? "",
+        // subject: purchaseOrderData.data.subject ?? "",
         terms_conditions: purchaseOrderData.data.terms_conditions ?? "",
         contact_id: String(purchaseOrderData.data.contact.id),
       
@@ -154,7 +154,7 @@ export default function EditPurchaseReturn() {
     }
   }, [form, purchaseOrderData]);
 
-  async function onSubmit(data: PurchaseOrderFormValues) {
+  async function onSubmit(data: any) {
     try {
       await updatePurchaseOrder({
         purchaseOrderId: purchaseOrderId,

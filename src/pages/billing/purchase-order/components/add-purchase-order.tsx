@@ -13,14 +13,9 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-
-import { useState } from "react";
-import SearchProduct, { ExtendedItemRow } from "./search-product";
-// import FileUpload from "@/components/common/file-uploader";
-import Calculation from "./calculation";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -29,32 +24,44 @@ import {
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-// import { useGetCustomersQuery } from "@/store/services/billing/api/customer";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
-import { CustomerColumn } from "@/lib/validators/billing/customer";
-// import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
-// import { ProjectRow } from "@/lib/validators/accounts/projects";
-// import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
-// import { EmployeeColumn } from "@/lib/validators";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { toast } from "sonner";
-// import { useGetUsersQuery } from "@/store/services/erp-main/api/users";
-// import { UsersRow } from "@/lib/validators/web/users";
-import { useCreatePurchaseOrderMutation } from "@/store/services/billing/api/purchase-order";
-import { PurchaseOrderFormValues, purchaseOrderSchema } from "@/lib/validators/billing/purchase-order";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { TAX_TYPES, TaxType } from "@/constants/billing";
+import BillingSummaryShow from "../../../../components/common/billing/billing-summary-show";
+import ProductBarcodeSearch, {
+  type BarcodeLineItemType,
+} from "@/components/common/billing/product-barcode-search";
+import { formatToTwoDecimalPlaces } from "@/utils/formate-number";
+
 import { useGetSuppliersQuery } from "@/store/services/billing/api/supplier";
+import {
+  PurchaseOrderFormValues,
+  purchaseOrderSchema,
+} from "@/lib/validators/billing/billing-transactions";
+import { CustomerColumn } from "@/lib/validators/billing/customer";
+import {
+  useCreatePurchaseOrderMutation,
+  useGetPurchaseOrderByIdQuery,
+  useUpdatePurchaseOrderMutation,
+} from "@/store/services/billing/api/purchase-order";
+// import { PurchaseOrderFormValues, purchaseOrderSchema } from "@/lib/validators/billing/purchase-order";
 
 export default function AddPurchaseOrderForm() {
   const navigate = useNavigate();
-  // const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [selectedProducts, setSelectedProducts] = useState<ExtendedItemRow[]>(
-    []
-  );
-  console.log(selectedProducts);
+  const [selectedProducts, setSelectedProducts] = useState<
+    BarcodeLineItemType[]
+  >([]);
 
   const [openDatePickers, setOpenDatePickers] = useState({
     purchase_order_date: false,
@@ -71,72 +78,161 @@ export default function AddPurchaseOrderForm() {
     }));
   };
 
-  const { data: supplierData, isLoading: isCustomerLoading } =
+  const { data: supplierData, isLoading: isSupplierLoading } =
     useGetSuppliersQuery("page=1&per_page=1000");
-  // const { data: projectsData, isLoading: projectLoading } =
-  //   useGetProjectsQuery(`per_page=1000&page=1`);
-  // const { data: EmployeeData, isLoading: employeeLoading } =
-  //   useGetUsersQuery(`per_page=1000&page=1`);
 
   const suppliers = supplierData?.data || [];
-  // const projects = projectsData?.data || [];
-  // const employees = EmployeeData?.data || [];
 
-  const [createPurchaseOrderOrder, { isLoading: isCreating }] =
-  useCreatePurchaseOrderMutation();
+  const [createPurchaseOrder] = useCreatePurchaseOrderMutation();
 
-  // console.log(uploadedFiles);
   const form = useForm<PurchaseOrderFormValues>({
     resolver: zodResolver(purchaseOrderSchema),
     defaultValues: {
       total: 0,
+      tax_type: TAX_TYPES[1].id.toString(),
     },
   });
 
+  // For update
+  const params = useParams();
+  const purchaseOrderId = Number(params.id);
+  const { data: purchaseOrderData } = useGetPurchaseOrderByIdQuery(
+    purchaseOrderId,
+    {
+      skip: !purchaseOrderId,
+    }
+  );
+
+  const [updatePurchaseOrder] = useUpdatePurchaseOrderMutation(); // For update
+
+  const purchaseOrder = purchaseOrderData?.data || undefined;
+  // console.log(purchaseOrder, "purchaseOrderData");
+
+  useEffect(() => {
+    if (purchaseOrder) {
+      const details: BarcodeLineItemType[] = purchaseOrder.details.map(
+        (detail) => ({
+          barcodeId: detail?.item_barcode.id,
+          quantity: detail?.qty,
+          price: detail?.price,
+          tax: detail?.tax || undefined,
+          units: [],
+          unit: detail?.unit,
+          barcode: detail?.item_barcode.barcode,
+          name: detail?.item.name,
+          barcodeAttribute: detail?.item_barcode.barcode_attribute,
+          note: detail?.note,
+        })
+      );
+      setSelectedProducts(details);
+      form.reset({
+        discount: purchaseOrder.discount,
+        tax_type: purchaseOrder.tax_type,
+        total: purchaseOrder.total,
+        contact_id: String(purchaseOrder.contact.id),
+        date: purchaseOrder.date || "",
+        due_date: purchaseOrder.due_date || "",
+        delivery_date: purchaseOrder.delivery_date || "",
+        note: purchaseOrder.note || "",
+        terms_conditions: purchaseOrder.terms_conditions || "",
+        sub_total: purchaseOrder.sub_total,
+        reference: purchaseOrder.reference || "",
+        tax: purchaseOrder.tax,
+      });
+    }
+  }, [purchaseOrder, form]);
+  // end of update
+
+  const discount = form.watch("discount");
+  const tax_type = form.watch("tax_type");
+
+  // console.log(selectedProducts, "selectedProducts");
+
+  // Calculating business logics
+  let subTotal = 0;
+  let discountedAmount = 0;
+  let totalTaxAmount = 0;
+
+  if (selectedProducts && selectedProducts.length > 0) {
+    selectedProducts?.forEach((product) => {
+      const total = product.price * product.quantity;
+      const productDiscount = (total * (discount ?? 0)) / 100;
+      const discountedPrice = total - productDiscount;
+      const productTax =
+        (discountedPrice * (Number(product.tax?.amount) || 0)) / 100;
+
+      subTotal += total;
+      discountedAmount += productDiscount;
+      totalTaxAmount += productTax;
+    });
+  }
+
+  let grandTotal =
+    subTotal -
+    discountedAmount +
+    (tax_type === "inclusive" ? 0 : totalTaxAmount);
+
+  // Rounding off
+  subTotal = formatToTwoDecimalPlaces(subTotal);
+  discountedAmount = formatToTwoDecimalPlaces(discountedAmount);
+  totalTaxAmount = formatToTwoDecimalPlaces(totalTaxAmount);
+  grandTotal = formatToTwoDecimalPlaces(grandTotal);
+
+  // Setting the form values
+  form.setValue("sub_total", subTotal);
+  form.setValue("tax", totalTaxAmount);
+  form.setValue("total", grandTotal);
+
   async function onSubmit(data: PurchaseOrderFormValues) {
-    console.log(data);
+    if (selectedProducts.length === 0) {
+      return toast.error("Please select at least one product");
+    }
+    const payload: PurchaseOrderFormValues = {
+      ...data,
+      // discount: data.discount || 0,
+      // shipping_charges: data.shipping_charges || 0,
+      details: selectedProducts.map((product) => {
+        return {
+          item_barcode_id: product.barcodeId,
+          tax_id: product.tax?.id,
+          unit_id: product.unit.id,
+          qty: product.quantity,
+          price: product.price,
+          total: product.price * product.quantity,
+          note: product.note || "",
+        };
+      }),
+    };
+    // console.log(payload, "payload");
+
     try {
-      await createPurchaseOrderOrder({
-        ...data,
-        discount: data.discount || 0,
-        shipping_charges: data.shipping_charges || 0,
-        details: selectedProducts.map((product) => {
-          const discountedPrice =
-            product.unit.selling_price * (1 - product.unit.discount / 100); // Price after discount
-
-          return {
-            unit_id: product.unit.id,
-            item_id: product.id,
-            item_barcode_id: Number(product.id),
-            price: product.unit.selling_price,
-            after_discount: discountedPrice, // Update to reflect price after discount
-            total: discountedPrice * product.quantity, // Update total to use discounted price
-            qty: product.quantity,
-            discount: product.unit.discount,
-            note: product.note || "",
-
-          };
-        }),
-      }).unwrap();
-      toast.success("Purchase order created successfully");
+      if (!purchaseOrder) {
+        await createPurchaseOrder(payload).unwrap();
+        toast.success("Purchase order created successfully");
+      } else {
+        await updatePurchaseOrder({
+          purchaseOrderId: purchaseOrderId,
+          updatedPurchaseOrder: payload,
+        }).unwrap();
+        toast.success(" Purchase order updated successfully");
+      }
       navigate("/billing/purchase-orders");
     } catch (error) {
       handleErrors(error as ErrorResponse);
     }
   }
-
-  console.log(form.formState.errors)
+  // console.log(form.formState.errors, "form errors");
 
   return (
     <>
       <div>
         <div className="flex items-center justify-between mb-4">
           <Heading
-            title={"Add Purchase Order"}
+            title={purchaseOrder ? "Edit Purchase Order" : "Add Purchase Order"}
             description="Manage your sub accounts for you business"
           />
           <Button onClick={() => navigate("/billing/purchase-orders")} size={"sm"}>
-            Quotes List
+            Purchase Order List
           </Button>
         </div>
 
@@ -147,176 +243,184 @@ export default function AddPurchaseOrderForm() {
           >
             <div className="">
               <Card className="p-3">
-                <div className="grid grid-cols-3 gap-4">
-                  <FormSearchSelect<CustomerColumn>
-                    loading={isCustomerLoading}
-                    data={suppliers}
-                    displayField="name"
-                    valueField="id"
-                    form={form}
-                    name="contact_id"
-                    placeholder="Select supplier"
-                    title="Supplier Name"
-                    className="w-full"
-                  />
+                <div className="">
+                  <Card className="p-3">
+                    <div className="grid grid-cols-3 gap-4">
+                      <FormSearchSelect<CustomerColumn>
+                        loading={isSupplierLoading}
+                        data={suppliers}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="contact_id"
+                        placeholder="Select supplier"
+                        title="Supplier Name"
+                        className="w-full"
+                      />
 
-                  <FormField
-                    control={form.control}
-                    name="reference"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Reference</FormLabel>
-                        <FormControl>
-                        <Input placeholder="Enter reference" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                      <FormField
+                        control={form.control}
+                        name="reference"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Reference</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Enter reference" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                  <FormField
-                    control={form.control}
-                    name={`date`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Purchase Order Date</FormLabel>
-                        <Popover
-                          open={openDatePickers.purchase_order_date}
-                          onOpenChange={() =>
-                            handleDatePickerToggle("purchase_order_date")
-                          }
-                        >
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant={"outline"}
-                              className={`w-full justify-start text-left font-normal ${
-                                !field.value && "text-muted-foreground"
-                              }`}
-                            >
-                              {field.value
-                                ? format(field.value, "PP")
-                                : "Pick a date"}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent
-                            className="w-auto p-0 z-[200]"
-                            align="start"
-                          >
-                            <Calendar
-                              mode="single"
-                              selected={
-                                field.value ? new Date(field.value) : undefined
+                      <FormField
+                        control={form.control}
+                        name={`date`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Purchase Order Date</FormLabel>
+                            <Popover
+                              open={openDatePickers.purchase_order_date}
+                              onOpenChange={() =>
+                                handleDatePickerToggle("purchase_order_date")
                               }
-                              onSelect={(date) => {
-                                field.onChange(
-                                  date ? format(date, "yyyy-MM-dd") : ""
-                                );
-                              }}
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`delivery_date`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Delivery Date</FormLabel>
-                        <Popover
-                          open={openDatePickers.delivery_date}
-                          onOpenChange={() =>
-                            handleDatePickerToggle("delivery_date")
-                          }
-                        >
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant={"outline"}
-                              className={`w-full justify-start text-left font-normal ${
-                                !field.value && "text-muted-foreground"
-                              }`}
                             >
-                              {field.value
-                                ? format(field.value, "PP")
-                                : "Pick a date"}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent
-                            className="w-auto p-0 z-[200]"
-                            align="start"
-                          >
-                            <Calendar
-                              mode="single"
-                              selected={
-                                field.value ? new Date(field.value) : undefined
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant={"outline"}
+                                  className={`w-full justify-start text-left font-normal ${
+                                    !field.value && "text-muted-foreground"
+                                  }`}
+                                >
+                                  {field.value
+                                    ? format(field.value, "PP")
+                                    : "Pick a date"}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-auto p-0 z-[200]"
+                                align="start"
+                              >
+                                <Calendar
+                                  mode="single"
+                                  selected={
+                                    field.value
+                                      ? new Date(field.value)
+                                      : undefined
+                                  }
+                                  onSelect={(date) => {
+                                    field.onChange(
+                                      date ? format(date, "yyyy-MM-dd") : ""
+                                    );
+                                  }}
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`delivery_date`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Delivery Date</FormLabel>
+                            <Popover
+                              open={openDatePickers.delivery_date}
+                              onOpenChange={() =>
+                                handleDatePickerToggle("delivery_date")
                               }
-                              onSelect={(date) => {
-                                field.onChange(
-                                  date ? format(date, "yyyy-MM-dd") : ""
-                                );
-                              }}
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`due_date`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Due Date</FormLabel>
-                        <Popover
-                          open={openDatePickers.due_date}
-                          onOpenChange={() =>
-                            handleDatePickerToggle("due_date")
-                          }
-                        >
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant={"outline"}
-                              className={`w-full justify-start text-left font-normal ${
-                                !field.value && "text-muted-foreground"
-                              }`}
                             >
-                              {field.value
-                                ? format(field.value, "PP")
-                                : "Pick a date"}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent
-                            className="w-auto p-0 z-[200]"
-                            align="start"
-                          >
-                            <Calendar
-                              mode="single"
-                              selected={
-                                field.value ? new Date(field.value) : undefined
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant={"outline"}
+                                  className={`w-full justify-start text-left font-normal ${
+                                    !field.value && "text-muted-foreground"
+                                  }`}
+                                >
+                                  {field.value
+                                    ? format(field.value, "PP")
+                                    : "Pick a date"}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-auto p-0 z-[200]"
+                                align="start"
+                              >
+                                <Calendar
+                                  mode="single"
+                                  selected={
+                                    field.value
+                                      ? new Date(field.value)
+                                      : undefined
+                                  }
+                                  onSelect={(date) => {
+                                    field.onChange(
+                                      date ? format(date, "yyyy-MM-dd") : ""
+                                    );
+                                  }}
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`due_date`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Due Date</FormLabel>
+                            <Popover
+                              open={openDatePickers.due_date}
+                              onOpenChange={() =>
+                                handleDatePickerToggle("due_date")
                               }
-                              onSelect={(date) => {
-                                field.onChange(
-                                  date ? format(date, "yyyy-MM-dd") : ""
-                                );
-                              }}
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                            >
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant={"outline"}
+                                  className={`w-full justify-start text-left font-normal ${
+                                    !field.value && "text-muted-foreground"
+                                  }`}
+                                >
+                                  {field.value
+                                    ? format(field.value, "PP")
+                                    : "Pick a date"}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-auto p-0 z-[200]"
+                                align="start"
+                              >
+                                <Calendar
+                                  mode="single"
+                                  selected={
+                                    field.value
+                                      ? new Date(field.value)
+                                      : undefined
+                                  }
+                                  onSelect={(date) => {
+                                    field.onChange(
+                                      date ? format(date, "yyyy-MM-dd") : ""
+                                    );
+                                  }}
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-{/*                   <FormSearchSelect<UsersRow>
+                      {/*                   <FormSearchSelect<UsersRow>
                     loading={employeeLoading}
                     data={employees}
                     displayField="name"
@@ -328,7 +432,7 @@ export default function AddPurchaseOrderForm() {
                     className="w-full"
                   />
  */}
-{/*                   <FormSearchSelect<ProjectRow>
+                      {/*                   <FormSearchSelect<ProjectRow>
                     loading={projectLoading}
                     data={projects}
                     displayField="name"
@@ -340,51 +444,69 @@ export default function AddPurchaseOrderForm() {
                     className="w-full"
                   /> */}
 
-                  <FormField
-                    control={form.control}
-                    name="subject"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Subject</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Type Subject." {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="note"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Note</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Type Subject." {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                      <div className="w-full">
+                        <FormField
+                          control={form.control}
+                          name="tax_type"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Tax Type</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={String(TAX_TYPES?.[1]?.id)}
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Tax Type" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {TAX_TYPES?.map((tax: TaxType) => (
+                                    <SelectItem
+                                      key={tax.id}
+                                      value={String(tax.id)}
+                                    >
+                                      {tax.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name="note"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Note</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Type Subject." {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                  <FormField
-                    control={form.control}
-                    name="terms_conditions"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Terms and conditions</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Type terms and conditions."
-                            {...field}
-                          
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  {/* <div className="space-y-2">
+                      <FormField
+                        control={form.control}
+                        name="terms_conditions"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Terms and conditions</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder="Type terms and conditions."
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {/* <div className="space-y-2">
                     <FormLabel>Upload Files</FormLabel>
                     <FileUpload
                       setFilesToUpload={setUploadedFiles}
@@ -393,39 +515,39 @@ export default function AddPurchaseOrderForm() {
                       // onDeleteSuccess={() => refetch()}
                     />
                   </div> */}
+                    </div>
+                  </Card>
                 </div>
               </Card>
             </div>
             {/* product Search */}
             <Card className="mb-4">
-              <SearchProduct
+              <ProductBarcodeSearch
                 setSelectedProducts={setSelectedProducts}
                 selectedProducts={selectedProducts}
-                previousData={false}
               />
             </Card>
             {/* calculation */}
             <div className="flex justify-end">
-              <Calculation
+              <BillingSummaryShow
                 form={form}
-                subTotal={Number(
-                  selectedProducts
-                    .reduce((acc, product) => acc + product.total, 0)
-                    .toFixed(2)
-                )}
+                subTotal={subTotal}
+                discountedAmount={discountedAmount}
+                totalTaxAmount={totalTaxAmount}
+                grandTotal={grandTotal}
               />
             </div>
             <div className="text-right">
               <Button
                 type="button"
-                onClick={() => navigate("/billing/quotes")}
+                onClick={() => navigate("/billing/purchase-orders")}
                 className="mr-2"
                 variant="primary"
               >
                 Cancel
               </Button>
               <Button variant="default" type="submit" className="w-fit mt-4">
-                {isCreating ? "Creating..." : "Add"}
+                {purchaseOrder ? "Update" : "Add"}
               </Button>
             </div>
           </form>

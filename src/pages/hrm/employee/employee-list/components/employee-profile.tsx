@@ -50,7 +50,7 @@ export default function EmployeeProfile() {
                 <AvatarFallback>{`${first_name}${last_name}`}</AvatarFallback>
               </Avatar>
               <div className="text-center">
-                <h2 className="text-2xl font-bold">{`${first_name} ${last_name}`}</h2>
+                <h2 className="text-2xl font-bold">{`${first_name} ${last_name ? last_name : ""}`}</h2>
                 <p className="text-sm text-muted-foreground">{email}</p>
                 <p className="text-xs text-muted-foreground mt-1">
                   Employee ID: {employee_unique_id}

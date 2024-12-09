@@ -75,7 +75,7 @@ import QuotationDetailsUI from "@/pages/billing/quotation-details-ui";
 import AddInvoiceForm from "@/pages/billing/invoices/components/add-invoice-form";
 import PurchaseOrder from "@/pages/billing/purchase-order";
 import AddPurchaseOrderForm from "@/pages/billing/purchase-order/components/add-purchase-order";
-import EditPurchaseOrder from "@/pages/billing/purchase-order/components/edit-quotes-form";
+// import EditPurchaseOrder from "@/pages/billing/purchase-order/components/edit-quotes-form";
 import InvoiceUI from "@/pages/billing/invoices/components/invoiceUI";
 import WareHouse from "@/pages/billing/warehouse";
 import PurchaseReturn from "@/pages/billing/purchase-return";
@@ -210,7 +210,7 @@ const billingRoutes = {
         },
         {
           path: "edit/:id",
-          element: withFallback(<EditPurchaseOrder />),
+          element: withFallback(<AddPurchaseOrderForm />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],

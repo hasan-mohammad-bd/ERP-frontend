@@ -12,11 +12,12 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
-import { PurchaseOrderRow } from "@/lib/validators/billing/purchase-order";
+
 import { useRemoveSalesOrderMutation } from "@/store/services/billing/api/sales-order";
+import { SaleOrderResponse } from "@/lib/validators/billing/billing-responses";
 
 interface CellActionProps {
-  rowData: PurchaseOrderRow;
+  rowData: SaleOrderResponse;
 }
 
 export function CellAction({ rowData }: CellActionProps) {
