@@ -47,11 +47,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TAX_TYPES } from "@/constants/billing";
-import BillingSummaryShow from "../../../../components/common/billing/billing-summary-show";
 import ProductBarcodeSearch, {
   type BarcodeLineItemType,
 } from "@/components/common/billing/product-barcode-search";
 import { formatToTwoDecimalPlaces } from "@/utils/formate-number";
+import { getInclusiveTaxAmount } from "@/utils";
+import BillingSummaryShow from "@/components/common/billing/billing-summary-show";
 
 export default function AddSaleOrderForm() {
   const navigate = useNavigate();
@@ -86,6 +87,7 @@ export default function AddSaleOrderForm() {
     defaultValues: {
       total: 0,
       tax_type: TAX_TYPES[1].id.toString(),
+      date: format(new Date(), "yyyy-MM-dd"),
     },
   });
 
@@ -151,8 +153,10 @@ export default function AddSaleOrderForm() {
       const total = product.price * product.quantity;
       const productDiscount = (total * (discount ?? 0)) / 100;
       const discountedPrice = total - productDiscount;
-      const productTax =
-        (discountedPrice * (Number(product.tax?.amount) || 0)) / 100;
+
+      //calculating tax
+      const productTax = tax_type === "inclusive" ? getInclusiveTaxAmount(discountedPrice, product.tax?.amount || 0) :
+        (discountedPrice * (product.tax?.amount || 0)) / 100;
 
       subTotal += total;
       discountedAmount += productDiscount;
@@ -301,7 +305,7 @@ export default function AddSaleOrderForm() {
                                 field.onChange(
                                   date ? format(date, "yyyy-MM-dd") : ""
                                 );
-                              }}
+                              }}                          
                               initialFocus
                             />
                           </PopoverContent>

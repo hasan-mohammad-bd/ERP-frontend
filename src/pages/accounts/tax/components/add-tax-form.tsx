@@ -46,7 +46,7 @@ export function AddTaxForm({ modalClose, data: previousData }: AddTaxesProps) {
     resolver: zodResolver(TaxSchema),
     defaultValues: {
       name: previousData?.name || "",
-      amount: previousData?.amount || "0",
+      amount: previousData?.amount || 0,
       description: previousData?.description || "",
       status: previousData?.status === 0 ? 0 : 1,
     },
@@ -112,13 +112,13 @@ export function AddTaxForm({ modalClose, data: previousData }: AddTaxesProps) {
                 name="amount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Amount</FormLabel>
+                    <FormLabel>Amount (In %)</FormLabel>
                     <FormControl>
                       <Input
                         className=""
                         placeholder="amount"
                         {...field}
-                        value={Number(field.value)}
+                        // value={Number(field.value)}
                       />
                     </FormControl>
                     <FormMessage />

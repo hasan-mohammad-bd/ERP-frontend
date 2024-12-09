@@ -1,10 +1,6 @@
 import { DeleteResponse, PaginationInfo } from "@/types";
 import { accountApi } from "../..";
-import {
-  ExtendedTaxFormValues,
-  // TaxFormValues,
-  TaxRow,
-} from "@/lib/validators/accounts/tax";
+import { TaxFormValues, TaxRow } from "@/lib/validators/accounts/tax";
 
 const TaxApi = accountApi.injectEndpoints({
   endpoints: (build) => ({
@@ -12,7 +8,7 @@ const TaxApi = accountApi.injectEndpoints({
       query: (params) => `taxes?${params}`,
       providesTags: ["taxes"],
     }),
-    createTaxes: build.mutation<{ data: TaxRow }, ExtendedTaxFormValues>({
+    createTaxes: build.mutation<{ data: TaxRow }, TaxFormValues>({
       query: (newTax) => ({
         url: `taxes`,
         method: "POST",
@@ -22,7 +18,7 @@ const TaxApi = accountApi.injectEndpoints({
     }),
     updateTaxes: build.mutation<
       { data: TaxRow },
-      { taxId: number; updatedTax: ExtendedTaxFormValues }
+      { taxId: number; updatedTax: TaxFormValues }
     >({
       query: ({ taxId, updatedTax }) => ({
         url: `taxes/${taxId}`,
