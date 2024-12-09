@@ -79,6 +79,9 @@ import AddPurchaseOrderForm from "@/pages/billing/purchase-order/components/add-
 import EditPurchaseOrder from "@/pages/billing/purchase-order/components/edit-quotes-form";
 import InvoiceUI from "@/pages/billing/invoices/components/invoiceUI";
 import WareHouse from "@/pages/billing/warehouse";
+import PurchaseReturn from "@/pages/billing/purchase-return";
+import AddPurchaseReturnForm from "@/pages/billing/purchase-return/components/add-purchase-return";
+import EditPurchaseReturn from "@/pages/billing/purchase-return/components/edit-purchase-return-form";
 
 const billingRoutes = {
   path: "billing/",
@@ -209,6 +212,27 @@ const billingRoutes = {
         {
           path: "edit/:id",
           element: withFallback(<EditPurchaseOrder />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+      ],
+    },
+    {
+      path: "purchase-return/",
+      errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<PurchaseReturn />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "add/:id",
+          element: withFallback(<AddPurchaseReturnForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<EditPurchaseReturn />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],

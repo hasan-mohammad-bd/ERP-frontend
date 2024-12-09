@@ -231,6 +231,13 @@ const billingNavItems: NavItem[] = [
         permissions: ["hrm"],
       },
       {
+        title: "Purchase Return",
+        icon: Soup,
+        href: "/billing/purchase-return",
+        color: "text-sky-500",
+        permissions: ["hrm"],
+      },
+      {
         title: "Manage Purchase",
         icon: Soup,
         href: "/billing/manage-purchase",
