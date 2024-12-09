@@ -94,7 +94,12 @@ export interface Invoice {
 }
 
 export type SaleOrderResponse = Omit<Invoice, "shipping_charges">;
-export type PurchaseOrderResponse = Invoice
+export type PurchaseOrderResponse = Invoice;
+
+export type PurchaseResponse = Invoice & {
+  warehouse: WarehouseRow;
+  purchase_order: PurchaseOrderResponse;
+};
 
 export type SaleInvoiceResponse = Invoice & {
   adjustment: number;

@@ -1,6 +1,7 @@
 import withFallback from "@/utils/with-fallback";
 import {
   AddExpense,
+  AddPurchaseForm,
   // AddQuoteForm,
   AddSalesOrder,
   EditCustomerForm,
@@ -14,6 +15,7 @@ import {
   Layout,
   NotFoundPage,
   PaymentTerms,
+  PurchaseList,
   // Quotes,
   SalesOrderList,
 } from "./components";
@@ -193,6 +195,28 @@ const billingRoutes = {
       path: "Brand",
       element: withFallback(<Brand />),
       errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "purchases",
+      // element: withFallback(<Invoice />),
+      errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<PurchaseList />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "add",
+          element: withFallback(<AddPurchaseForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "edit/:id",
+          element: withFallback(<AddPurchaseForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+      ],
     },
     {
       path: "purchase-orders/",

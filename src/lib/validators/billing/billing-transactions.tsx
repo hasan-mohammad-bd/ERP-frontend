@@ -55,9 +55,17 @@ export const salesInvoiceSchema = billingTransactionCommonSchema.extend({
   adjustment: z.coerce.number().optional(),
 });
 
+export const purchaseSchema = billingTransactionCommonSchema.extend({
+  warehouse_id: z.string({
+    required_error: "The warehouse id field is required.",
+  }),
+  purchase_order_id: z.string({
+    required_error: "The sales order id field is required.",
+  }),
+});
+
 export const purchaseOrderSchema = billingTransactionCommonSchema.extend({
   // shipping_charges: z.number().nonnegative().optional(),
-  
 });
 
 // payment_term_id: z.string().optional(),
@@ -68,5 +76,6 @@ export const purchaseOrderSchema = billingTransactionCommonSchema.extend({
 export type SalesOrderFormValues = z.infer<typeof salesOrderSchema>;
 export type SalesInvoiceFormValues = z.infer<typeof salesInvoiceSchema>;
 export type PurchaseOrderFormValues = z.infer<typeof purchaseOrderSchema>;
+export type PurchaseFormValues = z.infer<typeof purchaseSchema>;
 
 // export type SalesOrderFormDataType = z.infer<typeof barcodeLineItemSchema>;

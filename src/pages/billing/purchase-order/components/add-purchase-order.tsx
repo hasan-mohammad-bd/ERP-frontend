@@ -55,6 +55,7 @@ import {
   useGetPurchaseOrderByIdQuery,
   useUpdatePurchaseOrderMutation,
 } from "@/store/services/billing/api/purchase-order";
+import { getInclusiveTaxAmount } from "@/utils";
 // import { PurchaseOrderFormValues, purchaseOrderSchema } from "@/lib/validators/billing/purchase-order";
 
 export default function AddPurchaseOrderForm() {
@@ -90,6 +91,7 @@ export default function AddPurchaseOrderForm() {
     defaultValues: {
       total: 0,
       tax_type: TAX_TYPES[1].id.toString(),
+      date: format(new Date(), "yyyy-MM-dd"),
     },
   });
 
@@ -159,7 +161,9 @@ export default function AddPurchaseOrderForm() {
       const productDiscount = (total * (discount ?? 0)) / 100;
       const discountedPrice = total - productDiscount;
       const productTax =
-        (discountedPrice * (Number(product.tax?.amount) || 0)) / 100;
+        tax_type === "inclusive"
+          ? getInclusiveTaxAmount(discountedPrice, product.tax?.amount || 0)
+          : (discountedPrice * (product.tax?.amount || 0)) / 100;
 
       subTotal += total;
       discountedAmount += productDiscount;
@@ -189,8 +193,6 @@ export default function AddPurchaseOrderForm() {
     }
     const payload: PurchaseOrderFormValues = {
       ...data,
-      // discount: data.discount || 0,
-      // shipping_charges: data.shipping_charges || 0,
       details: selectedProducts.map((product) => {
         return {
           item_barcode_id: product.barcodeId,
@@ -231,7 +233,10 @@ export default function AddPurchaseOrderForm() {
             title={purchaseOrder ? "Edit Purchase Order" : "Add Purchase Order"}
             description="Manage your sub accounts for you business"
           />
-          <Button onClick={() => navigate("/billing/purchase-orders")} size={"sm"}>
+          <Button
+            onClick={() => navigate("/billing/purchase-orders")}
+            size={"sm"}
+          >
             Purchase Order List
           </Button>
         </div>

@@ -168,6 +168,13 @@ const billingNavItems: NavItem[] = [
     isChildren: true,
     children: [
       {
+        title: "Purchases",
+        icon: Clock,
+        href: "/billing/purchases",
+        color: "text-sky-500",
+        permissions: ["hrm"],
+      },
+      {
         title: "Supplier",
         icon: Clock,
         href: "/billing/supplier",
@@ -272,7 +279,6 @@ const billingNavItems: NavItem[] = [
         href: "/billing/warehouse",
         permissions: ["hrm"],
       },
-
     ],
   },
 

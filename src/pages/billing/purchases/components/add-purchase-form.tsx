@@ -29,12 +29,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { toast } from "sonner";
-import { useGetCustomersQuery } from "@/store/services/billing/api/customer";
 import {
-  SalesInvoiceFormValues,
-  salesInvoiceSchema,
+  purchaseSchema,
+  PurchaseFormValues,
 } from "@/lib/validators/billing/billing-transactions";
-import { useGetSalesOrdersQuery } from "@/store/services/billing/api/sales-order";
 import {
   Select,
   SelectContent,
@@ -50,10 +48,12 @@ import ProductBarcodeSearch, {
 import { formatToTwoDecimalPlaces } from "@/utils/formate-number";
 import { useGetWarehouseQuery } from "@/store/services/billing/api/warehouse";
 import {
-  useCreateSalesInvoicesMutation,
-  useGetSalesInvoicesByIdQuery,
-  useUpdateSalesInvoicesMutation,
-} from "@/store/services/billing/api/invoices";
+  useCreatePurchaseMutation,
+  useGetPurchaseByIdQuery,
+  useUpdatePurchaseMutation,
+} from "@/store/services/billing/api/purchases";
+import { useGetPurchaseOrdersQuery } from "@/store/services/billing/api/purchase-order";
+import { useGetSuppliersQuery } from "@/store/services/billing/api/supplier";
 import { getInclusiveTaxAmount } from "@/utils";
 
 export default function AddInvoiceForm() {
@@ -77,26 +77,24 @@ export default function AddInvoiceForm() {
     }));
   };
 
-  const { data: customerData, isLoading: isCustomerLoading } =
-    useGetCustomersQuery("page=1&per_page=1000");
-  const { data: salesOrdersData, isLoading: isSalesOrderLoading } =
-    useGetSalesOrdersQuery(`page=1&per_page=1000`);
+  const { data: supplierData, isLoading: isCustomerLoading } =
+    useGetSuppliersQuery("page=1&per_page=1000");
+  const { data: purchaseOrdersData, isLoading: isPurchaseOrderLoading } =
+    useGetPurchaseOrdersQuery(`page=1&per_page=1000`);
   const { data: warehousesData, isLoading: isWarehousesLoading } =
     useGetWarehouseQuery(`page=1&per_page=1000`);
 
-  const salesOrders = salesOrdersData?.data || [];
-  const customers = customerData?.data || [];
+  const purchaseOrders = purchaseOrdersData?.data || [];
+  const suppliers = supplierData?.data || [];
   const warehouses = warehousesData?.data || [];
 
-  const [createSalesInvoice] = useCreateSalesInvoicesMutation();
+  const [createPurchase] = useCreatePurchaseMutation();
 
-  const form = useForm<SalesInvoiceFormValues>({
-    resolver: zodResolver(salesInvoiceSchema),
+  const form = useForm<PurchaseFormValues>({
+    resolver: zodResolver(purchaseSchema),
     defaultValues: {
       total: 0,
       discount: 0,
-      shipping_charge: 0,
-      adjustment: 0,
       tax_type: TAX_TYPES[1].id.toString(),
       date: format(new Date(), "yyyy-MM-dd"),
     },
@@ -104,17 +102,14 @@ export default function AddInvoiceForm() {
 
   // For update
   const params = useParams();
-  const salesInvoiceId = Number(params.id);
-  const { data: salesInvoiceData } = useGetSalesInvoicesByIdQuery(
-    salesInvoiceId,
-    {
-      skip: !salesInvoiceId,
-    }
-  );
+  const purchaseId = Number(params.id);
+  const { data: purchaseData } = useGetPurchaseByIdQuery(purchaseId, {
+    skip: !purchaseId,
+  });
 
-  const [updateSalesInvoice] = useUpdateSalesInvoicesMutation(); // For update
+  const [updatePurchase] = useUpdatePurchaseMutation(); // For update
 
-  const salesOrder = salesInvoiceData?.data || undefined;
+  const salesOrder = purchaseData?.data || undefined;
   // console.log(salesOrder, "salesOrderData");
 
   useEffect(() => {
@@ -147,10 +142,8 @@ export default function AddInvoiceForm() {
         sub_total: salesOrder.sub_total,
         reference: salesOrder.reference || "",
         tax: salesOrder.tax,
-        shipping_charge: salesOrder.shipping_charge || 0,
-        adjustment: salesOrder.adjustment || 0,
         warehouse_id: String(salesOrder.warehouse?.id),
-        sales_order_id: String(salesOrder.sales_order?.id),
+        purchase_order_id: String(salesOrder.purchase_order?.id),
       });
     }
   }, [salesOrder, form]);
@@ -158,8 +151,6 @@ export default function AddInvoiceForm() {
 
   const discount = form.watch("discount");
   const tax_type = form.watch("tax_type");
-  const shipping_charges = form.watch("shipping_charge");
-  const adjustment = form.watch("adjustment");
 
   // console.log(selectedProducts, "selectedProducts");
 
@@ -187,9 +178,7 @@ export default function AddInvoiceForm() {
   let grandTotal =
     subTotal -
     discountedAmount +
-    (tax_type === "inclusive" ? 0 : totalTaxAmount) +
-    (shipping_charges ? Number(shipping_charges) : 0) +
-    (adjustment ? Number(adjustment) : 0);
+    (tax_type === "inclusive" ? 0 : totalTaxAmount);
 
   // Rounding off
   subTotal = formatToTwoDecimalPlaces(subTotal);
@@ -202,11 +191,11 @@ export default function AddInvoiceForm() {
   form.setValue("tax", totalTaxAmount);
   form.setValue("total", grandTotal);
 
-  async function onSubmit(data: SalesInvoiceFormValues) {
+  async function onSubmit(data: PurchaseFormValues) {
     if (selectedProducts.length === 0) {
       return toast.error("Please select at least one product");
     }
-    const payload: SalesInvoiceFormValues = {
+    const payload: PurchaseFormValues = {
       ...data,
       details: selectedProducts.map((product) => {
         return {
@@ -224,16 +213,16 @@ export default function AddInvoiceForm() {
 
     try {
       if (!salesOrder) {
-        await createSalesInvoice(payload).unwrap();
-        toast.success("Invoice created successfully");
+        await createPurchase(payload).unwrap();
+        toast.success("Purchase created successfully");
       } else {
-        await updateSalesInvoice({
-          itemId: salesInvoiceId,
-          updatedItem: payload,
+        await updatePurchase({
+          purchaseId: purchaseId,
+          updatedPurchase: payload,
         }).unwrap();
-        toast.success("Invoice updated successfully");
+        toast.success("Purchase updated successfully");
       }
-      navigate("/billing/invoices");
+      navigate("/billing/purchases");
     } catch (error) {
       handleErrors(error as ErrorResponse);
     }
@@ -245,11 +234,11 @@ export default function AddInvoiceForm() {
       <div>
         <div className="flex items-center justify-between mb-4">
           <Heading
-            title={salesOrder ? "Edit Invoice" : "Add Invoice"}
+            title={salesOrder ? "Edit Purchase" : "Add Purchase"}
             description="Manage your sub accounts for you business"
           />
-          <Button onClick={() => navigate("/billing/invoices")} size={"sm"}>
-            Invoice List
+          <Button onClick={() => navigate("/billing/purchases")} size={"sm"}>
+            Purchase List
           </Button>
         </div>
 
@@ -263,24 +252,24 @@ export default function AddInvoiceForm() {
                 <div className="grid grid-cols-3 gap-4">
                   <FormSearchSelect
                     loading={isCustomerLoading}
-                    data={customers}
+                    data={suppliers}
                     displayField="name"
                     valueField="id"
                     form={form}
                     name="contact_id"
-                    placeholder="Select Customer"
-                    title="Customer Name"
+                    placeholder="Select Supplier"
+                    title="Supplier Name"
                     className="w-full"
                   />
                   <FormSearchSelect
-                    loading={isSalesOrderLoading}
-                    data={salesOrders}
+                    loading={isPurchaseOrderLoading}
+                    data={purchaseOrders}
                     displayField="invoice_number"
                     valueField="id"
                     form={form}
-                    name="sales_order_id"
-                    placeholder="Select Sales Order"
-                    title="Sales Order"
+                    name="purchase_order_id"
+                    placeholder="Select Purchase Order"
+                    title="Purchase Order"
                     className="w-full"
                   />
                   <FormSearchSelect
@@ -483,20 +472,6 @@ export default function AddInvoiceForm() {
 
                   <FormField
                     control={form.control}
-                    name="subject"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Subject</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Type Subject." {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
                     name="note"
                     render={({ field }) => (
                       <FormItem>
@@ -543,14 +518,12 @@ export default function AddInvoiceForm() {
                 discountedAmount={discountedAmount}
                 totalTaxAmount={totalTaxAmount}
                 grandTotal={grandTotal}
-                includeShipping={true}
-                includeAdjustment={true}
               />
             </div>
             <div className="text-right">
               <Button
                 type="button"
-                onClick={() => navigate("/billing/invoices")}
+                onClick={() => navigate("/billing/purchases")}
                 className="mr-2"
                 variant="primary"
               >
