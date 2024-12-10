@@ -107,4 +107,5 @@ export type SaleInvoiceResponse = Invoice & {
   warehouse: WarehouseRow;
   shipping_charge: number;
   sales_order: SaleOrderResponse;
+  due: number;
 };

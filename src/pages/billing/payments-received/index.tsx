@@ -5,76 +5,34 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
-// import { PaginationInfo } from "@/types";
+// import { PaginationInfo } from "@/type
 // import { PaginationState } from "@tanstack/react-table";
 
-import { useNavigate } from "react-router-dom";
 import { salesReceiptColumns } from "./components/columns";
 
-
-const data = [
-  {
-    date: "2024-10-01",
-    paymentNo: "INV-12345",
-    referenceNumber: "REF-1",
-    customerName: "Supplier A",
-    invoiceNo: "INV-12345",
-    mode: "Delivered",
-    amount: "5000.00",
-    unusedAmount: "500.00"
-  },
-  {
-    date: "2024-10-03",
-    paymentNo: "INV-12346",
-    referenceNumber: "REF-2",
-    customerName: "Supplier B",
-    invoiceNo: "INV-12346",
-    mode: "Pending",
-    amount: "7500.00",
-    unusedAmount: "750.00"
-  },
-  {
-    date: "2024-10-06",
-    paymentNo: "INV-12347",
-    referenceNumber: "REF-3",
-    customerName: "Supplier C",
-    invoiceNo: "INV-12347",
-    mode: "Delivered",
-    amount: "3200.00",
-    unusedAmount: "320.00"
-  },
-  {
-    date: "2024-10-09",
-    paymentNo: "INV-12348",
-    referenceNumber: "REF-4",
-    customerName: "Supplier D",
-    invoiceNo: "INV-12348",
-    mode: "Pending",
-    amount: "6000.00",
-    unusedAmount: "600.00"
-  }
-]
-
-
+import { PaginationState } from "@tanstack/react-table";
+import { useState } from "react";
+import { useGetPaymentReceivedQuery } from "@/store/services/billing/api/payment-received";
+import { PaginationInfo } from "@/types";
+import { Loading } from "@/components/common/loading";
+import { Modal } from "@/components/common/modal";
+import { AddPaymentReceivedFrom } from "./components/add-payment-received-form";
 
 const PaymentsReceived = () => {
-  // const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
-  // const [pagination, setPagination] = React.useState<PaginationState>({
-  //   pageIndex: 0,
-  //   pageSize: 10,
-  // });
-  // const { data, isLoading } = useGetEntriesQuery(
-  //   `per_page=${pagination.pageSize}&page=${
-  //     pagination.pageIndex + 1
-  //   }&type=opening balance`
-  // );
+  const [isOpen, setIsOpen] = useState(false);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
+  const { data, isLoading } = useGetPaymentReceivedQuery(
+    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+  );
 
-  // const openingBalance = data?.data || [];
+  const paymentReceivedData = data?.data || [];
 
-  // const paginationInfo: PaginationInfo | undefined = data?.meta;
-  // if (isLoading) return <Loading />;
+  const paginationInfo: PaginationInfo | undefined = data?.meta;
+  if (isLoading) return <Loading />;
 
   return (
     <>
@@ -85,10 +43,7 @@ const PaymentsReceived = () => {
               title="Payments Received"
               description="Manage your sub accounts for you business"
             />
-            <Button
-              onClick={() => navigate("/billing/payments-received/add")}
-              size={"sm"}
-            >
+            <Button onClick={() => setIsOpen(true)} size={"sm"}>
               <Plus className="mr-2 h-4 w-4" /> Add Payment Received
             </Button>
           </div>
@@ -97,16 +52,26 @@ const PaymentsReceived = () => {
             <div>
               <DataTable
                 columns={salesReceiptColumns}
-                data={data}
-                // paginationInfo={paginationInfo}
-                // pagination={paginationInfo && pagination}
-                // setPagination={paginationInfo && setPagination}
+                data={paymentReceivedData}
+                paginationInfo={paginationInfo}
+                pagination={paginationInfo && pagination}
+                setPagination={paginationInfo && setPagination}
               />
             </div>
           )}
         </div>
       </div>
 
+      {isOpen && (
+        <Modal
+          title="Add Payment Received Form"
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+          className="max-w-4xl w-full"
+        >
+          <AddPaymentReceivedFrom modalClose={() => setIsOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };
