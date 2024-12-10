@@ -50,7 +50,7 @@ export function CellAction({ rowData }: CellActionProps) {
               size="icon"
               className="hover:bg-secondary"
               onClick={() =>
-                navigation(`/billing/purchase-orders/edit/${rowData.id}`)
+                navigation(`/billing/purchase-return/edit/${rowData.id}`)
               }
 
               // onClick={() => toggleModal()}

@@ -99,6 +99,7 @@ export type PurchaseOrderResponse = Invoice;
 export type PurchaseResponse = Invoice & {
   warehouse: WarehouseRow;
   purchase_order: PurchaseOrderResponse;
+  return_reason: string;
 };
 
 export type SaleInvoiceResponse = Invoice & {

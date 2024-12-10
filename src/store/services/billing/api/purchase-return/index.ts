@@ -1,7 +1,8 @@
 
-import { PurchaseReturnFormData, PurchaseReturnRow } from "@/lib/validators/billing/purchase-return";
+import {  PurchaseReturnRow } from "@/lib/validators/billing/purchase-return";
 import { inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
+import { PurchaseReturnFormValues } from "@/lib/validators/billing/billing-transactions";
 
 const purchaseReturnApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
@@ -13,7 +14,7 @@ const purchaseReturnApi = inventoryApi.injectEndpoints({
       query: (purchaseReturnId) => `purchase-return/${purchaseReturnId}`,
       providesTags: ["purchaseReturn"],
     }),
-    createPurchaseReturn: build.mutation<{ data: PurchaseReturnRow }, PurchaseReturnFormData>({
+    createPurchaseReturn: build.mutation<{ data: PurchaseReturnRow }, PurchaseReturnFormValues>({
       query: (newPurchaseReturn) => ({
         url: `purchase-return`,
         method: "POST",
@@ -30,7 +31,7 @@ const purchaseReturnApi = inventoryApi.injectEndpoints({
     }),
     updatePurchaseReturn: build.mutation<
       { data: PurchaseReturnRow },
-      { purchaseReturnId: number; updatedPurchaseReturn: PurchaseReturnFormData }
+      { purchaseReturnId: number; updatedPurchaseReturn: PurchaseReturnFormValues }
     >({
       query: ({ purchaseReturnId, updatedPurchaseReturn }) => ({
         url: `purchase-return/${purchaseReturnId}`,

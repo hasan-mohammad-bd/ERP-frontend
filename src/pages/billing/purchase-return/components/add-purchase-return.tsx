@@ -12,15 +12,10 @@ import {
 } from "@/components/ui/form";
 
 import { Input } from "@/components/ui/input";
-// import { Textarea } from "@/components/ui/textarea";
 
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-
-import { useState } from "react";
-import SearchProduct, { ExtendedItemRow } from "./search-product";
-// import FileUpload from "@/components/common/file-uploader";
-import Calculation from "./calculation";
+import { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -29,44 +24,35 @@ import {
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-// import { useGetCustomersQuery } from "@/store/services/billing/api/customer";
-// import FormSearchSelect from "@/components/ui/form-items/form-search-select";
-// import { CustomerColumn } from "@/lib/validators/billing/customer";
-// import { useGetProjectsQuery } from "@/store/services/accounts/api/project";
-// import { ProjectRow } from "@/lib/validators/accounts/projects";
-// import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
-// import { EmployeeColumn } from "@/lib/validators";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { toast } from "sonner";
-// import {
-//   PurchaseOrderFormValues,
-//   purchaseOrderSchema,
-// } from "@/lib/validators/billing/purchase-order";
-// import { useGetSuppliersQuery } from "@/store/services/billing/api/supplier";
+import BillingSummaryShow from "../../../../components/common/billing/billing-summary-show";
+import { formatToTwoDecimalPlaces } from "@/utils/formate-number";
+import {
+  PurchaseReturnFormValues,
+  returnSchema,
+} from "@/lib/validators/billing/billing-transactions";
+
+
 
 import { useGetPurchaseByIdQuery } from "@/store/services/billing/api/purchases";
-import { useCreatePurchaseReturnMutation } from "@/store/services/billing/api/purchase-return";
-import { PurchaseReturnFormData, PurchaseReturnSchema } from "@/lib/validators/billing/purchase-return";
+import { useCreatePurchaseReturnMutation, useGetPurchaseReturnByIdQuery, useUpdatePurchaseReturnMutation } from "@/store/services/billing/api/purchase-return";
+
+import ProductReturnLineItems, { ProductReturnLineItemType } from "@/components/common/billing/product-return-line-items";
+import { PurchaseResponse } from "@/lib/validators/billing/billing-responses";
+// import { PurchaseOrderFormValues, purchaseOrderSchema } from "@/lib/validators/billing/purchase-order";
 
 export default function AddPurchaseReturnForm() {
   const params = useParams();
   const purchaseId = Number(params.id);
+  const purchaseReturnId = Number(params.id);
   const navigate = useNavigate();
-  // const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [selectedProducts, setSelectedProducts] = useState<ExtendedItemRow[]>(
-    []
-  );
-  console.log(selectedProducts);
-  const { data: PurchaseSingleData } = useGetPurchaseByIdQuery(purchaseId, {
-    skip: !purchaseId,
-  });
-
-  const purchaseData = PurchaseSingleData?.data || {};
-
-  console.log(purchaseData);
+  const [selectedProducts, setSelectedProducts] = useState<
+  ProductReturnLineItemType[]
+  >([]);
 
   const [openDatePickers, setOpenDatePickers] = useState({
     date: false,
@@ -83,74 +69,172 @@ export default function AddPurchaseReturnForm() {
     }));
   };
 
-  // const { data: supplierData } =
-  //   useGetSuppliersQuery("page=1&per_page=1000");
-  // const { data: projectsData, isLoading: projectLoading } =
-  //   useGetProjectsQuery(`per_page=1000&page=1`);
-  // const { data: EmployeeData, isLoading: employeeLoading } =
-  //   useGetUsersQuery(`per_page=1000&page=1`);
+  const { data: PurchaseSingleData } = useGetPurchaseByIdQuery(purchaseId, {
+    skip: !purchaseId,
+  });
 
-  // const suppliers = supplierData?.data || [];
-  // const projects = projectsData?.data || [];
-  // const employees = EmployeeData?.data || [];
+  const { data: PurchaseReturnSingleData } = useGetPurchaseReturnByIdQuery(purchaseReturnId, {
+    skip: !purchaseReturnId,
+  });
+  
 
-  const [createPurchaseReturn, { isLoading: isCreating }] =
-    useCreatePurchaseReturnMutation();
+  const purchaseData =  PurchaseReturnSingleData?.data ? PurchaseReturnSingleData?.data as any  || undefined : PurchaseSingleData?.data || undefined;
+  // const purchaseReturnData =  PurchaseReturnSingleData?.data || undefined;
 
-  // console.log(uploadedFiles);
-  const form = useForm<PurchaseReturnFormData>({
-    resolver: zodResolver(PurchaseReturnSchema),
+  console.log(PurchaseReturnSingleData)
+ 
+  
+
+  const [createPurchaseReturn] = useCreatePurchaseReturnMutation();
+
+  const form = useForm<PurchaseReturnFormValues>({
+    resolver: zodResolver(returnSchema),
     defaultValues: {
       total: 0,
+      // tax_type: TAX_TYPES[1].id.toString(),
+      date: format(new Date(), "yyyy-MM-dd"),
     },
   });
 
-  async function onSubmit(data: PurchaseReturnFormData) {
-    console.log(data);
-    try {
-      await createPurchaseReturn({
-        ...data,
-        // discount: data.discount || 0,
-        // shipping_charges: data.shipping_charges || 0,
-/*         details: selectedProducts.map((product) => {
-          const discountedPrice =
-            product.unit.selling_price * (1 - product.unit.discount / 100); // Price after discount
 
-          return {
-            unit_id: product.unit.id,
-            item_id: product.id,
-            item_barcode_id: Number(product.id),
-            price: product.unit.selling_price,
-            after_discount: discountedPrice, // Update to reflect price after discount
-            total: discountedPrice * product.quantity, // Update total to use discounted price
-            qty: product.quantity,
-            discount: product.unit.discount,
-            note: product.note || "",
-          };
-        }), */
-      }).unwrap();
-      toast.success("Purchase order created successfully");
-      navigate("/billing/purchase-orders");
+  // const purchaseOrderId = Number(params.id);
+  // const { data: purchaseOrderData } = useGetPurchaseOrderByIdQuery(
+  //   purchaseOrderId,
+  //   {
+  //     skip: !purchaseOrderId,
+  //   }
+  // );
+
+  const [updatePurchaseReturn] = useUpdatePurchaseReturnMutation(); // For update
+
+  // const purchaseData = purchaseOrderData?.data || undefined;
+  // console.log(purchaseData, "purchaseOrderData");
+
+  useEffect(() => {
+    if (purchaseData) {
+      const details: ProductReturnLineItemType[] = purchaseData.details.map(
+        (detail) => ({
+        detailId: detail.id,
+          quantity: detail?.qty,
+          price: detail?.price,
+          tax: detail?.tax || undefined,
+          units: [],
+          unit: detail?.unit,
+          barcode: detail?.item_barcode.barcode,
+          name: detail?.item.name,
+          barcodeAttribute: detail?.item_barcode.barcode_attribute,
+          note: detail?.note,
+        })
+      );
+      setSelectedProducts(details);
+      form.reset({
+        discount: purchaseData.discount,
+        total: purchaseData.total,
+        purchase_id: purchaseId,
+        return_reason: purchaseData.return_reason || "",
+        // contact_id: String(purchaseData.contact.id),
+        date: purchaseData.date || "",
+        // due_date: purchaseData.due_date || "",
+        // delivery_date: purchaseData.delivery_date || "",
+        note: purchaseData.note || "",
+        // terms_conditions: purchaseData.terms_conditions || "",
+        sub_total: purchaseData.sub_total,
+        // reference: purchaseData.reference || "",
+        tax: purchaseData.tax,
+      });
+    }
+  }, [purchaseData, form]);
+  // end of update
+
+  const discount = form.watch("discount");
+  // const tax_type = form.watch("tax_type");
+
+  // console.log(selectedProducts, "selectedProducts");
+
+  // Calculating business logics
+  let subTotal = 0;
+  let discountedAmount = 0;
+  let totalTaxAmount = 0;
+
+  if (selectedProducts && selectedProducts.length > 0) {
+    selectedProducts?.forEach((product) => {
+      const total = product.price * product.quantity;
+      const productDiscount = (total * (discount ?? 0)) / 100;
+      const discountedPrice = total - productDiscount;
+      const productTax =
+        (discountedPrice * (product.tax?.amount || 0)) / 100;
+
+      subTotal += total;
+      discountedAmount += productDiscount;
+      totalTaxAmount += productTax;
+    });
+  }
+
+  let grandTotal =
+    subTotal -
+    discountedAmount +
+    totalTaxAmount;
+
+  // Rounding off
+  subTotal = formatToTwoDecimalPlaces(subTotal);
+  discountedAmount = formatToTwoDecimalPlaces(discountedAmount);
+  totalTaxAmount = formatToTwoDecimalPlaces(totalTaxAmount);
+  grandTotal = formatToTwoDecimalPlaces(grandTotal);
+
+  // Setting the form values
+  form.setValue("sub_total", subTotal);
+  form.setValue("tax", totalTaxAmount);
+  form.setValue("total", grandTotal);
+
+  async function onSubmit(data: PurchaseReturnFormValues) {
+    if (selectedProducts.length === 0) {
+      return toast.error("Please select at least one product");
+    }
+    const payload: PurchaseReturnFormValues = {
+      ...data,
+      // purchase_id: purchaseId,
+      details: selectedProducts.map((product) => {
+        return {
+          purchase_details_id: product.detailId,
+          qty: product.quantity,
+          note: product.note || "",
+        };
+      }),
+    };
+    // console.log(payload, "payload");
+
+
+    try {
+      if (!PurchaseReturnSingleData) {
+        await createPurchaseReturn(payload).unwrap();
+        toast.success("Purchase return created successfully");
+      } else {
+        await updatePurchaseReturn({
+          purchaseReturnId: purchaseReturnId,
+          updatedPurchaseReturn: payload,
+        }).unwrap();
+        toast.success(" Purchase return updated successfully");
+      }
+      navigate("/billing/purchase-returns");
     } catch (error) {
       handleErrors(error as ErrorResponse);
     }
   }
-
-  console.log(form.formState.errors);
+  console.log(form.formState.errors, "form errors");
 
   return (
     <>
       <div>
         <div className="flex items-center justify-between mb-4">
           <Heading
-            title={"Add Purchase Return"}
+            title={purchaseData ? "Edit Purchase Return" : "Add Purchase Return"}
             description="Manage your sub accounts for you business"
           />
           <Button
-            onClick={() => navigate("/billing/purchase-orders")}
+            onClick={() => navigate("/billing/purchase-return")}
             size={"sm"}
           >
-            Quotes List
+            Purchase Order List
           </Button>
         </div>
 
@@ -161,7 +245,9 @@ export default function AddPurchaseReturnForm() {
           >
             <div className="">
               <Card className="p-3">
-                <div className="grid grid-cols-3 gap-4">
+                <div className="">
+                  <Card className="p-3">
+                  <div className="grid grid-cols-3 gap-4">
 {/*                   <FormSearchSelect<CustomerColumn>
                     loading={isCustomerLoading}
                     data={suppliers}
@@ -286,38 +372,39 @@ export default function AddPurchaseReturnForm() {
                     />
                   </div> */}
                 </div>
+                  </Card>
+                </div>
               </Card>
             </div>
             {/* product Search */}
             <Card className="mb-4">
-              <SearchProduct
+              <ProductReturnLineItems
                 setSelectedProducts={setSelectedProducts}
                 selectedProducts={selectedProducts}
-                // previousData={purchaseData}
+                details={purchaseData?.details}
               />
             </Card>
             {/* calculation */}
             <div className="flex justify-end">
-              <Calculation
+              <BillingSummaryShow
                 form={form}
-                subTotal={Number(
-                  selectedProducts
-                    .reduce((acc, product) => acc + product.total, 0)
-                    .toFixed(2)
-                )}
+                subTotal={subTotal}
+                discountedAmount={discountedAmount}
+                totalTaxAmount={totalTaxAmount}
+                grandTotal={grandTotal}
               />
             </div>
             <div className="text-right">
               <Button
                 type="button"
-                onClick={() => navigate("/billing/quotes")}
+                onClick={() => navigate("/billing/purchase-returns")}
                 className="mr-2"
                 variant="primary"
               >
                 Cancel
               </Button>
               <Button variant="default" type="submit" className="w-fit mt-4">
-                {isCreating ? "Creating..." : "Add"}
+                {purchaseData ? "Update" : "Add"}
               </Button>
             </div>
           </form>

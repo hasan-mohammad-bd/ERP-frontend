@@ -68,6 +68,8 @@ export const purchaseOrderSchema = billingTransactionCommonSchema.extend({
   // shipping_charges: z.number().nonnegative().optional(),
 });
 
+
+
 // payment_term_id: z.string().optional(),
 //   quotation_id: z.string().optional().nullable(),
 //   project_id: z.string().optional().nullable(),
@@ -78,4 +80,27 @@ export type SalesInvoiceFormValues = z.infer<typeof salesInvoiceSchema>;
 export type PurchaseOrderFormValues = z.infer<typeof purchaseOrderSchema>;
 export type PurchaseFormValues = z.infer<typeof purchaseSchema>;
 
+
+// Return details
+
+const returnDetailSchema = z.object({
+  purchase_details_id: z.number().min(1, "Purchase details ID must be a positive number"),
+  qty: z.number().min(1, "Quantity must be at least 1"),
+  note: z.string().min(1, "Note is required"),
+})
+
 // export type SalesOrderFormDataType = z.infer<typeof barcodeLineItemSchema>;
+export const returnSchema = z.object({
+  date : z.string().date(),
+  return_reason: z.string().min(1, "Return reason is required"),
+  sub_total: z.number().nonnegative("Sub total must be non-negative"),
+  discount: z.number().nonnegative("Discount must be non-negative"),
+  tax: z.number().nonnegative("Tax must be non-negative"),
+  total: z.number().nonnegative("Total must be non-negative"),
+  purchase_id: z.number().min(1, "Purchase ID must be a positive number"),
+  note: z.string().min(1, "Note is required"),
+  details: returnDetailSchema.array().optional()
+ 
+})
+
+export type PurchaseReturnFormValues = z.infer<typeof returnSchema>;
