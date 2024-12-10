@@ -12,9 +12,8 @@ const CategorySchema = z.object({
   description: z.string().nullable(),
   status: z.coerce.number(),
   sorting_index: z.coerce.number().nullable(),
-  parent_id: z.coerce.number().nullable(), 
+  parent_id: z.coerce.number().nullable(),
 });
-
 
 export const ItemSchema = z.object({
   // item_nature: z.string({
@@ -77,8 +76,9 @@ export const itemBarcode = z.object({
   after_discount: z.number().nullable(), // Allows null value
   wholesale_price: z.number().nullable(), // Allows null value
   attribute_ids: z.array(z.number()).default([]), // Array of numbers with a default empty array
-})
+});
 
+export type ItemBarCodeType = z.infer<typeof itemBarcode>;
 
 // Define the main ItemSchema using CategorySchema
 export const itemRow = z.object({
@@ -106,8 +106,33 @@ export const itemRow = z.object({
   created_at: z.string().datetime(),
   user: userRow,
   organization: organizationColumn,
-  item_barcode: z.array(itemBarcode)
-  
+  item_barcode: z.array(itemBarcode),
 });
 
 export type ItemRow = z.infer<typeof itemRow>;
+
+export const setOpeningStockSchema = z.object({
+  date: z.string(),
+  warehouse_id: z.string({ required_error: "Warehouse is required" }),
+  barcodes: z
+    .array(
+      z.object({
+        item_barcode_id: z.number(),
+        qty: z.coerce
+          .number()
+          .nonnegative()
+          .refine((discount) => discount === undefined || discount !== 0, {
+            message: "Stock cannot be 0.",
+          }),
+        price: z.coerce
+          .number()
+          .nonnegative()
+          .refine((discount) => discount === undefined || discount !== 0, {
+            message: "Price cannot be 0.",
+          }),
+      })
+    )
+    .min(1, "At least one barcode is required"),
+});
+
+export type SetOpeningStockFormValues = z.infer<typeof setOpeningStockSchema>;
