@@ -122,6 +122,13 @@ const billingNavItems: NavItem[] = [
         permissions: ["hrm"],
       },
       {
+        title: "Invoices Return",
+        icon: Clock,
+        href: "/billing/invoice-return",
+        color: "text-sky-500",
+        permissions: ["hrm"],
+      },
+      {
         title: "Sales Receipts",
         icon: ScrollText,
         href: "/billing/sales-receipts",
@@ -301,7 +308,7 @@ const billingNavItems: NavItem[] = [
         title: "Stock",
         icon: CalendarCheck2,
         color: "text-sky-500",
-        href: "/billing/employee-salary-payslip",
+        href: "/billing/stocks",
         permissions: ["hrm"],
       },
       {

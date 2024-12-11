@@ -42,6 +42,7 @@ import { useCreatePurchaseReturnMutation } from "@/store/services/billing/api/pu
 
 import ProductReturnLineItems, { ProductReturnLineItemType } from "@/components/common/billing/product-return-line-items";
 import ReturnSummaryShow from "@/components/common/billing/return-summary-show";
+import { Label } from "@/components/ui/label";
 // import { PurchaseResponse } from "@/lib/validators/billing/billing-responses";
 // import { PurchaseOrderFormValues, purchaseOrderSchema } from "@/lib/validators/billing/purchase-order";
 
@@ -189,7 +190,7 @@ export default function AddPurchaseReturnForm() {
     }
     const payload: PurchaseReturnFormValues = {
       ...data,
-      // purchase_id: purchaseId,
+      purchase_id: purchaseId,
       details: selectedProducts.map((product) => {
         return {
           purchase_details_id: product.detailId,
@@ -369,6 +370,86 @@ export default function AddPurchaseReturnForm() {
                     />
                   </div> */}
                 </div>
+                  </Card>
+                </div>
+              </Card>
+              <Card className="p-3 mt-4 ">
+                <div className="">
+                  <Card className="p-3">
+                    <div className="grid grid-cols-3 gap-4">
+                      <div>
+                        <Label htmlFor="invoice_number">Invoice Number</Label>
+                        <Input
+                          id="invoice_number"
+                          value={purchaseData?.invoice_number}
+                          placeholder="Enter Invoice Number"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="invoice_number">Warehouse</Label>
+                        <Input
+                          id="invoice_number"
+                          value={purchaseData?.warehouse?.name}
+                          placeholder="Enter Invoice Number"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="invoice_number">Tax Type</Label>
+                        <Input
+                          id="invoice_number"
+                          value={purchaseData?.purchase_order?.tax_type}
+                          placeholder="Enter Invoice Number"
+                        />
+                      </div>
+
+                      {/*                   <FormField
+                    control={form.control}
+                    name="note"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Note</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter note" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  /> */}
+
+                      {/*                   <FormSearchSelect<UsersRow>
+                    loading={employeeLoading}
+                    data={employees}
+                    displayField="name"
+                    valueField="id"
+                    form={form}
+                    name="sales_person_id"
+                    placeholder="Select Sells person"
+                    title="Sales Person"
+                    className="w-full"
+                  />
+ */}
+                      {/*                   <FormSearchSelect<ProjectRow>
+                    loading={projectLoading}
+                    data={projects}
+                    displayField="name"
+                    valueField="id"
+                    form={form}
+                    name="project_id"
+                    placeholder="Select Project"
+                    title="Project Name"
+                    className="w-full"
+                  /> */}
+
+                      {/* <div className="space-y-2">
+                    <FormLabel>Upload Files</FormLabel>
+                    <FileUpload
+                      setFilesToUpload={setUploadedFiles}
+                      filesToUpload={uploadedFiles}
+                      // uploadedFiles={previousData?.files}
+                      // onDeleteSuccess={() => refetch()}
+                    />
+                  </div> */}
+                    </div>
                   </Card>
                 </div>
               </Card>

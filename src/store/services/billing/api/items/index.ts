@@ -1,7 +1,11 @@
-import { ItemFormValues, ItemRow } from "@/lib/validators/billing/items";
+import {
+  ItemFormValues,
+  ItemRow,
+  SetOpeningStockFormValues,
+} from "@/lib/validators/billing/items";
 import { inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
-
+import { ItemStockDataType, OpeningStockDataType } from "./types";
 
 const itemApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
@@ -9,7 +13,7 @@ const itemApi = inventoryApi.injectEndpoints({
       query: (params) => `items?${params}`,
       providesTags: ["item"],
     }),
-    getItemById: build.query<{ data: ItemRow;}, string>({
+    getItemById: build.query<{ data: ItemRow }, string>({
       query: (params) => `items/${params}`,
       providesTags: ["item"],
     }),
@@ -39,7 +43,34 @@ const itemApi = inventoryApi.injectEndpoints({
       }),
       invalidatesTags: ["item"],
     }),
+
+    setOpeningStock: build.mutation<
+      { data: OpeningStockDataType },
+      SetOpeningStockFormValues
+    >({
+      query: (formData) => ({
+        url: `set-opening-stock`,
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: ["item", "opening-stock"],
+    }),
+    getOpeningStock: build.query<
+      { data: OpeningStockDataType[]; meta: PaginationInfo },
+      string
+    >({
+      query: (params) => `opening-stock?${params}`,
+      providesTags: ["item", "opening-stock"],
+    }),
+    getItemStocks: build.query<
+      { data: ItemStockDataType[]; meta: PaginationInfo },
+      string
+    >({
+      query: (params) => `item-stocks?${params}`,
+      providesTags: ["item", "opening-stock"],
+    }),
   }),
+
   overrideExisting: false,
 });
 
@@ -49,4 +80,7 @@ export const {
   useCreateItemMutation,
   useRemoveItemMutation,
   useUpdateItemMutation,
+  useSetOpeningStockMutation,
+  useGetOpeningStockQuery,
+  useGetItemStocksQuery,
 } = itemApi;
