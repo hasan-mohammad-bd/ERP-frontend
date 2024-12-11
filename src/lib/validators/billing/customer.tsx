@@ -24,6 +24,7 @@ export type CustomerColumn = {
   note: string;
   parent_id: number | null;
   location: Location;
+  total_invoice: number;
 };
 
 export const customerSchema = z.object({

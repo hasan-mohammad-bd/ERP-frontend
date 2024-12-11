@@ -273,6 +273,13 @@ const billingNavItems: NavItem[] = [
         permissions: ["hrm"],
       },
       {
+        title: "Supplier Payment",
+        icon: Soup,
+        href: "/billing/supplier-payments",
+        color: "text-sky-500",
+        permissions: ["hrm"],
+      },
+      {
         title: "Payment Terms",
         icon: Soup,
         href: "/billing/payment-terms",

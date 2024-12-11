@@ -18,6 +18,7 @@ import {
   PurchaseList,
   // Quotes,
   SalesOrderList,
+  SupplierPayments,
 } from "./components";
 
 import Units from "@/pages/billing/units";
@@ -427,6 +428,17 @@ const billingRoutes = {
         {
           index: true,
           element: withFallback(<PaymentsReceived />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+      ],
+    },
+    {
+      path: "supplier-payments",
+      errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<SupplierPayments />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
