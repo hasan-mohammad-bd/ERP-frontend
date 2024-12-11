@@ -83,10 +83,16 @@ export type PurchaseFormValues = z.infer<typeof purchaseSchema>;
 
 // Return details
 
-const returnDetailSchema = z.object({
+const returnDetailForPurchaseSchema = z.object({
   purchase_details_id: z.number().min(1, "Purchase details ID must be a positive number"),
   qty: z.number().min(1, "Quantity must be at least 1"),
-  note: z.string().min(1, "Note is required"),
+  note: z.string().optional(),
+})
+
+const returnDetailForInvoiceSchema = z.object({
+  invoice_details_id: z.number().min(1, "Invoice details ID must be a positive number"),
+  qty: z.number().min(1, "Quantity must be at least 1"),
+  note: z.string().optional(),
 })
 
 // export type SalesOrderFormDataType = z.infer<typeof barcodeLineItemSchema>;
@@ -97,10 +103,22 @@ export const returnSchema = z.object({
   discount: z.number().nonnegative("Discount must be non-negative"),
   tax: z.number().nonnegative("Tax must be non-negative"),
   total: z.number().nonnegative("Total must be non-negative"),
-  purchase_id: z.number().min(1, "Purchase ID must be a positive number"),
-  note: z.string().min(1, "Note is required"),
-  details: returnDetailSchema.array().optional()
+  // purchase_id: z.number().min(1, "Purchase ID must be a positive number"),
+  note: z.string().optional(),
+  // details: returnDetailSchema.array().optional()
  
 })
 
-export type PurchaseReturnFormValues = z.infer<typeof returnSchema>;
+export const purchaseReturnSchema = returnSchema.extend({
+  details: returnDetailForPurchaseSchema.array().optional(),
+  purchase_id: z.number().min(1, "Purchase ID must be a positive number"),
+})
+
+export const invoiceReturnSchema = returnSchema.extend({
+  details: returnDetailForInvoiceSchema.array().optional(),
+  invoice_id: z.number().min(1, "Invoice ID must be a positive number"),
+})
+
+
+export type PurchaseReturnFormValues = z.infer<typeof purchaseReturnSchema>;
+export type InvoiceReturnFormValues = z.infer<typeof invoiceReturnSchema>;

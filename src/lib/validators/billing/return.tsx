@@ -38,3 +38,5 @@ export type PurchaseReturnRow = {
   contact: Contact;
   created_at: string;
 };
+
+export type InvoiceReturnRow = PurchaseReturnRow
