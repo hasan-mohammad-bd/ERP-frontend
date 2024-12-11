@@ -225,7 +225,7 @@ export default function AddPurchaseReturnForm() {
       <div>
         <div className="flex items-center justify-between mb-4">
           <Heading
-            title={purchaseData ? "Edit Purchase Return" : "Add Purchase Return"}
+            title={purchaseData ? "Add Purchase Return" : "Add Purchase Return"}
             description="Manage your sub accounts for you business"
           />
           <Button
