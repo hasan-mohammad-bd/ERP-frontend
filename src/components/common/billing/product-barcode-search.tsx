@@ -333,7 +333,7 @@ export default function ProductBarcodeSearch({
 
                   <TableCell>
                     <Button
-                      disabled={product.quantity === product.return_qty}
+                      disabled={!!product.return_qty}
                       size="icon"
                       variant="destructive"
                       onClick={() => removeProduct(product.barcodeId)}
