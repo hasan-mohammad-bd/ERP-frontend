@@ -2,8 +2,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { FormatIndianCurrency } from "@/utils/indian-formate";
+import { BillingPaymentRow } from "@/lib/validators/billing/billing-payment";
 
-export const salesReceiptColumns: ColumnDef<any>[] = [
+export const salesReceiptColumns: ColumnDef<BillingPaymentRow>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -29,31 +30,27 @@ export const salesReceiptColumns: ColumnDef<any>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "paymentNo", // Change this to match your data structure
-    header: "Payment No",
+    accessorKey: "invoice_number",
+    header: "Invoice No",
   },
   {
     accessorKey: "date",
     header: "Date",
   },
   {
-    accessorKey: "mode",
-    header: "Mode", // Assuming 'mode' is a relevant column
-  },
-  {
-    accessorKey: "customerName",
-    header: "Customer Name", // Adjusted to match your data
+    accessorKey: "contact",
+    header: "Customer Name",
+    cell: ({ row }: { row: { original: { contact: { name: string } } } }) =>
+      row.original.contact.name,
   },
   {
     accessorKey: "amount",
     header: "Amount",
-    cell: ({ row }) => <FormatIndianCurrency amount={parseFloat(row.original.amount)} />, // Ensure the amount is parsed as a number
+    cell: ({ row }) => (
+      <FormatIndianCurrency amount={parseFloat(String(row.original.amount))} />
+    ),
   },
-  {
-    accessorKey: "unusedAmount",
-    header: "Unused Amount", // Optional: if you want to display this column
-    cell: ({ row }) => <FormatIndianCurrency amount={parseFloat(row.original.unusedAmount)} />, // Ensure the amount is parsed as a number
-  },
+
   {
     id: "actions",
     header: () => <div className="text-center">Actions</div>,

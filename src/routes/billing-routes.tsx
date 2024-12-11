@@ -18,6 +18,7 @@ import {
   PurchaseList,
   // Quotes,
   SalesOrderList,
+  SupplierPayments,
 } from "./components";
 
 import Units from "@/pages/billing/units";
@@ -34,7 +35,6 @@ import Invoice from "@/pages/billing/invoices";
 import SalesReceipt from "@/pages/billing/sales-receipts";
 import { AddSalesReceiptForm } from "@/pages/billing/sales-receipts/components/add-sales-receipts-form";
 import PaymentsReceived from "@/pages/billing/payments-received";
-import { AddPaymentReceivedFrom } from "@/pages/billing/payments-received/components/add-sales-receipts-form";
 import RecurringInvoice from "@/pages/billing/recurring-invoice";
 import { AddRecurringInvoice } from "@/pages/billing/recurring-invoice/components/add-recurring-invoice-form";
 import CreditNotes from "@/pages/billing/credit-notes";
@@ -82,7 +82,7 @@ import InvoiceUI from "@/pages/billing/invoices/components/invoiceUI";
 import WareHouse from "@/pages/billing/warehouse";
 import PurchaseReturn from "@/pages/billing/purchase-return";
 import AddPurchaseReturnForm from "@/pages/billing/purchase-return/components/add-purchase-return";
-import EditPurchaseReturn from "@/pages/billing/purchase-return/components/edit-purchase-return-form";
+
 
 const billingRoutes = {
   path: "billing/",
@@ -255,7 +255,7 @@ const billingRoutes = {
         },
         {
           path: "edit/:id",
-          element: withFallback(<EditPurchaseReturn />),
+          element: withFallback(<AddPurchaseReturnForm />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
@@ -407,9 +407,15 @@ const billingRoutes = {
           element: withFallback(<PaymentsReceived />),
           errorElement: withFallback(<ErrorPage />),
         },
+      ],
+    },
+    {
+      path: "supplier-payments",
+      errorElement: withFallback(<ErrorPage />),
+      children: [
         {
-          path: "add",
-          element: withFallback(<AddPaymentReceivedFrom />),
+          index: true,
+          element: withFallback(<SupplierPayments />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],

@@ -14,7 +14,7 @@ const purchaseApi = inventoryApi.injectEndpoints({
       query: (params) => `purchases?${params}`,
       providesTags: ["purchase"],
     }),
-    getPurchaseById: build.query<{ data: PurchaseResponse }, number>({
+    getPurchaseById: build.query<{ data: PurchaseResponse  }, number>({
       query: (purchaseId) => `purchases/${purchaseId}`,
       providesTags: ["purchase"],
     }),

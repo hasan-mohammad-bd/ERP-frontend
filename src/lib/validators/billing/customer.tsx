@@ -9,6 +9,8 @@ type Location = {
 };
 
 export type CustomerColumn = {
+  due: number;
+  invoice_number: string;
   id: number;
   name: string;
   company_name: string;
@@ -22,6 +24,7 @@ export type CustomerColumn = {
   note: string;
   parent_id: number | null;
   location: Location;
+  total_invoice: number;
 };
 
 export const customerSchema = z.object({
