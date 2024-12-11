@@ -30,15 +30,15 @@ import { Card } from "@/components/ui/card";
 import { useState } from "react";
 import SearchPaymentReceived, { InvoicesRow } from "./search-payment-received";
 import FileUpload from "@/components/common/file-uploader";
-import {
-  PaymentReceivedFormType,
-  paymentReceivedSchema,
-} from "@/lib/validators/billing/payment-received";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { LedgerRow } from "@/lib/validators/accounts";
 import { useCreatePaymentReceivedMutation } from "@/store/services/billing/api/payment-received";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { serialize } from "object-to-formdata";
+import {
+  BillingPaymentFormType,
+  billingPaymentSchema,
+} from "@/lib/validators/billing/billing-payment";
 
 interface AddPaymentReceivedProps {
   modalClose: () => void;
@@ -55,8 +55,8 @@ export function AddPaymentReceivedFrom({
   const [createPaymentReceive, { isLoading }] =
     useCreatePaymentReceivedMutation();
 
-  const form = useForm<PaymentReceivedFormType>({
-    resolver: zodResolver(paymentReceivedSchema),
+  const form = useForm<BillingPaymentFormType>({
+    resolver: zodResolver(billingPaymentSchema),
     defaultValues: {},
   });
 
@@ -77,7 +77,7 @@ export function AddPaymentReceivedFrom({
     }));
   };
 
-  async function onSubmit(data: PaymentReceivedFormType) {
+  async function onSubmit(data: BillingPaymentFormType) {
     if (selectedProducts.length === 0) {
       return toast.error("Please select at least one customer");
     }

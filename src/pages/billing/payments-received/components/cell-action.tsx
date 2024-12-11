@@ -9,11 +9,11 @@ import {
 import { Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
-import { PaymentReceivedRow } from "@/lib/validators/billing/payment-received";
 import { useRemovePaymentReceivedMutation } from "@/store/services/billing/api/payment-received";
+import { BillingPaymentRow } from "@/lib/validators/billing/billing-payment";
 
 interface CellActionProps {
-  rowData: PaymentReceivedRow;
+  rowData: BillingPaymentRow;
 }
 
 export function CellAction({ rowData }: CellActionProps) {

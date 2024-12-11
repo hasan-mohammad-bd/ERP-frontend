@@ -101,6 +101,7 @@ export type PurchaseOrderResponse = Invoice;
 export type PurchaseResponse = Invoice & {
   warehouse: WarehouseRow;
   purchase_order: PurchaseOrderResponse;
+  due: number;
   return_reason: string;
 };
 

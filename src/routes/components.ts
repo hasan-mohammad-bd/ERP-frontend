@@ -161,6 +161,9 @@ export const PurchaseList = lazy(() => import("@/pages/billing/purchases"));
 export const AddPurchaseForm = lazy(
   () => import("@/pages/billing/purchases/components/add-purchase-form")
 );
+export const SupplierPayments = lazy(
+  () => import("@/pages/billing/supplier-payments")
+);
 // export const EditSalesOrder = lazy(
 //   () => import("@/pages/billing/sales-order/components/edit-sales-order")
 // );
