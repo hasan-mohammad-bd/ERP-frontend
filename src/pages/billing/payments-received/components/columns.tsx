@@ -2,9 +2,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { FormatIndianCurrency } from "@/utils/indian-formate";
-import { PaymentReceivedRow } from "@/lib/validators/billing/payment-received";
+import { BillingPaymentRow } from "@/lib/validators/billing/billing-payment";
 
-export const salesReceiptColumns: ColumnDef<PaymentReceivedRow>[] = [
+export const salesReceiptColumns: ColumnDef<BillingPaymentRow>[] = [
   {
     id: "select",
     header: ({ table }) => (
