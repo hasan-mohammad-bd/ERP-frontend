@@ -6,16 +6,19 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Pencil, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 // import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { ErrorResponse } from "react-router-dom";
 // import { QuotationRow } from "@/lib/validators/billing/quotation";
 // import { useRemoveQuotationMutation } from "@/store/services/billing/api/quotations";
 // import handleErrors from "@/lib/handle-errors";
 // import { ErrorResponse } from "@/types";
 
 import { PurchaseReturnRow } from "@/lib/validators/billing/purchase-return";
+import { useRemovePurchaseReturnMutation } from "@/store/services/billing/api/purchase-return";
+import { toast } from "sonner";
+import handleErrors from "@/lib/handle-errors";
 
 interface CellActionProps {
   rowData: PurchaseReturnRow;
@@ -24,25 +27,25 @@ interface CellActionProps {
 export function CellAction({ rowData }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
 
-  // const [removeQuotation, { isLoading: deleteLoading }] =
-  //   useRemoveQuotationMutation();
-  const navigation = useNavigate();
+  const [removePurchaseReturn, { isLoading: deleteLoading }] =
+    useRemovePurchaseReturnMutation();
+
 
   const handleDepartmentDelete = async (id: number) => {
     console.log(id);
-    // try {
-    //   await removeQuotation(id).unwrap();
-    //   toast.success("Item deleted successfully");
-    //   setAlertModalOpen(false);
-    // } catch (error) {
-    //   handleErrors(error as ErrorResponse);
-    //   console.log(error);
-    // }
+    try {
+      await removePurchaseReturn(id).unwrap();
+      toast.success("Item deleted successfully");
+      setAlertModalOpen(false);
+    } catch (error) {
+      handleErrors(error as ErrorResponse);
+      console.log(error);
+    }
   };
 
   return (
     <div className="flex justify-center space-x-2">
-      <TooltipProvider>
+{/*       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -50,7 +53,7 @@ export function CellAction({ rowData }: CellActionProps) {
               size="icon"
               className="hover:bg-secondary"
               onClick={() =>
-                navigation(`/billing/purchase-orders/edit/${rowData.id}`)
+                navigation(`/billing/purchase-return/edit/${rowData.id}`)
               }
 
               // onClick={() => toggleModal()}
@@ -62,7 +65,7 @@ export function CellAction({ rowData }: CellActionProps) {
             <p>Update Opening Balance</p>
           </TooltipContent>
         </Tooltip>
-      </TooltipProvider>
+      </TooltipProvider> */}
 
       <TooltipProvider>
         <Tooltip>
@@ -87,11 +90,11 @@ export function CellAction({ rowData }: CellActionProps) {
       <AlertModal
         title="Are you sure?"
         description="This action cannot be undone."
-        name={"This Quotation"}
+        name={rowData.invoice_number}
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
         onConfirm={() => handleDepartmentDelete(rowData.id)}
-        loading={false}
+        loading={deleteLoading}
       />
     </div>
   );

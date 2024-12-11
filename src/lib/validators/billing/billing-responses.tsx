@@ -13,6 +13,8 @@ export interface InvoiceLineItemType {
   discount: number;
   after_discount: number;
   total: number;
+  available_qty: number;
+  used_qty: number;
   note: string;
   item: {
     id: number;
@@ -100,6 +102,7 @@ export type PurchaseResponse = Invoice & {
   warehouse: WarehouseRow;
   purchase_order: PurchaseOrderResponse;
   due: number;
+  return_reason: string;
 };
 
 export type SaleInvoiceResponse = Invoice & {
