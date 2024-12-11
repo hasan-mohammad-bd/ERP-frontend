@@ -20,7 +20,7 @@ const purchaseReturnApi = inventoryApi.injectEndpoints({
         method: "POST",
         body: newPurchaseReturn,
       }),
-      invalidatesTags: ["purchaseReturn"],
+      invalidatesTags: ["purchaseReturn", "purchase"],
     }),
     removePurchaseReturn: build.mutation<DeleteResponse, number>({
       query: (purchaseReturnId) => ({

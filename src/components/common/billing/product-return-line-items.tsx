@@ -11,10 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Plus, Minus, Trash2, Search } from "lucide-react";
 
-import {
-
-  SearchBarcodeItemUnit,
-} from "@/lib/validators/billing/search-barcode-item";
+import { SearchBarcodeItemUnit } from "@/lib/validators/billing/search-barcode-item";
 import {
   Select,
   SelectContent,
@@ -53,14 +50,13 @@ export default function ProductReturnLineItems({
   setSelectedProducts,
   details,
 }: SearchProductProps) {
-
-
+  console.log(selectedProducts, "selectedProducts");
 
   const selectProduct = (product: InvoiceLineItemType) => {
     const alreadySelected = selectedProducts.find(
       (prod) => prod.detailId === product.id // here product id is barcode id
     );
-    if (!alreadySelected) {
+    if (!alreadySelected && product.available_qty > 0) {
       setSelectedProducts((prev) => [
         ...prev,
         {
@@ -71,30 +67,28 @@ export default function ProductReturnLineItems({
           price: product.price || 0,
           // units: [product.primary_unit, product.secondary_unit],
           unit: product.unit, // Store the selected unit
-          quantity: 1,
+          quantity: product.available_qty,
           tax: product.tax || undefined,
         },
       ]);
     }
-
   };
 
   const updateQuantity = (id: number, increment: boolean) => {
     setSelectedProducts((products) =>
-      products.map((product) =>
-        product.detailId === id
-          ? {
-              ...product,
-              quantity: increment
-                ? product.quantity + 1
-                : Math.max(1, product.quantity - 1),
-            }
-          : product
-      )
+      products.map((product) => {
+        if (product.detailId === id) {
+          const availableQty = details?.find((item) => item.id === id)?.available_qty || 0;
+          const newQuantity = increment
+            ? Math.min(product.quantity + 1, availableQty)
+            : Math.max(0, product.quantity - 1);
+          return { ...product, quantity: newQuantity };
+        }
+        return product;
+      })
     );
   };
-
- 
+  
 
   const removeProduct = (id: number) => {
     setSelectedProducts((products) =>
@@ -109,20 +103,22 @@ export default function ProductReturnLineItems({
           <span className="h-4 px-4 py-[18px] border border-gray-300 flex justify-center items-center rounded-md">
             <Search className="h-4 w-4" />
           </span>
-
-          <Select>
+          <Select
+            onValueChange={(value) => {
+              const selectedItem = details?.find(
+                (item) => String(item.id) === value
+              );
+              if (selectedItem) selectProduct(selectedItem);
+            }}
+          >
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a fruit" />
+              <SelectValue placeholder="Select a product" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-              <SelectLabel>Select an item</SelectLabel>
+                <SelectLabel>Select an item</SelectLabel>
                 {details?.map((item) => (
-                  <SelectItem
-                    key={item.id}
-                    onClick={() => selectProduct(item)}
-                    value={String(item.id)}
-                  >
+                  <SelectItem key={item.id} value={String(item.id)}>
                     {item.item.name} (Barcode: {item.item_barcode.barcode})
                   </SelectItem>
                 ))}
@@ -167,19 +163,9 @@ export default function ProductReturnLineItems({
                       Barcode: {product.barcode}
                     </span>
                   </TableCell>
+                  <TableCell>{product.unit && product.unit.name}</TableCell>
                   <TableCell>
-                    {product.unit &&  (
-                      product.unit.name
-                    ) }
-                  </TableCell>
-                  <TableCell>
-                    <div className="w-48">
-                      {
-                        product.price && (
-                          product.price
-                        )
-                      }
-                    </div>
+                    <div className="w-48">{product.price && product.price}</div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-2">
@@ -196,6 +182,7 @@ export default function ProductReturnLineItems({
                         type="button"
                         size="icon"
                         variant="outline"
+                        // disabled={product.quantity === details.}
                         onClick={() => updateQuantity(product.detailId, true)}
                       >
                         <Plus className="h-4 w-4" />
@@ -205,11 +192,7 @@ export default function ProductReturnLineItems({
 
                   <TableCell>
                     <div className="w-64">
-                      {
-                        product.tax ? 
-                          product.tax.name : "no tax"
-                        
-                      }
+                      {product.tax ? product.tax.name : 0.0}
                     </div>
                   </TableCell>
 

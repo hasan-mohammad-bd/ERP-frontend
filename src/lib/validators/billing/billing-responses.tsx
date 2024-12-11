@@ -13,6 +13,7 @@ export interface InvoiceLineItemType {
   discount: number;
   after_discount: number;
   total: number;
+  available_qty: number;
   note: string;
   item: {
     id: number;

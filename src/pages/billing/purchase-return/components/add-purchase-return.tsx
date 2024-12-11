@@ -39,16 +39,17 @@ import {
 
 
 import { useGetPurchaseByIdQuery } from "@/store/services/billing/api/purchases";
-import { useCreatePurchaseReturnMutation, useGetPurchaseReturnByIdQuery, useUpdatePurchaseReturnMutation } from "@/store/services/billing/api/purchase-return";
+import { useCreatePurchaseReturnMutation } from "@/store/services/billing/api/purchase-return";
 
 import ProductReturnLineItems, { ProductReturnLineItemType } from "@/components/common/billing/product-return-line-items";
-import { PurchaseResponse } from "@/lib/validators/billing/billing-responses";
+import ReturnSummaryShow from "@/components/common/billing/return-summary-show";
+// import { PurchaseResponse } from "@/lib/validators/billing/billing-responses";
 // import { PurchaseOrderFormValues, purchaseOrderSchema } from "@/lib/validators/billing/purchase-order";
 
 export default function AddPurchaseReturnForm() {
   const params = useParams();
   const purchaseId = Number(params.id);
-  const purchaseReturnId = Number(params.id);
+  // const purchaseReturnId = Number(params.id);
   const navigate = useNavigate();
   const [selectedProducts, setSelectedProducts] = useState<
   ProductReturnLineItemType[]
@@ -73,15 +74,15 @@ export default function AddPurchaseReturnForm() {
     skip: !purchaseId,
   });
 
-  const { data: PurchaseReturnSingleData } = useGetPurchaseReturnByIdQuery(purchaseReturnId, {
-    skip: !purchaseReturnId,
-  });
+  // const { data: PurchaseReturnSingleData } = useGetPurchaseReturnByIdQuery(purchaseReturnId, {
+  //   skip: !purchaseReturnId,
+  // });
   
 
-  const purchaseData =  PurchaseReturnSingleData?.data ? PurchaseReturnSingleData?.data as any  || undefined : PurchaseSingleData?.data || undefined;
+  const purchaseData =  PurchaseSingleData?.data || undefined;
   // const purchaseReturnData =  PurchaseReturnSingleData?.data || undefined;
 
-  console.log(PurchaseReturnSingleData)
+  // console.log(PurchaseReturnSingleData)
  
   
 
@@ -105,17 +106,18 @@ export default function AddPurchaseReturnForm() {
   //   }
   // );
 
-  const [updatePurchaseReturn] = useUpdatePurchaseReturnMutation(); // For update
+  // const [updatePurchaseReturn] = useUpdatePurchaseReturnMutation(); 
 
   // const purchaseData = purchaseOrderData?.data || undefined;
   // console.log(purchaseData, "purchaseOrderData");
 
   useEffect(() => {
     if (purchaseData) {
-      const details: ProductReturnLineItemType[] = purchaseData.details.map(
-        (detail) => ({
-        detailId: detail.id,
-          quantity: detail?.qty,
+      const details: ProductReturnLineItemType[] = purchaseData.details
+        .filter((detail) => detail?.available_qty > 0) // Exclude items with available_qty = 0
+        .map((detail) => ({
+          detailId: detail.id,
+          quantity: detail?.available_qty,
           price: detail?.price,
           tax: detail?.tax || undefined,
           units: [],
@@ -124,26 +126,22 @@ export default function AddPurchaseReturnForm() {
           name: detail?.item.name,
           barcodeAttribute: detail?.item_barcode.barcode_attribute,
           note: detail?.note,
-        })
-      );
+        }));
+  
       setSelectedProducts(details);
       form.reset({
         discount: purchaseData.discount,
         total: purchaseData.total,
         purchase_id: purchaseId,
-        return_reason: purchaseData.return_reason || "",
-        // contact_id: String(purchaseData.contact.id),
-        date: purchaseData.date || "",
-        // due_date: purchaseData.due_date || "",
-        // delivery_date: purchaseData.delivery_date || "",
-        note: purchaseData.note || "",
-        // terms_conditions: purchaseData.terms_conditions || "",
+        return_reason: "",
+        date: format(new Date(), "yyyy-MM-dd"),
+        note: "",
         sub_total: purchaseData.sub_total,
-        // reference: purchaseData.reference || "",
         tax: purchaseData.tax,
       });
     }
   }, [purchaseData, form]);
+  
   // end of update
 
   const discount = form.watch("discount");
@@ -205,17 +203,17 @@ export default function AddPurchaseReturnForm() {
 
 
     try {
-      if (!PurchaseReturnSingleData) {
+      // if () {
         await createPurchaseReturn(payload).unwrap();
         toast.success("Purchase return created successfully");
-      } else {
-        await updatePurchaseReturn({
-          purchaseReturnId: purchaseReturnId,
-          updatedPurchaseReturn: payload,
-        }).unwrap();
-        toast.success(" Purchase return updated successfully");
-      }
-      navigate("/billing/purchase-returns");
+      // } else {
+      //   await updatePurchaseReturn({
+      //     purchaseReturnId: purchaseReturnId,
+      //     updatedPurchaseReturn: payload,
+      //   }).unwrap();
+      //   toast.success(" Purchase return updated successfully");
+      // }
+      navigate("/billing/purchase-return");
     } catch (error) {
       handleErrors(error as ErrorResponse);
     }
@@ -386,25 +384,26 @@ export default function AddPurchaseReturnForm() {
             </Card>
             {/* calculation */}
             <div className="flex justify-end">
-              <BillingSummaryShow
+              <ReturnSummaryShow
                 form={form}
                 subTotal={subTotal}
                 discountedAmount={discountedAmount}
                 totalTaxAmount={totalTaxAmount}
                 grandTotal={grandTotal}
+                discountDisabled={true}
               />
             </div>
             <div className="text-right">
               <Button
                 type="button"
-                onClick={() => navigate("/billing/purchase-returns")}
+                onClick={() => navigate("/billing/purchase-return")}
                 className="mr-2"
                 variant="primary"
               >
                 Cancel
               </Button>
               <Button variant="default" type="submit" className="w-fit mt-4">
-                {purchaseData ? "Update" : "Add"}
+                {purchaseData ? "Add" : "Add"}
               </Button>
             </div>
           </form>
