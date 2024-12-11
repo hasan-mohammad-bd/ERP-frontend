@@ -27,12 +27,16 @@ import { TaxRow } from "@/lib/validators/accounts/tax";
 import { UnitRow } from "@/lib/validators/billing/unit";
 
 export interface BarcodeLineItemType {
+  detailId?: number;
   barcodeId: number;
   barcode: string;
   barcodeAttribute: string;
   name: string;
   price: number;
   quantity: number;
+  available_qty?: number;
+  return_qty?: number;
+  used_qty?: number;
   note?: string;
   units: SearchBarcodeItemUnit[];
   unit: SearchBarcodeItemUnit | UnitRow; // New field to store the selected unit
@@ -46,7 +50,7 @@ interface SearchProductProps {
 
 export default function ProductBarcodeSearch({
   selectedProducts,
-  setSelectedProducts
+  setSelectedProducts,
 }: SearchProductProps) {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -188,7 +192,7 @@ export default function ProductBarcodeSearch({
               "Product Name",
               "Unit",
               "Price",
-              "P.O. Quantity",
+              "Quantity",
               "Tax",
               "Total",
               "Note",
@@ -263,6 +267,7 @@ export default function ProductBarcodeSearch({
                   <TableCell>
                     <div className="flex items-center space-x-2">
                       <Button
+                        disabled={product.quantity === product.return_qty}
                         type="button"
                         size="icon"
                         variant="outline"
@@ -328,6 +333,7 @@ export default function ProductBarcodeSearch({
 
                   <TableCell>
                     <Button
+                      disabled={!!product.return_qty}
                       size="icon"
                       variant="destructive"
                       onClick={() => removeProduct(product.barcodeId)}

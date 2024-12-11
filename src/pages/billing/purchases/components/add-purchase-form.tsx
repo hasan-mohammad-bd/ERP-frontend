@@ -41,7 +41,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TAX_TYPES } from "@/constants/billing";
-import BillingSummaryShow from "../../../../components/common/billing/billing-summary-show";
 import ProductBarcodeSearch, {
   type BarcodeLineItemType,
 } from "@/components/common/billing/product-barcode-search";
@@ -52,9 +51,10 @@ import {
   useGetPurchaseByIdQuery,
   useUpdatePurchaseMutation,
 } from "@/store/services/billing/api/purchases";
-import { useGetPurchaseOrdersQuery } from "@/store/services/billing/api/purchase-order";
+// import { useGetPurchaseOrdersQuery } from "@/store/services/billing/api/purchase-order";
 import { useGetSuppliersQuery } from "@/store/services/billing/api/supplier";
 import { getInclusiveTaxAmount } from "@/utils";
+import BillingSummaryShow from "@/components/common/billing/billing-summary-show";
 
 export default function AddInvoiceForm() {
   const navigate = useNavigate();
@@ -79,16 +79,16 @@ export default function AddInvoiceForm() {
 
   const { data: supplierData, isLoading: isCustomerLoading } =
     useGetSuppliersQuery("page=1&per_page=1000");
-  const { data: purchaseOrdersData, isLoading: isPurchaseOrderLoading } =
-    useGetPurchaseOrdersQuery(`page=1&per_page=1000`);
+  // const { data: purchaseOrdersData, isLoading: isPurchaseOrderLoading } =
+  //   useGetPurchaseOrdersQuery(`page=1&per_page=1000`);
   const { data: warehousesData, isLoading: isWarehousesLoading } =
     useGetWarehouseQuery(`page=1&per_page=1000`);
 
-  const purchaseOrders = purchaseOrdersData?.data || [];
+  // const purchaseOrders = purchaseOrdersData?.data || [];
   const suppliers = supplierData?.data || [];
   const warehouses = warehousesData?.data || [];
 
-  const [createPurchase] = useCreatePurchaseMutation();
+  const [createPurchase, { isLoading: isCreating }] = useCreatePurchaseMutation();
 
   const form = useForm<PurchaseFormValues>({
     resolver: zodResolver(purchaseSchema),
@@ -107,7 +107,7 @@ export default function AddInvoiceForm() {
     skip: !purchaseId,
   });
 
-  const [updatePurchase] = useUpdatePurchaseMutation(); // For update
+  const [updatePurchase, { isLoading: isUpdating }] = useUpdatePurchaseMutation(); // For update
 
   const salesOrder = purchaseData?.data || undefined;
   // console.log(salesOrder, "salesOrderData");
@@ -116,8 +116,12 @@ export default function AddInvoiceForm() {
     if (salesOrder) {
       const details: BarcodeLineItemType[] = salesOrder.details.map(
         (detail) => ({
+          detailId: detail.id,
           barcodeId: detail.item_barcode?.id,
           quantity: detail.qty,
+          used_qty: detail.used_qty,
+          return_qty: detail.return_qty,
+          available_qty: detail.available_qty,
           price: detail.price,
           tax: detail.tax || undefined,
           units: [],
@@ -142,8 +146,8 @@ export default function AddInvoiceForm() {
         sub_total: salesOrder.sub_total,
         reference: salesOrder.reference || "",
         tax: salesOrder.tax,
-        warehouse_id: String(salesOrder.warehouse?.id),
-        purchase_order_id: String(salesOrder.purchase_order?.id),
+        warehouse_id: salesOrder.warehouse?.id,
+        purchase_order_id: salesOrder.purchase_order?.id,
       });
     }
   }, [salesOrder, form]);
@@ -199,6 +203,7 @@ export default function AddInvoiceForm() {
       ...data,
       details: selectedProducts.map((product) => {
         return {
+          details_id: product.detailId, // required for update
           item_barcode_id: product.barcodeId,
           tax_id: product.tax?.id,
           unit_id: product.unit.id,
@@ -209,7 +214,7 @@ export default function AddInvoiceForm() {
         };
       }),
     };
-    // console.log(payload, "payload");
+    console.log(payload, "payload");
 
     try {
       if (!salesOrder) {
@@ -227,7 +232,7 @@ export default function AddInvoiceForm() {
       handleErrors(error as ErrorResponse);
     }
   }
-  // console.log(form.formState.errors, "form errors");
+  console.log(form.formState.errors, "form errors");
 
   return (
     <>
@@ -261,7 +266,8 @@ export default function AddInvoiceForm() {
                     title="Supplier Name"
                     className="w-full"
                   />
-                  <FormSearchSelect
+                  
+                  {/* <FormSearchSelect
                     loading={isPurchaseOrderLoading}
                     data={purchaseOrders}
                     displayField="invoice_number"
@@ -271,7 +277,8 @@ export default function AddInvoiceForm() {
                     placeholder="Select Purchase Order"
                     title="Purchase Order"
                     className="w-full"
-                  />
+                  /> */}
+
                   <FormSearchSelect
                     loading={isWarehousesLoading}
                     data={warehouses}
@@ -529,7 +536,9 @@ export default function AddInvoiceForm() {
               >
                 Cancel
               </Button>
-              <Button variant="default" type="submit" className="w-fit mt-4">
+              <Button
+              disabled={!form.formState.isValid || isCreating || isUpdating}
+               variant="default" type="submit" className="w-fit mt-4">
                 {salesOrder ? "Update" : "Add"}
               </Button>
             </div>

@@ -2,6 +2,7 @@ import { z } from "zod";
 
 // Common for all transaction types
 export const barcodeLineItemSchema = z.object({
+  details_id: z.number().optional(),
   item_barcode_id: z.number({
     required_error: "The barcode id is required.",
   }),
@@ -56,12 +57,8 @@ export const salesInvoiceSchema = billingTransactionCommonSchema.extend({
 });
 
 export const purchaseSchema = billingTransactionCommonSchema.extend({
-  warehouse_id: z.string({
-    required_error: "The warehouse id field is required.",
-  }),
-  purchase_order_id: z.string({
-    required_error: "The sales order id field is required.",
-  }),
+  warehouse_id: z.coerce.number({ required_error: "The warehouse id field is required." }),
+  purchase_order_id: z.coerce.number().optional(),
 });
 
 export const purchaseOrderSchema = billingTransactionCommonSchema.extend({
