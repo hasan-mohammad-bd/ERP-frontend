@@ -1,137 +1,87 @@
+import { Loading } from "@/components/common/loading";
+import { Separator } from "@radix-ui/react-dropdown-menu";
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
+import { PaginationInfo } from "@/types"; // Assuming you have a PaginationInfo type like in CheckBooks
+
 import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
-import { Paginator } from "@/components/common/paginator";
-import { PaginationInfo } from "@/types";
-import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/common/heading";
-import CustomerLedgerFilter from "./components/customer-ledger-filter";
+import { Paginator } from "@/components/common/paginator";
+import { Card } from "@/components/ui/card";
+import { useGetCustomersQuery } from "@/store/services/billing/api/customer";
 import CustomerLedgerTable from "./components/customer-ledger-table";
+import CustomerLedgerFilter from "./components/customer-ledger-filter";
 
-
-// Define your dummy data for Master Sales
-
-
-const dummySalesData = {
-  data: [
-    {
-      date: "2024-10-01",
-      customer_name: "John Doe",
-      mobile: "IN-9834326",
-      type: "Demo Type-1",
-      invoice_no: "IN-9834324",
-      note:"demo_note-1",
-      amount: 400,
-      due:200
-    },
-    {
-        date: "2024-10-02",
-        customer_name: "John Dee",
-        mobile: "IN-9834327",
-        type: "Demo Type-2",
-        invoice_no: "IN-9834324",
-        note:"demo_note-2",
-        amount: 600,
-        due:300
-    },
-    // Add more entries as needed...
-  ],
-  meta: {
-    current_page: 1,
-    from: 1,
-    last_page: 1,
-    links: [
-      {
-        url: null,
-        label: "&laquo; Previous",
-        active: false,
-      },
-      {
-        url: "http://192.168.68.130:7600/api/categories?page=1",
-        label: "1",
-        active: true,
-      },
-      {
-        url: null,
-        label: "Next &raquo;",
-        active: false,
-      },
-    ],
-    path: "http://192.168.68.130:7600/api/categories",
-    per_page: 15,
-    to: 3,
-    total: 3,
-  },
-};
-
-const CustomerLedgerReport = () => {
+const CustomerReport = () => {
+  // State for pagination
   const [page, setPage] = useState(1); // Default current page
   const [pageSize, setPageSize] = useState(10); // Number of items per page
 
   const [filterParams, setFilterParams] = useState("");
-//   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
-  const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(new Date());
-
-  console.log(filterParams)
-
-  // Paginate dummy data manually
-  const paginatedData = dummySalesData?.data.slice(
-    (page - 1) * pageSize,
-    page * pageSize,
-
+  //   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    new Date()
+  );
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(
+    new Date()
   );
 
-  // Properly structure the paginationInfo to match PaginationInfo type
-  const paginationInfo: PaginationInfo = {
-      current_page: page,
-      last_page: dummySalesData.meta.last_page,
-      per_page: pageSize,
-      total: dummySalesData.meta.total,
-      from: dummySalesData.meta.from,
-      links: dummySalesData.meta.links,
-      path: dummySalesData.meta.path,
-      to: 0
-  };
+  // Fetch leave balance data with pagination
+  const { data, isLoading } = useGetCustomersQuery(
+    `only_due=1&per_page=${pageSize}&page=${page}&${filterParams}`
+  );
+
+  const fetchedData = data?.data || [];
+  console.log("fetchedData", data);
+  console.log("fetchedData", fetchedData);
+
+  const paginationInfo: PaginationInfo | undefined = data?.meta;
+
+  // Handle loading state
+  if (isLoading) return <Loading />;
 
   return (
-    <div className="flex-1 space-y-4">
-    <div className="flex items-center justify-between">
-            <Heading
-              title="Customer Ledger Report"
-              description="Manage employees for you business"
-            />
-
-          </div>
-     <Separator />
-     <CustomerLedgerFilter setFilterParams={setFilterParams} selectedDate={selectedDate} setSelectedDate={setSelectedDate} selectedEndDate={selectedEndDate} setSelectedEndDate={setSelectedEndDate}/>
+    <>
+      <div className="mb-5 space-y-5">
+        <Heading
+          title="Customer Ledger"
+          description="Manage employees for you business"
+        />
+        <CustomerLedgerFilter
+          setFilterParams={setFilterParams}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          selectedEndDate={selectedEndDate}
+          setSelectedEndDate={setSelectedEndDate}
+        />
+      </div>
       <Card>
-        <PrintPDFWrapper className="space-y-4" fileName="customer-ledger-report">
+        <PrintPDFWrapper className="space-y-4" fileName="leave-usages-report">
           <div className="flex-1 space-y-4 my-4">
-            <div className="text-center">
+            <div className="text-center  ">
               <h2>Akaar IT</h2>
               <h3 className="text-xl">Customer Ledger Report</h3>
             </div>
           </div>
+          <div className="flex-1 space-y-4 w-full mx-auto">
+            <Separator />
 
-          {paginatedData.length > 0 ? (
-            <CustomerLedgerTable
-              tableData={paginatedData}
-            />
-          ) : null}
+            {fetchedData ? (
+              <CustomerLedgerTable tableData={fetchedData} />
+            ) : null}
+          </div>
         </PrintPDFWrapper>
         {paginationInfo && (
           <Paginator
-            className="print:hidden hide-in-pdf px-4 pb-4"
+            className="px-4 pb-4"
             meta={paginationInfo}
-            dataCount={paginatedData.length}
+            dataCount={fetchedData.length}
             onPageChange={setPage}
             onPageSizeChange={setPageSize}
           />
         )}
       </Card>
-    </div>
+    </>
   );
 };
 
-export default CustomerLedgerReport;
+export default CustomerReport;
