@@ -301,7 +301,7 @@ const billingNavItems: NavItem[] = [
         title: "Stock",
         icon: CalendarCheck2,
         color: "text-sky-500",
-        href: "/billing/employee-salary-payslip",
+        href: "/billing/stocks",
         permissions: ["hrm"],
       },
       {

@@ -42,6 +42,7 @@ export const inventoryApi = createApi({
     "purchaseReturn",
     "purchase",
     "payment-mades",
+    "opening-stock",
   ],
   endpoints: () => ({}),
 });

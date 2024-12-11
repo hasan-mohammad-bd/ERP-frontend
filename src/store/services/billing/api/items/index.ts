@@ -5,6 +5,7 @@ import {
 } from "@/lib/validators/billing/items";
 import { inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
+import { ItemStockDataType, OpeningStockDataType } from "./types";
 
 const itemApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
@@ -44,7 +45,7 @@ const itemApi = inventoryApi.injectEndpoints({
     }),
 
     setOpeningStock: build.mutation<
-      { data: ItemRow },
+      { data: OpeningStockDataType },
       SetOpeningStockFormValues
     >({
       query: (formData) => ({
@@ -52,7 +53,21 @@ const itemApi = inventoryApi.injectEndpoints({
         method: "POST",
         body: formData,
       }),
-      invalidatesTags: ["item"],
+      invalidatesTags: ["item", "opening-stock"],
+    }),
+    getOpeningStock: build.query<
+      { data: OpeningStockDataType[]; meta: PaginationInfo },
+      string
+    >({
+      query: (params) => `opening-stock?${params}`,
+      providesTags: ["item", "opening-stock"],
+    }),
+    getItemStocks: build.query<
+      { data: ItemStockDataType[]; meta: PaginationInfo },
+      string
+    >({
+      query: (params) => `item-stocks?${params}`,
+      providesTags: ["item", "opening-stock"],
     }),
   }),
 
@@ -66,4 +81,6 @@ export const {
   useRemoveItemMutation,
   useUpdateItemMutation,
   useSetOpeningStockMutation,
+  useGetOpeningStockQuery,
+  useGetItemStocksQuery,
 } = itemApi;

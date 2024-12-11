@@ -18,6 +18,7 @@ import {
   PurchaseList,
   // Quotes,
   SalesOrderList,
+  Stocks,
   SupplierPayments,
 } from "./components";
 
@@ -82,7 +83,6 @@ import InvoiceUI from "@/pages/billing/invoices/components/invoiceUI";
 import WareHouse from "@/pages/billing/warehouse";
 import PurchaseReturn from "@/pages/billing/purchase-return";
 import AddPurchaseReturnForm from "@/pages/billing/purchase-return/components/add-purchase-return";
-
 
 const billingRoutes = {
   path: "billing/",
@@ -594,6 +594,11 @@ const billingRoutes = {
     {
       path: "warehouse",
       element: withFallback(<WareHouse />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "stocks",
+      element: withFallback(<Stocks />),
       errorElement: withFallback(<ErrorPage />),
     },
     {

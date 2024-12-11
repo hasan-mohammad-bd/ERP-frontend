@@ -29,14 +29,17 @@ import {
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ItemRow,
   SetOpeningStockFormValues,
   setOpeningStockSchema,
 } from "@/lib/validators/billing/items";
 import { Input } from "@/components/ui/input";
-import { useSetOpeningStockMutation } from "@/store/services/billing/api/items";
+import {
+  useGetOpeningStockQuery,
+  useSetOpeningStockMutation,
+} from "@/store/services/billing/api/items";
 import { toast } from "sonner";
 import { ErrorResponse } from "@/types";
 import handleErrors from "@/lib/handle-errors";
@@ -54,7 +57,13 @@ export function AddOpeningStockForm({
   const { data: warehousesData, isLoading: isWarehousesLoading } =
     useGetWarehouseQuery(`page=1&per_page=1000`);
 
+  const { data: openingStockData } = useGetOpeningStockQuery(
+    `page=1&per_page=1000&item_id=${item?.id}`,
+    { skip: !item }
+  );
+
   const warehouses = warehousesData?.data || [];
+  const openingStocks = openingStockData?.data || [];
 
   const [setOpeningStock, { isLoading: isSetOpeningStockLoading }] =
     useSetOpeningStockMutation();
@@ -81,6 +90,38 @@ export function AddOpeningStockForm({
         })) || [],
     },
   });
+
+  const warehouse_id = form.watch("warehouse_id");
+  const date = form.watch("date");
+
+  const wareHouseStockData = openingStocks.find(
+    (openingStock) => openingStock.id === Number(warehouse_id)
+  );
+  useEffect(() => {
+    if (wareHouseStockData) {
+      form.reset({
+        date: date,
+        warehouse_id: warehouse_id,
+        barcodes:
+          item?.item_barcode?.map(() => ({
+            item_barcode_id: item.id,
+            qty: wareHouseStockData.qty || 0,
+            price: Number(wareHouseStockData.price) || 0,
+          })) || [],
+      });
+    } else {
+      form.reset({
+        date: date,
+        warehouse_id: warehouse_id,
+        barcodes:
+          item?.item_barcode?.map(() => ({
+            item_barcode_id: item.id,
+            qty: 0,
+            price: 0,
+          })) || [],
+      });
+    }
+  }, [form, item, wareHouseStockData]);
 
   async function onSubmit(data: SetOpeningStockFormValues) {
     try {
@@ -170,9 +211,11 @@ export function AddOpeningStockForm({
                 <Table>
                   <TableHeader className="border rounded">
                     <TableRow>
-                      {["Product Name", "Stock", "Price"].map((header) => (
-                        <TableHead key={header}>{header}</TableHead>
-                      ))}
+                      {["Product Name", "Unit Name", "Stock", "Price"].map(
+                        (header) => (
+                          <TableHead key={header}>{header}</TableHead>
+                        )
+                      )}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -193,6 +236,7 @@ export function AddOpeningStockForm({
                                 Barcode: {itemBarCode.barcode}
                               </span>
                             </TableCell>
+                            <TableCell>{item.primary_unit.name}</TableCell>
 
                             <TableCell>
                               <FormField
@@ -204,6 +248,7 @@ export function AddOpeningStockForm({
                                       <Input
                                         placeholder="Enter Stock Number"
                                         {...field}
+                                        className="w-32"
                                       />
                                     </FormControl>
                                     <FormMessage />
@@ -222,6 +267,7 @@ export function AddOpeningStockForm({
                                       <Input
                                         placeholder="Enter Price"
                                         {...field}
+                                        className="w-32"
                                       />
                                     </FormControl>
                                     <FormMessage />
@@ -239,6 +285,13 @@ export function AddOpeningStockForm({
             </div>
 
             <div className="text-right">
+              <Button
+                onClick={() => modalClose()}
+                className="mr-2"
+                variant="primary"
+              >
+                Cancel
+              </Button>
               <Button variant="default" type="submit" className="w-fit mt-4">
                 Add
               </Button>
