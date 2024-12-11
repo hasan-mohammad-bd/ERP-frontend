@@ -9,8 +9,8 @@ import {
 import { Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
-import { useRemovePaymentReceivedMutation } from "@/store/services/billing/api/payment-received";
 import { BillingPaymentRow } from "@/lib/validators/billing/billing-payment";
+import { useRemoveSupplierPaymentMutation } from "@/store/services/billing/api/supplier-payments";
 
 interface CellActionProps {
   rowData: BillingPaymentRow;
@@ -19,13 +19,13 @@ interface CellActionProps {
 export function CellAction({ rowData }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
 
-  const [removePaymentReceived, { isLoading: deleteLoading }] =
-    useRemovePaymentReceivedMutation();
+  const [removeSupplierPayment, { isLoading: deleteLoading }] =
+    useRemoveSupplierPaymentMutation();
 
   const handleDeletePaymentReceived = async (id: number) => {
     try {
-      await removePaymentReceived(id);
-      toast.success("Payments Received deleted successfully");
+      await removeSupplierPayment(id);
+      toast.success("Supplier Payment deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
@@ -49,7 +49,7 @@ export function CellAction({ rowData }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Delete Payment Receive</p>
+            <p>Delete Supplier Payment</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

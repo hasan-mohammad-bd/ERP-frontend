@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { files } from "../accounts/entry";
 
-export type PaymentReceivedRow = {
+export type BillingPaymentRow = {
   id: number;
   invoice_prifix: string;
   invoice_suffix: number;
@@ -26,11 +26,11 @@ export type PaymentReceivedRow = {
   created_at: string;
 };
 
-export const paymentReceivedSchema = z.object({
+export const billingPaymentSchema = z.object({
   files: files,
   date: z.string({ required_error: "Date is required" }),
   ledger_account_id: z.string({ required_error: "Account is required" }),
   note: z.string().optional(),
 });
 
-export type PaymentReceivedFormType = z.infer<typeof paymentReceivedSchema>;
+export type BillingPaymentFormType = z.infer<typeof billingPaymentSchema>;

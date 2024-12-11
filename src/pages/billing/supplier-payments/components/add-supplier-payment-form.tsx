@@ -28,32 +28,32 @@ import { Calendar } from "@/components/ui/calendar";
 
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
-import SearchPaymentReceived, { InvoicesRow } from "./search-payment-received";
+import SearchPaymentReceived, { PurchaseRow } from "./search-payment-received";
 import FileUpload from "@/components/common/file-uploader";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { LedgerRow } from "@/lib/validators/accounts";
-import { useCreatePaymentReceivedMutation } from "@/store/services/billing/api/payment-received";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { serialize } from "object-to-formdata";
 import {
   BillingPaymentFormType,
   billingPaymentSchema,
 } from "@/lib/validators/billing/billing-payment";
+import { useCreateSupplierPaymentMutation } from "@/store/services/billing/api/supplier-payments";
 
 interface AddPaymentReceivedProps {
   modalClose: () => void;
 }
 
-export function AddPaymentReceivedFrom({
+export function AddSupplierPaymentFrom({
   modalClose,
 }: AddPaymentReceivedProps) {
-  const [selectedProducts, setSelectedProducts] = useState<InvoicesRow[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<PurchaseRow[]>([]);
   const [contactId, setContactId] = useState<number | null>(null);
   const [receivedAmount, setReceivedAmount] = useState<number>(0);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
-  const [createPaymentReceive, { isLoading }] =
-    useCreatePaymentReceivedMutation();
+  const [createSupplierPayment, { isLoading }] =
+    useCreateSupplierPaymentMutation();
 
   const form = useForm<BillingPaymentFormType>({
     resolver: zodResolver(billingPaymentSchema),
@@ -89,7 +89,7 @@ export function AddPaymentReceivedFrom({
         amount: Number(receivedAmount),
         details: selectedProducts.map((product) => ({
           amount: product.amount,
-          invoice_id: product.id,
+          purchase_id: product.id,
         })),
         files: uploadedFiles,
         _method: "POST",
@@ -98,8 +98,8 @@ export function AddPaymentReceivedFrom({
     );
 
     try {
-      await createPaymentReceive(formData).unwrap();
-      toast.success("Payment receive created successfully");
+      await createSupplierPayment(formData).unwrap();
+      toast.success("Supplier Payment created successfully");
       modalClose();
     } catch (error) {
       console.log(error);

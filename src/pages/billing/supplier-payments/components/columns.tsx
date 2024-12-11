@@ -4,7 +4,7 @@ import { CellAction } from "./cell-action";
 import { FormatIndianCurrency } from "@/utils/indian-formate";
 import { BillingPaymentRow } from "@/lib/validators/billing/billing-payment";
 
-export const salesReceiptColumns: ColumnDef<BillingPaymentRow>[] = [
+export const supplierPaymentColumns: ColumnDef<BillingPaymentRow>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -39,7 +39,7 @@ export const salesReceiptColumns: ColumnDef<BillingPaymentRow>[] = [
   },
   {
     accessorKey: "contact",
-    header: "Customer Name",
+    header: "Supplier Name",
     cell: ({ row }: { row: { original: { contact: { name: string } } } }) =>
       row.original.contact.name,
   },
