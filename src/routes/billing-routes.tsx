@@ -34,7 +34,6 @@ import Invoice from "@/pages/billing/invoices";
 import SalesReceipt from "@/pages/billing/sales-receipts";
 import { AddSalesReceiptForm } from "@/pages/billing/sales-receipts/components/add-sales-receipts-form";
 import PaymentsReceived from "@/pages/billing/payments-received";
-import { AddPaymentReceivedFrom } from "@/pages/billing/payments-received/components/add-sales-receipts-form";
 import RecurringInvoice from "@/pages/billing/recurring-invoice";
 import { AddRecurringInvoice } from "@/pages/billing/recurring-invoice/components/add-recurring-invoice-form";
 import CreditNotes from "@/pages/billing/credit-notes";
@@ -405,11 +404,6 @@ const billingRoutes = {
         {
           index: true,
           element: withFallback(<PaymentsReceived />),
-          errorElement: withFallback(<ErrorPage />),
-        },
-        {
-          path: "add",
-          element: withFallback(<AddPaymentReceivedFrom />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],

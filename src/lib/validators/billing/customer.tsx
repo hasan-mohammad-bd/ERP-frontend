@@ -9,6 +9,8 @@ type Location = {
 };
 
 export type CustomerColumn = {
+  due: number;
+  invoice_number: string;
   id: number;
   name: string;
   company_name: string;
