@@ -536,7 +536,7 @@ export default function ItemAddForm() {
               />
             </div>
             <div className="flex justify-end space-x-4 mt-5">
-              <Button variant="outline" onClick={() => form.reset()}>
+              <Button variant="outline" onClick={() => navigate("/billing/items")}>
                 Cancel
               </Button>
               <Button form="itemForm" type="submit">

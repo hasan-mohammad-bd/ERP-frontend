@@ -32,7 +32,7 @@ const PurchaseReturn = () => {
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
   const { data: purchases, isLoading: purchasesLoading } = useGetPurchasesQuery(
-    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+    `per_page=1000&page=1`
   );
 
   const purchaseReturnData = data?.data || [];
