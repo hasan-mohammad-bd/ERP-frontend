@@ -89,6 +89,7 @@ import PurchaseRegister from "@/pages/billing/reports/purchase-register";
 import InvoiceReturn from "@/pages/billing/invoice-return";
 import AddInvoiceReturnForm from "@/pages/billing/invoice-return/components/add-invoice-return";
 import SupplierWisePurchase from "@/pages/billing/reports/supplier-wise-purchase";
+import PaymentReceiveDetails from "@/pages/billing/payments-received/components/payment-receive-details";
 
 const billingRoutes = {
   path: "billing/",
@@ -337,6 +338,11 @@ const billingRoutes = {
         {
           path: "add",
           element: withFallback(<AddPurchaseReceiveForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "details/:id",
+          element: withFallback(<PaymentReceiveDetails />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
