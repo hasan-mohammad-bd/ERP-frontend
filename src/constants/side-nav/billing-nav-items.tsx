@@ -488,9 +488,16 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
+      {
+        title: "Supplier Wise Purchase Report",
+        icon: UserRoundSearch,
+        href: "supplier-wise-purchase-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
     ],
   },
-
+  
   {
     title: "Billing Setting",
     icon: Settings,
