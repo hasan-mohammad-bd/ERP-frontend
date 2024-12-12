@@ -1,4 +1,4 @@
-// PurchaseRegister Component
+// SaleRegister Component
 import { Loading } from "@/components/common/loading";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { useState } from "react";
@@ -8,11 +8,11 @@ import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import { Heading } from "@/components/common/heading";
 import { Paginator } from "@/components/common/paginator";
 import { Card } from "@/components/ui/card";
-import PurchaseRegisterFilter from "./components/purchase-register-filter";
-import { useGetPurchaseRegisterQuery } from "@/store/services/billing/api/reports/purchase-register";
-import PurchaseRegisterTable from "./components/purchase-register-table";
+import SaleRegisterFilter from "./components/sale-register-filter";
+import { useGetSaleRegisterQuery } from "@/store/services/billing/api/reports/sale-register";
+import SaleRegisterTable from "./components/sale-register-table";
 
-const PurchaseRegister = () => {
+const SaleRegister = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [filterParams, setFilterParams] = useState("");
@@ -23,7 +23,7 @@ const PurchaseRegister = () => {
   const [filtersApplied, setFiltersApplied] = useState(false); // Track if filters are applied
 
   // Use skip option to prevent fetching data before filters are applied
-  const { data, isLoading } = useGetPurchaseRegisterQuery(
+  const { data, isLoading } = useGetSaleRegisterQuery(
     `with_summary=1&per_page=${pageSize}&page=${page}&${filterParams}`,
     { skip: !filtersApplied } // Skip the query when filters are not applied
   );
@@ -37,10 +37,10 @@ const PurchaseRegister = () => {
     <>
       <div className="mb-5 space-y-5">
         <Heading
-          title="Purchase Register"
+          title="Sale Register"
           description="Manage employees for your business"
         />
-        <PurchaseRegisterFilter
+        <SaleRegisterFilter
           setFilterParams={(params) => {
             setFilterParams(params);
             setFiltersApplied(true); // Enable data fetching
@@ -55,18 +55,18 @@ const PurchaseRegister = () => {
         <Card>
           <PrintPDFWrapper
             className="space-y-4"
-            fileName="purchase-register-report"
+            fileName="sale-register-report"
           >
             <div className="flex-1 space-y-4 my-4">
               <div className="text-center">
                 <h2>Akaar IT</h2>
-                <h3 className="text-xl">Purchase Register</h3>
+                <h3 className="text-xl">Sale Register</h3>
               </div>
             </div>
             <div className="flex-1 space-y-4 w-full mx-auto">
               <Separator />
               {fetchedData.length ? (
-                <PurchaseRegisterTable tableData={fetchedData} />
+                <SaleRegisterTable tableData={fetchedData} />
               ) : (
                 <p>No data available</p>
               )}
@@ -87,4 +87,4 @@ const PurchaseRegister = () => {
   );
 };
 
-export default PurchaseRegister;
+export default SaleRegister;

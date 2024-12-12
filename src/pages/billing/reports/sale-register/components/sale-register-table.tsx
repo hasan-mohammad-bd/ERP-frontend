@@ -7,15 +7,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PurchaseRegisterDataType } from "@/store/services/billing/api/reports/purchase-register/type";
+import { SaleRegisterDataType } from "@/store/services/billing/api/reports/sale-register/type";
 
 // Define a new interface for sales data
 
 interface Props {
-  tableData?: PurchaseRegisterDataType[]; // Update to use SalesDataRow[]
+  tableData?: SaleRegisterDataType[]; // Update to use SalesDataRow[]
 }
 
-const PurchaseRegisterTable = ({ tableData }: Props) => {
+const SaleRegisterTable = ({ tableData }: Props) => {
   return (
     <Card>
       <Table className="">
@@ -23,7 +23,7 @@ const PurchaseRegisterTable = ({ tableData }: Props) => {
           <TableRow>
             <TableHead>Date</TableHead>
             <TableHead>Invoice Number</TableHead>
-            <TableHead>Supplier Name</TableHead>
+            <TableHead>Customer Name</TableHead>
             <TableHead>type</TableHead>
             <TableHead>Tax</TableHead>
             <TableHead>Amount</TableHead>
@@ -37,9 +37,9 @@ const PurchaseRegisterTable = ({ tableData }: Props) => {
               <TableRow key={index} className="">
                 <TableCell className="">{item.date}</TableCell>
                 <TableCell className="">
-                  {item.purchase_invoice_number}
+                  {item.sale_invoice_number}
                 </TableCell>
-                <TableCell className="">{item.supplier_name}</TableCell>
+                <TableCell className="">{item.customer_name}</TableCell>
                 <TableCell className="">{item.type}</TableCell>
                 <TableCell className="">{item.tax}</TableCell>
                 <TableCell className="">{item.amount}</TableCell>
@@ -52,4 +52,4 @@ const PurchaseRegisterTable = ({ tableData }: Props) => {
   );
 };
 
-export default PurchaseRegisterTable;
+export default SaleRegisterTable;

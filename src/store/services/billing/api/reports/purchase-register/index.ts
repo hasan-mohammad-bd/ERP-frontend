@@ -1,18 +1,13 @@
-// import { PaginationInfo } from "@/types";
 import { PaginationInfo } from "@/types";
-import {  inventoryApi } from "../..";
+import {  inventoryApi } from "../../..";
 import { PurchaseRegisterDataType } from "./type";
 
 
 const purchaseRegisterApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
     getPurchaseRegister: build.query<
-//    { data: PurchaseRegisterDataType[]; meta: PaginationInfo },
-//      void
-
      { data: PurchaseRegisterDataType[]; meta: PaginationInfo },
      string
-
 
     >({
       query: (params) => `report/purchase-register?${params}`,

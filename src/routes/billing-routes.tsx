@@ -49,7 +49,7 @@ import ManagePurchase from "@/pages/billing/manage-purchase";
 import { AddManagePurchase } from "@/pages/billing/manage-purchase/components/add-manage-purchase-form";
 import MadePayment from "@/pages/billing/made-payment";
 import { AddMadePaymentForm } from "@/pages/billing/made-payment/components/add-purchase-recieve-form";
-import MasterSales from "@/pages/billing/reports/master-sales-report";
+import SaleRegister from "@/pages/billing/reports/sale-register";
 import ProductSales from "@/pages/billing/reports/product-wise-sales";
 import StockReport from "@/pages/billing/reports/stock-report";
 import CustomerReport from "@/pages/billing/reports/customer-report";
@@ -523,104 +523,115 @@ const billingRoutes = {
       errorElement: withFallback(<ErrorPage />),
     },
 
-    {
-      path: "master-sales",
-      element: withFallback(<MasterSales />),
-      errorElement: withFallback(<ErrorPage />),
-    },
 
     {
-      path: "product-sales",
-      element: withFallback(<ProductSales />),
+      path: "reports",
+      // element: withFallback(<Invoice />),
       errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          path: "sale-register",
+          element: withFallback(<SaleRegister />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+
+        {
+          path: "product-sales",
+          element: withFallback(<ProductSales />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+
+        {
+          path: "purchase-register",
+          element: withFallback(<PurchaseRegister />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+
+        {
+          path: "stock-summary",
+          element: withFallback(<StockReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "stock-ledger",
+          element: withFallback(<StockLedgerReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+
+        {
+          path: "customer-summary",
+          element: withFallback(<CustomerReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+
+        {
+          path: "customer-ledger",
+          element: withFallback(<CustomerLedgerReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+
+        {
+          path: "due-receivable-report",
+          element: withFallback(<DueReceiveableReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "due-received-report",
+          element: withFallback(<DueReceivedReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "supplier-summary",
+          element: withFallback(<SupplierSummary />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "supplier-ledger",
+          element: withFallback(<SupplierLedgerReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "due-payable-report",
+          element: withFallback(<DuePayableReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+
+        {
+          path: "due-paid-report",
+          element: withFallback(<DuePaidReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+
+        {
+          path: "product-profit-loss",
+          element: withFallback(<ProductProfitLoss />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "invoice-profit-loss",
+          element: withFallback(<InvoiceWiseProfitLoss />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "customer-profit-loss",
+          element: withFallback(<CustomerWiseProfitLoss />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "sales-tax-report",
+          element: withFallback(<SalesTaxReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "purchase-tax-report",
+          element: withFallback(<PurchaseTaxReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+
+      ],
     },
 
-    {
-      path: "purchase-register",
-      element: withFallback(<PurchaseRegister />),
-      errorElement: withFallback(<ErrorPage />),
-    },
 
-    {
-      path: "stock-summary",
-      element: withFallback(<StockReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "stock-ledger",
-      element: withFallback(<StockLedgerReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-
-    {
-      path: "customer-summary",
-      element: withFallback(<CustomerReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-
-    {
-      path: "customer-ledger",
-      element: withFallback(<CustomerLedgerReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-
-    {
-      path: "due-receivable-report",
-      element: withFallback(<DueReceiveableReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "due-received-report",
-      element: withFallback(<DueReceivedReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "supplier-summary",
-      element: withFallback(<SupplierSummary />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "supplier-ledger",
-      element: withFallback(<SupplierLedgerReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "due-payable-report",
-      element: withFallback(<DuePayableReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-
-    {
-      path: "due-paid-report",
-      element: withFallback(<DuePaidReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-
-    {
-      path: "product-profit-loss",
-      element: withFallback(<ProductProfitLoss />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "invoice-profit-loss",
-      element: withFallback(<InvoiceWiseProfitLoss />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "customer-profit-loss",
-      element: withFallback(<CustomerWiseProfitLoss />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "sales-tax-report",
-      element: withFallback(<SalesTaxReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "purchase-tax-report",
-      element: withFallback(<PurchaseTaxReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
 
     {
       path: "quotation-qetails-ui",
