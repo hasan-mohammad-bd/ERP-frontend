@@ -34,7 +34,6 @@ import {
   SalesInvoiceFormValues,
   salesInvoiceSchema,
 } from "@/lib/validators/billing/billing-transactions";
-import { useGetSalesOrdersQuery } from "@/store/services/billing/api/sales-order";
 import {
   Select,
   SelectContent,
@@ -43,7 +42,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TAX_TYPES } from "@/constants/billing";
-import BillingSummaryShow from "../../../../components/common/billing/billing-summary-show";
 import ProductBarcodeSearch, {
   type BarcodeLineItemType,
 } from "@/components/common/billing/product-barcode-search";
@@ -55,6 +53,7 @@ import {
   useUpdateSalesInvoicesMutation,
 } from "@/store/services/billing/api/invoices";
 import { getInclusiveTaxAmount } from "@/utils";
+import BillingSummaryShow from "@/components/common/billing/billing-summary-show";
 
 export default function AddInvoiceForm() {
   const navigate = useNavigate();
@@ -79,16 +78,15 @@ export default function AddInvoiceForm() {
 
   const { data: customerData, isLoading: isCustomerLoading } =
     useGetCustomersQuery("page=1&per_page=1000");
-  const { data: salesOrdersData, isLoading: isSalesOrderLoading } =
-    useGetSalesOrdersQuery(`page=1&per_page=1000`);
+
   const { data: warehousesData, isLoading: isWarehousesLoading } =
     useGetWarehouseQuery(`page=1&per_page=1000`);
 
-  const salesOrders = salesOrdersData?.data || [];
   const customers = customerData?.data || [];
   const warehouses = warehousesData?.data || [];
 
-  const [createSalesInvoice] = useCreateSalesInvoicesMutation();
+  const [createSalesInvoice, { isLoading: isCreateLoading }] =
+    useCreateSalesInvoicesMutation();
 
   const form = useForm<SalesInvoiceFormValues>({
     resolver: zodResolver(salesInvoiceSchema),
@@ -112,7 +110,8 @@ export default function AddInvoiceForm() {
     }
   );
 
-  const [updateSalesInvoice] = useUpdateSalesInvoicesMutation(); // For update
+  const [updateSalesInvoice, { isLoading: isUpdateLoading }] =
+    useUpdateSalesInvoicesMutation(); // For update
 
   const salesOrder = salesInvoiceData?.data || undefined;
   // console.log(salesOrder, "salesOrderData");
@@ -121,8 +120,11 @@ export default function AddInvoiceForm() {
     if (salesOrder) {
       const details: BarcodeLineItemType[] = salesOrder.details.map(
         (detail) => ({
+          detailId: detail.id,
           barcodeId: detail.item_barcode?.id,
           quantity: detail.qty,
+          available_qty: detail.available_qty,
+          used_qty: detail.used_qty,
           price: detail.price,
           tax: detail.tax || undefined,
           units: [],
@@ -149,8 +151,8 @@ export default function AddInvoiceForm() {
         tax: salesOrder.tax,
         shipping_charge: salesOrder.shipping_charge || 0,
         adjustment: salesOrder.adjustment || 0,
-        warehouse_id: String(salesOrder.warehouse?.id),
-        sales_order_id: String(salesOrder.sales_order?.id),
+        warehouse_id: salesOrder.warehouse?.id,
+        sales_order_id: salesOrder.sales_order?.id,
       });
     }
   }, [salesOrder, form]);
@@ -210,6 +212,7 @@ export default function AddInvoiceForm() {
       ...data,
       details: selectedProducts.map((product) => {
         return {
+          details_id: product.detailId, // required for update
           item_barcode_id: product.barcodeId,
           tax_id: product.tax?.id,
           unit_id: product.unit.id,
@@ -270,17 +273,6 @@ export default function AddInvoiceForm() {
                     name="contact_id"
                     placeholder="Select Customer"
                     title="Customer Name"
-                    className="w-full"
-                  />
-                  <FormSearchSelect
-                    loading={isSalesOrderLoading}
-                    data={salesOrders}
-                    displayField="invoice_number"
-                    valueField="id"
-                    form={form}
-                    name="sales_order_id"
-                    placeholder="Select Sales Order"
-                    title="Sales Order"
                     className="w-full"
                   />
                   <FormSearchSelect
@@ -556,7 +548,12 @@ export default function AddInvoiceForm() {
               >
                 Cancel
               </Button>
-              <Button variant="default" type="submit" className="w-fit mt-4">
+              <Button
+                disabled={isCreateLoading || isUpdateLoading}
+                variant="default"
+                type="submit"
+                className="w-fit mt-4"
+              >
                 {salesOrder ? "Update" : "Add"}
               </Button>
             </div>

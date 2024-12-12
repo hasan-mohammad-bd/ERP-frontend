@@ -5,6 +5,7 @@ import { FormatIndianCurrency } from "@/utils/indian-formate";
 import { renderStatus } from "@/lib/render-status";
 import { Link } from "react-router-dom";
 import { SaleInvoiceResponse } from "@/lib/validators/billing/billing-responses";
+import { getFormattedDate } from "@/utils/format-dates";
 
 export const invoiceColumns: ColumnDef<SaleInvoiceResponse>[] = [
   {
@@ -34,6 +35,7 @@ export const invoiceColumns: ColumnDef<SaleInvoiceResponse>[] = [
   {
     accessorKey: "date",
     header: "Date",
+    cell: ({ row }) => getFormattedDate(row.original.date || ""),
   },
   {
     accessorKey: "invoice_number",
@@ -48,22 +50,39 @@ export const invoiceColumns: ColumnDef<SaleInvoiceResponse>[] = [
     ),
   },
   {
-    accessorKey: "subject",
-    header: "Subject",
+    accessorKey: "contact.name",
+    header: "Customer Name",
+  },
+  {
+    accessorKey: "contact.phone",
+    header: "Customer Phone",
   },
   {
     accessorKey: "reference",
     header: "Reference No",
   },
   {
-    accessorKey: "date",
-    header: "Date",
+    accessorKey: "delivery_date",
+    header: "Delivery Date",
+    cell: ({ row }) => getFormattedDate(row.original.delivery_date || ""),
+  },
+  {
+    accessorKey: "due_date",
+    header: "Due Date",
+    cell: ({ row }) => getFormattedDate(row.original.due_date || ""),
   },
   {
     accessorKey: "total",
     header: "Amount",
     cell: ({ row }) => (
       <FormatIndianCurrency amount={Number(row.original.total)} />
+    ),
+  },
+  {
+    accessorKey: "total_due",
+    header: "Total Due",
+    cell: ({ row }) => (
+      <FormatIndianCurrency amount={Number(row.original.total_due)} />
     ),
   },
   {

@@ -2,6 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { SaleOrderResponse } from "@/lib/validators/billing/billing-responses";
+import { getFormattedDate } from "@/utils/format-dates";
 
 
 export const salesOrderColumns: ColumnDef<SaleOrderResponse>[] = [
@@ -32,7 +33,7 @@ export const salesOrderColumns: ColumnDef<SaleOrderResponse>[] = [
   {
     accessorKey: "date",
     header: "Date",
-    cell: ({ row }) => <>{row.original.date}</>,
+    cell: ({ row }) => <>{getFormattedDate(row.original.date || "")}</>,
   },
   {
     accessorKey: "invoice_number",
@@ -40,21 +41,31 @@ export const salesOrderColumns: ColumnDef<SaleOrderResponse>[] = [
     cell: ({ row }) => <>{row.original.invoice_number}</>,
   },
   {
+    accessorKey: "contact.name",
+    header: "Customer Name",
+  },
+  {
+    accessorKey: "contact.phone",
+    header: "Customer Phone",
+  },
+  {
     accessorKey: "delivery_date",
     header: "Delivery Date",
+    cell: ({ row }) => <>{getFormattedDate(row.original.delivery_date || "")}</>,
   },
   {
     accessorKey: "due_date",
     header: "Due Date",
+    cell: ({ row }) => <>{getFormattedDate(row.original.due_date || "")}</>,
   },
-  {
-    accessorKey: "discount",
-    header: "Discount",
-  },
-  {
-    accessorKey: "shipping_charges",
-    header: "Shipping Charges",
-  },
+  // {
+  //   accessorKey: "discount",
+  //   header: "Discount",
+  // },
+  // {
+  //   accessorKey: "shipping_charges",
+  //   header: "Shipping Charges",
+  // },
   {
     accessorKey: "total",
     header: "Total",

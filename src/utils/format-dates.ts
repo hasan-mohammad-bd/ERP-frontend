@@ -55,7 +55,7 @@ export const getFormattedDate = (date: string): string => {
   if (!isValid(parsedDate)) {
     return "";
   }
-  return format(parsedDate, "dd-MM-yyyy");
+  return format(parsedDate, "dd-MMM-yyyy");
 };
 
 
