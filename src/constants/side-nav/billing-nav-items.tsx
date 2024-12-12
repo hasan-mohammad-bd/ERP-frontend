@@ -366,9 +366,9 @@ const billingNavItems: NavItem[] = [
         permissions: ["hrm"],
       },
       {
-        title: "Purchase Report",
+        title: "Purchase Register",
         icon: UserRoundSearch,
-        href: "purchase-report",
+        href: "purchase-register",
         color: "text-sky-500",
         permissions: ["hrm"],
       },

@@ -50,7 +50,6 @@ import MadePayment from "@/pages/billing/made-payment";
 import { AddMadePaymentForm } from "@/pages/billing/made-payment/components/add-purchase-recieve-form";
 import MasterSales from "@/pages/billing/reports/master-sales-report";
 import ProductSales from "@/pages/billing/reports/product-wise-sales";
-import PurchaseReport from "@/pages/billing/reports/purchase-report";
 import StockReport from "@/pages/billing/reports/stock-report";
 import CustomerReport from "@/pages/billing/reports/customer-report";
 import StockLedgerReport from "@/pages/billing/reports/stcok-ledger";
@@ -83,6 +82,8 @@ import InvoiceUI from "@/pages/billing/invoices/components/invoiceUI";
 import WareHouse from "@/pages/billing/warehouse";
 import PurchaseReturn from "@/pages/billing/purchase-return";
 import AddPurchaseReturnForm from "@/pages/billing/purchase-return/components/add-purchase-return";
+import PurchaseRegister from "@/pages/billing/reports/purchase-register";
+
 import InvoiceReturn from "@/pages/billing/invoice-return";
 import AddInvoiceReturnForm from "@/pages/billing/invoice-return/components/add-invoice-return";
 
@@ -523,8 +524,8 @@ const billingRoutes = {
     },
 
     {
-      path: "purchase-report",
-      element: withFallback(<PurchaseReport />),
+      path: "purchase-register",
+      element: withFallback(<PurchaseRegister />),
       errorElement: withFallback(<ErrorPage />),
     },
 
