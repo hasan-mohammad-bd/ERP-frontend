@@ -46,6 +46,9 @@ export function PricingArea({
     {}
   );
   const [employeeSearchTerm, setEmployeeSearchTerm] = useState("");
+  // const [attributePicked, setAttributePicked] = useState<any[]>([]);
+  
+
 
   const { data: attributeCategories, isLoading: AttributeCategoryLoading } =
     useGetAttributeCategoriesQuery(`per_page=1000&page=1`);
@@ -74,21 +77,20 @@ export function PricingArea({
   useEffect(() => {
     if (previousData) {
       form.reset({
-        attribute_categories: previousData.attribute_categories.map(
-          (item: any) => {
-            return {
-              attribute_category_id: item?.id?.toString(),
-              attribute_ids: item?.attribute_ids?.map((id: number) => id),
-            };
-          }
-        ),
+        attribute_categories: previousData.attribute_categories.map((item: any) => {
+          return {
+            attribute_category_id: item?.id?.toString(),
+            attribute_ids: item?.attribute_ids?.map((id: number) => id),
+          };
+        }),
       });
-
+  
       const attributesIndex: Record<number, AttributeRow> = {};
       attributesData.forEach((attr) => {
         attributesIndex[attr.id] = attr;
       });
-      // Replace attribute_ids with full objects
+  
+      // Transforming attribute_ids into full objects
       const updatedAttributeGroups = previousData.attribute_categories.map(
         (group: any) => ({
           ...group,
@@ -97,19 +99,24 @@ export function PricingArea({
             .filter(Boolean),
         })
       );
-
-      console.log(updatedAttributeGroups);
-
-      // const adminOptions = selectedAttributes.reduce((acc: Record<number, Option[]>, current, index) => {
-      //   acc[index] = [current];
-      //   return acc;
-      // }, {});
-
-      // console.log(adminOptions)
-
-      // setAdminOptions(adminOptions);
+  
+      // Map updatedAttributeGroups to adminOptions format
+      const mappedAdminOptions: { [key: number]: Option[] } = updatedAttributeGroups.reduce(
+        (acc: { [key: number]: Option[] }, group: any, index: number) => {
+          acc[index] = group.attribute_ids.map((attr: AttributeRow) => ({
+            value: attr.id.toString(),
+            label: attr.name,
+          }));
+          return acc;
+        },
+        {}
+      );
+  
+      // setAttributePicked(updatedAttributeGroups);
+      setAdminOptions(mappedAdminOptions); // Set the adminOptions state
     }
   }, [previousData, form, attributesData]);
+  
 
   /*   useEffect(() => {
 
@@ -165,6 +172,8 @@ export function PricingArea({
   const filteredAttributes = attributesData.filter(
     (item) => Number(catchCategory) === Number(item.attribute_category.id)
   );
+
+  console.log(filteredAttributes);
 
   const handleSearchAdmin = async (query: string): Promise<Option[]> => {
     setEmployeeSearchTerm(query);
