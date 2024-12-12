@@ -57,7 +57,9 @@ export function AddSupplierPaymentFrom({
 
   const form = useForm<BillingPaymentFormType>({
     resolver: zodResolver(billingPaymentSchema),
-    defaultValues: {},
+    defaultValues: {
+      date: format(new Date(), "yyyy-MM-dd"),
+    },
   });
 
   const { data: ledgerAccountData, isLoading: isAccountLoading } =

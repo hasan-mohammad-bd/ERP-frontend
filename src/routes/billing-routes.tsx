@@ -12,6 +12,7 @@ import {
   // DashboardAccounts,
   ErrorPage,
   ExpensesList,
+  InvoiceRefunds,
   Layout,
   NotFoundPage,
   PaymentTerms,
@@ -278,7 +279,7 @@ const billingRoutes = {
           element: withFallback(<AddInvoiceReturnForm />),
           errorElement: withFallback(<ErrorPage />),
         },
-/*         {
+        /*         {
           path: "edit/:id",
           element: withFallback(<AddPurchaseReturnForm />),
           errorElement: withFallback(<ErrorPage />),
@@ -292,6 +293,17 @@ const billingRoutes = {
         {
           index: true,
           element: withFallback(<PurchaseRefunds />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+      ],
+    },
+    {
+      path: "invoice-refund",
+      errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<InvoiceRefunds />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
