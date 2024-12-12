@@ -16,9 +16,10 @@ import { ErrorResponse } from "react-router-dom";
 // import { ErrorResponse } from "@/types";
 
 import { PurchaseReturnRow } from "@/lib/validators/billing/return";
-import { useRemovePurchaseReturnMutation } from "@/store/services/billing/api/purchase-return";
+// import { useRemovePurchaseReturnMutation } from "@/store/services/billing/api/purchase-return";
 import { toast } from "sonner";
 import handleErrors from "@/lib/handle-errors";
+import { useRemoveInvoiceReturnMutation } from "@/store/services/billing/api/invoice-return";
 
 interface CellActionProps {
   rowData: PurchaseReturnRow;
@@ -27,13 +28,13 @@ interface CellActionProps {
 export function CellAction({ rowData }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
 
-  const [removePurchaseReturn, { isLoading: deleteLoading }] =
-    useRemovePurchaseReturnMutation();
+  const [removeInvoiceReturn, { isLoading: deleteLoading }] =
+    useRemoveInvoiceReturnMutation();
 
   const handleDepartmentDelete = async (id: number) => {
     console.log(id);
     try {
-      await removePurchaseReturn(id).unwrap();
+      await removeInvoiceReturn(id).unwrap();
       toast.success("Item deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
