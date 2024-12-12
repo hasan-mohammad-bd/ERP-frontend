@@ -103,6 +103,7 @@ export type PurchaseResponse = Invoice & {
   purchase_order: PurchaseOrderResponse;
   due: number;
   return_reason: string;
+  total_due: number;
 };
 
 export type SaleInvoiceResponse = Invoice & {
@@ -112,4 +113,5 @@ export type SaleInvoiceResponse = Invoice & {
   shipping_charge: number;
   sales_order: SaleOrderResponse;
   due: number;
+  total_due: number;
 };

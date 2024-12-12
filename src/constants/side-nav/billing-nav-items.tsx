@@ -182,6 +182,13 @@ const billingNavItems: NavItem[] = [
         permissions: ["accounts"],
       },
       {
+        title: "Purchase Refund",
+        icon: Soup,
+        href: "/billing/purchase-refund",
+        color: "text-sky-500",
+        permissions: ["hrm"],
+      },
+      {
         title: "Expenses Category",
         icon: Clock,
         href: "/billing/expenses-category",

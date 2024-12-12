@@ -16,7 +16,7 @@ export interface PurchaseRow {
   id: number;
   date: string;
   invoice_number: string;
-  due: number;
+  total_due: number;
   amount?: number;
 }
 
@@ -60,7 +60,7 @@ export default function SearchPaymentReceived({
   const purchases =
     purchaseData?.data.map((invoice) => ({
       ...invoice,
-      amount: invoice.due,
+      amount: invoice.total_due,
     })) || [];
 
   const selectCustomer = (customerId: number, customerName: string) => {
@@ -104,7 +104,7 @@ export default function SearchPaymentReceived({
     for (const purchase of purchases) {
       if (remainingAmount <= 0) break;
 
-      const allocatedAmount = Math.min(purchase.due, remainingAmount);
+      const allocatedAmount = Math.min(purchase.total_due, remainingAmount);
       updatedProducts.push({ ...purchase, amount: allocatedAmount });
       remainingAmount -= allocatedAmount;
     }
@@ -127,7 +127,7 @@ export default function SearchPaymentReceived({
   const updateInvoiceAmount = (id: number, newAmount: number) => {
     const updatedProducts = selectedProducts.map((product) =>
       product.id === id
-        ? { ...product, amount: Math.min(newAmount, product.due) }
+        ? { ...product, amount: Math.min(newAmount, product.total_due) }
         : product
     );
     setSelectedProducts(updatedProducts);
@@ -222,14 +222,14 @@ export default function SearchPaymentReceived({
                   </TableCell>
                   <TableCell>{invoice.date}</TableCell>
                   <TableCell>{invoice.invoice_number}</TableCell>
-                  <TableCell>{invoice.due}</TableCell>
+                  <TableCell>{invoice.total_due}</TableCell>
                   <TableCell>
                     <Input
                       type="number"
                       value={
                         selectedProducts.find(
                           (product) => product.id === invoice.id
-                        )?.amount || invoice.due
+                        )?.amount || invoice.total_due
                       }
                       onChange={(e) =>
                         updateInvoiceAmount(
