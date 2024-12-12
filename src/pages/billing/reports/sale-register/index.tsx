@@ -65,8 +65,13 @@ const SaleRegister = () => {
             </div>
             <div className="flex-1 space-y-4 w-full mx-auto">
               <Separator />
-              {fetchedData.length ? (
-                <SaleRegisterTable tableData={fetchedData} />
+              { fetchedData ? (
+                  <SaleRegisterTable
+                    tableData={fetchedData?.sales_register}
+                    ledgerAccounts={fetchedData?.ledger_accounts}
+                    totals={data?.totals} // Pass the totals object
+                  />
+
               ) : (
                 <p>No data available</p>
               )}
