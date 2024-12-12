@@ -14,7 +14,6 @@ export interface InvoiceLineItemType {
   after_discount: number;
   total: number;
   available_qty: number;
-  return_qty: number;
   used_qty: number;
   note: string;
   item: {

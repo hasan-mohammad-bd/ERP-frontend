@@ -35,7 +35,6 @@ export interface BarcodeLineItemType {
   price: number;
   quantity: number;
   available_qty?: number;
-  return_qty?: number;
   used_qty?: number;
   note?: string;
   units: SearchBarcodeItemUnit[];
@@ -267,7 +266,7 @@ export default function ProductBarcodeSearch({
                   <TableCell>
                     <div className="flex items-center space-x-2">
                       <Button
-                        disabled={product.quantity === product.return_qty}
+                        disabled={product.quantity === product.used_qty}
                         type="button"
                         size="icon"
                         variant="outline"
@@ -301,7 +300,7 @@ export default function ProductBarcodeSearch({
                         <SelectContent>
                           {taxData?.map((tax: TaxRow) => (
                             <SelectItem key={tax.id} value={String(tax.id)}>
-                              {tax.name}
+                              {tax.name} ({tax.amount}%)
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -333,7 +332,7 @@ export default function ProductBarcodeSearch({
 
                   <TableCell>
                     <Button
-                      disabled={!!product.return_qty}
+                      disabled={!!product.used_qty}
                       size="icon"
                       variant="destructive"
                       onClick={() => removeProduct(product.barcodeId)}

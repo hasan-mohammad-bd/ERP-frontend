@@ -3,6 +3,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { Link } from "react-router-dom";
 import { PurchaseResponse } from "@/lib/validators/billing/billing-responses";
+import { getFormattedDate } from "@/utils/format-dates";
 
 export const purchaseColumns: ColumnDef<PurchaseResponse>[] = [
   {
@@ -30,6 +31,11 @@ export const purchaseColumns: ColumnDef<PurchaseResponse>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "date",
+    header: "Date",
+    cell: ({ row }) => getFormattedDate(row.original?.date) || "",
+  },
+  {
     accessorKey: "invoice_number",
     header: "Invoice Number",
     cell: ({ row }) => (
@@ -42,24 +48,34 @@ export const purchaseColumns: ColumnDef<PurchaseResponse>[] = [
     ),
   },
   {
-    accessorKey: "date",
-    header: "Date",
+    accessorKey: "contact.name",
+    header: "Supplier Name",
+  },
+  {
+    accessorKey: "contact.phone",
+    header: "Supplier Phone",
+  },
+  {
+    accessorKey: "warehouse.name",
+    header: "Warehouse",
   },
   {
     accessorKey: "delivery_date",
     header: "Delivery Date",
+    cell: ({ row }) => getFormattedDate(row.original?.delivery_date  || ""),
   },
   {
     accessorKey: "due_date",
     header: "Due Date",
-  },
-  {
-    accessorKey: "discount",
-    header: "Discount",
+    cell: ({ row }) => getFormattedDate(row.original?.due_date  || ""),
   },
   {
     accessorKey: "total",
     header: "Total",
+  },
+  {
+    accessorKey: "total_due",
+    header: "Total Due",
   },
   {
     id: "actions",

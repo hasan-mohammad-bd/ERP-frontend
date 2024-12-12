@@ -120,7 +120,6 @@ export default function AddInvoiceForm() {
           barcodeId: detail.item_barcode?.id,
           quantity: detail.qty,
           used_qty: detail.used_qty,
-          return_qty: detail.return_qty,
           available_qty: detail.available_qty,
           price: detail.price,
           tax: detail.tax || undefined,

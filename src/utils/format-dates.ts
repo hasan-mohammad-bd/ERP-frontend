@@ -5,6 +5,7 @@ import {
   // parseISO 
   isValid,
   parse,
+  parseISO,
 } from "date-fns";
 
 /**
@@ -40,6 +41,21 @@ export const getFormattedDateTime = (date: string) => {
   // const parsedDate = parseISO(date);
   const formattedDate = format(date, "yyyy-MM-dd hh:mm a");
   return formattedDate;
+};
+
+/**
+ * The function `getFormattedDate` takes a date string as input and returns the date formatted as
+ * "dd-MM-yyyy". If the date is invalid, it returns an empty string.
+ * @param {string} date - A string representing a date in the format "yyyy-MM-dd".
+ * @returns The function `getFormattedDate` is returning a formatted date string in the format
+ * "dd-MM-yyyy", or an empty string if the date is invalid.
+ */
+export const getFormattedDate = (date: string): string => {
+  const parsedDate = parseISO(date);
+  if (!isValid(parsedDate)) {
+    return "";
+  }
+  return format(parsedDate, "dd-MM-yyyy");
 };
 
 

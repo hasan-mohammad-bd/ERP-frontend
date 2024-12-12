@@ -36,7 +36,7 @@ export const TaxColumns: ColumnDef<TaxRow>[] = [
   },
   {
     accessorKey: "amount",
-    header: "Amount",
+    header: "Amount (In %)",
   },
   {
     accessorKey: "description",
