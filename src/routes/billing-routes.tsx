@@ -16,6 +16,7 @@ import {
   NotFoundPage,
   PaymentTerms,
   PurchaseList,
+  PurchaseRefunds,
   // Quotes,
   SalesOrderList,
   Stocks,
@@ -282,6 +283,17 @@ const billingRoutes = {
           element: withFallback(<AddPurchaseReturnForm />),
           errorElement: withFallback(<ErrorPage />),
         }, */
+      ],
+    },
+    {
+      path: "purchase-refund",
+      errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<PurchaseRefunds />),
+          errorElement: withFallback(<ErrorPage />),
+        },
       ],
     },
     {

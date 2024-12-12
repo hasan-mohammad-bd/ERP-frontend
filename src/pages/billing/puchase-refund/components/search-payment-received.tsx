@@ -9,24 +9,24 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Search } from "lucide-react";
-import { useGetCustomersQuery } from "@/store/services/billing/api/customer";
-import { useGetSalesInvoicesQuery } from "@/store/services/billing/api/invoices";
+import { useGetSuppliersQuery } from "@/store/services/billing/api/supplier";
+import { useGetPurchasesQuery } from "@/store/services/billing/api/purchases";
 
-interface SearchProductProps {
-  selectedProducts: InvoicesRow[];
-  setSelectedProducts: Dispatch<SetStateAction<InvoicesRow[]>>;
-  previousData: boolean;
-  setContactId: Dispatch<SetStateAction<number | null>>;
-  receivedAmount: number;
-  setReceivedAmount: Dispatch<SetStateAction<number>>;
-}
-
-export interface InvoicesRow {
+export interface PurchaseRow {
   id: number;
   date: string;
   invoice_number: string;
   total_due: number;
   amount?: number;
+}
+
+interface SearchProductProps {
+  selectedProducts: PurchaseRow[];
+  setSelectedProducts: Dispatch<SetStateAction<PurchaseRow[]>>;
+  previousData: boolean;
+  setContactId: Dispatch<SetStateAction<number | null>>;
+  receivedAmount: number;
+  setReceivedAmount: Dispatch<SetStateAction<number>>;
 }
 
 export default function SearchPaymentReceived({
@@ -37,39 +37,40 @@ export default function SearchPaymentReceived({
   setReceivedAmount,
 }: SearchProductProps) {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(
+  const [selectedSupplierId, setSelectedSupplierId] = useState<number | null>(
     null
   );
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
 
-  const { data: customerData, isLoading: isCustomerLoading } =
-    useGetCustomersQuery("only_due=1&per_page=1000&page=1", {
+  const { data: supplierData, isLoading: isSupplierLoading } =
+    useGetSuppliersQuery("only_due=1&per_page=1000&page=1", {
       skip: !searchTerm,
     });
 
-  const { data: invoiceData } = useGetSalesInvoicesQuery(
-    `only_due=1&contact_id=${selectedCustomerId}&per_page=1000&page=1`,
-    { skip: !selectedCustomerId }
+  const { data: purchasesData } = useGetPurchasesQuery(
+    `only_due=-1&contact_id=${selectedSupplierId}&per_page=1000&page=1`,
+    { skip: !selectedSupplierId }
   );
 
-  const customers = customerData?.data || [];
-  const filteredCustomers = customers.filter((customer) =>
+  const suppliers = supplierData?.data || [];
+  const filteredSuppliers = suppliers.filter((customer) =>
     customer.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const invoices =
-    invoiceData?.data.map((invoice) => ({
+  const purchases =
+    purchasesData?.data.map((invoice) => ({
       ...invoice,
-      amount: invoice.total_due,
+      total_due: Math.abs(invoice.total_due), // Make total_due always positive
+      amount: Math.abs(invoice.total_due), // Ensure amount is also positive
     })) || [];
 
   const selectCustomer = (customerId: number, customerName: string) => {
-    setSelectedCustomerId(customerId);
+    setSelectedSupplierId(customerId);
     setSearchTerm(customerName); // Set the selected customer's name in the input field
     setDropdownVisible(false); // Hide the dropdown after selection
   };
 
-  const toggleInvoiceSelection = (invoice: InvoicesRow) => {
+  const toggleInvoiceSelection = (invoice: PurchaseRow) => {
     const alreadySelected = selectedProducts.find(
       (product) => product.id === invoice.id
     );
@@ -99,13 +100,13 @@ export default function SearchPaymentReceived({
 
   const updateReceivedAmount = (newAmount: number) => {
     let remainingAmount = newAmount;
-    const updatedProducts: InvoicesRow[] = [];
+    const updatedProducts: PurchaseRow[] = [];
 
-    for (const invoice of invoices) {
+    for (const purchase of purchases) {
       if (remainingAmount <= 0) break;
 
-      const allocatedAmount = Math.min(invoice.total_due, remainingAmount);
-      updatedProducts.push({ ...invoice, amount: allocatedAmount });
+      const allocatedAmount = Math.min(purchase.total_due, remainingAmount);
+      updatedProducts.push({ ...purchase, amount: allocatedAmount });
       remainingAmount -= allocatedAmount;
     }
 
@@ -157,7 +158,7 @@ export default function SearchPaymentReceived({
           </span>
           <Input
             type="text"
-            placeholder="Enter Customer Name"
+            placeholder="Enter Supplier Name"
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -168,11 +169,11 @@ export default function SearchPaymentReceived({
         </div>
         {searchTerm &&
           dropdownVisible &&
-          !isCustomerLoading &&
-          filteredCustomers.length > 0 && (
+          !isSupplierLoading &&
+          filteredSuppliers.length > 0 && (
             <div className="absolute ml-14 bg-gray-50 dark:bg-gray-900">
               <ul className="border rounded-lg p-2">
-                {filteredCustomers.map((customer) => (
+                {filteredSuppliers.map((customer) => (
                   <li
                     key={customer.id}
                     className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 p-2 text-sm w-full"
@@ -201,7 +202,7 @@ export default function SearchPaymentReceived({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {invoices.length === 0 ? (
+          {purchases.length === 0 ? (
             <TableRow>
               <TableCell colSpan={5} className="text-center py-5">
                 No Items Selected Yet
@@ -209,7 +210,7 @@ export default function SearchPaymentReceived({
             </TableRow>
           ) : (
             <>
-              {invoices.map((invoice) => (
+              {purchases.map((invoice) => (
                 <TableRow key={invoice.id}>
                   <TableCell>
                     <input
