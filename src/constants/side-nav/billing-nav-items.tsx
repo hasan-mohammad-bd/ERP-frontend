@@ -122,6 +122,13 @@ const billingNavItems: NavItem[] = [
         permissions: ["accounts"],
       },
       {
+        title: "Payment Received",
+        icon: Soup,
+        href: "/billing/payments-received",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
         title: "Invoices Return",
         icon: Clock,
         href: "/billing/invoice-return",
@@ -129,11 +136,11 @@ const billingNavItems: NavItem[] = [
         permissions: ["accounts"],
       },
       {
-        title: "Payment Received",
+        title: "Invoices Refund",
         icon: Soup,
-        href: "/billing/payments-received",
+        href: "/billing/invoice-refund",
         color: "text-sky-500",
-        permissions: ["accounts"],
+        permissions: ["hrm"],
       },
     ],
   },
@@ -481,9 +488,16 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
+      {
+        title: "Supplier Wise Purchase Report",
+        icon: UserRoundSearch,
+        href: "supplier-wise-purchase-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
     ],
   },
-
+  
   {
     title: "Billing Setting",
     icon: Settings,

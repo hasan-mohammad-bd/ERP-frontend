@@ -169,6 +169,9 @@ export const Stocks = lazy(() => import("@/pages/billing/stock"));
 export const PurchaseRefunds = lazy(
   () => import("@/pages/billing/puchase-refund")
 );
+export const InvoiceRefunds = lazy(
+  () => import("@/pages/billing/invoice-refund")
+);
 // export const EditSalesOrder = lazy(
 //   () => import("@/pages/billing/sales-order/components/edit-sales-order")
 // );

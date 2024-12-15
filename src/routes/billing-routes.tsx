@@ -12,6 +12,7 @@ import {
   // DashboardAccounts,
   ErrorPage,
   ExpensesList,
+  InvoiceRefunds,
   Layout,
   NotFoundPage,
   PaymentTerms,
@@ -87,6 +88,7 @@ import PurchaseRegister from "@/pages/billing/reports/purchase-register";
 
 import InvoiceReturn from "@/pages/billing/invoice-return";
 import AddInvoiceReturnForm from "@/pages/billing/invoice-return/components/add-invoice-return";
+import SupplierWisePurchase from "@/pages/billing/reports/supplier-wise-purchase";
 
 const billingRoutes = {
   path: "billing/",
@@ -278,7 +280,7 @@ const billingRoutes = {
           element: withFallback(<AddInvoiceReturnForm />),
           errorElement: withFallback(<ErrorPage />),
         },
-/*         {
+        /*         {
           path: "edit/:id",
           element: withFallback(<AddPurchaseReturnForm />),
           errorElement: withFallback(<ErrorPage />),
@@ -292,6 +294,17 @@ const billingRoutes = {
         {
           index: true,
           element: withFallback(<PurchaseRefunds />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+      ],
+    },
+    {
+      path: "invoice-refund",
+      errorElement: withFallback(<ErrorPage />),
+      children: [
+        {
+          index: true,
+          element: withFallback(<InvoiceRefunds />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
@@ -632,6 +645,12 @@ const billingRoutes = {
     },
 
 
+
+    {
+      path: "supplier-wise-purchase-report",
+      element: withFallback(<SupplierWisePurchase />),
+      errorElement: withFallback(<ErrorPage />),
+    },
 
     {
       path: "quotation-qetails-ui",

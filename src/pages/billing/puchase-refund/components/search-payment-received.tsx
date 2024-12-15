@@ -43,7 +43,7 @@ export default function SearchPaymentReceived({
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
 
   const { data: supplierData, isLoading: isSupplierLoading } =
-    useGetSuppliersQuery("only_due=1&per_page=1000&page=1", {
+    useGetSuppliersQuery("only_due=-1&per_page=1000&page=1", {
       skip: !searchTerm,
     });
 
