@@ -69,7 +69,7 @@ const SaleRegister = () => {
                   <SaleRegisterTable
                     tableData={fetchedData?.sales_register}
                     ledgerAccounts={fetchedData?.ledger_accounts}
-                    totals={data?.totals} // Pass the totals object
+                    totals={fetchedData?.totals} // Pass the totals object
                   />
 
               ) : (

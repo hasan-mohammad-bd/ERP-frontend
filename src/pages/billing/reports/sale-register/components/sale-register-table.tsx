@@ -1,23 +1,27 @@
-import { Card } from "@/components/ui/card";
+import { Card } from '@/components/ui/card'
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
+  TableFooter,
   TableRow,
-} from "@/components/ui/table";
-import { LedgerAccountType, SalesRegisterType } from "@/store/services/billing/api/reports/sale-register/type";
+} from '@/components/ui/table'
+import {
+  LedgerAccountType,
+  SalesRegisterType,
+} from '@/store/services/billing/api/reports/sale-register/type'
 
 interface Props {
-  tableData?: SalesRegisterType[];
-  ledgerAccounts?: LedgerAccountType[];
+  tableData?: SalesRegisterType[]
+  ledgerAccounts?: LedgerAccountType[]
   totals?: {
-    total_amount: number;
-    total_tax: number;
-    total_paid: number;
-    total_due: number;
-  };
+    total_amount: number
+    total_tax: number
+    total_paid: number
+    total_due: number
+  }
 }
 
 const SaleRegisterTable = ({ tableData, ledgerAccounts, totals }: Props) => {
@@ -50,30 +54,31 @@ const SaleRegisterTable = ({ tableData, ledgerAccounts, totals }: Props) => {
               <TableCell>{item.amount}</TableCell>
               <TableCell>{item.due}</TableCell>
               {ledgerAccounts?.map((ledger) => {
-                const payment = item.payment.find((p) => p.id === ledger.id);
-                return <TableCell key={ledger.id}>{payment?.amount || 0}</TableCell>;
+                const payment = item.payment.find((p) => p.id === ledger.id)
+                return (
+                  <TableCell key={ledger.id}>{payment?.amount || 0}</TableCell>
+                )
               })}
             </TableRow>
           ))}
-
-          {/* Totals Row */}
-          {totals && (
+        </TableBody>
+        {/* Totals Row */}
+        {totals && (
+          <TableFooter>
             <TableRow className="font-bold bg-gray-100">
               <TableCell colSpan={4}>Totals</TableCell>
               <TableCell>{totals.total_tax.toFixed(2)}</TableCell>
               <TableCell>{totals.total_amount.toFixed(2)}</TableCell>
               <TableCell>{totals.total_due.toFixed(2)}</TableCell>
-              {ledgerAccounts?.map((ledger) => (
-                <TableCell key={ledger.id}>
-                  {totals[ledger.name] || 0}
-                </TableCell>
+              {ledgerAccounts?.map((item, index) => (
+                <TableCell key={index}>{item.total_amount}</TableCell>
               ))}
             </TableRow>
-          )}
-        </TableBody>
+          </TableFooter>
+        )}
       </Table>
     </Card>
-  );
-};
+  )
+}
 
-export default SaleRegisterTable;
+export default SaleRegisterTable
