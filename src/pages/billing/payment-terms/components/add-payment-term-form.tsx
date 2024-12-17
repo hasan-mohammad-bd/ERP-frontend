@@ -93,7 +93,7 @@ export function AddPaymentTermForm({
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter Unit Name" {...field} />
+                      <Input placeholder="Enter Name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

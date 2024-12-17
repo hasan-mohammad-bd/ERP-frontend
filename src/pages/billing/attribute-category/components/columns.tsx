@@ -35,10 +35,6 @@ export const attributeCategoryColumn: ColumnDef<AttributeCategoryRow>[] = [
     accessorKey: "name",
     header: "Attribute Category Name",
   },
-  // {
-  //   accessorKey: "code",
-  //   header: "Short Code",
-  // },
   {
     accessorKey: "status",
     header: "Status",

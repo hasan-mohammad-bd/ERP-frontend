@@ -69,7 +69,7 @@ import CustomerWiseProfitLoss from "@/pages/billing/reports/customer-wise-profit
 import SalesTaxReport from "@/pages/billing/reports/sales-tax-report";
 import PurchaseTaxReport from "@/pages/billing/reports/purchase-tax-report";
 import BillingDashboard from "@/pages/billing/dashboard-billing";
-// import AttributeCategory from "@/pages/billing/attribute-category";
+
 import Brand from "@/pages/billing/brand";
 import AttributeCategory from "@/pages/billing/attribute-category";
 import Attributes from "@/pages/billing/attributes";

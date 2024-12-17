@@ -35,11 +35,6 @@ export const attributeColumn: ColumnDef<AttributeRow>[] = [
     accessorKey: "name",
     header: "Attribute Name",
   },
-  // {
-  //   accessorKey: "code",
-  //   header: "Short Code",
-  // },
-
   {
     header: "Attribute Category Name",
     cell: ({ row }) => row.original.attribute_category.name,

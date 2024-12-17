@@ -11,7 +11,7 @@ const VOUCHER_TYPES = [
 		type: "opening balance",
 		title: "Opening Balance",
 	},
-	{ 
+	{
 		type: "payment voucher",
 		title: "Payment Voucher",
 	},

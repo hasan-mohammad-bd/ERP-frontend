@@ -5,6 +5,7 @@ import commonReducer from "./services/erp-main/slices/commonSlice";
 import { hrmApi } from "./services/hrm";
 import { accountApi } from "./services/accounts";
 import { inventoryApi } from "./services/billing";
+import { crmApi } from "./services/crm";
 // import { financeApi } from "./services/finance/api";
 // import { setupListeners } from "@reduxjs/toolkit/query";
 
@@ -16,6 +17,7 @@ export const store = configureStore({
     [hrmApi.reducerPath]: hrmApi.reducer,
     [accountApi.reducerPath]: accountApi.reducer,
     [inventoryApi.reducerPath]: inventoryApi.reducer,
+    [crmApi.reducerPath]: crmApi.reducer
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -24,7 +26,8 @@ export const store = configureStore({
       authApi.middleware, // Add authApi middleware
       hrmApi.middleware, // Add authApi middleware
       accountApi.middleware,
-      inventoryApi.middleware
+      inventoryApi.middleware,
+      crmApi.middleware
     ),
 });
 
