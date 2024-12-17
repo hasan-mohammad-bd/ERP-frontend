@@ -44,6 +44,7 @@ export const inventoryApi = createApi({
     "invoiceReturn",
     "payment-mades",
     "purchase-register",
+    "sale-register",
     "opening-stock",
     "purchase-refunds",
     "invoice-refunds",

@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PurchaseRegisterDataType } from "@/store/services/billing/api/purchase-register/type";
+import { PurchaseRegisterDataType } from "@/store/services/billing/api/reports/purchase-register/type";
 
 // Define a new interface for sales data
 
@@ -28,11 +28,6 @@ const PurchaseRegisterTable = ({ tableData }: Props) => {
             <TableHead>Tax</TableHead>
             <TableHead>Amount</TableHead>
             <TableHead>Due</TableHead>
-            {/* <TableHead>Invoice Qty</TableHead>
-            <TableHead>Total</TableHead>
-            <TableHead>Paid</TableHead>
-            <TableHead>Due</TableHead>
-            <TableHead>Payment Status</TableHead> */}
           </TableRow>
         </TableHeader>
 
@@ -40,9 +35,6 @@ const PurchaseRegisterTable = ({ tableData }: Props) => {
           {tableData &&
             tableData.map((item, index) => (
               <TableRow key={index} className="">
-                {/* <TableCell className="">
-                    <button className="text-blue-500"> {item.invoice}</button>
-                </TableCell> */}
                 <TableCell className="">{item.date}</TableCell>
                 <TableCell className="">
                   {item.purchase_invoice_number}
@@ -52,13 +44,6 @@ const PurchaseRegisterTable = ({ tableData }: Props) => {
                 <TableCell className="">{item.tax}</TableCell>
                 <TableCell className="">{item.amount}</TableCell>
                 <TableCell className="">{item.due}</TableCell>
-                {/* <TableCell className="">{item.total}</TableCell>
-                <TableCell className="">{item.paid}</TableCell>
-                <TableCell className="">{item.due}</TableCell>
-                <TableCell className="">{item.payment_status}</TableCell> */}
-                {/* <TableCell className="">
-                  <button className="text-blue-500">Invoice</button>
-                </TableCell> */}
               </TableRow>
             ))}
         </TableBody>

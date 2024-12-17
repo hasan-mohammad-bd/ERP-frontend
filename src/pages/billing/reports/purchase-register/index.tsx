@@ -9,7 +9,7 @@ import { Heading } from "@/components/common/heading";
 import { Paginator } from "@/components/common/paginator";
 import { Card } from "@/components/ui/card";
 import PurchaseRegisterFilter from "./components/purchase-register-filter";
-import { useGetPurchaseRegisterQuery } from "@/store/services/billing/api/purchase-register";
+import { useGetPurchaseRegisterQuery } from "@/store/services/billing/api/reports/purchase-register";
 import PurchaseRegisterTable from "./components/purchase-register-table";
 
 const PurchaseRegister = () => {
