@@ -93,6 +93,7 @@ import PaymentReceiveDetails from "@/pages/billing/payments-received/components/
 import CustomerCollection from "@/pages/billing/reports/customer-collection";
 import ItemWisePurchase from "@/pages/billing/reports/item-wise-purchase";
 import ItemWiseSale from "@/pages/billing/reports/item-wise-sale";
+import ReceiveableReport from "@/pages/billing/reports/receivable-report";
 
 const billingRoutes = {
   path: "billing/",
@@ -688,6 +689,11 @@ const billingRoutes = {
     {
       path: "customer-collection",
       element: withFallback(<CustomerCollection />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "receivable-report",
+      element: withFallback(<ReceiveableReport />),
       errorElement: withFallback(<ErrorPage />),
     },
     {
