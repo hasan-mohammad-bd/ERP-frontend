@@ -8,7 +8,7 @@ import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import { Heading } from "@/components/common/heading";
 import { Paginator } from "@/components/common/paginator";
 import { Card } from "@/components/ui/card";
-import { useGetSupplierWisePurchaseReportQuery } from "@/store/services/billing/api/supplier-wise-purchase-report";
+import { useGetSupplierWisePurchaseReportQuery } from "@/store/services/billing/api/reports/supplier-wise-purchase-report";
 import SupplierWisePurchaseFilter from "./components/supplier-wise-purchase-filter";
 import SupplierWisePurchaseTable from "./components/supplier-wise-purchase-table";
 

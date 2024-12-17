@@ -69,6 +69,7 @@ export type ItemFormValues = z.infer<typeof ItemSchema>;
 export const itemBarcode = z.object({
   barcode_attribute: z.string().default("Default"), // Ensure it's a string and has a default value
   barcode: z.string().nullable(), // Allows null value
+  id: z.coerce.number(), // Allows null value
   purchase_price: z.number().nullable(), // Allows null value
   selling_price: z.number().nullable(), // Allows null value
   discount: z.number().nullable(), // Allows null value

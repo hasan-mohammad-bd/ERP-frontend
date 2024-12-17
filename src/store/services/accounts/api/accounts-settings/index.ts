@@ -3,7 +3,7 @@ import {
   type AccountsSettingsRow,
 } from "@/lib/validators/accounts";
 import { accountApi } from "../..";
-// import { PaginationInfo } from "@/types";
+
 
 const accountsSettingsApi = accountApi.injectEndpoints({
   endpoints: (build) => ({

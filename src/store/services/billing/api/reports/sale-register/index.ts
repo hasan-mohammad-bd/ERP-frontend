@@ -6,7 +6,7 @@ import { SaleRegisterDataType } from "./type";
 const saleRegisterApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
     getSaleRegister: build.query<
-     { data: SaleRegisterDataType[], meta: PaginationInfo },
+     { data: SaleRegisterDataType, meta: PaginationInfo },
      string
     >({
       query: (params) => `report/sales-register?${params}`,
