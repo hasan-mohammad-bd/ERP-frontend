@@ -69,7 +69,7 @@ import CustomerWiseProfitLoss from "@/pages/billing/reports/customer-wise-profit
 import SalesTaxReport from "@/pages/billing/reports/sales-tax-report";
 import PurchaseTaxReport from "@/pages/billing/reports/purchase-tax-report";
 import BillingDashboard from "@/pages/billing/dashboard-billing";
-// import AttributeCategory from "@/pages/billing/attribute-category";
+
 import Brand from "@/pages/billing/brand";
 import AttributeCategory from "@/pages/billing/attribute-category";
 import Attributes from "@/pages/billing/attributes";
@@ -90,6 +90,8 @@ import InvoiceReturn from "@/pages/billing/invoice-return";
 import AddInvoiceReturnForm from "@/pages/billing/invoice-return/components/add-invoice-return";
 import SupplierWisePurchase from "@/pages/billing/reports/supplier-wise-purchase";
 import PaymentReceiveDetails from "@/pages/billing/payments-received/components/payment-receive-details";
+import ItemWisePurchase from "@/pages/billing/reports/item-wise-purchase";
+import ItemWiseSale from "@/pages/billing/reports/item-wise-sale";
 
 const billingRoutes = {
   path: "billing/",
@@ -653,11 +655,20 @@ const billingRoutes = {
 
 
     {
-      path: "supplier-wise-purchase-report",
+      path: "reports/supplier-wise-purchase-report",
       element: withFallback(<SupplierWisePurchase />),
       errorElement: withFallback(<ErrorPage />),
     },
-
+    {
+      path: "reports/item-wise-purchase-report",
+      element: withFallback(<ItemWisePurchase />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "reports/item-wise-sale-report",
+      element: withFallback(<ItemWiseSale />),
+      errorElement: withFallback(<ErrorPage />),
+    },
     {
       path: "quotation-qetails-ui",
       element: withFallback(<QuotationDetailsUI />),

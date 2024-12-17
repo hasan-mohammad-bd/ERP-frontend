@@ -2,19 +2,15 @@
 import { Loading } from "@/components/common/loading";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { useState } from "react";
-import { PaginationInfo } from "@/types";
 
 import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import { Heading } from "@/components/common/heading";
-import { Paginator } from "@/components/common/paginator";
 import { Card } from "@/components/ui/card";
 import SaleRegisterFilter from "./components/sale-register-filter";
 import { useGetSaleRegisterQuery } from "@/store/services/billing/api/reports/sale-register";
 import SaleRegisterTable from "./components/sale-register-table";
 
 const SaleRegister = () => {
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
   const [filterParams, setFilterParams] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(
@@ -24,12 +20,11 @@ const SaleRegister = () => {
 
   // Use skip option to prevent fetching data before filters are applied
   const { data, isLoading } = useGetSaleRegisterQuery(
-    `with_summary=1&per_page=${pageSize}&page=${page}&${filterParams}`,
+    `with_summary=1&${filterParams}`,
     { skip: !filtersApplied } // Skip the query when filters are not applied
   );
 
-  const fetchedData = data?.data || [];
-  const paginationInfo: PaginationInfo | undefined = data?.meta;
+  const fetchedData = data?.data;
 
   if (isLoading) return <Loading />;
 
@@ -67,9 +62,9 @@ const SaleRegister = () => {
               <Separator />
               { fetchedData ? (
                   <SaleRegisterTable
-                    tableData={fetchedData?.sales_register}
-                    ledgerAccounts={fetchedData?.ledger_accounts}
-                    totals={fetchedData?.totals} // Pass the totals object
+                    tableData={fetchedData.sales_register}
+                    ledgerAccounts={fetchedData.ledger_accounts}
+                    totals={fetchedData.totals} // Pass the totals object
                   />
 
               ) : (
@@ -77,15 +72,6 @@ const SaleRegister = () => {
               )}
             </div>
           </PrintPDFWrapper>
-          {paginationInfo && (
-            <Paginator
-              className="px-4 pb-4"
-              meta={paginationInfo}
-              dataCount={fetchedData.length}
-              onPageChange={setPage}
-              onPageSizeChange={setPageSize}
-            />
-          )}
         </Card>
       )}
     </>

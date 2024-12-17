@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
-// import { PaginationInfo } from "@/types";
+
 // import { PaginationState } from "@tanstack/react-table";
 
 import { useNavigate } from "react-router-dom";
@@ -88,7 +88,7 @@ const ManagePurchase = () => {
               onClick={() => navigate("/billing/manage-purchase/add")}
               size={"sm"}
             >
-              <Plus className="mr-2 h-4 w-4" /> Add Purchase 
+              <Plus className="mr-2 h-4 w-4" /> Add Purchase
             </Button>
           </div>
           <Separator />

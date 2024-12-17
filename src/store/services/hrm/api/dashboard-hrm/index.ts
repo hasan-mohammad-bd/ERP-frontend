@@ -1,4 +1,4 @@
-// import { PaginationInfo } from "@/types";
+
 import { hrmApi } from "../..";
 import { dashboardHrm } from "./type"
 

@@ -6,7 +6,7 @@ import { DataTable } from "@/components/ui/data-table/data-table";
 // import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
 
 // import { PaginationState } from "@tanstack/react-table";
-// import { PaginationInfo } from "@/types";
+
 import { Separator } from "@/components/ui/separator";
 // import ListSkeleton from "@/components/common/ListSkeleton";
 import { useNavigate } from "react-router-dom";

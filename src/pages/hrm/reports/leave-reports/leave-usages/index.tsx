@@ -3,7 +3,7 @@ import { Loading } from "@/components/common/loading";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 // import { PaginationState } from "@tanstack/react-table";
 
-// import { PaginationInfo } from "@/types";
+
 import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import { Heading } from "@/components/common/heading";
 import { Paginator } from "@/components/common/paginator";

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { DataTable } from "@/components/ui/data-table/data-table";
-// import { PaginationInfo } from "@/types";
+
 // import { PaginationState } from "@tanstack/react-table";
 
 import { useNavigate } from "react-router-dom";

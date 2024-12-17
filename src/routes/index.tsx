@@ -6,6 +6,7 @@ import hrmRoutes from "./hrm-routes";
 import billingRoutes from "./billing-routes";
 import withFallback from "@/utils/with-fallback";
 import { ErrorPage, Lobby, LoginScreen, NotFoundPage } from "./components";
+import crmRoutes from "./crm-routes";
 
 // Define all available route objects
 const allRoutes: Record<string, RouteObject> = {
@@ -13,6 +14,7 @@ const allRoutes: Record<string, RouteObject> = {
   accounts: accountsRoutes,
   web: webRoutes,
   billing: billingRoutes,
+  crm:crmRoutes
 };
 
 // Get modules from environment variables (comma-separated string)

@@ -370,6 +370,13 @@ const billingNavItems: NavItem[] = [
         permissions: ["accounts"],
       },
       {
+        title: "Item Wise Sale Report",
+        icon: UserRoundSearch,
+        href: "reports/item-wise-sale-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
         title: "Product wise sales",
         icon: UserRoundSearch,
         href: "reports/product-sales",
@@ -489,9 +496,16 @@ const billingNavItems: NavItem[] = [
         permissions: ["accounts"],
       },
       {
+        title: "Item Wise Purchase Report",
+        icon: UserRoundSearch,
+        href: "reports/item-wise-purchase-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
         title: "Supplier Wise Purchase Report",
         icon: UserRoundSearch,
-        href: "supplier-wise-purchase-report",
+        href: "reports/supplier-wise-purchase-report",
         color: "text-sky-500",
         permissions: ["accounts"],
       },

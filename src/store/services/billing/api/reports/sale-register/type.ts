@@ -25,6 +25,7 @@ export interface TotalsType {
 
 export interface SaleRegisterDataType {
   sales_register: SalesRegisterType[]; // Array of sales register entries
+  ledger_accounts: LedgerAccountType[]; // Array of sales register entries
   totals: TotalsType; // Totals object
   start_date: string; // Start date as a string
   end_date: string; // End date as a string
@@ -47,15 +48,16 @@ export interface SaleRegisterDataType {
 }
 
 export interface LedgerAccountType {
-  id: number; // Unique identifier for the ledger account
-  code: string; // Account code
-  name: string; // Account name
-  type: string; // Type of account (e.g., Assets, Liabilities, etc.)
-  nature: string; // Nature of the account (e.g., Bank Accounts)
-  parent_id: number | null; // Parent account ID, nullable
-  is_active: boolean; // Whether the account is active
-  is_ledger: boolean; // Whether this is a ledger account
-  is_sub_type: boolean; // Whether it has sub-types
-  description: string | null; // Optional description, nullable
+  id: number;
+  code: string;
+  name: string;
+  type: string;
+  nature: string;
+  total_amount: number;
+  parent_id: number | null;
+  is_active: boolean;
+  is_ledger: boolean;
+  is_sub_type: boolean;
+  description: string | null;
 }
 

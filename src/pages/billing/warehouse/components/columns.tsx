@@ -32,7 +32,7 @@ export const warehouseColumns: ColumnDef<WarehouseRow>[] = [
 
   {
     accessorKey: "name",
-    header: "Unit Name",
+    header: "Warehouse Name",
   },
 
   {
