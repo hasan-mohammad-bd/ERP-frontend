@@ -283,7 +283,7 @@ export default function ItemAddForm() {
                             valueField="id"
                             form={form}
                             name="secondary_unit_id"
-                            placeholder="Select primary unit"
+                            placeholder="Select Secondary unit"
                             title="Primary Unit"
                             className="w-[330px]"
                           />

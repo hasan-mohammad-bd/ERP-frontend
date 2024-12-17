@@ -110,6 +110,7 @@ const FormSearchSelect = <T extends Record<string, any>>({
                               field.onChange(String(item[valueField]));
                               setOpen(false);
                             }}
+                            disabled={disabled}
                           >
                             <Check
                               className={cn(

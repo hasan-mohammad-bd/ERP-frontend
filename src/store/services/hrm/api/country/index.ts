@@ -3,8 +3,8 @@ import { CountryColumn } from "@/lib/validators"; // Assuming you have a Country
 
 const countryApi = hrmApi.injectEndpoints({
   endpoints: (build) => ({
-    getCountries: build.query<{ data: CountryColumn[] }, void>({
-      query: () => "countries", // Updated endpoint to "countries"
+    getCountries: build.query<{ data: CountryColumn[] }, string>({
+      query: (params) => `countries?${params}`, // Updated endpoint to "countries"
       providesTags: ["countries"], // Updated tag name
     }),
   }),
