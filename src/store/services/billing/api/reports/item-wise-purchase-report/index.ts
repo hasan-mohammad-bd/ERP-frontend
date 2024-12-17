@@ -1,7 +1,7 @@
 
 import { PaginationInfo } from "@/types";
 import {  inventoryApi } from "../../..";
-import { itemWisePurchaseReportDataType } from "./type";
+import { itemBarcodeWisePurchaseReportDataType } from "./type";
 
 
 
@@ -10,7 +10,7 @@ const itemWisePurchaseReportApi = inventoryApi.injectEndpoints({
     getItemWisePurchaseReport: build.query<
 
      { data: {
-      report:itemWisePurchaseReportDataType[]
+      report:itemBarcodeWisePurchaseReportDataType[]
      }; meta: PaginationInfo },
      string
 

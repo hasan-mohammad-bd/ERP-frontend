@@ -370,6 +370,13 @@ const billingNavItems: NavItem[] = [
         permissions: ["accounts"],
       },
       {
+        title: "Item Wise Sale Report",
+        icon: UserRoundSearch,
+        href: "reports/item-wise-sale-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
         title: "Product wise sales",
         icon: UserRoundSearch,
         href: "reports/product-sales",

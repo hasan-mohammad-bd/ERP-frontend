@@ -1,4 +1,4 @@
-export interface itemWisePurchaseReportDataType{
+export interface itemBarcodeWisePurchaseReportDataType{
   date: string | null;
   slip_no: string | null;
   supplier: string | null;

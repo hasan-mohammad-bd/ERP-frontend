@@ -45,6 +45,7 @@ export const inventoryApi = createApi({
     "payment-mades",
     "purchase-register",
     "item-wise-purchase",
+    "item-wise-sale",
     "supplier-wise-purchase",
     "sale-register",
     "opening-stock",

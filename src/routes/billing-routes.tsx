@@ -90,6 +90,7 @@ import InvoiceReturn from "@/pages/billing/invoice-return";
 import AddInvoiceReturnForm from "@/pages/billing/invoice-return/components/add-invoice-return";
 import SupplierWisePurchase from "@/pages/billing/reports/supplier-wise-purchase";
 import ItemWisePurchase from "@/pages/billing/reports/item-wise-purchase";
+import ItemWiseSale from "@/pages/billing/reports/item-wise-sale";
 
 const billingRoutes = {
   path: "billing/",
@@ -657,7 +658,11 @@ const billingRoutes = {
       element: withFallback(<ItemWisePurchase />),
       errorElement: withFallback(<ErrorPage />),
     },
-
+    {
+      path: "reports/item-wise-sale-report",
+      element: withFallback(<ItemWiseSale />),
+      errorElement: withFallback(<ErrorPage />),
+    },
     {
       path: "quotation-qetails-ui",
       element: withFallback(<QuotationDetailsUI />),
