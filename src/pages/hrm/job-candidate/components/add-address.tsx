@@ -49,8 +49,8 @@ export function AddAddressForm({ previousData }: AddAddressFormProps) {
 
 
   const { data: countries, isLoading: countriesLoading } =
-    useGetCountriesQuery();
-  const { data: cities, isLoading: citiesLoading } = useGetCitiesQuery();
+    useGetCountriesQuery(`per_page=1000&page=1`);
+  const { data: cities, isLoading: citiesLoading } = useGetCitiesQuery(`per_page=1000&page=1`);
 
   const countryData = countries?.data || [];
   const cityData = cities?.data || [];
@@ -60,8 +60,8 @@ export function AddAddressForm({ previousData }: AddAddressFormProps) {
     defaultValues: {
       model_type: "App\\Models\\Job\\JobCandidate",
       model_id: previousData?.id,
-      country_id: previousData?.present_address?.country.id || 1,
-      city_id: previousData?.present_address?.city.id || 1,
+      country_id: previousData?.present_address?.country.id.toString() || undefined,
+      city_id: previousData?.present_address?.city.id.toString() || undefined,
       post_code: previousData?.present_address?.post_code || "",
       address: previousData?.present_address?.address || "",
       type: "Present",
@@ -73,8 +73,8 @@ export function AddAddressForm({ previousData }: AddAddressFormProps) {
     defaultValues: {
       model_type: "App\\Models\\Job\\JobCandidate",
       model_id: previousData?.id,
-      country_id: previousData?.permanent_address?.country.id || 1,
-      city_id: previousData?.permanent_address?.city.id || 1,
+      country_id: previousData?.permanent_address?.country.id.toString() || undefined,
+      city_id: previousData?.permanent_address?.city.id.toString() || undefined,
       post_code: previousData?.permanent_address?.post_code || "",
       address: previousData?.permanent_address?.address || "",
       type: "Permanent",

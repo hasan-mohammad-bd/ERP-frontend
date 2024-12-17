@@ -18,7 +18,7 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { toast } from "sonner";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import { Loading } from "@/components/common/loading";
 import { useUpdateHolidayMutation } from "@/store/services/hrm/api/holiday";
 import { CalendarIcon } from "lucide-react";

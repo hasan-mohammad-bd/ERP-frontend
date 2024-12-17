@@ -47,8 +47,8 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
     useUpdateNomineeMutation();
 
   const { data: countries, isLoading: countriesLoading } =
-    useGetCountriesQuery();
-  const { data: cities, isLoading: citiesLoading } = useGetCitiesQuery();
+    useGetCountriesQuery(`per_page=1000&page=1`);
+  const { data: cities, isLoading: citiesLoading } = useGetCitiesQuery(`per_page=1000&page=1`);
 
   const countryData = countries?.data || [];
   const cityData = cities?.data || [];
@@ -66,8 +66,8 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
       // image: previousData?.employee_nominee?.image || "",
       nid_number: previousData?.employee_nominee?.nid_number || "",
       present_address: {
-        country_id: previousData?.employee_nominee?.present_address?.country?.id || 1,
-        city_id: previousData?.employee_nominee?.present_address?.city?.id || 1,
+        country_id: previousData?.employee_nominee?.present_address?.country?.id.toString() || undefined,
+        city_id: previousData?.employee_nominee?.present_address?.city?.id.toString() || undefined,
         post_code: previousData?.employee_nominee?.present_address?.post_code || "",
         address: previousData?.employee_nominee?.present_address?.address || "",
       },

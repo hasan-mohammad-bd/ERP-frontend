@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:dist/assets/expenses-e3ff6eff.js
-import{X as e}from"./index-6406284f.js";const t=e.object({ledger_account_id:e.string({required_error:"Account is required"}),date:e.string({required_error:"Date is required"}).date(),note:e.string().optional(),total:e.number(),details:e.array(e.object({expense_category_id:e.string({required_error:"Category is required"}).min(1,"Category is required"),note:e.string().optional(),amount:e.string({required_error:"Amount is required"}),attachment:e.string().optional()})).min(1,"At least one expense detail is required")});export{t as e};
-========
-import{X as e}from"./index-40479168.js";const t=e.object({ledger_account_id:e.string({required_error:"Account is required"}),date:e.string({required_error:"Date is required"}).date(),note:e.string().optional(),total:e.number(),details:e.array(e.object({expense_category_id:e.string({required_error:"Category is required"}).min(1,"Category is required"),note:e.string().optional(),amount:e.string({required_error:"Amount is required"}),attachment:e.string().optional()})).min(1,"At least one expense detail is required")});export{t as e};
->>>>>>>> main:dist/assets/expenses-d94cfb7e.js
