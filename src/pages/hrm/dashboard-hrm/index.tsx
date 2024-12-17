@@ -402,14 +402,14 @@ const HRMDashboard = () => {
                 </div>
                 <div className="mt-3">
                   <RangeBarChart
-                    title="Employee Buy Age"
+                    title="Employee by Age"
                     dataKey_1="age"
                     chartData={employeeByAgeData}
                   />
                 </div>
                 <div className="mt-3">
                   <RangeBarChart
-                    title="Employee Buy Gender"
+                    title="Employee by Gender"
                     dataKey_1="gender"
                     chartData={employeeGenderData}
                   />

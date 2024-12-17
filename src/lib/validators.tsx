@@ -586,8 +586,8 @@ export type CountryColumn = z.infer<typeof countryColumn>;
 export const AddressFormSchema = z.object({
   model_type: z.string().optional().nullable(),
   model_id: z.coerce.number().optional().nullable(),
-  country_id: z.coerce.number(),
-  city_id: z.coerce.number(),
+  country_id: z.string(),
+  city_id: z.string(),
   post_code: z.string(),
   address: z.string(),
   type: z.string().optional().nullable(),
