@@ -516,6 +516,13 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
+      {
+        title: "Receivable Report",
+        icon: UserRoundSearch,
+        href: "receivable-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
     ],
   },
   
