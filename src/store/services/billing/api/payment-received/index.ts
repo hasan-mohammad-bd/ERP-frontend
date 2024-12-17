@@ -1,6 +1,7 @@
 import {
   BillingPaymentFormType,
   BillingPaymentRow,
+  BillingPaymentRowDetails,
 } from "@/lib/validators/billing/billing-payment";
 import { inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
@@ -12,6 +13,13 @@ const paymentReceivedApi = inventoryApi.injectEndpoints({
       string
     >({
       query: (params) => `payment-receives?${params}`,
+      providesTags: ["payment-receives"],
+    }),
+    getPaymentReceivedById: build.query<
+      { data: BillingPaymentRowDetails },
+      number
+    >({
+      query: (id) => `payment-receives/${id}`,
       providesTags: ["payment-receives"],
     }),
     createPaymentReceived: build.mutation<
@@ -38,6 +46,7 @@ const paymentReceivedApi = inventoryApi.injectEndpoints({
 
 export const {
   useGetPaymentReceivedQuery,
+  useGetPaymentReceivedByIdQuery,
   useCreatePaymentReceivedMutation,
   useRemovePaymentReceivedMutation,
 } = paymentReceivedApi;
