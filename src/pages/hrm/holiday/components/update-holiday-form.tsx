@@ -18,7 +18,7 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { toast } from "sonner";
-import { format, parseISO } from "date-fns"; // Updated import to include parseISO
+import { format, parseISO } from "date-fns";
 import { Loading } from "@/components/common/loading";
 import { useUpdateHolidayMutation } from "@/store/services/hrm/api/holiday";
 import { CalendarIcon } from "lucide-react";
@@ -50,17 +50,24 @@ export function UpdateHolidayForm({
     defaultValues: {
       name: previousData?.name || "",
       start_date: previousData?.start_date
-        ? parseISO(previousData.start_date.toString())
+        ? new Date(previousData.start_date) // Ensure Date object
         : undefined,
       end_date: previousData?.end_date
-        ? parseISO(previousData.end_date.toString())
+        ? new Date(previousData.end_date) // Ensure Date object
         : undefined,
       duration: previousData?.duration || "",
       note: previousData?.note || "",
     },
   });
 
-  // Calculate duration between start_date and end_date
+  // Normalize date to UTC at midnight
+  const normalizeDate = (date: Date): Date => {
+    const utcDate = new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+    );
+    return utcDate;
+  };
+
   const calculateDuration = (
     start_date: Date | null,
     end_date: Date | null
@@ -76,15 +83,21 @@ export function UpdateHolidayForm({
   async function onSubmit(data: HolidayFormColumn) {
     try {
       if (previousData) {
+        const payload = {
+          ...data,
+          start_date: normalizeDate(data.start_date!), // Ensure UTC
+          end_date: normalizeDate(data.end_date!), // Ensure UTC
+        };
         await updateHoliday({
           holidayId: previousData.id,
-          updatedHoliday: data,
+          updatedHoliday: payload,
         }).unwrap();
         toast.success("Holiday updated successfully");
         modalClose();
       }
     } catch (error) {
-      console.log(error);
+      console.error("Failed to update holiday:", error);
+      toast.error("Failed to update holiday");
     }
   }
 
@@ -96,14 +109,13 @@ export function UpdateHolidayForm({
   };
 
   useEffect(() => {
-    // If both start and end dates are present, update duration
     const start_date = form.getValues("start_date");
     const end_date = form.getValues("end_date");
     if (start_date && end_date) {
       const duration = calculateDuration(start_date, end_date);
       form.setValue("duration", duration);
     }
-  }, [form]);
+  }, [form.watch("start_date"), form.watch("end_date")]);
 
   return (
     <>
@@ -163,10 +175,11 @@ export function UpdateHolidayForm({
                         mode="single"
                         selected={field.value ?? undefined}
                         onSelect={(date) => {
-                          field.onChange(date);
+                          const normalized = normalizeDate(date!);
+                          field.onChange(normalized);
                           const toDate = form.getValues(`end_date`);
-                          if (date && toDate) {
-                            const duration = calculateDuration(date, toDate);
+                          if (normalized && toDate) {
+                            const duration = calculateDuration(normalized, toDate);
                             form.setValue(`duration`, duration);
                           }
                         }}
@@ -208,15 +221,17 @@ export function UpdateHolidayForm({
                         selected={field.value ?? undefined}
                         disabled={(date) => {
                           const start_date = form.getValues(`start_date`);
-                          return !!(start_date && date < start_date);
+                          return !!(start_date && normalizeDate(date) < normalizeDate(start_date));
                         }}
+                        
                         onSelect={(date) => {
-                          field.onChange(date);
+                          const normalized = normalizeDate(date!);
+                          field.onChange(normalized);
                           const start_date = form.getValues(`start_date`);
-                          if (start_date && date) {
+                          if (start_date && normalized) {
                             const duration = calculateDuration(
                               start_date,
-                              date
+                              normalized
                             );
                             form.setValue(`duration`, duration);
                           }
