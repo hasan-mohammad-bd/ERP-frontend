@@ -15,9 +15,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon, FilterIcon } from "lucide-react";
 
-
-// import { useGetSchedulesQuery } from "@/store/services/hrm/api/schedule";
-
 import { toast } from "sonner";
 import { Popover } from "@radix-ui/react-popover";
 import { PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -37,13 +34,6 @@ export default function CustomerLedgerFilter({ setFilterParams,selectedDate,setS
 
     const [openFromDate, setOpenFromDate] = useState(false);
     const [openEndFromDate, setOpenEndFromDate] = useState(false);
-
-
-
-  // Fetch department data
-
-//   const { data: ShiftsData } = useGetSchedulesQuery("per_page=1000");
-
 
   // Filter states
   const [selectedDepartment, setSelectedDepartment] = useState<

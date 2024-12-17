@@ -51,6 +51,7 @@ export const inventoryApi = createApi({
     "opening-stock",
     "purchase-refunds",
     "invoice-refunds",
+    'customer-collection'
   ],
   endpoints: () => ({}),
 });

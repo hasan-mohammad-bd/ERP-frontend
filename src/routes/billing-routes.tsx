@@ -89,6 +89,7 @@ import PurchaseRegister from "@/pages/billing/reports/purchase-register";
 import InvoiceReturn from "@/pages/billing/invoice-return";
 import AddInvoiceReturnForm from "@/pages/billing/invoice-return/components/add-invoice-return";
 import SupplierWisePurchase from "@/pages/billing/reports/supplier-wise-purchase";
+import CustomerCollection from "@/pages/billing/reports/customer-collection";
 import ItemWisePurchase from "@/pages/billing/reports/item-wise-purchase";
 import ItemWiseSale from "@/pages/billing/reports/item-wise-sale";
 
@@ -676,6 +677,11 @@ const billingRoutes = {
     {
       path: "stocks",
       element: withFallback(<Stocks />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "customer-collection",
+      element: withFallback(<CustomerCollection />),
       errorElement: withFallback(<ErrorPage />),
     },
     {

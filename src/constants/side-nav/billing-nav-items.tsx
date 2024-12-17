@@ -509,6 +509,13 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
+      {
+        title: "Customer Collection",
+        icon: UserRoundSearch,
+        href: "customer-collection",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
     ],
   },
   
