@@ -81,7 +81,6 @@ export function AddLeadGroupForm({ modalClose, data: previousData }: AddLeadGrou
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
               {/* Form Fields */}
-
               <FormField
                 control={form.control}
                 name="name"
@@ -99,7 +98,6 @@ export function AddLeadGroupForm({ modalClose, data: previousData }: AddLeadGrou
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="type"
@@ -127,7 +125,6 @@ export function AddLeadGroupForm({ modalClose, data: previousData }: AddLeadGrou
                   </FormItem>
                 )}
               />
-
               {/* Status */}
               <FormField
                 control={form.control}

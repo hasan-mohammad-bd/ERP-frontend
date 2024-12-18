@@ -30,7 +30,7 @@ export function CellAction({ data }: CellActionProps) {
   const handleLeadGroupDelete = async (id: number) => {
     try {
       await deleteLeadGroup(id).unwrap();
-      toast.success("LeadGroup deleted successfully");
+      toast.success("Lead Group deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);

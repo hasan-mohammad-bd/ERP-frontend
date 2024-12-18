@@ -31,6 +31,13 @@ const crmNavItems: NavItem[] = [
         href: "/crm/lead/leads-view",
         permissions: ["accounts"],
       },
+      {
+        title: "Pipeline",
+        icon: PlayIcon,
+        color: "text-sky-500",
+        href: "lead/pipelines",
+        permissions: ["accounts"],
+      },
     ],
   },
 ];

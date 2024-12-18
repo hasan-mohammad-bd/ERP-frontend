@@ -12,7 +12,7 @@ import { Modal } from "@/components/common/modal";
 import { AddLeadGroupForm } from "./components/add-lead-group-form";
 import { useGetLeadGroupsQuery } from "@/store/services/crm/api/lead-groups";
 
-const Units = () => {
+const LeadGroups = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
@@ -70,4 +70,4 @@ const Units = () => {
   );
 };
 
-export default Units;
+export default LeadGroups;

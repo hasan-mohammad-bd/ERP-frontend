@@ -176,6 +176,14 @@ export const InvoiceRefunds = lazy(
 //   () => import("@/pages/billing/sales-order/components/edit-sales-order")
 // );
 
+
+// crm components
+
+export const PipelineList = lazy(() => import("@/pages/crm/lead/pipelines"));
+export const AddPipelineForm = lazy(
+  () => import("@/pages/crm/lead/pipelines/components/add-pipeline-form")
+);
+
 //All We Routes
 export const Organization = lazy(() => import("@/pages/web/organization"));
 export const Location = lazy(() => import("@/pages/web/location"));

@@ -1,10 +1,10 @@
 export type PipelineStage = {
   id: number;
   name: string;
-  probability: string;
+  probability: number;
   pipeline_id: number;
-  created_at: string; // ISO date string
-  updated_at: string; // ISO date string
+  created_at: string;
+  updated_at: string;
 };
 
 export type LeadRow = {
@@ -19,5 +19,5 @@ export type LeadRow = {
   source: string;
   label: string;
   pipelineStage: PipelineStage;
-  created_at: string; // ISO date string
+  created_at: string;
 };
