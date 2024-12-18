@@ -231,11 +231,11 @@ export default function AddLeadForm() {
         <div>
           <div className="flex items-center justify-between mb-3">
             <Heading
-              title={`Employee ${previousData ? "Edit" : "Add"}`}
+              title={`Lead ${previousData ? "Edit" : "Add"}`}
               description="Manage job candidates for you business"
             />
-            <Button onClick={() => navigate("/hrm/employees-list")} size={"sm"}>
-              Employee List
+            <Button onClick={() => navigate("/crm/lead/leads-view")} size={"sm"}>
+              Lead List
             </Button>
           </div>
 
