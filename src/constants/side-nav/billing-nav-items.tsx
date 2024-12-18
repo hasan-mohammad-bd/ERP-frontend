@@ -523,6 +523,13 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
+      {
+        title: "Payable Report",
+        icon: UserRoundSearch,
+        href: "payable-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
     ],
   },
   
