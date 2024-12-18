@@ -96,6 +96,7 @@ import ItemWiseSale from "@/pages/billing/reports/item-wise-sale";
 import ReceiveableReport from "@/pages/billing/reports/receivable-report";
 import PayableReport from "@/pages/billing/reports/payable-report";
 import AgedReceivableReport from "@/pages/billing/reports/aged-receivable-report";
+import AgedPayableReport from "@/pages/billing/reports/aged-payable-report";
 
 const billingRoutes = {
   path: "billing/",
@@ -706,6 +707,11 @@ const billingRoutes = {
     {
       path: "aged-receivable-report",
       element: withFallback(<AgedReceivableReport />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "aged-payable-report",
+      element: withFallback(<AgedPayableReport />),
       errorElement: withFallback(<ErrorPage />),
     },
     {

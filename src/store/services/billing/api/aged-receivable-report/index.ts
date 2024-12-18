@@ -4,7 +4,7 @@ import { inventoryApi } from "../..";
 import { AgedReceivableDataType } from "./type";
 
 
-const payableReportApi = inventoryApi.injectEndpoints({
+const AgedReceiveableReportApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
     getAgedReceiveableReport: build.query<
       { data: { report: AgedReceivableDataType[] }; meta: PaginationInfo },
@@ -17,4 +17,4 @@ const payableReportApi = inventoryApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useGetAgedReceiveableReportQuery } = payableReportApi;
+export const { useGetAgedReceiveableReportQuery } = AgedReceiveableReportApi;

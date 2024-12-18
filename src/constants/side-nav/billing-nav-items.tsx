@@ -537,6 +537,13 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
+      {
+        title: "Aged Payable Report",
+        icon: UserRoundSearch,
+        href: "aged-payable-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
     ],
   },
   
