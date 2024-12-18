@@ -29,13 +29,9 @@ import {
   useCreateNomineeMutation,
   useUpdateNomineeMutation,
 } from "@/store/services/hrm/api/nominee";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import { useEffect, useState } from "react";
 
 interface AddAddressFormProps {
   previousData?: EmployeeColumn;
@@ -45,10 +41,12 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
   const [createNominee, { isLoading }] = useCreateNomineeMutation();
   const [updateNominee, { isLoading: updateLoading }] =
     useUpdateNomineeMutation();
+  const [filteredCityState, setFilteredCityState] = useState<CityColumn[]>([]);
 
   const { data: countries, isLoading: countriesLoading } =
     useGetCountriesQuery(`per_page=1000&page=1`);
-  const { data: cities, isLoading: citiesLoading } = useGetCitiesQuery(`per_page=1000&page=1`);
+  const { data: cities } =
+    useGetCitiesQuery(`per_page=1000&page=1`);
 
   const countryData = countries?.data || [];
   const cityData = cities?.data || [];
@@ -66,17 +64,33 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
       // image: previousData?.employee_nominee?.image || "",
       nid_number: previousData?.employee_nominee?.nid_number || "",
       present_address: {
-        country_id: previousData?.employee_nominee?.present_address?.country?.id.toString() || undefined,
-        city_id: previousData?.employee_nominee?.present_address?.city?.id.toString() || undefined,
-        post_code: previousData?.employee_nominee?.present_address?.post_code || "",
+        country_id:
+          previousData?.employee_nominee?.present_address?.country?.id.toString() ||
+          undefined,
+        city_id:
+          previousData?.employee_nominee?.present_address?.city?.id.toString() ||
+          undefined,
+        post_code:
+          previousData?.employee_nominee?.present_address?.post_code || "",
         address: previousData?.employee_nominee?.present_address?.address || "",
       },
     },
   });
 
-  console.log(previousData?.employee_nominee)
 
 
+  useEffect(() => {
+    const selectedCountry = form.watch("present_address.country_id");
+    const findCountry = countryData.find(
+      (country) => country.id === Number(selectedCountry)
+    );
+    //filtered city
+    const filteredCity = cityData.filter((city) => {
+      return city.country === findCountry?.code;
+    });
+
+    setFilteredCityState(filteredCity);
+  }, [form.watch("present_address.country_id")]);
 
   async function onSubmitNominee(data: NomineeFormValues) {
     try {
@@ -220,7 +234,7 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
 
                 <div>
                   <h1 className="text-center font-bold"> Address</h1>
-                  <FormField
+                  {/*                   <FormField
                     control={form.control}
                     name="present_address.country_id"
                     render={({ field }) => (
@@ -297,6 +311,23 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
                         <FormMessage />
                       </FormItem>
                     )}
+                  /> */}
+                  <FormField
+                    control={form.control}
+                    name="present_address.address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Address</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Enter address"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
                   <FormField
                     control={form.control}
@@ -315,22 +346,28 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
                       </FormItem>
                     )}
                   />
-                  <FormField
-                    control={form.control}
-                    name="present_address.address"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Address</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="Enter address"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                  <FormSearchSelect<CountryColumn>
+                    loading={countriesLoading}
+                    data={countryData}
+                    displayField="name"
+                    valueField="id"
+                    form={form}
+                    name="present_address.country_id"
+                    placeholder="Country"
+                    className="w-[500px]"
+                    title="Country"
+                  />
+                  <FormSearchSelect<CityColumn>
+                    // loading={countriesLoading}
+                    data={filteredCityState}
+                    displayField="name"
+                    valueField="id"
+                    form={form}
+                    name="present_address.city_id"
+                    placeholder="City"
+                    className="w-[500px]"
+                    title="City"
+                    disabled={!form.watch("present_address.country_id")}
                   />
                 </div>
               </div>
