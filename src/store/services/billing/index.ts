@@ -53,7 +53,8 @@ export const inventoryApi = createApi({
     "invoice-refunds",
     'customer-collection',
     'receivable-report',
-     "payable-report"
+     "payable-report",
+     "aged-receivable-report"
   ],
   endpoints: () => ({}),
 });

@@ -9,13 +9,13 @@ import { Heading } from "@/components/common/heading";
 import { Paginator } from "@/components/common/paginator";
 import { Card } from "@/components/ui/card";
 
-import { useGetPayableReportQuery } from "@/store/services/billing/api/payable-report";
-import PayableReportTable from "./components/payable-report-table";
+import { useGetAgedReceiveableReportQuery } from "@/store/services/billing/api/aged-receivable-report";
+import AgedReceivablelReportTable from "./components/aged-receiveable-report-table";
 
-const PayableReport = () => {
+const AgedReceivableReport = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const { data, isLoading } = useGetPayableReportQuery(
+  const { data, isLoading } = useGetAgedReceiveableReportQuery(
     `per_page=${pageSize}&page=${page}`
   );
 
@@ -30,23 +30,26 @@ const PayableReport = () => {
     <>
       <div className="mb-5 space-y-5">
         <Heading
-          title="Payable Report"
+          title="Aged Receivable Report"
           description="Manage employees for your business"
         />
       </div>
 
       <Card>
-        <PrintPDFWrapper className="space-y-4" fileName="Payable Report">
+        <PrintPDFWrapper
+          className="space-y-4"
+          fileName="Aged Receivable Report"
+        >
           <div className="flex-1 space-y-4 my-4">
             <div className="text-center">
               <h2>Akaar IT</h2>
-              <h3 className="text-xl">Payable Report</h3>
+              <h3 className="text-xl">Aged Receivable Report</h3>
             </div>
           </div>
           <div className="flex-1 space-y-4 w-full mx-auto">
             <Separator />
             {fetchedData.length ? (
-              <PayableReportTable tableData={fetchedData} />
+              <AgedReceivablelReportTable tableData={fetchedData} />
             ) : (
               <p>No data available</p>
             )}
@@ -66,4 +69,4 @@ const PayableReport = () => {
   );
 };
 
-export default PayableReport;
+export default AgedReceivableReport;

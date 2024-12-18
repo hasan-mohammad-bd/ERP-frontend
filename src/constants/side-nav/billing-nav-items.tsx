@@ -530,6 +530,13 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
+      {
+        title: "Aged Receivable Report",
+        icon: UserRoundSearch,
+        href: "aged-receivable-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
     ],
   },
   
