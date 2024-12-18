@@ -17,7 +17,8 @@ export const crmApi = createApi({
   tagTypes: [
     "lead-groups",
     "pipelines",
-    "leads"
+    "leads",
+    "lead"
   ],
   endpoints: () => ({}),
 });

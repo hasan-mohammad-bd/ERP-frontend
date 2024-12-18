@@ -92,7 +92,7 @@ export default function AddLeadForm() {
     PipelineDetailFormValues[]
   >([]);
   const params = useParams();
-  const leadId = Number(params.id);
+  const leadId = params.id || "";
   console.log(params);
   const navigate = useNavigate();
   const { data: dataById } = useGetLeadByIdQuery(leadId);

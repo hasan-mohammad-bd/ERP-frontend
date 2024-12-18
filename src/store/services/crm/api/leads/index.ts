@@ -1,21 +1,6 @@
-// import { crmApi } from "../..";
-// import { PaginationInfo } from "@/types";
-// import { LeadRow } from "./type";
-
-// const leadsApi = crmApi.injectEndpoints({
-//   endpoints: (build) => ({
-//     getLeads: build.query<{ data: LeadRow[]; meta: PaginationInfo }, string>({
-//       query: (params) => `leads?${params}`,
-//       providesTags: ["leads"],
-//     }),
-//   }),
-//   overrideExisting: false,
-// });
-
-// export const { useGetLeadsQuery, useLazyGetLeadsQuery } = leadsApi;
 import { crmApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
-import { LeadRow } from "./type";
+import { LeadDetailsType, LeadRow } from "./type";
 import { LeadFormValues } from "@/lib/validators/crm/lead";
 
 const leadApi = crmApi.injectEndpoints({
@@ -27,9 +12,9 @@ const leadApi = crmApi.injectEndpoints({
       query: (params) => `leads?${params}`,
       providesTags: ["leads"],
     }),
-    getLeadById: build.query<{ data: LeadRow }, number>({
+    getLeadById: build.query<{ data: LeadDetailsType }, string>({
       query: (leadId) => `leads/${leadId}`,
-      providesTags: ["leads"],
+      providesTags: ["lead"],
     }),
     createLead: build.mutation<
       { data: LeadRow },
@@ -67,6 +52,7 @@ const leadApi = crmApi.injectEndpoints({
 export const {
   useGetLeadsQuery,
   useGetLeadByIdQuery,
+  useLazyGetLeadByIdQuery,
   useCreateLeadMutation,
   useRemoveLeadMutation,
   useUpdateLeadMutation,

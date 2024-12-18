@@ -12,9 +12,9 @@ const allNavItems: Pick<NavItem, "title" | "href" | "image">[] = [
   { title: "HRM", href: "/hrm", image: hrm },
   { title: "Accounts", href: "/accounts", image: accounts },
   { title: "Billing", href: "/billing", image: accounts },
-  { title: "Web", href: "/web", image: web },
   { title: "CRM", href: "/crm", image: crm },
   { title: "MFG", href: "/mfg", image: mfg },
+  { title: "Web", href: "/web", image: web },
 ];
 
 // Get modules from environment variables (comma-separated string)

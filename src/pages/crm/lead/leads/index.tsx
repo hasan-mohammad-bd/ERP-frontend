@@ -9,11 +9,18 @@ import { LeadDetails } from "./components/lead-details";
 import { LeadsList } from "./components/lead-list";
 import { LeadNotFound } from "./components/lead-not-found";
 import { useNavigate, useParams } from "react-router-dom";
+import { useGetLeadByIdQuery } from "@/store/services/crm/api/leads";
 
 export function LeadsMailView() {
   const { leadId } = useParams();
+  const { data: leadData } = useGetLeadByIdQuery(leadId || "", {
+    skip: !leadId,
+  });
+
+  const lead = leadData?.data;
+  console.log(lead, "lead");
   const navigate = useNavigate();
-  
+
   return (
     <div className="grid w-full lg:grid-cols-[280px_1fr]">
       <div
@@ -43,7 +50,7 @@ export function LeadsMailView() {
       <div className="flex flex-col min-h-[120vh]">
         <div className="flex h-16 items-center justify-between border-b bg-background px-6">
           <div className="flex items-center gap-4">
-            <h1 className="text-xl font-semibold">Khair Group</h1>
+            <h1 className="text-xl font-semibold">{lead?.company_name}</h1>
           </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon">
@@ -56,7 +63,7 @@ export function LeadsMailView() {
           </div>
         </div>
         <div className="flex-1 overflow-auto">
-          {!leadId ? <LeadNotFound className="mt-20" /> : <LeadDetails />}
+          {!leadId || !lead ? <LeadNotFound className="mt-20" /> : <LeadDetails lead={lead} />}
         </div>
       </div>
     </div>
