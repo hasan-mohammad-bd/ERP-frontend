@@ -8,10 +8,11 @@ import { Separator } from "@/components/ui/separator";
 import { LeadDetails } from "./components/lead-details";
 import { LeadsList } from "./components/lead-list";
 import { LeadNotFound } from "./components/lead-not-found";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export function LeadsMailView() {
   const { leadId } = useParams();
+  const navigate = useNavigate();
   
   return (
     <div className="grid w-full lg:grid-cols-[280px_1fr]">
@@ -25,7 +26,7 @@ export function LeadsMailView() {
             <ListIcon className="h-4 w-4" />
             <h2 className="text-lg font-semibold">Leads</h2>
           </div>
-          <Button variant="ghost" size="icon">
+          <Button onClick={() => navigate("/crm/lead/leads-view/add")} variant="ghost" size="icon">
             <Plus className="h-4 w-4" />
             <span className="sr-only">New lead</span>
           </Button>

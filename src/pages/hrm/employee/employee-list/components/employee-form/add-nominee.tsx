@@ -88,7 +88,7 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
     const filteredCity = cityData.filter((city) => {
       return city.country === findCountry?.code;
     });
-
+    
     setFilteredCityState(filteredCity);
   }, [form.watch("present_address.country_id")]);
 

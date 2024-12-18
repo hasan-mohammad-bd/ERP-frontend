@@ -12,6 +12,8 @@ export const pipelineDetailSchema = z.object({
     }),
 });
 
+export type PipelineDetailFormValues = z.infer<typeof pipelineDetailSchema>
+
 
 export const pipelineSchema = z.object({
   name: z.string().min(2, {

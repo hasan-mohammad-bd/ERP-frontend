@@ -284,7 +284,7 @@ export default function ItemAddForm() {
                             form={form}
                             name="secondary_unit_id"
                             placeholder="Select Secondary unit"
-                            title="Primary Unit"
+                            title="Secondary Unit"
                             className="w-[330px]"
                           />
 

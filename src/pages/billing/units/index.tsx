@@ -49,8 +49,8 @@ const Units = () => {
                 columns={unitColumns}
                 data={units}
                 paginationInfo={paginationInfo}
-                pagination={pagination}
-                setPagination={setPagination}
+                pagination={paginationInfo && pagination}
+                setPagination={paginationInfo && setPagination}
               />
             </div>
           )}
