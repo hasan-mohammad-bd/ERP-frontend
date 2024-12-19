@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from "zod";
 
 export const LeadSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -17,6 +17,9 @@ export const LeadSchema = z.object({
   country_id: z.string().min(1, "Country ID is required"),
   city_id: z.string().min(1, "City ID is required"),
   assign_id: z.string().min(1, "Assign ID is required"),
+  status: z
+    .union([z.literal("Active"), z.literal("Completed"), z.literal("Rejected")])
+    .default("Active")
 });
 
 export type LeadFormValues = z.infer<typeof LeadSchema>;

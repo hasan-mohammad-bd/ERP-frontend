@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,27 +10,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { CityColumn, CountryColumn } from "@/lib/validators";
+import { CityColumn } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
-
 import { Card, CardContent } from "@/components/ui/card";
-
 import { useForm } from "react-hook-form";
-
-import handleErrors, {
-  ErrorDetail,
-  handleFormErrors,
-} from "@/lib/handle-errors";
+import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
-
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Heading } from "@/components/common/heading";
-
 import {
   useCreateLeadMutation,
   useGetLeadByIdQuery,
@@ -39,65 +28,34 @@ import {
 } from "@/store/services/crm/api/leads";
 import { LeadFormValues, LeadSchema } from "@/lib/validators/crm/lead";
 import { useGetPipelinesQuery } from "@/store/services/crm/api/pipelines";
-import {
-  PipelineDetailFormValues,
-  PipelineRow,
-} from "@/lib/validators/crm/pipelines";
+import { PipelineDetailFormValues } from "@/lib/validators/crm/pipelines";
 import { useGetCountriesQuery } from "@/store/services/hrm/api/country";
 import { useGetCitiesQuery } from "@/store/services/hrm/api/city";
 import { useGetItemQuery } from "@/store/services/billing/api/items";
-import { ItemRow } from "@/lib/validators/billing/items";
-import { UsersRow } from "@/lib/validators/web/users";
 import { useGetUsersQuery } from "@/store/services/erp-main/api/users";
-
-// interface EmployeeFormProps {
-// 	modalClose?: () => void;
-
-// }
-
-type DataType = {
-  id: string;
-  name: string;
-};
-const labelData = [
-  { id: "Good", name: "Good" },
-  { id: "Hot", name: "Hot" },
-  { id: "Warm", name: "Warm" },
-  { id: "Cold", name: "Cold" },
-  { id: "Qualified", name: "Qualified" },
-  { id: "Unqualified", name: "Unqualified" },
-  { id: "New", name: "New" },
-  { id: "FollowUp", name: "FollowUp" },
-  { id: "Contacted", name: "Contacted" },
-  { id: "Interested", name: "Interested" },
-  { id: "NotInterested", name: "NotInterested" },
-  { id: "Pending", name: "Pending" },
-  { id: "Converted", name: "Converted" },
-  { id: "Closed", name: "Closed" },
-  { id: "Lost", name: "Lost" },
-];
-
-const sourceData = [
-  { id: "Facebook", name: "Facebook" },
-  { id: "Google", name: "Google" },
-  { id: "Youtube", name: "Youtube" },
-  { id: "Linkedin", name: "Linkedin" },
-  { id: "Reference", name: "Reference" },
-  { id: "Other", name: "Other" },
-];
+import { LEAD_LABELS, LEAD_SOURCES } from "@/constants/crm";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 
 export default function AddLeadForm() {
   const [filteredCityState, setFilteredCityState] = useState<CityColumn[]>([]);
   const [pipelineStageState, setPipelineStageState] = useState<
     PipelineDetailFormValues[]
   >([]);
-  const params = useParams();
-  const leadId = params.id || "";
-  console.log(params);
+  const { leadId } = useParams();
+
   const navigate = useNavigate();
-  const { data: dataById } = useGetLeadByIdQuery(leadId);
-  const previousData = dataById?.data;
-  console.log(previousData);
+  const { data: dataById } = useGetLeadByIdQuery(leadId || "", {
+    skip: !leadId,
+  });
+  const previousData = dataById?.data || undefined;
+
   const [createLead, { isLoading }] = useCreateLeadMutation();
   const [updateLead, { isLoading: updateLoading }] = useUpdateLeadMutation();
   const { data: countries, isLoading: countriesLoading } =
@@ -118,56 +76,25 @@ export default function AddLeadForm() {
 
   const pipelineList = Pipeline?.data || [];
 
+  // console.log(previousData, "dsdsdsdsdsds");
+
   const form = useForm<LeadFormValues>({
     resolver: zodResolver(LeadSchema),
-    defaultValues: {},
+    defaultValues: {
+      status: "Active",
+    },
   });
 
   useEffect(() => {
     if (previousData) {
       form.reset({
         ...previousData,
-        // first_name: previousData?.first_name || "",
-        // last_name: previousData?.last_name || "",
-        // employee_unique_id: previousData?.employee_unique_id || "",
-        // phone: previousData?.phone || "",
-        // email: previousData?.email || "",
-        // joining_date: previousData?.joining_date || "",
-
-        // corporate_phone: previousData?.corporate_phone || "",
-        // // reporting_to_id: previousData.reporting_to_id?.toString(),
-        // location_id: previousData?.location?.id.toString(),
-        // organization_id: previousData?.organization?.id.toString(),
-        // work_place_id: previousData?.work_place?.id.toString(),
-        // department_id: previousData?.department?.id.toString(),
-        // section_id: previousData?.section?.id.toString(),
-        // designation_id: previousData?.designation?.id.toString(),
-        // schedule_id: previousData?.schedule?.id.toString(),
-        // employee_class_id: previousData?.employee_class?.id.toString(),
-        // employee_grade_id: previousData?.employee_grade?.id.toString(),
-        // employment_status_id: previousData?.employment_status?.id.toString(),
-        // gender_id: previousData?.gender?.id.toString(),
-        // religion_id: previousData?.religion?.id.toString(),
-        // blood_group_id: previousData?.blood_group?.id.toString(),
-        // role_id: previousData?.user?.role?.id.toString(),
-        // leave_group_id: previousData?.leave_group?.id?.toString(),
-        // card_id: previousData?.card_id || null,
-        // machine_id: previousData?.machine_id || null,
-        // is_head_of_dept: previousData?.is_head_of_dept || 0,
-        // // reporting_to_id: previousData?.reporting_to_id || null,
-        // // sorting_index: previousData?.sorting_index || 0,
-        // nid_number: previousData?.nid_number || null,
-        // fathers_name: previousData?.fathers_name || null,
-        // mothers_name: previousData?.mothers_name || null,
-        // payment_type: previousData?.payment_type || "Cash",
-        // account_number: previousData?.account_number || null,
-        // bank_name: previousData?.bank_name || null,
-        // bank_branch: previousData?.bank_branch || null,
-        // marital_status: previousData?.marital_status || "Married",
-        // birth_date: previousData?.birth_date || null,
-        // tin_number: previousData?.tin_number || null,
-        //if amarsolution.xyz is not included in proviousData.image then it will be null
-        // image: previousData?.image?.includes("amarsolution.xyz") ? previousData?.image : null
+        pipeline_id: previousData?.pipeline?.id.toString(),
+        pipeline_stage_id: previousData?.pipelineStage?.id.toString(),
+        item_id: previousData?.item?.id.toString(),
+        country_id: previousData?.country?.id.toString(),
+        city_id: previousData?.city?.id.toString(),
+        assign_id: previousData?.user?.id.toString(),
       });
     }
   }, [previousData, form]);
@@ -176,27 +103,25 @@ export default function AddLeadForm() {
     console.log(data);
     try {
       if (previousData) {
-        await updateLead({
+        const res = await updateLead({
           leadId: previousData.id,
           updatedLead: data,
         }).unwrap();
 
         toast.success("Lead updated successfully");
-        // modalClose();
-        // navigate(`/hrm/employees-list`);
+        navigate(`/crm/lead/leads-view/${res.data.id}`);
       } else {
-        await createLead(data).unwrap();
+        const res = await createLead(data).unwrap();
         toast.success("Lead created successfully");
-        // modalClose();
-        navigate(`/crm/lead/leads-view`);
+        navigate(`/crm/lead/leads-view/${res.data.id}`);
       }
     } catch (error) {
       console.log(error);
       handleErrors(error as ErrorResponse);
     }
   }
-  handleFormErrors(form.formState.errors as ErrorDetail);
-  console.log(form.formState.errors);
+  // handleFormErrors(form.formState.errors as ErrorDetail);
+  // console.log(form.formState.errors);
 
   useEffect(() => {
     const selectedCountry = form.watch("country_id");
@@ -221,6 +146,8 @@ export default function AddLeadForm() {
     console.log(findPipeline);
   }, [form.watch("pipeline_id")]);
 
+  // console.log(pipelineStageState, "pipelineStageState");
+
   return (
     <>
       {isLoading || updateLoading ? (
@@ -228,230 +155,260 @@ export default function AddLeadForm() {
           <Loading />
         </div>
       ) : (
-        <div>
+        <div className="space-y-4">
           <div className="flex items-center justify-between mb-3">
             <Heading
               title={`Lead ${previousData ? "Edit" : "Add"}`}
               description="Manage job candidates for you business"
             />
-            <Button onClick={() => navigate("/crm/lead/leads-view")} size={"sm"}>
+            <Button
+              onClick={() => navigate("/crm/lead/leads-view")}
+              size={"sm"}
+            >
               Lead List
             </Button>
           </div>
+          <Separator />
 
           <div className="2xl:w-4/6 w-full mx-auto">
             <Card>
               <CardContent className="space-y-2 pt-3">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="">
-                    <ScrollArea className=" h-[75vh] rounded-md border p-4">
-                      <div className="grid grid-cols-2 gap-4 w-1/2 mb-4">
-                        <FormField
-                          control={form.control}
-                          name="name"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Lead Name</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="text"
-                                  placeholder="Name"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                    <div className="grid grid-cols-3 gap-4 mb-4">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Lead Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="text"
+                                placeholder="Name"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                        <FormField
-                          control={form.control}
-                          name="description"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Description</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="text"
-                                  placeholder="Description (optional)"
-                                  {...field}
-                                  value={field.value || ""}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="designation"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Designation</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="text"
-                                  placeholder="Designation (optional)"
-                                  {...field}
-                                  value={field.value || ""}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4 w-1/2 mb-4">
-                        <FormField
-                          control={form.control}
-                          name="phone"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Phone</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="text"
-                                  placeholder=" Phone"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                      <div className=" mb-4 w-1/2">
-                        <FormField
-                          control={form.control}
-                          name="email"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Email</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="email"
-                                  placeholder=" Email"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="company_name"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Company Name</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="text"
-                                  placeholder="Company Name"
-                                  {...field}
-                                  value={field.value || ""}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
+                      <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="text"
+                                placeholder="Description (optional)"
+                                {...field}
+                                value={field.value || ""}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="designation"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Designation</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="text"
+                                placeholder="Designation (optional)"
+                                {...field}
+                                value={field.value || ""}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="grid grid-cols-3 gap-4 mb-4">
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Phone</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="text"
+                                placeholder=" Phone"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="email"
+                                placeholder=" Email"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="company_name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Company Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="text"
+                                placeholder="Company Name"
+                                {...field}
+                                value={field.value || ""}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
-                      <div className="grid grid-cols-3 gap-4">
-                        {" "}
-                        <FormSearchSelect<PipelineRow>
-                          loading={pipelineLoading}
-                          data={pipelineList}
-                          displayField="name"
-                          valueField="id"
-                          form={form}
-                          name="pipeline_id"
-                          placeholder="Pipeline"
-                          title="Pipeline"
-                          className="w-[330px]"
-                        />
-                        <FormSearchSelect<PipelineDetailFormValues>
-                          // loading={pipelineLoading}
-                          data={pipelineStageState}
-                          displayField="name"
-                          valueField="id"
-                          form={form}
-                          name="pipeline_stage_id"
-                          placeholder="Pipeline Stage"
-                          title="Pipeline Stage"
-                          className="w-[330px]"
-                          disabled={!form.watch("pipeline_id")}
-                        />
-                        <FormSearchSelect<ItemRow>
-                          loading={itemStocksLoading}
-                          data={itemsData}
-                          displayField="name"
-                          valueField="id"
-                          form={form}
-                          name="item_id"
-                          placeholder="Item"
-                          className="w-[300px]"
-                          title="Item"
-                        />
-                        <FormSearchSelect<CountryColumn>
-                          loading={countriesLoading}
-                          data={countryData}
-                          displayField="name"
-                          valueField="id"
-                          form={form}
-                          name="country_id"
-                          placeholder="Country"
-                          className="w-[300px]"
-                          title="Country"
-                        />
-                        <FormSearchSelect<CityColumn>
-                          // loading={countriesLoading}
-                          data={filteredCityState}
-                          displayField="name"
-                          valueField="id"
-                          form={form}
-                          name="city_id"
-                          placeholder="City"
-                          className="w-[300px]"
-                          title="City"
-                          disabled={!form.watch("country_id")}
-                        />
-                        <FormSearchSelect<UsersRow>
-                          loading={usersLoading}
-                          data={userData}
-                          displayField="name"
-                          valueField="id"
-                          form={form}
-                          name="assign_id"
-                          placeholder="Assign to"
-                          className="w-[300px]"
-                          title="Assign to"
-                        />
-                        <FormSearchSelect<DataType>
-                          // loading={countriesLoading}
-                          data={labelData}
-                          displayField="name"
-                          valueField="id"
-                          form={form}
-                          name="label"
-                          placeholder="Label"
-                          className="w-[300px]"
-                          title="Label"
-                        />
-                        <FormSearchSelect<DataType>
-                          // loading={countriesLoading}
-                          data={sourceData}
-                          displayField="name"
-                          valueField="id"
-                          form={form}
-                          name="source"
-                          placeholder="Source"
-                          className="w-[300px]"
-                          title="Source"
-                        />
-                      </div>
-                    </ScrollArea>
+                    <div className="grid grid-cols-3 gap-4">
+                      {" "}
+                      <FormSearchSelect
+                        loading={pipelineLoading}
+                        data={pipelineList}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="pipeline_id"
+                        placeholder="Pipeline"
+                        title="Pipeline"
+                        className="w-[330px]"
+                      />
+                      <FormSearchSelect
+                        // loading={pipelineLoading}
+                        data={pipelineStageState}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="pipeline_stage_id"
+                        placeholder="Pipeline Stage"
+                        title="Pipeline Stage"
+                        className="w-[330px]"
+                        disabled={!form.watch("pipeline_id")}
+                      />
+                      <FormSearchSelect
+                        loading={itemStocksLoading}
+                        data={itemsData}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="item_id"
+                        placeholder="Item"
+                        className="w-[300px]"
+                        title="Item"
+                      />
+                      <FormSearchSelect
+                        loading={countriesLoading}
+                        data={countryData}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="country_id"
+                        placeholder="Country"
+                        className="w-[300px]"
+                        title="Country"
+                      />
+                      <FormSearchSelect
+                        // loading={countriesLoading}
+                        data={filteredCityState}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="city_id"
+                        placeholder="City"
+                        className="w-[300px]"
+                        title="City"
+                        disabled={!form.watch("country_id")}
+                      />
+                      <FormSearchSelect
+                        loading={usersLoading}
+                        data={userData}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="assign_id"
+                        placeholder="Assign to"
+                        className="w-[300px]"
+                        title="Assign to"
+                      />
+                      <FormSearchSelect
+                        // loading={countriesLoading}
+                        data={LEAD_LABELS}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="label"
+                        placeholder="Label"
+                        className="w-[300px]"
+                        title="Label"
+                      />
+                      <FormSearchSelect
+                        // loading={countriesLoading}
+                        data={LEAD_SOURCES}
+                        displayField="name"
+                        valueField="id"
+                        form={form}
+                        name="source"
+                        placeholder="Source"
+                        className="w-[300px]"
+                        title="Source"
+                      />
+                      <FormField
+                        control={form.control}
+                        name="status"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Status</FormLabel>
+                            <Select
+                              onValueChange={(value) => field.onChange(value)}
+                              value={String(field.value)}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select Status" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value={"Active"}>Active</SelectItem>
+                                <SelectItem value={"Completed"}>
+                                  Completed
+                                </SelectItem>
+                                <SelectItem value={"Rejected"}>
+                                  Rejected
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
                     <div className="mt-2 flex justify-end gap-4">
                       <Button
                         variant="default"

@@ -13,7 +13,7 @@ import { cn } from "@/utils";
 export function LeadNotFound({ className }: { className?: string }) {
   return (
     <div className={cn("flex justify-center p-6", className)}>
-      <Card className="max-w-md text-center">
+      <Card className="max-w-md max-h-[400px] text-center">
         <CardHeader>
           <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-muted">
             <FileQuestion className="h-10 w-10 text-muted-foreground" />

@@ -25,7 +25,12 @@ const crmRoutes = {
       errorElement: withFallback(<ErrorPage />),
     },
     {
-      path: "lead/leads-view/add",
+      path: "lead/leads/add",
+      element: withFallback(<AddLeadForm />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "lead/leads/edit/:leadId",
       element: withFallback(<AddLeadForm />),
       errorElement: withFallback(<ErrorPage />),
     },

@@ -8,8 +8,9 @@ import { Separator } from "@/components/ui/separator";
 import { LeadDetails } from "./components/lead-details";
 import { LeadsList } from "./components/lead-list";
 import { LeadNotFound } from "./components/lead-not-found";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGetLeadByIdQuery } from "@/store/services/crm/api/leads";
+import { Badge } from "@/components/ui/badge";
 
 export function LeadsMailView() {
   const { leadId } = useParams();
@@ -33,7 +34,11 @@ export function LeadsMailView() {
             <ListIcon className="h-4 w-4" />
             <h2 className="text-lg font-semibold">Leads</h2>
           </div>
-          <Button onClick={() => navigate("/crm/lead/leads-view/add")} variant="ghost" size="icon">
+          <Button
+            onClick={() => navigate("/crm/lead/leads/add")}
+            variant="ghost"
+            size="icon"
+          >
             <Plus className="h-4 w-4" />
             <span className="sr-only">New lead</span>
           </Button>
@@ -47,25 +52,40 @@ export function LeadsMailView() {
         <Separator />
         <LeadsList leadId={Number(leadId)} />
       </div>
-      <div className="flex flex-col min-h-[120vh]">
-        <div className="flex h-16 items-center justify-between border-b bg-background px-6">
-          <div className="flex items-center gap-4">
-            <h1 className="text-xl font-semibold">{lead?.company_name}</h1>
+      {!leadId || !lead ? (
+        <LeadNotFound className="mt-20" />
+      ) : (
+        <div className="flex flex-col min-h-[120vh]">
+          <div className="flex h-16 items-center justify-between border-b bg-background px-6">
+            <div className="flex items-center gap-4">
+              <h1 className="text-xl font-semibold">{lead?.company_name}</h1>
+            </div>
+            <div className="flex items-center gap-4">
+              <Link to={`/crm/lead/leads/edit/${leadId}`}>
+                <Button variant="ghost" size="icon">
+                  <Edit className="h-4 w-4" />
+                  <span className="sr-only">Edit</span>
+                </Button>
+              </Link>
+              <Badge
+                variant={
+                  lead?.status === "Active"
+                    ? "outline"
+                    : lead?.status === "Completed"
+                    ? "default"
+                    : "destructive"
+                }
+                className="ml-auto"
+              >
+                {lead?.status}
+              </Badge>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon">
-              <Edit className="h-4 w-4" />
-              <span className="sr-only">Edit</span>
-            </Button>
-            <Button variant="destructive" size="sm">
-              Reject
-            </Button>
+          <div className="flex-1 overflow-auto">
+            <LeadDetails lead={lead} />
           </div>
         </div>
-        <div className="flex-1 overflow-auto">
-          {!leadId || !lead ? <LeadNotFound className="mt-20" /> : <LeadDetails lead={lead} />}
-        </div>
-      </div>
+      )}
     </div>
   );
 }

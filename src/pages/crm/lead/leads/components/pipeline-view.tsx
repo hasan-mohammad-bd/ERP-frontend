@@ -37,7 +37,7 @@ export default function PipelineView({
                     className={cn(
                       "flex h-7 w-7 items-center justify-center rounded-full",
                       isActive(stage)
-                        ? "bg-green-100 text-green-700"
+                        ? "bg-primary text-primary-foreground"
                         : "bg-gray-100 text-gray-700"
                     )}
                   >

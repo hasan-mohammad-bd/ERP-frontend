@@ -31,7 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import LEAD_GROUP_TYPES from "@/constants/lead-group-types";
+import { LEAD_GROUP_TYPES } from "@/constants/crm";
 
 interface AddLeadGroupProps {
   modalClose: () => void;

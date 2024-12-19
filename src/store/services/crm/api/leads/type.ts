@@ -48,6 +48,7 @@ export type LeadDetailsType = {
   address: string | null;
   description: string;
   source: string;
+  status: "Active" | "Completed" | "Rejected";
   label: string;
   user: User;
   assignedUser: User;
