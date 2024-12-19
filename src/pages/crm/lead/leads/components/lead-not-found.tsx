@@ -9,8 +9,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/utils";
+import { useNavigate } from "react-router-dom";
 
 export function LeadNotFound({ className }: { className?: string }) {
+  const navigate = useNavigate();
   return (
     <div className={cn("flex justify-center p-6", className)}>
       <Card className="max-w-md max-h-[400px] text-center">
@@ -31,7 +33,9 @@ export function LeadNotFound({ className }: { className?: string }) {
           </p>
         </CardContent>
         <CardFooter className="flex justify-center">
-          <Button>Create New Lead</Button>
+          <Button onClick={() => navigate("/crm/lead/leads/add")}>
+            Create New Lead
+          </Button>
         </CardFooter>
       </Card>
     </div>

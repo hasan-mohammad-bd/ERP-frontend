@@ -19,7 +19,6 @@ export function LeadsMailView() {
   });
 
   const lead = leadData?.data;
-  console.log(lead, "lead");
   const navigate = useNavigate();
 
   return (

@@ -162,7 +162,7 @@ export default function AddLeadForm() {
               description="Manage job candidates for you business"
             />
             <Button
-              onClick={() => navigate("/crm/lead/leads-view")}
+              onClick={() => window.history.back()}
               size={"sm"}
             >
               Lead List
