@@ -514,6 +514,7 @@ export default function AddInvoiceForm() {
               <ProductBarcodeSearch
                 setSelectedProducts={setSelectedProducts}
                 selectedProducts={selectedProducts}
+                usedFor="purchase"
               />
             </Card>
             {/* calculation */}

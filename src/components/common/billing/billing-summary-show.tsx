@@ -114,6 +114,10 @@ export default function BillingSummaryShow({
         )}
 
         <div className="flex justify-between items-center font-semibold">
+          <span>After Discount</span>
+          <span>{(subTotal - discountedAmount).toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between items-center font-semibold">
           <span>Tax</span>
           <span>{totalTaxAmount.toFixed(2)}</span>
         </div>

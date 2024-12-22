@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -17,9 +17,12 @@ const ItemList = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const { data, isLoading } = useGetItemQuery(
-    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+    `per_page=${pagination.pageSize}&page=${
+      pagination.pageIndex + 1
+    }&text=${searchTerm}`
   );
 
   const fetchedData = data?.data || [];
@@ -49,6 +52,7 @@ const ItemList = () => {
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}
+                onChangeSearch={setSearchTerm}
               />
             </div>
           )}

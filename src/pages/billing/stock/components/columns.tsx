@@ -32,11 +32,11 @@ export const stockColumns: ColumnDef<ItemStockDataType>[] = [
     header: "Item Name",
     cell: ({ row }) => <div className="py-2">{row.original.item_name}</div>,
   },
-  {
-    accessorKey: "warehouse_name",
-    header: "Warehouse Name",
-    cell: ({ row }) => <>{row.original.warehouse_name}</>,
-  },
+  // {
+  //   accessorKey: "warehouse_name",
+  //   header: "Warehouse Name",
+  //   cell: ({ row }) => <>{row.original.warehouse_name}</>,
+  // },
   {
     accessorKey: "stock_quantity",
     header: "Stock Quantity",

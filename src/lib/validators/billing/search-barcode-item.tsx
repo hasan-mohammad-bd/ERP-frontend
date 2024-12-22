@@ -4,11 +4,12 @@ import { TaxRow } from "../accounts/tax";
 export interface SearchBarcodeItemUnit {
   id: number;
   name: string;
+  purchase_price: number;
   selling_price: number;
-  discount: number;
-  discount_amount: number;
-  after_discount: number;
-  wholesale_price: number;
+  // discount: number;
+  // discount_amount: number;
+  // after_discount: number;
+  // wholesale_price: number;
 }
 
 // Main product type

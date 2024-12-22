@@ -40,7 +40,7 @@ export const purchaseColumns: ColumnDef<PurchaseResponse>[] = [
     header: "Invoice Number",
     cell: ({ row }) => (
       <Link
-        to={`/billing/invoices/view/${row.original.id}`}
+        to={`/billing/purchases/view/${row.original.id}`}
         className="text-blue-600 hover:underline"
       >
         {row.original.invoice_number}

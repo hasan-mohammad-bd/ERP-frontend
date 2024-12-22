@@ -80,7 +80,7 @@ import AddInvoiceForm from "@/pages/billing/invoices/components/add-invoice-form
 import PurchaseOrder from "@/pages/billing/purchase-order";
 import AddPurchaseOrderForm from "@/pages/billing/purchase-order/components/add-purchase-order";
 // import EditPurchaseOrder from "@/pages/billing/purchase-order/components/edit-quotes-form";
-import InvoiceUI from "@/pages/billing/invoices/components/invoiceUI";
+import SalesInvoice from "@/pages/billing/invoices/components/sales-invoice";
 import WareHouse from "@/pages/billing/warehouse";
 import PurchaseReturn from "@/pages/billing/purchase-return";
 import AddPurchaseReturnForm from "@/pages/billing/purchase-return/components/add-purchase-return";
@@ -97,6 +97,7 @@ import ReceiveableReport from "@/pages/billing/reports/receivable-report";
 import PayableReport from "@/pages/billing/reports/payable-report";
 import AgedReceivableReport from "@/pages/billing/reports/aged-receivable-report";
 import AgedPayableReport from "@/pages/billing/reports/aged-payable-report";
+import PurchaseInvoice from "@/pages/billing/purchases/components/purchase-invoice";
 
 const billingRoutes = {
   path: "billing/",
@@ -228,6 +229,11 @@ const billingRoutes = {
         {
           path: "edit/:id",
           element: withFallback(<AddPurchaseForm />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "view/:id",
+          element: withFallback(<PurchaseInvoice />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
@@ -436,7 +442,7 @@ const billingRoutes = {
         },
         {
           path: "view/:id",
-          element: withFallback(<InvoiceUI />),
+          element: withFallback(<SalesInvoice />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],

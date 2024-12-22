@@ -45,11 +45,13 @@ export interface BarcodeLineItemType {
 interface SearchProductProps {
   selectedProducts: BarcodeLineItemType[];
   setSelectedProducts: Dispatch<SetStateAction<BarcodeLineItemType[]>>;
+  usedFor?: "purchase" | "invoice";
 }
 
 export default function ProductBarcodeSearch({
   selectedProducts,
   setSelectedProducts,
+  usedFor = "invoice",
 }: SearchProductProps) {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -77,7 +79,7 @@ export default function ProductBarcodeSearch({
           barcode: product.barcode,
           barcodeAttribute: product.barcode_attribute,
           name: product.name,
-          price: product.primary_unit?.selling_price || 0,
+          price: usedFor === "purchase" ? product.primary_unit?.purchase_price || 0 : product.primary_unit?.selling_price || 0,
           units: [product.primary_unit, product.secondary_unit],
           unit: product.primary_unit, // Store the selected unit
           quantity: 1,
@@ -112,7 +114,7 @@ export default function ProductBarcodeSearch({
           return {
             ...product,
             unit: tempUnit, // Assuming 'unit' is intended to store the found unit
-            price: tempUnit.selling_price,
+            price: usedFor === "purchase" ? tempUnit.purchase_price : tempUnit.selling_price,
           };
         }
         return product;

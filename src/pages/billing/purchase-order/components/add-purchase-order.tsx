@@ -530,6 +530,7 @@ export default function AddPurchaseOrderForm() {
               <ProductBarcodeSearch
                 setSelectedProducts={setSelectedProducts}
                 selectedProducts={selectedProducts}
+                usedFor="purchase"
               />
             </Card>
             {/* calculation */}
