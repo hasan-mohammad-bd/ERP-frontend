@@ -25,12 +25,8 @@ export const ItemSchema = z.object({
   primary_unit_id: z.string({
     required_error: "Primary unit is required",
   }),
-  secondary_unit_id: z.string({
-    required_error: "Secondary unit is required",
-  }),
-  primary_to_secondary_unit: z.coerce.number({
-    required_error: "Primary to secondary unit conversion is required",
-  }),
+  secondary_unit_id: z.string().optional(),
+  primary_to_secondary_unit: z.coerce.number().optional(),
   purchase_account_id: z.string({
     required_error: "Purchase account is required",
   }),

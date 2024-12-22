@@ -123,6 +123,7 @@ export default function ItemAddForm() {
     resolver: zodResolver(ItemSchema),
     defaultValues: {
       name: previousData?.name || "",
+      primary_to_secondary_unit: previousData?.primary_to_secondary_unit || 1,
     },
   });
 
@@ -146,7 +147,7 @@ export default function ItemAddForm() {
         purchase_account_id: previousData.purchase_account_id.toString(),
         sale_account_id: previousData.sale_account_id.toString(),
         inventory_account_id: previousData.inventory_account_id.toString(),
-        primary_to_secondary_unit: previousData.primary_to_secondary_unit,
+        primary_to_secondary_unit: previousData.primary_to_secondary_unit || 1,
         track_inventory: previousData.track_inventory,
         manufacture: previousData.manufacture,
         allow_sale: previousData.allow_sale,
@@ -287,8 +288,9 @@ export default function ItemAddForm() {
                             title="Secondary Unit"
                             className="w-[330px]"
                           />
-
-                          <FormField
+                          {
+                            form.watch("secondary_unit_id") && 
+                            <FormField
                             control={form.control}
                             name="primary_to_secondary_unit"
                             render={({ field }) => (
@@ -307,6 +309,9 @@ export default function ItemAddForm() {
                               </FormItem>
                             )}
                           />
+                          }
+
+
                         </div>
                       </div>
 
