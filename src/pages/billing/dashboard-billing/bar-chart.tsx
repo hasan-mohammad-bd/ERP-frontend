@@ -17,27 +17,31 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-]
+import { MonthlySalesBilling } from "@/lib/validators/billing/dashboard-report"
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
+  amount: {
+    label: "Amount",
+    color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig
 
-export function TheBarChart({title}: {title: string}) {
+interface Params {
+  title: string
+  data?: MonthlySalesBilling[]
+}
+
+export function TheBarChart({ title, data }: Params) {
+  // Map data to fit chart requirements
+  const chartData = data?.map((item) => ({
+    month: item.month_name, // Use month_name for display
+    amount: parseFloat((item.amount || "0").toString()), // Ensure amount is a number
+  })) || []
+
   return (
     <Card>
       <CardHeader>
-      <CardTitle className="text-md font-normal">{title}</CardTitle>
+        <CardTitle className="text-md font-normal">{title}</CardTitle>
         {/* <CardDescription>Last 30 days</CardDescription> */}
       </CardHeader>
       <CardContent>
@@ -55,13 +59,13 @@ export function TheBarChart({title}: {title: string}) {
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) => value.split(" ")[0]} // Optional: Show only the month's name
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
+           <Bar dataKey="amount" fill={chartConfig.amount.color} radius={8}> 
               <LabelList
                 position="top"
                 offset={12}

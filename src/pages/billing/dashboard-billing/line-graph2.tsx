@@ -1,7 +1,7 @@
 "use client"
 
 import { GitCommitVertical } from "lucide-react"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 
 import {
   Card,
@@ -16,36 +16,35 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
-  { month: "05", desktop: 186, mobile: 80 },
-  { month: "10", desktop: 305, mobile: 200 },
-  { month: "15", desktop: 237, mobile: 100 },
-  { month: "20", desktop: 73, mobile: 150 },
-  { month: "25", desktop: 209, mobile: 130 },
-  { month: "30", desktop: 214, mobile: 140 },
-]
-
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
-  },
-} satisfies ChartConfig
+import { SaleDashboard } from "@/lib/validators/billing/dashboard-report"
 
 interface Props {
   title: string
+  data: SaleDashboard[]
 }
 
-export function TheLineGraph2({title}: Props) {
+const chartConfig: ChartConfig = {
+  desktop: {
+    label: "Total Sell Price",
+    color: "hsl(var(--chart-1))",
+  },
+}
+
+const preprocessData = (data: SaleDashboard[]) => {
+  return data.map((item) => ({
+    item_name: item.item_name,
+    total_sell_price: parseFloat(item.total_sell_price),
+  }))
+}
+
+export function TheLineGraph2({ title, data }: Props) {
+  const chartData = preprocessData(data)
+
   return (
     <Card>
       <CardHeader>
-      <CardTitle className="text-md font-normal">{title}</CardTitle>
-        <CardDescription>Last 30 days</CardDescription>
+        <CardTitle className="text-md font-normal">{title}</CardTitle>
+        <CardDescription>Sales Performance</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -55,36 +54,38 @@ export function TheLineGraph2({title}: Props) {
             margin={{
               left: 12,
               right: 12,
+              bottom: 62,
+              top: 12,
             }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="item_name"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
             />
+            <YAxis />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
             <Line
-              dataKey="desktop"
+              dataKey="total_sell_price"
               type="natural"
-              stroke="var(--color-desktop)"
+              stroke="hsl(var(--chart-1))"
               strokeWidth={2}
               dot={({ cx, cy, payload }) => {
-                const r = 24
+                const r = 12
                 return (
                   <GitCommitVertical
-                    key={payload.month}
+                    key={payload.item_name}
                     x={cx - r / 2}
                     y={cy - r / 2}
                     width={r}
                     height={r}
                     fill="hsl(var(--background))"
-                    stroke="var(--color-desktop)"
+                    stroke="hsl(var(--chart-1))"
                   />
                 )
               }}
@@ -92,14 +93,6 @@ export function TheLineGraph2({title}: Props) {
           </LineChart>
         </ChartContainer>
       </CardContent>
-{/*       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter> */}
     </Card>
   )
 }

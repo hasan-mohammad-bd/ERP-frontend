@@ -1,66 +1,55 @@
-"use client"
+"use client";
 
-// import { TrendingUp } from "lucide-react"
-import { CartesianGrid, Dot, Line, LineChart } from "recharts"
+
+import { CartesianGrid, Dot, Line, LineChart, XAxis, YAxis } from "recharts";
 
 import {
   Card,
   CardContent,
   CardDescription,
-  // CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
-]
+} from "@/components/ui/chart";
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-    color: "hsl(var(--chart-2))",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "hsl(var(--chart-1))",
-  },
-  safari: {
-    label: "Safari",
-    color: "hsl(var(--chart-2))",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "hsl(var(--chart-3))",
-  },
-  edge: {
-    label: "Edge",
-    color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
-  },
-} satisfies ChartConfig
-
-interface Props {
-  title: string
+interface CustomerDashboard {
+  id: number;
+  name: string;
+  company_name: string;
+  phone: string;
+  email: string;
+  sale_amount: string;
 }
 
-export function TheLineGraph({title}: Props ) {
+interface Params {
+  title: string;
+  data: CustomerDashboard[];
+}
+
+const chartConfig = {
+  sales: {
+    label: "Sales",
+    color: "hsl(var(--chart-2))",
+  },
+} satisfies ChartConfig;
+
+export function TheLineGraph({ title, data }: Params) {
+  // Convert sale_amount to numeric values for chart plotting
+  const chartData = data.map((customer) => ({
+    name: customer.name,
+    sales: parseFloat(customer.sale_amount.replace(/[^\d.-]/g, "")),
+    fill: "hsl(var(--chart-1))", // Use consistent color for all points
+  }));
+
   return (
     <Card>
       <CardHeader>
-      <CardTitle className="text-md font-normal">{title}</CardTitle>
+        <CardTitle className="text-md font-normal">{title}</CardTitle>
         <CardDescription>Last 30 days</CardDescription>
       </CardHeader>
       <CardContent>
@@ -72,48 +61,60 @@ export function TheLineGraph({title}: Props ) {
               top: 24,
               left: 24,
               right: 24,
+              bottom: 64,
             }}
           >
             <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="name"
+              interval={0}
+              angle={-45}
+              textAnchor="end"
+              tick={{ fontSize: 10 }}
+            />
+            <YAxis
+              tickFormatter={(value) =>
+                `৳${value.toLocaleString("en-IN", {
+                  maximumFractionDigits: 2,
+                })}`
+              }
+            />
             <ChartTooltip
               cursor={false}
               content={
                 <ChartTooltipContent
                   indicator="line"
-                  nameKey="visitors"
+                  nameKey="name"
+                  labelFormatter={(value) =>
+                    `৳${value.toLocaleString("en-IN", {
+                      maximumFractionDigits: 2,
+                    })}`
+                  }
                   hideLabel
                 />
               }
             />
             <Line
-              dataKey="visitors"
+              dataKey="sales"
               type="natural"
-              stroke="var(--color-visitors)"
+              stroke="var(--color-sales)"
               strokeWidth={2}
               dot={({ payload, ...props }) => {
                 return (
                   <Dot
-                    key={payload.browser}
+                    key={payload.name}
                     r={5}
                     cx={props.cx}
                     cy={props.cy}
                     fill={payload.fill}
                     stroke={payload.fill}
                   />
-                )
+                );
               }}
             />
           </LineChart>
         </ChartContainer>
       </CardContent>
-      {/* <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter> */}
     </Card>
-  )
+  );
 }

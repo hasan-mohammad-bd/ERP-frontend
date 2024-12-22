@@ -24,6 +24,8 @@ import { TheLineGraph2 } from "./line-graph2";
 import { ThePieChartDonut } from "./pie-chart-donut";
 import { TheBarChart } from "./bar-chart";
 import { TheAreaChart } from "./area-chart";
+import { useFetchReportsListQuery } from "@/store/services/billing/api/bashboard-billing";
+import { DashboardReports } from "@/lib/validators/billing/dashboard-report";
 
 // const employeeData = [
 //   {
@@ -138,13 +140,14 @@ import { TheAreaChart } from "./area-chart";
 // ]
 
 const BillingDashboard = () => {
-  // const { data } = useGetDashboardHrmQuery();
+  const { data } = useFetchReportsListQuery();
 
-  // const hrmDashboardData = (data?.data as dashboardHrm) || [];
+  const billingDashboardData =  data?.data as DashboardReports ;
 
- 
+  console.log(billingDashboardData, 'billingDashboardData');
+
+
   // const chartData = data?.data || [];
-
 /*   const employeeServiceLifeData = [
     {
       id: 1,
@@ -347,22 +350,33 @@ const BillingDashboard = () => {
             <div className="grid grid-cols-3 gap-3">
               <div className="pb-3">
                 {/* <TotalEmployeeChart title="Total of Customers in last 30 days" employee_month={employee_month} /> */}
-                <TheLineGraph title="Sales of Customer in Last 30 days" />
+               {
+                  billingDashboardData?.top_five_customers &&  <TheLineGraph data={billingDashboardData.top_five_customers} title="Sales of Customer in Last 30 days" />
+               }
 
                 <div className="mt-3">
-                  <TheBarChart title="Sales Analysis" />
+                  
+            <TheBarChart title="Sales Analysis" data={billingDashboardData?.monthly_sales} />
+          
+                  
                 </div>
               </div>
               <div className="col-span-2">
                 <div className="grid grid-cols-2 gap-x-3">
                 <div>
-                <TheLineGraph2 title="Sales Item in last 30 days" />
+                {
+                  billingDashboardData?.top_five_sales && <TheLineGraph2 title="Sales Item in last 30 days" data= {billingDashboardData?.top_five_sales} />
+                }
                 </div>
                 <div>
-                <ThePieChartDonut title="Asset Analysis" />
+                {
+                  billingDashboardData?.accounts_assets && <ThePieChartDonut title="Asset Analysis" data={billingDashboardData?.accounts_assets} />
+                }
                 </div>
                 <div className="col-span-2 mt-3">
-                  <TheAreaChart title="Profit Loss"/>
+                  {
+                    billingDashboardData?.monthly_profit_loss && <TheAreaChart data={billingDashboardData?.monthly_profit_loss} title="Profit Loss"/>
+                  }
                 </div>
                 </div>
 
