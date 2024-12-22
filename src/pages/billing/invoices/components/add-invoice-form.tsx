@@ -145,13 +145,14 @@ export default function AddInvoiceForm() {
         due_date: salesOrder.due_date || "",
         delivery_date: salesOrder.delivery_date || "",
         note: salesOrder.note || "",
+        warranty: salesOrder.warranty || "",
         terms_conditions: salesOrder.terms_conditions || "",
         sub_total: salesOrder.sub_total,
         reference: salesOrder.reference || "",
         tax: salesOrder.tax,
         shipping_charge: salesOrder.shipping_charge || 0,
         adjustment: salesOrder.adjustment || 0,
-        warehouse_id: salesOrder.warehouse?.id,
+        warehouse_id: salesOrder.warehouse?.id.toString(),
         sales_order_id: salesOrder.sales_order?.id,
       });
     }
@@ -501,6 +502,22 @@ export default function AddInvoiceForm() {
                     )}
                   />
 
+                  <FormField
+                    control={form.control}
+                    name="warranty"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Calibration & Warranty</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Type calibration and warranty."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   <FormField
                     control={form.control}
                     name="terms_conditions"

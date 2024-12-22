@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useGetSalesInvoicesByIdQuery } from "@/store/services/billing/api/invoices";
+import { numberToWords } from "@/utils/formate-number";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -332,7 +333,7 @@ const InvoiceUI = () => {
                     style={{
                       padding: "5px 12px",
                       borderRight: "2px solid #bfbfbf",
-                      maxWidth: "260px",
+                      maxWidth: "370px",
                       width: "100%",
                     }}
                   >
@@ -358,7 +359,7 @@ const InvoiceUI = () => {
                   >
                     UNIT PRICE
                   </div>
-                  <div
+                  {/* <div
                     style={{
                       padding: "5px 12px",
                       borderRight: "2px solid #bfbfbf",
@@ -367,12 +368,13 @@ const InvoiceUI = () => {
                     }}
                   >
                     DISCOUNT(%)
-                  </div>
+                  </div> */}
                   <div
                     style={{
                       padding: "5px 12px",
                       maxWidth: "105px",
                       width: "100%",
+                      textAlign: "right",
                     }}
                   >
                     AMOUNT
@@ -406,7 +408,7 @@ const InvoiceUI = () => {
                       style={{
                         borderRight: "2px solid #bfbfbf",
                         padding: "4px 12px",
-                        maxWidth: "260px",
+                        maxWidth: "370px",
                         width: "100%",
                       }}
                     >
@@ -434,7 +436,7 @@ const InvoiceUI = () => {
                     >
                       {Number(item.price).toFixed(2)}
                     </div>
-                    <div
+                    {/* <div
                       style={{
                         borderRight: "2px solid #bfbfbf",
                         textAlign: "center",
@@ -444,7 +446,7 @@ const InvoiceUI = () => {
                       }}
                     >
                       {item.discount}
-                    </div>
+                    </div> */}
 
                     <div
                       style={{
@@ -454,7 +456,8 @@ const InvoiceUI = () => {
                         width: "100%",
                       }}
                     >
-                      {Number(item.total).toFixed(2)}
+                      {/* {Number(item.total).toFixed(2)} */}
+                      {Number(item.price * item.qty).toFixed(2)}
                     </div>
                   </div>
                 ))}
@@ -572,7 +575,7 @@ const InvoiceUI = () => {
                       width: "100%",
                     }}
                   >
-                    {invoiceData?.data.shipping_charges}
+                    {invoiceData?.data.shipping_charges || 0}
                   </div>
                 </div>
                 <div
@@ -581,8 +584,8 @@ const InvoiceUI = () => {
                   }}
                 >
                   <div style={{ padding: "4px 12px" }}>
-                    <strong>IN WORDS</strong>: One Lac Ninety Five Thousand Taka
-                    Only
+                    <strong>IN WORDS</strong>:{" "}
+                    {numberToWords(invoiceData?.data.total || 0)}
                   </div>
                   <div
                     style={{
@@ -613,41 +616,39 @@ const InvoiceUI = () => {
 
             {/* Footer */}
             <div style={{ marginTop: "20px" }}>
-              <div
-                style={{
-                  padding: "16px",
-                  backgroundColor: "#f2f2f2",
-                  marginBottom: "20px",
-                }}
-              >
-                <h3
-                  style={{
-                    fontSize: "12px",
-                    fontWeight: "bold",
-                    padding: "4px 40px 4px 10px",
-                    border: "2px solid #bfbfbf",
-                    borderBottom: "none",
-                    width: "fit-content",
-                  }}
-                >
-                  CALIBRATION & WARRANTY
-                </h3>
+              {invoiceData?.data?.warranty && (
                 <div
                   style={{
-                    padding: "10px",
-                    backgroundColor: "#ffffff",
-                    border: "2px solid #bfbfbf",
+                    padding: "16px",
+                    backgroundColor: "#f2f2f2",
+                    marginBottom: "20px",
                   }}
                 >
-                  <p style={{ fontSize: "12px" }}>
-                    01 Calibration free within the First Year from the date of
-                    purchase.
-                    <br />
-                    01 Year manufacturer defect parts replacement warranty from
-                    the date of purchase as per terms & conditions.
-                  </p>
+                  <h3
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      padding: "4px 40px 4px 10px",
+                      border: "2px solid #bfbfbf",
+                      borderBottom: "none",
+                      width: "fit-content",
+                    }}
+                  >
+                    CALIBRATION & WARRANTY
+                  </h3>
+                  <div
+                    style={{
+                      padding: "10px",
+                      backgroundColor: "#ffffff",
+                      border: "2px solid #bfbfbf",
+                    }}
+                  >
+                    <p style={{ fontSize: "12px" }}>
+                      {invoiceData?.data?.warranty}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div
                 style={{

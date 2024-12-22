@@ -114,4 +114,5 @@ export type SaleInvoiceResponse = Invoice & {
   sales_order: SaleOrderResponse;
   due: number;
   total_due: number;
+  warranty: string;
 };

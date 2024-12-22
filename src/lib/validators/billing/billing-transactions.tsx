@@ -46,7 +46,8 @@ export const salesOrderSchema = billingTransactionCommonSchema.extend({});
 
 export const salesInvoiceSchema = billingTransactionCommonSchema.extend({
   shipping_charge: z.coerce.number().nonnegative().optional(),
-  warehouse_id: z.coerce.number({ required_error: "The warehouse id field is required." }),
+  warehouse_id: z.string({ required_error: "The warehouse id field is required." }),
+  warranty: z.string().optional(),
   sales_order_id: z.coerce.number().optional(),
   subject: z.string().optional(),
   adjustment: z.coerce.number().optional(),
