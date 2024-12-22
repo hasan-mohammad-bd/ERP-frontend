@@ -354,6 +354,7 @@ const billingNavItems: NavItem[] = [
     ],
   },
 
+
   {
     title: "Reports",
     icon: NotebookText,
@@ -376,13 +377,7 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
-      {
-        title: "Product wise sales",
-        icon: UserRoundSearch,
-        href: "reports/product-sales",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
+
       {
         title: "Purchase Register",
         icon: UserRoundSearch,
@@ -390,27 +385,7 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
-      {
-        title: "Stock Summary",
-        icon: UserRoundSearch,
-        href: "reports/stock-summary",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
-      {
-        title: "Stock Ledger",
-        icon: UserRoundSearch,
-        href: "reports/stock-ledger",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
-      {
-        title: "Customer Summary",
-        icon: UserRoundSearch,
-        href: "reports/customer-summary",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
+
       {
         title: "Customer Ledger",
         icon: UserRoundSearch,
@@ -432,13 +407,7 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
-      {
-        title: "Supplier Summary",
-        icon: UserRoundSearch,
-        href: "reports/supplier-summary",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
+
       {
         title: "Supplier Ledger",
         icon: UserRoundSearch,
@@ -460,41 +429,7 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
-      {
-        title: "Product wise Profit/Loss",
-        icon: UserRoundSearch,
-        href: "reports/product-profit-loss",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
-      {
-        title: "Invoice wise Profit/Loss",
-        icon: UserRoundSearch,
-        href: "reports/invoice-profit-loss",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
-      {
-        title: "Customer wise Profit/Loss",
-        icon: UserRoundSearch,
-        href: "reports/customer-profit-loss",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
-      {
-        title: "Sales Tax Report",
-        icon: UserRoundSearch,
-        href: "reports/sales-tax-report",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
-      {
-        title: "Purchase Tax Report",
-        icon: UserRoundSearch,
-        href: "reports/purchase-tax-report",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
+
       {
         title: "Item Wise Purchase Report",
         icon: UserRoundSearch,
@@ -546,7 +481,89 @@ const billingNavItems: NavItem[] = [
       },
     ],
   },
-  
+
+
+  {
+    title: "Other Reports",
+    icon: CalendarCheck2,
+    href: "/billing",
+    color: "text-sky-500",
+    permissions: ["accounts"],
+    isChildren: true,
+    children: [
+      {
+        title: "Product wise sales",
+        icon: UserRoundSearch,
+        href: "reports/product-sales",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
+        title: "Stock Summary",
+        icon: UserRoundSearch,
+        href: "reports/stock-summary",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
+        title: "Stock Ledger",
+        icon: UserRoundSearch,
+        href: "reports/stock-ledger",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
+        title: "Customer Summary",
+        icon: UserRoundSearch,
+        href: "reports/customer-summary",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
+        title: "Supplier Summary",
+        icon: UserRoundSearch,
+        href: "reports/supplier-summary",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
+        title: "Product wise Profit/Loss",
+        icon: UserRoundSearch,
+        href: "reports/product-profit-loss",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
+        title: "Invoice wise Profit/Loss",
+        icon: UserRoundSearch,
+        href: "reports/invoice-profit-loss",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
+        title: "Customer wise Profit/Loss",
+        icon: UserRoundSearch,
+        href: "reports/customer-profit-loss",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+
+      {
+        title: "Sales Tax Report",
+        icon: UserRoundSearch,
+        href: "reports/sales-tax-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
+        title: "Purchase Tax Report",
+        icon: UserRoundSearch,
+        href: "reports/purchase-tax-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+    ],
+  },
   {
     title: "Billing Setting",
     icon: Settings,
