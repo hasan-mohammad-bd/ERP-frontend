@@ -148,7 +148,7 @@ export default function PriceAndStockTable({
               }
             />
           </div>
-          <div>
+{/*           <div>
             <Label htmlFor="discount">Discount %</Label>
             <Input
               id="discount"
@@ -191,7 +191,7 @@ export default function PriceAndStockTable({
                 handleTopValueChange("wholesale_price", e.target.value ? Number(e.target.value) : null)
               }
             />
-          </div>
+          </div> */}
           <Button
             onClick={handleApplyToAll}
             className="bg-orange-500 hover:bg-orange-600"
@@ -208,10 +208,10 @@ export default function PriceAndStockTable({
                 <TableHead>Barcode</TableHead>
                 <TableHead>Purchase Price</TableHead>
                 <TableHead>Selling Price</TableHead>
-                <TableHead>Discount(%)</TableHead>
+                {/* <TableHead>Discount(%)</TableHead>
                 <TableHead>Discount Amount</TableHead>
                 <TableHead>After Discount</TableHead>
-                <TableHead>Wholesale Price</TableHead>
+                <TableHead>Wholesale Price</TableHead> */}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -252,7 +252,7 @@ export default function PriceAndStockTable({
                       type="number"
                     />
                   </TableCell>
-                  <TableCell>
+{/*                   <TableCell>
                     <Input
                       value={item.discount || ""}
                       onChange={(e) =>
@@ -299,7 +299,7 @@ export default function PriceAndStockTable({
                       }
                       type="number"
                     />
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
             </TableBody>
