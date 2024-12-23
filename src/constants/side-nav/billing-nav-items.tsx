@@ -459,6 +459,13 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
+      {
+        title: "Stock Report",
+        icon: UserRoundSearch,
+        href: "reports/stock-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
     ],
   },
 
@@ -475,13 +482,6 @@ const billingNavItems: NavItem[] = [
         title: "Product wise sales",
         icon: UserRoundSearch,
         href: "reports/product-sales",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
-      {
-        title: "Stock Summary",
-        icon: UserRoundSearch,
-        href: "reports/stock-summary",
         color: "text-sky-500",
         permissions: ["accounts"],
       },

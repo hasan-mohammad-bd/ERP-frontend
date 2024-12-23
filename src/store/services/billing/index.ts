@@ -57,7 +57,8 @@ export const inventoryApi = createApi({
      "aged-receivable-report",
      "aged-payable-report",
      "customer-statement",
-     "dashboard-reports"
+     "dashboard-reports",
+     "stock-report"
   ],
   endpoints: () => ({}),
 });

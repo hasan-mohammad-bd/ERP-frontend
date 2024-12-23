@@ -637,7 +637,7 @@ const billingRoutes = {
         },
 
         {
-          path: "stock-summary",
+          path: "stock-report",
           element: withFallback(<StockReport />),
           errorElement: withFallback(<ErrorPage />),
         },
