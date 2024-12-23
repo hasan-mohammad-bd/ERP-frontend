@@ -2,6 +2,12 @@ export interface DashboardReports {
   today_paid_amount: string;
   today_credit_amount: string;
   todays_expense: string;
+  total_cash: {
+    balance: string;
+  };
+  total_bank_balance: string;
+  total_payable: string;
+  total_receivable: string;
   accounts_assets: AccountBillingDashboard[];
   accounts_liabilities: AccountBillingDashboard[];
   top_five_customers: CustomerDashboard[];
