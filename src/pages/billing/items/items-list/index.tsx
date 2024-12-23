@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import ListSkeleton from "@/components/common/ListSkeleton";
 import { useNavigate } from "react-router-dom";
 import { useGetItemQuery } from "@/store/services/billing/api/items";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const ItemList = () => {
   const navigate = useNavigate();
@@ -26,7 +27,6 @@ const ItemList = () => {
   );
 
   const fetchedData = data?.data || [];
-
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   return (
@@ -38,9 +38,14 @@ const ItemList = () => {
               title="All Items"
               description="Manage all items for you business"
             />
-            <Button onClick={() => navigate("/billing/items/add")} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Item
-            </Button>
+            <RoleAccess roles={["items.create"]}>
+              <Button
+                onClick={() => navigate("/billing/items/add")}
+                size={"sm"}
+              >
+                <Plus className="mr-2 h-4 w-4" /> Add Item
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {isLoading && <ListSkeleton />}

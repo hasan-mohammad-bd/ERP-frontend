@@ -11,6 +11,7 @@ import ListSkeleton from "@/components/common/ListSkeleton";
 import { Modal } from "@/components/common/modal";
 import { AddAttributeForm } from "./components/add-attribute-form";
 import { useGetAttributesQuery } from "@/store/services/billing/api/attributes";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const Attributes = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +25,6 @@ const Attributes = () => {
   );
 
   const fetchedData = data?.data || [];
-
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   return (
@@ -36,9 +36,12 @@ const Attributes = () => {
               title="Attribute List"
               description="Manage all items for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Attribute
-            </Button>
+
+            <RoleAccess roles={["attributes.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Attribute
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {isLoading ? (

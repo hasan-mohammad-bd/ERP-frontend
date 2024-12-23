@@ -12,11 +12,10 @@ import { PaginationInfo } from "@/types";
 import { useGetCategoryQuery } from "@/store/services/billing/api/category";
 import { AddChildCategoryForm } from "./components/add-child-category-form";
 import { ChildCategoryColumns } from "./components/column";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const ChildCategory = () => {
   const [isOpen, setIsOpen] = useState(false);
-  
-
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -29,12 +28,7 @@ const ChildCategory = () => {
     }`
   );
 
-  
-
   const categories = data?.data || []; // Fallback to empty array if no data
-
-  console.log(categories)
-
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   return (
@@ -46,9 +40,11 @@ const ChildCategory = () => {
               title="Child Category"
               description="Manage job apply for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add child Category
-            </Button>
+            <RoleAccess roles={["categories.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add child Category
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {isLoading && <ListSkeleton />}

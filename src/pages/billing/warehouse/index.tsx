@@ -12,6 +12,7 @@ import { Modal } from "@/components/common/modal";
 
 import { AddWareHouseForm } from "./components/add-warehouse-form";
 import { useGetWarehouseQuery } from "@/store/services/billing/api/warehouse";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const WareHouse = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,9 +38,11 @@ const WareHouse = () => {
               title="All Warehouses"
               description="Manage all items for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Warehouse
-            </Button>
+            <RoleAccess roles={["warehouses.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Warehouse
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {isLoading ? (

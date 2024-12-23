@@ -14,6 +14,7 @@ import { ItemRow } from "@/lib/validators/billing/items";
 import { useRemoveItemMutation } from "@/store/services/billing/api/items";
 import { AddOpeningStockForm } from "./add-opening-stock-form";
 import { Modal } from "@/components/common/modal";
+import RoleAccess from "@/lib/access-control/role-access";
 
 interface CellActionProps {
   data: ItemRow;
@@ -39,62 +40,68 @@ export function CellAction({ data }: CellActionProps) {
   };
 
   return (
-    <div className="flex justify-center space-x-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => setStockModalOpen(true)}
-            >
-              <Activity className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Set Opening Stock</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => navigate(`/billing/items/edit/${data.id}`)}
+    <div className="flex justify-center space-x-2 min-h-10">
+      <RoleAccess roles={["items"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => setStockModalOpen(true)}
+              >
+                <Activity className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Set Opening Stock</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
+      <RoleAccess roles={["items.edit"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => navigate(`/billing/items/edit/${data.id}`)}
 
-              // onClick={() => toggleModal()}
-            >
-              <Pencil className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Update Item</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => {
-                setAlertModalOpen(true);
-              }}
-            >
-              <Trash2 className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Delete Item</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+                // onClick={() => toggleModal()}
+              >
+                <Pencil className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Update Item</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
+      <RoleAccess roles={["items.delete"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => {
+                  setAlertModalOpen(true);
+                }}
+              >
+                <Trash2 className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Delete Item</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
 
       <AlertModal
         title="Are you sure?"

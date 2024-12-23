@@ -11,6 +11,7 @@ import ListSkeleton from "@/components/common/ListSkeleton";
 import { Modal } from "@/components/common/modal";
 import { AddUnitForm } from "./components/add-unit-form";
 import { useGetUnitsQuery } from "@/store/services/billing/api/unit";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const Units = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,9 +37,11 @@ const Units = () => {
               title="All Units"
               description="Manage all items for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Unit
-            </Button>
+            <RoleAccess roles={["units.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Unit
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {isLoading ? (

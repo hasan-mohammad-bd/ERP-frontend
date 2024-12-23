@@ -12,6 +12,7 @@ import { Modal } from "@/components/common/modal";
 import { useGetCategoryQuery } from "@/store/services/billing/api/category";
 import { categoryColumns } from "./components/columns";
 import { AddCategoryForm } from "./components/add-category-form";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const Category = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,9 +39,11 @@ const Category = () => {
               title="All Categories"
               description="Manage all categories for your business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Category
-            </Button>
+            <RoleAccess roles={["categories.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Category
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {isLoading && <ListSkeleton />}

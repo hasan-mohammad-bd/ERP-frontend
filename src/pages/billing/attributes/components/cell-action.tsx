@@ -12,14 +12,13 @@ import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
 import { Modal } from "@/components/common/modal";
 
-
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
-
 
 import { useRemoveAttributeMutation } from "@/store/services/billing/api/attributes";
 import { AttributeRow } from "@/lib/validators/billing/attributes";
 import { AddAttributeForm } from "./add-attribute-form";
+import RoleAccess from "@/lib/access-control/role-access";
 
 interface CellActionProps {
   data: AttributeRow;
@@ -43,43 +42,47 @@ export function CellAction({ data }: CellActionProps) {
   };
 
   return (
-    <div className="flex justify-center space-x-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => setUpdateModalOpen(true)}
-            >
-              <Pencil className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Update Attribute </p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => {
-                setAlertModalOpen(true);
-              }}
-            >
-              <Trash2 className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Delete Attribute </p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+    <div className="flex justify-center space-x-2 min-h-10">
+      <RoleAccess roles={["attributes.edit"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => setUpdateModalOpen(true)}
+              >
+                <Pencil className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Update Attribute </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
+      <RoleAccess roles={["attributes.delete"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => {
+                  setAlertModalOpen(true);
+                }}
+              >
+                <Trash2 className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Delete Attribute </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
 
       {alertModalOpen && (
         <AlertModal

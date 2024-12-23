@@ -9,11 +9,10 @@ import { Separator } from "@/components/ui/separator";
 import ListSkeleton from "@/components/common/ListSkeleton";
 import { Modal } from "@/components/common/modal";
 
-// import { useGetCategoryQuery } from "@/store/services/billing/api/category";
 import { categoryColumns } from "./components/columns";
-// import { AddCategoryForm } from "./components/add-brand-form";
 import { useGetBrandQuery } from "@/store/services/billing/api/brand";
 import { AddBrandForm } from "./components/add-brand-form";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const Brand = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,8 +28,6 @@ const Brand = () => {
 
   const fetchedData = data?.data || []; // Fallback to empty array if no data
 
-
-
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   return (
@@ -42,9 +39,11 @@ const Brand = () => {
               title="All Brands"
               description="Manage all categories for your business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Brand
-            </Button>
+            <RoleAccess roles={["brands.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Brand
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {isLoading && <ListSkeleton />}

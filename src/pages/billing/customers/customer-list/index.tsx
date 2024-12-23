@@ -16,6 +16,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { useGetCustomersQuery } from "@/store/services/billing/api/customer";
 import { PaginationInfo } from "@/types";
 import ListSkeleton from "@/components/common/ListSkeleton";
+import RoleAccess from "@/lib/access-control/role-access";
 // import { SupplierColumns } from "./components/column";
 
 const Customers = () => {
@@ -30,7 +31,6 @@ const Customers = () => {
   );
 
   const customers = data?.data || [];
-
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   return (
@@ -42,12 +42,14 @@ const Customers = () => {
               title="Customer List"
               description="Manage all items for you business"
             />
-            <Button
-              onClick={() => navigate("/billing/customers/add")}
-              size={"sm"}
-            >
-              <Plus className="mr-2 h-4 w-4" /> Add customer
-            </Button>
+            <RoleAccess roles={["customers.create"]}>
+              <Button
+                onClick={() => navigate("/billing/customers/add")}
+                size={"sm"}
+              >
+                <Plus className="mr-2 h-4 w-4" /> Add customer
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {isLoading && <ListSkeleton />}

@@ -16,6 +16,7 @@ import { CustomerColumn } from "@/lib/validators/billing/customer";
 import { useRemoveCustomerMutation } from "@/store/services/billing/api/customer";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
+import RoleAccess from "@/lib/access-control/role-access";
 
 interface CellActionProps {
   data: CustomerColumn;
@@ -40,43 +41,47 @@ export function CellAction({ data }: CellActionProps) {
   };
 
   return (
-    <div className="flex justify-center space-x-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => navigate(`/billing/customers/edit/${data.id}`)}
-            >
-              <Pencil className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Update Employee</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => {
-                setAlertModalOpen(true);
-              }}
-            >
-              <Trash2 className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Delete employee</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+    <div className="flex justify-center space-x-2 min-h-10">
+      <RoleAccess roles={["customers.edit"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => navigate(`/billing/customers/edit/${data.id}`)}
+              >
+                <Pencil className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Update Employee</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
+      <RoleAccess roles={["customers.delete"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => {
+                  setAlertModalOpen(true);
+                }}
+              >
+                <Trash2 className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Delete employee</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
 
       <AlertModal
         title="Are you sure?"

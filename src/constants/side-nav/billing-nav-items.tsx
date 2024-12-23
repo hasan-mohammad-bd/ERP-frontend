@@ -33,7 +33,7 @@ const billingNavItems: NavItem[] = [
         icon: PlayIcon,
         color: "text-sky-500",
         href: "/billing/units",
-        permissions: ["accounts"],
+        permissions: ["units"],
       },
 
       {
@@ -41,7 +41,7 @@ const billingNavItems: NavItem[] = [
         icon: PlayIcon,
         color: "text-sky-500",
         href: "/billing/category",
-        permissions: ["accounts"],
+        permissions: ["categories"],
       },
 
       {
@@ -49,7 +49,7 @@ const billingNavItems: NavItem[] = [
         icon: PlayIcon,
         color: "text-sky-500",
         href: "/billing/sub-category",
-        permissions: ["accounts"],
+        permissions: ["categories"],
       },
 
       {
@@ -57,21 +57,21 @@ const billingNavItems: NavItem[] = [
         icon: PlayIcon,
         color: "text-sky-500",
         href: "/billing/child-category",
-        permissions: ["accounts"],
+        permissions: ["categories"],
       },
       {
         title: "Attribute Category",
         icon: PlayIcon,
         color: "text-sky-500",
         href: "/billing/attribute-category",
-        permissions: ["accounts"],
+        permissions: ["attribute-categories"],
       },
       {
         title: "Attributes",
         icon: PlayIcon,
         color: "text-sky-500",
         href: "/billing/attributes",
-        permissions: ["accounts"],
+        permissions: ["attributes"],
       },
 
       {
@@ -79,7 +79,7 @@ const billingNavItems: NavItem[] = [
         icon: PlayIcon,
         color: "text-sky-500",
         href: "/billing/brand",
-        permissions: ["accounts"],
+        permissions: ["brands"],
       },
 
       {
@@ -87,7 +87,7 @@ const billingNavItems: NavItem[] = [
         icon: PlayIcon,
         color: "text-sky-500",
         href: "/billing/items",
-        permissions: ["accounts"],
+        permissions: ["items"],
       },
     ],
   },
@@ -105,7 +105,7 @@ const billingNavItems: NavItem[] = [
         icon: PlayIcon,
         href: "/billing/customers",
         color: "text-sky-500",
-        permissions: ["accounts"],
+        permissions: ["customers"],
       },
       {
         title: "Quotes",
@@ -232,7 +232,7 @@ const billingNavItems: NavItem[] = [
         icon: PlayIcon,
         color: "text-sky-500",
         href: "/billing/warehouse",
-        permissions: ["accounts"],
+        permissions: ["warehouses"],
       },
     ],
   },

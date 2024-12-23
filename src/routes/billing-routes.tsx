@@ -26,13 +26,12 @@ import {
 
 import Units from "@/pages/billing/units";
 import Category from "@/pages/billing/category";
-import ClassCategory from "@/pages/billing/child-category";
+import ChildCategory from "@/pages/billing/child-category";
 
 import ItemAddForm from "@/pages/billing/items/add-item";
 import ItemList from "@/pages/billing/items/items-list";
 import PurchaseReceive from "@/pages/billing/purchase-receive";
 import { AddPurchaseReceiveForm } from "@/pages/billing/purchase-receive/components/add-purchase-recieve-form";
-// import Customers from "@/pages/billing/customer";
 import Invoice from "@/pages/billing/invoices";
 
 import SalesReceipt from "@/pages/billing/sales-receipts";
@@ -98,6 +97,7 @@ import PayableReport from "@/pages/billing/reports/payable-report";
 import AgedReceivableReport from "@/pages/billing/reports/aged-receivable-report";
 import AgedPayableReport from "@/pages/billing/reports/aged-payable-report";
 import PurchaseInvoice from "@/pages/billing/purchases/components/purchase-invoice";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const billingRoutes = {
   path: "billing/",
@@ -111,22 +111,36 @@ const billingRoutes = {
 
     {
       path: "customers",
-      // element: withFallback(<Customers />),
       errorElement: withFallback(<ErrorPage />),
       children: [
         {
           index: true,
-          element: withFallback(<Customers />),
+          element: withFallback(
+            <RoleAccess roles={["customers"]} showUnauthorizedPage={true}>
+              <Customers />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         {
           path: "add",
-          element: withFallback(<CustomerAddForm />),
+          element: withFallback(
+            <RoleAccess
+              roles={["customers.create"]}
+              showUnauthorizedPage={true}
+            >
+              <CustomerAddForm />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         {
           path: "edit/:id",
-          element: withFallback(<EditCustomerForm />),
+          element: withFallback(
+            <RoleAccess roles={["customers.edit"]} showUnauthorizedPage={true}>
+              <EditCustomerForm />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
@@ -184,31 +198,51 @@ const billingRoutes = {
 
     {
       path: "units",
-      element: withFallback(<Units />),
+      element: withFallback(
+        <RoleAccess roles={["units"]} showUnauthorizedPage={true}>
+          <Units />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
 
     {
       path: "category",
-      element: withFallback(<Category />),
+      element: withFallback(
+        <RoleAccess roles={["categories"]} showUnauthorizedPage={true}>
+          <Category />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
 
     {
       path: "sub-category",
-      element: withFallback(<SubCategory />),
+      element: withFallback(
+        <RoleAccess roles={["categories"]} showUnauthorizedPage={true}>
+          <SubCategory />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
 
     {
       path: "child-category",
-      element: withFallback(<ClassCategory />),
+      element: withFallback(
+        <RoleAccess roles={["categories"]} showUnauthorizedPage={true}>
+          <ChildCategory />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
 
     {
       path: "Brand",
-      element: withFallback(<Brand />),
+      element: withFallback(
+        <RoleAccess roles={["brands"]} showUnauthorizedPage={true}>
+          <Brand />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
     {
@@ -384,17 +418,29 @@ const billingRoutes = {
       children: [
         {
           index: true,
-          element: withFallback(<ItemList />),
+          element: withFallback(
+            <RoleAccess roles={["items"]} showUnauthorizedPage={true}>
+              <ItemList />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         {
           path: "add",
-          element: withFallback(<ItemAddForm />),
+          element: withFallback(
+            <RoleAccess roles={["items.create"]} showUnauthorizedPage={true}>
+              <ItemAddForm />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         {
           path: "edit/:id",
-          element: withFallback(<ItemAddForm />),
+          element: withFallback(
+            <RoleAccess roles={["items.edit"]} showUnauthorizedPage={true}>
+              <ItemAddForm />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
@@ -546,15 +592,25 @@ const billingRoutes = {
     },
     {
       path: "attribute-category",
-      element: withFallback(<AttributeCategory />),
+      element: withFallback(
+        <RoleAccess
+          roles={["attribute-categories"]}
+          showUnauthorizedPage={true}
+        >
+          <AttributeCategory />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
     {
       path: "attributes",
-      element: withFallback(<Attributes />),
+      element: withFallback(
+        <RoleAccess roles={["attributes"]} showUnauthorizedPage={true}>
+          <Attributes />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
-
 
     {
       path: "reports",
@@ -659,11 +715,8 @@ const billingRoutes = {
           element: withFallback(<PurchaseTaxReport />),
           errorElement: withFallback(<ErrorPage />),
         },
-
       ],
     },
-
-
 
     {
       path: "reports/supplier-wise-purchase-report",
@@ -687,7 +740,11 @@ const billingRoutes = {
     },
     {
       path: "warehouse",
-      element: withFallback(<WareHouse />),
+      element: withFallback(
+        <RoleAccess roles={["warehouses"]} showUnauthorizedPage={true}>
+          <WareHouse />
+        </RoleAccess>
+      ),
       errorElement: withFallback(<ErrorPage />),
     },
     {

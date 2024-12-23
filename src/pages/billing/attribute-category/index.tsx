@@ -12,6 +12,7 @@ import { Modal } from "@/components/common/modal";
 import { AddAttributeCategoryForm } from "./components/add-attribute-category-form";
 
 import { useGetAttributeCategoriesQuery } from "@/store/services/billing/api/attribute-category";
+import RoleAccess from "@/lib/access-control/role-access";
 
 const AttributeCategory = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +26,6 @@ const AttributeCategory = () => {
   );
 
   const fetchedData = data?.data || [];
-
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   return (
@@ -37,9 +37,11 @@ const AttributeCategory = () => {
               title="Attribute Categories"
               description="Manage all items for you business"
             />
-            <Button onClick={() => setIsOpen(true)} size={"sm"}>
-              <Plus className="mr-2 h-4 w-4" /> Add Attribute Category
-            </Button>
+            <RoleAccess roles={["attribute-categories.create"]}>
+              <Button onClick={() => setIsOpen(true)} size={"sm"}>
+                <Plus className="mr-2 h-4 w-4" /> Add Attribute Category
+              </Button>
+            </RoleAccess>
           </div>
           <Separator />
           {isLoading ? (
