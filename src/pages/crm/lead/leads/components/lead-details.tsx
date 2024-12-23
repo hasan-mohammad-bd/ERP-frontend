@@ -43,7 +43,6 @@ export function LeadDetails({ lead }: { lead: LeadDetailsType }) {
             <div>
               <Label>Address</Label>
               <div className="text-sm">{lead?.address}</div>
-              {/* <Badge className="mt-1">{lead?.address}</Badge> */}
             </div>
           </CardContent>
         </Card>
@@ -60,10 +59,6 @@ export function LeadDetails({ lead }: { lead: LeadDetailsType }) {
               <Label>Source</Label>
               <div className="text-sm">{lead?.source}</div>
             </div>
-            {/* <div>
-              <Label>Reference</Label>
-              <div className="text-sm">Jannatul Ferdous</div>
-            </div> */}
           </CardContent>
         </Card>
       </div>

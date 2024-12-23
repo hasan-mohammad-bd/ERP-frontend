@@ -113,7 +113,7 @@ export default function LeadActivityView({ lead }: { lead: LeadDetailsType }) {
                           <td className="py-2">{leadActivity?.user?.name}</td>
                           <td className="py-2">
                             {leadActivity.participants &&
-                              leadActivity.participants.map((participant , key) => (
+                              leadActivity.participants.map((participant, key) => (
                                 <React.Fragment key={key}>
                                   {participant?.name}
                                   <br />
@@ -211,7 +211,117 @@ export default function LeadActivityView({ lead }: { lead: LeadDetailsType }) {
           toggleModal={() => setShowModal(false)}
           className="max-w-5xl h-fit"
         >
-          <AddLeadActivityForm lead={lead} modalClose={() => setShowModal(false)} />
+          <TabsContent value={selectedType} className="p-4">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b text-left text-sm">
+                  <th className="pb-2 font-medium">SL</th>
+                  <th className="pb-2 font-medium">ACTIVITY TYPE</th>
+                  <th className="pb-2 font-medium">CREATED DATE</th>
+                  <th className="pb-2 font-medium">START AND END TIME</th>
+                  <th className="pb-2 font-medium">CREATED BY</th>
+                  <th className="pb-2 font-medium">PARTICIPANTS</th>
+                  <th className="pb-2 font-medium">OUTCOME</th>
+                  <th className="pb-2 font-medium">TITLE</th>
+                  <th className="pb-2 font-medium">DESCRIPTION</th>
+                  <th className="pb-2 font-medium">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {leadActivities &&
+                  leadActivities.map((leadActivity, key) => (
+                    <tr key={leadActivity.id} className="text-sm">
+                      <td className="py-2">{key + 1}</td>
+                      <td className="py-2">{leadActivity?.type}</td>
+                      <td className="py-2">{format(parseISO(leadActivity?.created_at), "dd MMM yyyy, hh:mm a")}</td>
+                      <td className="py-2">
+                        {format(parseISO(leadActivity?.start_date_time), "dd MMM yyyy, hh:mm a")}<br />
+                        {format(parseISO(leadActivity?.end_date_time), "dd MMM yyyy, hh:mm a")}
+                      </td>
+                      <td className="py-2">{leadActivity?.user?.name}</td>
+                      <td className="py-2">
+                        {leadActivity.participants &&
+                          leadActivity.participants.map((participant, key) => (
+                            <React.Fragment key={key}>
+                              {participant?.name}
+                              <br />
+                            </React.Fragment>
+                          ))}
+                      </td>
+                      <td className="py-2">{leadActivity?.outcome}</td>
+                      <td className="py-2">{leadActivity?.title}</td>
+                      <td className="py-2">{leadActivity?.description}</td>
+                      <td className="py-2">
+                        <div className="flex justify-center space-x-2">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="hover:bg-secondary"
+                                  onClick={() => setUpdateModalOpen(true)}
+                                >
+                                  <Pencil className="h-4 w-4 text-foreground" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Update Lead Group</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="hover:bg-secondary"
+                                  onClick={() => {
+                                    setAlertModalOpen(true);
+                                  }}
+                                >
+                                  <Trash2 className="h-4 w-4 text-foreground" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Delete Lead Group</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+
+                          {alertModalOpen && (
+                            <AlertModal
+                              title="Are you sure?"
+                              description="This action cannot be undone."
+                              name={leadActivity.title}
+                              isOpen={alertModalOpen}
+                              onClose={() => setAlertModalOpen(false)}
+                              onConfirm={() => handleLeadActivityDelete(leadActivity.id)}
+                              loading={isLoading}
+                            />
+                          )}
+                          {updateModalOpen && (
+                            <Modal
+                              title="Update Lead Activity"
+                              isOpen={updateModalOpen}
+                              toggleModal={() => setUpdateModalOpen(false)}
+                              className="max-w-5xl h-fit"
+                            >
+                              <AddLeadActivityForm
+                                lead={lead}
+                                data={leadActivity}
+                                modalClose={() => setUpdateModalOpen(false)}
+                              />
+                            </Modal>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </TabsContent>
         </Modal>
       )}
     </>
