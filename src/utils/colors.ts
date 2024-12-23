@@ -1,15 +1,9 @@
 export const backgroundColorPalette = [
     'blue',
-    'green',
     'red',
-    'purple',
-    'orange',
-    'teal',
-    'indigo',
+    'green',
     'pink',
-    'cyan',
     'gray',
-    'lime',
 ];
 
 // Utility function to get background color based on index
