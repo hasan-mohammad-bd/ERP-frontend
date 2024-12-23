@@ -467,6 +467,13 @@ const billingNavItems: NavItem[] = [
         permissions: ["accounts"],
       },
       {
+        title: "Customer Details Statement",
+        icon: UserRoundSearch,
+        href: "customer-details-statement-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
         title: "Stock Report",
         icon: UserRoundSearch,
         href: "reports/stock-report",
@@ -475,8 +482,6 @@ const billingNavItems: NavItem[] = [
       },
     ],
   },
-
-
   {
     title: "Other Reports",
     icon: CalendarCheck2,

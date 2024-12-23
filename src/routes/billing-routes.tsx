@@ -100,6 +100,7 @@ import CustomerStatement from "@/pages/billing/reports/customer-statement";
 import PurchaseInvoice from "@/pages/billing/purchases/components/purchase-invoice";
 import SaleSummary from "@/pages/billing/reports/sale-summary";
 import RoleAccess from "@/lib/access-control/role-access";
+import CustomerDetailsStatement from "@/pages/billing/reports/customer-details-statement";
 
 const billingRoutes = {
   path: "billing/",
@@ -787,6 +788,11 @@ const billingRoutes = {
     {
       path: "customer-statement-report",
       element: withFallback(<CustomerStatement />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "customer-details-statement-report",
+      element: withFallback(<CustomerDetailsStatement />),
       errorElement: withFallback(<ErrorPage />),
     },
     {

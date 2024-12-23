@@ -58,6 +58,7 @@ export const inventoryApi = createApi({
      "aged-payable-report",
      "customer-statement",
      "dashboard-reports",
+     "customer-details-statement",
      "item-sale-summary",
      "stock-report",
   ],
