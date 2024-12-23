@@ -1,44 +1,44 @@
 export const LEAD_GROUP_TYPES = [
-	{
-		type: "Primary",
-		title: "Primary",
-	},
-	{
-		type: "Success",
-		title: "Success",
-	},
-	{
-		type: "Secondary",
-		title: "Secondary",
-	},
-	{
-		type: "Danger",
-		title: "Danger",
-	},
-	{
-		type: "Purple",
-		title: "Purple",
-	},
-	{
-		type: "Warning",
-		title: "Warning",
-	},
-	{
-		type: "Info",
-		title: "Info",
-	},
-	{
-		type: "Light",
-		title: "Light",
-	},
-	{
-		type: "Dark",
-		title: "Dark",
-	},
-	{
-		type: "Link",
-		title: "Link",
-	},
+  {
+    id: "Primary",
+    name: "Primary",
+  },
+  {
+    id: "Success",
+    name: "Success",
+  },
+  {
+    id: "Secondary",
+    name: "Secondary",
+  },
+  {
+    id: "Danger",
+    name: "Danger",
+  },
+  {
+    id: "Purple",
+    name: "Purple",
+  },
+  {
+    id: "Warning",
+    name: "Warning",
+  },
+  {
+    id: "Info",
+    name: "Info",
+  },
+  {
+    id: "Light",
+    name: "Light",
+  },
+  {
+    id: "Dark",
+    name: "Dark",
+  },
+  {
+    id: "Link",
+    name: "Link",
+  },
 ];
 
 export const LEAD_LABELS = [
@@ -65,5 +65,12 @@ export const LEAD_SOURCES = [
   { id: "Youtube", name: "Youtube" },
   { id: "Linkedin", name: "Linkedin" },
   { id: "Reference", name: "Reference" },
+  { id: "Other", name: "Other" },
+];
+
+export const LEAD_ACTIVITY_TYPES = [
+  { id: "Call", name: "Call" },
+  { id: "Email", name: "Email" },
+  { id: "Meeting", name: "Meeting" },
   { id: "Other", name: "Other" },
 ];

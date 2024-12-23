@@ -13,7 +13,7 @@ const userApi = authApi.injectEndpoints({
       string
     >({ 
       query: (params) => `users?${params}`, 
-      providesTags: ["users"], 
+      providesTags: ["users"],
     }),
 
     createUser: build.mutation<

@@ -23,7 +23,7 @@ const LeadGroups = () => {
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
 
-  const units = data?.data || [];
+  const leadGroups = data?.data || [];
 
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
@@ -47,7 +47,7 @@ const LeadGroups = () => {
             <div>
               <DataTable
                 columns={leadGroupColumns}
-                data={units}
+                data={leadGroups}
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}

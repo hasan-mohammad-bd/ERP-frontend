@@ -115,8 +115,8 @@ export function AddLeadGroupForm({ modalClose, data: previousData }: AddLeadGrou
                       </FormControl>
                       <SelectContent>
                         {LEAD_GROUP_TYPES.map((lg) => (
-                          <SelectItem key={lg.type} value={lg.type}>
-                              {lg.title}
+                          <SelectItem key={lg.id} value={lg.id}>
+                              {lg.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
