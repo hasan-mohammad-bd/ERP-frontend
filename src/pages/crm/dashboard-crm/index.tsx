@@ -34,7 +34,7 @@ const CrmDashboard = () => {
                   (activity, index) => (
                     <Card className='p-4' key={index}>
                       <div className='flex items-center'>
-                        <div className={`p-2 rounded-md bg-${getBackgroundColor(index)}-200`}>
+                        <div className={`p-2 rounded-md ${getBackgroundColor(index)}`}>
                           <ListChecks size={16} />
                         </div>
                         <div className='ml-3 text-lg font-bold'>
@@ -53,7 +53,7 @@ const CrmDashboard = () => {
                   (activity, index) => (
                     <Card className='p-4' key={index}>
                       <div className='flex items-center'>
-                        <div className={`p-2 rounded-md bg-${getBackgroundColor(index)}-200`}>
+                        <div className={`p-2 rounded-md ${getBackgroundColor(index)}`}>
                           <CircleCheck size={16} />
                         </div>
                         <div className='ml-3 text-lg font-bold'>
@@ -72,7 +72,7 @@ const CrmDashboard = () => {
                   (activity, index) => (
                     <Card className='p-4' key={index}>
                       <div className='flex items-center'>
-                        <div className={`p-2 rounded-md bg-${getBackgroundColor(index)}-200`}>
+                        <div className={`p-2 rounded-md ${getBackgroundColor(index)}`}>
                           <CalendarDays size={16} />
                         </div>
                         <div className='ml-3 text-lg font-bold'>
@@ -89,7 +89,7 @@ const CrmDashboard = () => {
                   (activity, index) => (
                     <Card className='p-4' key={index}>
                       <div className='flex items-center'>
-                        <div className={`p-2 rounded-md bg-${getBackgroundColor(index)}-200`}>
+                        <div className={`p-2 rounded-md ${getBackgroundColor(index)}`}>
                           <CircleDashed size={16} />
                         </div>
                         <div className='ml-3 text-lg font-bold'>
