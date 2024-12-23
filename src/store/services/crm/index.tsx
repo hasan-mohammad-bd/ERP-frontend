@@ -15,6 +15,7 @@ export const crmApi = createApi({
     },
   }),
   tagTypes: [
+    "dashboard-reports",
     "lead-groups",
     "lead-activities",
     "pipelines",

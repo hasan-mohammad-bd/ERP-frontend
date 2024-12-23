@@ -58,10 +58,6 @@ export function AddLeadActivityForm({
     const [updateLeadActivity, { isLoading: updateLoading }] = useUpdateLeadActivityMutation();
     const { data: userList } = useGetUsersQuery(`per_page=15&page=1&text=${userSearchTerm}`);
 
-
-    console.log('previousData', previousData);
-    console.log('previousData-map', previousData?.participants?.map((item: { id: number }) => item.id));
-
     const form = useForm<LeadActivityFormValues>({
         resolver: zodResolver(LeadActivitySchema),
         defaultValues: {
@@ -171,24 +167,7 @@ export function AddLeadActivityForm({
                                     </FormItem>
                                 )}
                             />
-                            {/* Description */}
-                            <FormField
-                                control={form.control}
-                                name="description"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Description</FormLabel>
-                                        <FormControl>
-                                            <Textarea
-                                                placeholder="Type your description here."
-                                                {...field}
-                                                value={field.value || ""}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+
                             {/* Type and Completed */}
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 <FormField
@@ -336,7 +315,24 @@ export function AddLeadActivityForm({
                                     </FormItem>
                                 )}
                             />
-
+                            {/* Description */}
+                            <FormField
+                                control={form.control}
+                                name="description"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Description</FormLabel>
+                                        <FormControl>
+                                            <Textarea
+                                                placeholder="Type your description here."
+                                                {...field}
+                                                value={field.value || ""}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <FormField
                                 control={form.control}
                                 name="participants"
@@ -351,9 +347,9 @@ export function AddLeadActivityForm({
                                                 onChange={(options) => {
                                                     setParticipantsOptions(options);
                                                     field.onChange(
-                                                      options.map((option) => parseInt(option.value))
+                                                        options.map((option) => parseInt(option.value))
                                                     );
-                                                  }}
+                                                }}
                                                 hidePlaceholderWhenSelected
                                                 placeholder="Search and select options"
                                                 loadingIndicator={<span>Loading...</span>}
