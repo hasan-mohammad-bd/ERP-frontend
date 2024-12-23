@@ -96,6 +96,7 @@ import ReceiveableReport from "@/pages/billing/reports/receivable-report";
 import PayableReport from "@/pages/billing/reports/payable-report";
 import AgedReceivableReport from "@/pages/billing/reports/aged-receivable-report";
 import AgedPayableReport from "@/pages/billing/reports/aged-payable-report";
+import CustomerStatement from "@/pages/billing/reports/customer-statement";
 import PurchaseInvoice from "@/pages/billing/purchases/components/purchase-invoice";
 import RoleAccess from "@/lib/access-control/role-access";
 
@@ -775,6 +776,11 @@ const billingRoutes = {
     {
       path: "aged-payable-report",
       element: withFallback(<AgedPayableReport />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "customer-statement-report",
+      element: withFallback(<CustomerStatement />),
       errorElement: withFallback(<ErrorPage />),
     },
     {

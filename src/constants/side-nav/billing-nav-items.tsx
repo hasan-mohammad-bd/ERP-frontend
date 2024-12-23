@@ -393,20 +393,6 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
-      {
-        title: "Due Receivable Report",
-        icon: UserRoundSearch,
-        href: "reports/due-receivable-report",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
-      {
-        title: "Due Received Report",
-        icon: UserRoundSearch,
-        href: "reports/due-received-report",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
 
       {
         title: "Supplier Ledger",
@@ -415,20 +401,7 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
-      {
-        title: "Due Payable Report",
-        icon: UserRoundSearch,
-        href: "reports/due-payable-report",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
-      {
-        title: "Due Paid Report",
-        icon: UserRoundSearch,
-        href: "reports/due-paid-report",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
+ 
 
       {
         title: "Item Wise Purchase Report",
@@ -476,6 +449,13 @@ const billingNavItems: NavItem[] = [
         title: "Aged Payable Report",
         icon: UserRoundSearch,
         href: "aged-payable-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
+        title: "Customer Statement",
+        icon: UserRoundSearch,
+        href: "customer-statement-report",
         color: "text-sky-500",
         permissions: ["accounts"],
       },
@@ -559,6 +539,34 @@ const billingNavItems: NavItem[] = [
         title: "Purchase Tax Report",
         icon: UserRoundSearch,
         href: "reports/purchase-tax-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
+        title: "Due Receivable Report",
+        icon: UserRoundSearch,
+        href: "reports/due-receivable-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
+        title: "Due Received Report",
+        icon: UserRoundSearch,
+        href: "reports/due-received-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
+        title: "Due Payable Report",
+        icon: UserRoundSearch,
+        href: "reports/due-payable-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
+        title: "Due Paid Report",
+        icon: UserRoundSearch,
+        href: "reports/due-paid-report",
         color: "text-sky-500",
         permissions: ["accounts"],
       },

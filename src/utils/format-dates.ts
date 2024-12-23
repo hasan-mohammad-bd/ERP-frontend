@@ -43,6 +43,26 @@ export const getFormattedDateTime = (date: string) => {
   return formattedDate;
 };
 
+
+
+/**
+ * The function `getYearMonthDayFormatted` takes a date string as input and returns the date formatted
+ * as "yyyy-MM-dd".
+ * @param {string} date - The `getYearMonthDayFormatted` function takes a `date` parameter as a string
+ * input. This function is designed to format the input date string into the "yyyy-MM-dd" format.
+ * @returns The `getYearMonthDayFormatted` function is returning a formatted date string in the
+ * "yyyy-MM-dd" format.
+ */
+
+export const getYearMonthDayFormatted = (date: string | Date) => {
+  // const parsedDate = parseISO(date);
+  const formattedDate = format(date, "yyyy-MM-dd");
+  return formattedDate;
+};
+
+
+
+
 /**
  * The function `getFormattedDate` takes a date string as input and returns the date formatted as
  * "dd-MM-yyyy". If the date is invalid, it returns an empty string.
