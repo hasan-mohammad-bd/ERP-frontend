@@ -98,6 +98,7 @@ import AgedReceivableReport from "@/pages/billing/reports/aged-receivable-report
 import AgedPayableReport from "@/pages/billing/reports/aged-payable-report";
 import CustomerStatement from "@/pages/billing/reports/customer-statement";
 import PurchaseInvoice from "@/pages/billing/purchases/components/purchase-invoice";
+import SaleSummary from "@/pages/billing/reports/sale-summary";
 import RoleAccess from "@/lib/access-control/role-access";
 
 const billingRoutes = {
@@ -621,6 +622,11 @@ const billingRoutes = {
         {
           path: "sale-register",
           element: withFallback(<SaleRegister />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "sale-summary",
+          element: withFallback(<SaleSummary />),
           errorElement: withFallback(<ErrorPage />),
         },
 
