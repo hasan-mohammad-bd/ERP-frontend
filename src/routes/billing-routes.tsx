@@ -108,6 +108,8 @@ import WarehouseWiseItemSale from "@/pages/billing/reports/warehouse-wise-item-s
 import SaleProfitLass from "@/pages/billing/reports/sale-profit-lass";
 import CustomerWiseProfit from "@/pages/billing/reports/customer-wise-item-profit";
 import TopSoldItems from "@/pages/billing/reports/top-sold-items";
+import StockBranchReport from "@/pages/billing/reports/stock-branch-report";
+
 
 const billingRoutes = {
   path: "billing/",
@@ -649,6 +651,11 @@ const billingRoutes = {
         {
           path: "sale-profit-lass",
           element: withFallback(<SaleProfitLass />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "stock-branch-report",
+          element: withFallback(<StockBranchReport />),
           errorElement: withFallback(<ErrorPage />),
         },
         {
