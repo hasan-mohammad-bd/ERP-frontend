@@ -66,6 +66,7 @@ export const inventoryApi = createApi({
     "warehouse-wise-item-sale-summary",
     "sale-wise-profit-loss",
     "customer-wise-item-profit",
+    "top-sold-items",
   ],
   endpoints: () => ({}),
 });

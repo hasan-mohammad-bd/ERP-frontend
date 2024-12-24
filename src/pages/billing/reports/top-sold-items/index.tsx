@@ -3,15 +3,15 @@ import { Card } from "@/components/ui/card";
 import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/common/heading";
-import WarehouseWiseSalesFilter from "./components/warehouse-wise-sales-filter";
-import { useGetWarehouseWiseItemSaleSummaryQuery } from "@/store/services/billing/api/reports/warehouse-wise-item-sale-summary";
 import { useAuth } from "@/store/hooks";
-import WarehouseWiseSalesTable from "./components/warehouse-wise-sales-table";
+import { useGetTopSoldItemsQuery } from "@/store/services/billing/api/reports/top-sold-items";
+import TopSoldItemsFilter from "./components/top-sold-items-filter";
+import TopSoldItemsTable from "./components/top-sold-items-table";
 import { getFormattedDate } from "@/utils/format-dates";
 
-const WarehouseWiseItemSale = () => {
+const TopSoldItems = () => {
   const [filterParams, setFilterParams] = useState("");
-  const { data: warehouseReportData } = useGetWarehouseWiseItemSaleSummaryQuery(
+  const { data: warehouseReportData } = useGetTopSoldItemsQuery(
     `${filterParams}`,
     { skip: !filterParams }
   );
@@ -24,19 +24,19 @@ const WarehouseWiseItemSale = () => {
     <div className="flex-1 space-y-4">
       <div className="flex items-center justify-between">
         <Heading
-          title="Warehouse Item Wise Sales"
+          title="Top Sold Items"
           description="Manage employees for you business"
         />
       </div>
       <Separator />
-      <WarehouseWiseSalesFilter setFilterParams={setFilterParams} />
+      <TopSoldItemsFilter setFilterParams={setFilterParams} />
       {warehouseWiseSales.length > 0 ? (
         <Card>
           <PrintPDFWrapper className="space-y-4" fileName="stock-report">
             <div className="flex-1 space-y-4 my-4">
               <div className="text-center">
                 <h2>{user?.organization?.name}</h2>
-                <h3 className="text-xl">warehouse Item wise sales summary</h3>
+                <h3 className="text-xl">Top Sold Items Report</h3>
                 {startDate && endDate && (
                   <h5 className="text-md">
                     From: {getFormattedDate(startDate)} to{" "}
@@ -46,7 +46,7 @@ const WarehouseWiseItemSale = () => {
               </div>
             </div>
 
-            <WarehouseWiseSalesTable tableData={warehouseWiseSales} />
+            <TopSoldItemsTable tableData={warehouseWiseSales} />
           </PrintPDFWrapper>
         </Card>
       ) : null}
@@ -54,4 +54,4 @@ const WarehouseWiseItemSale = () => {
   );
 };
 
-export default WarehouseWiseItemSale;
+export default TopSoldItems;

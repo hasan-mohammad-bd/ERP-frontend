@@ -4,7 +4,11 @@ import { WarehouseSaleItemBarcodeType } from "./type";
 const warehouseWiseItemSaleApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
     getWarehouseWiseItemSaleSummary: build.query<
-      { data: WarehouseSaleItemBarcodeType[] },
+      {
+        data: WarehouseSaleItemBarcodeType[];
+        start_date: string;
+        end_date: string;
+      },
       string
     >({
       query: (params) => `report/warehouse-wise-item-sale-summary?${params}`,

@@ -106,6 +106,7 @@ import SupplierStatement from "@/pages/billing/reports/supplier-statement";
 import WarehouseWiseItemSale from "@/pages/billing/reports/warehouse-wise-item-sale-summary";
 import SaleProfitLass from "@/pages/billing/reports/sale-profit-lass";
 import CustomerWiseProfit from "@/pages/billing/reports/customer-wise-item-profit";
+import TopSoldItems from "@/pages/billing/reports/top-sold-items";
 
 const billingRoutes = {
   path: "billing/",
@@ -662,6 +663,12 @@ const billingRoutes = {
         },
 
         {
+          path: "top-sold-items",
+          element: withFallback(<TopSoldItems />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+
+        {
           path: "purchase-register",
           element: withFallback(<PurchaseRegister />),
           errorElement: withFallback(<ErrorPage />),
@@ -837,5 +844,3 @@ const billingRoutes = {
 };
 
 export default billingRoutes;
-
-

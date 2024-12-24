@@ -413,6 +413,13 @@ const billingNavItems: NavItem[] = [
         permissions: ["accounts"],
       },
       {
+        title: "Top Sold Items",
+        icon: UserRoundSearch,
+        href: "reports/top-sold-items",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
         title: "Purchase Register",
         icon: UserRoundSearch,
         href: "reports/purchase-register",
