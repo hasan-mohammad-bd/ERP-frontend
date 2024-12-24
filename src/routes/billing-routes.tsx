@@ -103,6 +103,7 @@ import RoleAccess from "@/lib/access-control/role-access";
 import CustomerDetailsStatement from "@/pages/billing/reports/customer-details-statement";
 import ReportsDashboard from "@/pages/billing/reports/all-reports";
 import SupplierStatement from "@/pages/billing/reports/supplier-statement";
+import SaleProfitLass from "@/pages/billing/reports/sale-profit-lass";
 
 const billingRoutes = {
   path: "billing/",
@@ -639,6 +640,11 @@ const billingRoutes = {
         {
           path: "sale-summary",
           element: withFallback(<SaleSummary />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "sale-profit-lass",
+          element: withFallback(<SaleProfitLass />),
           errorElement: withFallback(<ErrorPage />),
         },
 
