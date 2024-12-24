@@ -7,17 +7,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CustomerDetailsStatementReport } from "@/store/services/billing/api/customer-details-statement/type";
+import { SupplierDetailsStatementReportData } from "@/store/services/billing/api/supplier-details-statement/type";
 import { format } from "date-fns";
 import React from "react";
 
 interface Props {
-  reportData: CustomerDetailsStatementReport;
+  reportData: SupplierDetailsStatementReportData;
   selectedDate?: Date;
   selectedEndDate?: Date;
 }
 
-const CustomerDetailsStatementReportTable = ({
+const SupplierDetailsStatementReportTable = ({
   reportData,
 }: Props) => {
   return (
@@ -30,16 +30,16 @@ const CustomerDetailsStatementReportTable = ({
         </p> */}
       </div>
 
-      {/* Customer Details */}
+      {/* supplier Details */}
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <div className="flex gap-2">
             <span className="font-semibold">Name:</span>
-            <span>{reportData.customer.name}</span>
+            <span>{reportData.supplier.name}</span>
           </div>
           <div className="flex gap-2">
             <span className="font-semibold">Contact No:</span>
-            <span>{reportData.customer.work_phone}</span>
+            <span>{reportData.supplier.work_phone}</span>
           </div>
           <div className="flex gap-2">
             <span className="font-semibold">Address:</span>
@@ -48,11 +48,11 @@ const CustomerDetailsStatementReportTable = ({
         <div className="text-right space-y-2">
           <div className="flex justify-end gap-2">
             <span className="font-semibold">Previous Balance:</span>
-            <span>{reportData.customer.previous_balance}</span>
+            <span>{reportData.supplier.previous_balance}</span>
           </div>
           {/* <div className="flex justify-end gap-2">
             <span className="font-semibold">Total Charge:</span>
-            <span>{reportData.customer.total_charge}</span>
+            <span>{reportData.supplier.total_charge}</span>
           </div> */}
         </div>
       </div>
@@ -130,8 +130,8 @@ const CustomerDetailsStatementReportTable = ({
             <div className="flex justify-between pt-2 border-t">
               <span className="font-semibold">Account Balance:</span>
               <span className="font-semibold">
-                {(reportData.customer.total_charge) -
-                  (reportData.customer.total_payment_or_return)}
+                {(reportData.supplier.total_charge) -
+                  (reportData.supplier.total_payment_or_return)}
               </span>
             </div>
           </div>
@@ -141,4 +141,4 @@ const CustomerDetailsStatementReportTable = ({
   );
 };
 
-export default CustomerDetailsStatementReportTable;
+export default SupplierDetailsStatementReportTable;

@@ -103,6 +103,7 @@ import RoleAccess from "@/lib/access-control/role-access";
 import CustomerDetailsStatement from "@/pages/billing/reports/customer-details-statement";
 import ReportsDashboard from "@/pages/billing/reports/all-reports";
 import SupplierStatement from "@/pages/billing/reports/supplier-statement";
+import SupplierDetailsStatement from "@/pages/billing/reports/supplier-details-statement";
 import WarehouseWiseItemSale from "@/pages/billing/reports/warehouse-wise-item-sale-summary";
 import SaleProfitLass from "@/pages/billing/reports/sale-profit-lass";
 import CustomerWiseProfit from "@/pages/billing/reports/customer-wise-item-profit";
@@ -834,6 +835,11 @@ const billingRoutes = {
     {
       path: "reports/supplier-statement",
       element: withFallback(<SupplierStatement />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "reports/supplier-details-statement",
+      element: withFallback(<SupplierDetailsStatement />),
       errorElement: withFallback(<ErrorPage />),
     },
     {
