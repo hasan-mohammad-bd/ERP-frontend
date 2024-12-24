@@ -101,6 +101,7 @@ import PurchaseInvoice from "@/pages/billing/purchases/components/purchase-invoi
 import SaleSummary from "@/pages/billing/reports/sale-summary";
 import RoleAccess from "@/lib/access-control/role-access";
 import CustomerDetailsStatement from "@/pages/billing/reports/customer-details-statement";
+import ReportsDashboard from "@/pages/billing/reports/all-reports";
 import SupplierStatement from "@/pages/billing/reports/supplier-statement";
 
 const billingRoutes = {
@@ -621,6 +622,15 @@ const billingRoutes = {
       // element: withFallback(<Invoice />),
       errorElement: withFallback(<ErrorPage />),
       children: [
+        {
+          path: "dashboard",
+          element: withFallback(
+            <RoleAccess roles={["reports"]}>
+              <ReportsDashboard />
+            </RoleAccess>
+          ),
+          errorElement: withFallback(<ErrorPage />),
+        },
         {
           path: "sale-register",
           element: withFallback(<SaleRegister />),

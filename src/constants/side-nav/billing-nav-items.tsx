@@ -364,6 +364,13 @@ const billingNavItems: NavItem[] = [
     isChildren: true,
     children: [
       {
+        title: "All Reports",
+        icon: UserRoundSearch,
+        href: "reports/dashboard",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
         title: "Sale Register",
         icon: UserRoundSearch,
         href: "reports/sale-register",
