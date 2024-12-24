@@ -101,6 +101,7 @@ import PurchaseInvoice from "@/pages/billing/purchases/components/purchase-invoi
 import SaleSummary from "@/pages/billing/reports/sale-summary";
 import RoleAccess from "@/lib/access-control/role-access";
 import CustomerDetailsStatement from "@/pages/billing/reports/customer-details-statement";
+import SupplierStatement from "@/pages/billing/reports/supplier-statement";
 
 const billingRoutes = {
   path: "billing/",
@@ -796,6 +797,11 @@ const billingRoutes = {
       errorElement: withFallback(<ErrorPage />),
     },
     {
+      path: "reports/supplier-statement",
+      element: withFallback(<SupplierStatement />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
       path: "*",
       element: withFallback(<NotFoundPage />),
     },
@@ -803,3 +809,5 @@ const billingRoutes = {
 };
 
 export default billingRoutes;
+
+

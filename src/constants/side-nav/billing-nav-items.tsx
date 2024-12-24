@@ -480,6 +480,13 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
+      {
+        title: "Supplier Statement",
+        icon: UserRoundSearch,
+        href: "reports/supplier-statement",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
     ],
   },
   {
