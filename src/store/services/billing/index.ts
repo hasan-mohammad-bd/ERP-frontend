@@ -63,6 +63,7 @@ export const inventoryApi = createApi({
      "item-sale-summary",
      "stock-report",
      "supplier-statement",
+     "warehouse-wise-item-sale-summary",
      "sale-wise-profit-loss"
   ],
   endpoints: () => ({}),

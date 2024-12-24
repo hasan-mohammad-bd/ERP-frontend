@@ -50,7 +50,6 @@ import { AddManagePurchase } from "@/pages/billing/manage-purchase/components/ad
 import MadePayment from "@/pages/billing/made-payment";
 import { AddMadePaymentForm } from "@/pages/billing/made-payment/components/add-purchase-recieve-form";
 import SaleRegister from "@/pages/billing/reports/sale-register";
-import ProductSales from "@/pages/billing/reports/product-wise-sales";
 import StockReport from "@/pages/billing/reports/stock-report";
 import CustomerReport from "@/pages/billing/reports/customer-report";
 import StockLedgerReport from "@/pages/billing/reports/stcok-ledger";
@@ -104,6 +103,7 @@ import RoleAccess from "@/lib/access-control/role-access";
 import CustomerDetailsStatement from "@/pages/billing/reports/customer-details-statement";
 import ReportsDashboard from "@/pages/billing/reports/all-reports";
 import SupplierStatement from "@/pages/billing/reports/supplier-statement";
+import WarehouseWiseItemSale from "@/pages/billing/reports/warehouse-wise-item-sale-summary";
 import SaleProfitLass from "@/pages/billing/reports/sale-profit-lass";
 
 const billingRoutes = {
@@ -650,8 +650,8 @@ const billingRoutes = {
         },
 
         {
-          path: "product-sales",
-          element: withFallback(<ProductSales />),
+          path: "warehouse-wise-item-sale-summary",
+          element: withFallback(<WarehouseWiseItemSale />),
           errorElement: withFallback(<ErrorPage />),
         },
 

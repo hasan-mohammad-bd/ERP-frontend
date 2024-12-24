@@ -1,0 +1,1 @@
+import{bp as i}from"./index-e610929d.js";const n=i.injectEndpoints({endpoints:o=>({getOrganizationForDropDown:o.query({query:()=>"self/organization",providesTags:["self-organization"]})}),overrideExisting:!1}),{useGetOrganizationForDropDownQuery:e}=n;export{e as u};

@@ -398,7 +398,13 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
-
+      {
+        title: "Warehouse wise item sale",
+        icon: UserRoundSearch,
+        href: "reports/warehouse-wise-item-sale-summary",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
       {
         title: "Purchase Register",
         icon: UserRoundSearch,
@@ -518,13 +524,6 @@ const billingNavItems: NavItem[] = [
     permissions: [...import.meta.env.VITE_DEVELOPMENT_PERMISSIONS?.split(',') || ""],
     isChildren: true,
     children: [
-      {
-        title: "Product wise sales",
-        icon: UserRoundSearch,
-        href: "reports/product-sales",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
       {
         title: "Stock Ledger",
         icon: UserRoundSearch,
