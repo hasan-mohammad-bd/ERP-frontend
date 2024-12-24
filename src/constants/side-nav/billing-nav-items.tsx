@@ -529,6 +529,13 @@ const billingNavItems: NavItem[] = [
         permissions: ["accounts"],
       },
       {
+        title: "Stock Item Summary Report",
+        icon: UserRoundSearch,
+        href: "reports/stock-item-summary-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
         title: "Supplier Statement",
         icon: UserRoundSearch,
         href: "reports/supplier-statement",

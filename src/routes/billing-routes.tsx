@@ -109,6 +109,7 @@ import SaleProfitLass from "@/pages/billing/reports/sale-profit-lass";
 import CustomerWiseProfit from "@/pages/billing/reports/customer-wise-item-profit";
 import TopSoldItems from "@/pages/billing/reports/top-sold-items";
 import StockBranchReport from "@/pages/billing/reports/stock-branch-report";
+import StockItemSummaryReport from "@/pages/billing/reports/stock-item-summary-report";
 
 
 const billingRoutes = {
@@ -690,6 +691,11 @@ const billingRoutes = {
         {
           path: "stock-ledger",
           element: withFallback(<StockLedgerReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "stock-item-summary-report",
+          element: withFallback(<StockItemSummaryReport />),
           errorElement: withFallback(<ErrorPage />),
         },
 

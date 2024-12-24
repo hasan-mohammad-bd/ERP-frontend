@@ -5,10 +5,11 @@ import { useState } from "react";
 import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
 import { Heading } from "@/components/common/heading";
 import { Card } from "@/components/ui/card";
-import SaleRegisterTable from "./components/stock-branch-report";
+
 import SaleSummaryFilter from "./components/sale-summary-filter";
 import { useGetStockBatchQuery } from "@/store/services/billing/api/reports/stack-branch-report";
 import { getFormattedDate } from "@/utils/format-dates";
+import SaleRegisterTable from "./components/stock-branch-report";
 
 const StockBranchReport = () => {
   const [filterParams, setFilterParams] = useState("");
