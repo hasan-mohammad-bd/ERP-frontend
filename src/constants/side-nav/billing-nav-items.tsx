@@ -241,7 +241,7 @@ const billingNavItems: NavItem[] = [
     icon: CalendarCheck2,
     href: "/billing",
     color: "text-sky-500",
-    permissions: ["accounts"],
+    permissions:   [...import.meta.env.VITE_DEVELOPMENT_PERMISSIONS?.split(',') || ""], // under development
     isChildren: true,
     children: [
       {
@@ -501,7 +501,7 @@ const billingNavItems: NavItem[] = [
     icon: CalendarCheck2,
     href: "/billing",
     color: "text-sky-500",
-    permissions: ["accounts"],
+    permissions: [...import.meta.env.VITE_DEVELOPMENT_PERMISSIONS?.split(',') || ""],
     isChildren: true,
     children: [
       {
@@ -603,7 +603,7 @@ const billingNavItems: NavItem[] = [
     icon: Settings,
     href: "billing/new-route",
     color: "text-sky-500",
-    permissions: ["accounts"],
+    permissions: [...import.meta.env.VITE_DEVELOPMENT_PERMISSIONS?.split(',') || ""],
   },
 ];
 
