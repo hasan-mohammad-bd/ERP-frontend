@@ -97,6 +97,7 @@ import PayableReport from "@/pages/billing/reports/payable-report";
 import AgedReceivableReport from "@/pages/billing/reports/aged-receivable-report";
 import AgedPayableReport from "@/pages/billing/reports/aged-payable-report";
 import CustomerStatement from "@/pages/billing/reports/customer-statement";
+import RepresentativeWiseSale from "@/pages/billing/reports/representative-wise-sale";
 import PurchaseInvoice from "@/pages/billing/purchases/components/purchase-invoice";
 import SaleSummary from "@/pages/billing/reports/sale-summary";
 import RoleAccess from "@/lib/access-control/role-access";
@@ -805,6 +806,11 @@ const billingRoutes = {
     {
       path: "customer-statement-report",
       element: withFallback(<CustomerStatement />),
+      errorElement: withFallback(<ErrorPage />),
+    },
+    {
+      path: "representative-wise-sale-report",
+      element: withFallback(<RepresentativeWiseSale />),
       errorElement: withFallback(<ErrorPage />),
     },
     {

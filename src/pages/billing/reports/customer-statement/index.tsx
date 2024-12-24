@@ -19,9 +19,9 @@ const CustomerStatement = () => {
     { skip: !filtersApplied }
   );
 
-  console.log("Query params:", filterParams); // Debug log
-  console.log("API Response:", data); // Debug log
-  console.log("API Error:", error); // Debug log
+  console.log("Query params:", filterParams);
+  console.log("API Response:", data);
+  console.log("API Error:", error);
 
   if (isLoading) return <Loading />;
 
@@ -56,7 +56,7 @@ const CustomerStatement = () => {
             <div className="flex-1 space-y-4 w-full mx-auto">
               <Separator />
               {data?.data ? (
-                <CustomerStatementReportTable 
+                <CustomerStatementReportTable
                   reportData={data.data}
                   selectedDate={selectedDate}
                   selectedEndDate={selectedEndDate}
