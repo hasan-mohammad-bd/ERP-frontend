@@ -88,20 +88,6 @@ const projectData = projects?.data || [];
               }}
             />
           ) : null}
-          {/* <DataTable
-                columns={subAccountColumns}
-                data={generalLedger}
-                paginationInfo={paginationInfo}
-                pagination={paginationInfo && pagination}
-                setPagination={paginationInfo && setPagination}
-                noPagination={true}
-                reportFormate={{
-                  startDate,
-                  endDate,
-                  company: "Akaar IT",
-                  reportType: "General Ledger",
-                }}
-              /> */}
         </div>
       </div>
     </>

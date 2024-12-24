@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/common/heading";
 import DuePaidReportFilter from "./components/due-paid-report-filter";
 import DuePaidReportTable from "./components/due-paid-report-table";
+import { useAuth } from "@/store/hooks";
 
 
 
@@ -81,6 +82,7 @@ const dummySalesData = {
 
 
 const DuePaidReport = () => {
+  const { user } = useAuth();
   const [page, setPage] = useState(1); // Default current page
   const [pageSize, setPageSize] = useState(10); // Number of items per page
 
@@ -130,7 +132,7 @@ const DuePaidReport = () => {
       <PrintPDFWrapper className="space-y-4" fileName="due-paid-report">
         <div className="flex-1 space-y-4 my-4">
           <div className="text-center">
-            <h2>Akaar IT</h2>
+            <h2>{user?.organization?.name}</h2>
             <h3 className="text-xl">Due Paid Report</h3>
           </div>
         </div>

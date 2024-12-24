@@ -11,8 +11,10 @@ import { Card } from "@/components/ui/card";
 
 import { useGetAgedReceiveableReportQuery } from "@/store/services/billing/api/aged-receivable-report";
 import AgedReceivablelReportTable from "./components/aged-receiveable-report-table";
+import { useAuth } from "@/store/hooks";
 
 const AgedReceivableReport = () => {
+  const { user } = useAuth();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const { data, isLoading } = useGetAgedReceiveableReportQuery(
@@ -42,7 +44,7 @@ const AgedReceivableReport = () => {
         >
           <div className="flex-1 space-y-4 my-4">
             <div className="text-center">
-              <h2>Akaar IT</h2>
+              <h2>{user?.organization?.name}</h2>
               <h3 className="text-xl">Aged Receivable Report</h3>
             </div>
           </div>

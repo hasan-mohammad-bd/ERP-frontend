@@ -12,8 +12,10 @@ import { Paginator } from "@/components/common/paginator";
 import EmployeeFilters from "@/pages/hrm/employee/employee-list/components/employee-filters";
 import { useGetLeaveTypeSummaryQuery } from "@/store/services/hrm/api/leave-type-summary";
 import LeaveTypeSummaryTable from "./components/leave-type-summery-table";
+import { useAuth } from "@/store/hooks";
 
 const LeaveTypeSummary = () => {
+  const { user } = useAuth();
   // State for pagination
   const [page, setPage] = useState(1); // Default current page
   const [pageSize, setPageSize] = useState(10); // Number of items per page
@@ -47,7 +49,7 @@ const LeaveTypeSummary = () => {
         <PrintPDFWrapper className="space-y-4" fileName="leave-type-summary">
           <div className="flex-1 space-y-4 my-4">
             <div className="text-center  ">
-              <h2>Akaar IT</h2>
+              <h2>{user?.organization?.name}</h2>
               <h3 className="text-xl">Leave Type Summary</h3>
             </div>
           </div>

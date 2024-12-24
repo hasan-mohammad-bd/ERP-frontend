@@ -10,8 +10,10 @@ import { Card } from "@/components/ui/card";
 import { useGetCustomersQuery } from "@/store/services/billing/api/customer";
 import CustomerLedgerTable from "./components/customer-ledger-table";
 import CustomerLedgerFilter from "./components/customer-ledger-filter";
+import { useAuth } from "@/store/hooks";
 
 const CustomerReport = () => {
+  const { user } = useAuth();
   // State for pagination
   const [page, setPage] = useState(1); // Default current page
   const [pageSize, setPageSize] = useState(10); // Number of items per page
@@ -58,7 +60,7 @@ const CustomerReport = () => {
         <PrintPDFWrapper className="space-y-4" fileName="leave-usages-report">
           <div className="flex-1 space-y-4 my-4">
             <div className="text-center  ">
-              <h2>Akaar IT</h2>
+              <h2>{user?.organization?.name}</h2>
               <h3 className="text-xl">Customer Ledger Report</h3>
             </div>
           </div>

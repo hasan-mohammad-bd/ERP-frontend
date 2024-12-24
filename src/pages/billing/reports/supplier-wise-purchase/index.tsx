@@ -1,4 +1,3 @@
-// PurchaseRegister Component
 import { Loading } from "@/components/common/loading";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { useState } from "react";
@@ -11,8 +10,10 @@ import { Card } from "@/components/ui/card";
 import { useGetSupplierWisePurchaseReportQuery } from "@/store/services/billing/api/reports/supplier-wise-purchase-report";
 import SupplierWisePurchaseFilter from "./components/supplier-wise-purchase-filter";
 import SupplierWisePurchaseTable from "./components/supplier-wise-purchase-table";
+import { useAuth } from "@/store/hooks";
 
 const SupplierWisePurchase = () => {
+  const { user } = useAuth();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [filterParams, setFilterParams] = useState("");
@@ -20,12 +21,12 @@ const SupplierWisePurchase = () => {
   const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(
     undefined
   );
-  const [filtersApplied, setFiltersApplied] = useState(false); // Track if filters are applied
+  const [filtersApplied, setFiltersApplied] = useState(false);
 
-  // Use skip option to prevent fetching data before filters are applied
+
   const { data, isLoading } = useGetSupplierWisePurchaseReportQuery(
     `per_page=${pageSize}&page=${page}&${filterParams}`,
-    { skip: !filtersApplied } // Skip the query when filters are not applied
+    { skip: !filtersApplied }
   );
 
   const fetchedData = data?.data.report || [];
@@ -45,7 +46,7 @@ const SupplierWisePurchase = () => {
         <SupplierWisePurchaseFilter
           setFilterParams={(params) => {
             setFilterParams(params);
-            setFiltersApplied(true); // Enable data fetching
+            setFiltersApplied(true);
           }}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
@@ -61,7 +62,7 @@ const SupplierWisePurchase = () => {
           >
             <div className="flex-1 space-y-4 my-4">
               <div className="text-center">
-                <h2>Akaar IT</h2>
+                <h2>{user?.organization?.name}</h2>
                 <h3 className="text-xl">Supplier Wise Purchase Report</h3>
               </div>
             </div>

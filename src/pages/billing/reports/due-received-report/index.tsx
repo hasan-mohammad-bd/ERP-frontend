@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/common/heading";
 import DueReceivedReportTable from "./components/due-received-report-table";
 import DueReceivedReportFilter from "./components/due-received-report-filter";
+import { useAuth } from "@/store/hooks";
 
 
 
@@ -64,6 +65,7 @@ const dummySalesData = {
 };
 
 const DueReceivedReport = () => {
+  const { user } = useAuth();
   const [page, setPage] = useState(1); // Default current page
   const [pageSize, setPageSize] = useState(10); // Number of items per page
 
@@ -108,7 +110,7 @@ const DueReceivedReport = () => {
         <PrintPDFWrapper className="space-y-4" fileName="due-received-report">
           <div className="flex-1 space-y-4 my-4">
             <div className="text-center">
-              <h2>Akaar IT</h2>
+              <h2>{user?.organization?.name}</h2>
               <h3 className="text-xl">Due Received Report</h3>
             </div>
           </div>

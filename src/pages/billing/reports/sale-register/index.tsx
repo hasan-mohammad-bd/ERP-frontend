@@ -9,8 +9,10 @@ import { Card } from "@/components/ui/card";
 import SaleRegisterFilter from "./components/sale-register-filter";
 import { useGetSaleRegisterQuery } from "@/store/services/billing/api/reports/sale-register";
 import SaleRegisterTable from "./components/sale-register-table";
+import { useAuth } from "@/store/hooks";
 
 const SaleRegister = () => {
+  const { user } = useAuth();
   const [filterParams, setFilterParams] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(
@@ -54,7 +56,7 @@ const SaleRegister = () => {
           >
             <div className="flex-1 space-y-4 my-4">
               <div className="text-center">
-                <h2>Akaar IT</h2>
+                <h2>{user?.organization?.name}</h2>
                 <h3 className="text-xl">Sale Register</h3>
               </div>
             </div>

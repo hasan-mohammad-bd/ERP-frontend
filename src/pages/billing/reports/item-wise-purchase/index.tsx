@@ -11,8 +11,10 @@ import { Card } from "@/components/ui/card";
 import { useGetItemWisePurchaseReportQuery } from "@/store/services/billing/api/reports/item-wise-purchase-report";
 import ItemWisePurchaseFilter from "./components/item-wise-purchase-filter";
 import ItemWisePurchaseTable from "./components/item-wise-purchase-table";
+import { useAuth } from "@/store/hooks";
 
 const ItemWisePurchase = () => {
+  const { user } = useAuth();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [filterParams, setFilterParams] = useState("");
@@ -20,12 +22,12 @@ const ItemWisePurchase = () => {
   const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(
     undefined
   );
-  const [filtersApplied, setFiltersApplied] = useState(false); // Track if filters are applied
+  const [filtersApplied, setFiltersApplied] = useState(false);
 
-  // Use skip option to prevent fetching data before filters are applied
+
   const { data, isLoading } = useGetItemWisePurchaseReportQuery(
     `per_page=${pageSize}&page=${page}&${filterParams}`,
-    { skip: !filtersApplied } // Skip the query when filters are not applied
+    { skip: !filtersApplied }
   );
 
   const fetchedData = data?.data.report || [];
@@ -61,7 +63,7 @@ const ItemWisePurchase = () => {
           >
             <div className="flex-1 space-y-4 my-4">
               <div className="text-center">
-                <h2>Akaar IT</h2>
+                <h2>{user?.organization?.name}</h2>
                 <h3 className="text-xl">Item Wise Purchase Report</h3>
               </div>
             </div>

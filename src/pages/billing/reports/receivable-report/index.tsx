@@ -12,8 +12,10 @@ import { Card } from "@/components/ui/card";
 import ReceiveableReportTable from "./components/receiveable-report-table";
 
 import { useGetReceivableReportQuery } from "@/store/services/billing/api/receiveable-report";
+import { useAuth } from "@/store/hooks";
 
 const ReceiveableReport = () => {
+  const { user } = useAuth();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const { data, isLoading } = useGetReceivableReportQuery(
@@ -40,7 +42,7 @@ const ReceiveableReport = () => {
         <PrintPDFWrapper className="space-y-4" fileName="Receivable Report">
           <div className="flex-1 space-y-4 my-4">
             <div className="text-center">
-              <h2>Akaar IT</h2>
+              <h2>{user?.organization?.name}</h2>
               <h3 className="text-xl">Receivable Report</h3>
             </div>
           </div>

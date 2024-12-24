@@ -14,12 +14,14 @@ import { File, Printer } from "lucide-react";
 import { useRef } from "react";
 import ReactToPrint from "react-to-print";
 import { SalaryBatchMonthDataType } from "@/store/services/hrm/api/btach-list/type";
+import { useAuth } from "@/store/hooks";
 
 type BankSalaryVoucherProps = {
   salaryData: SalaryBatchMonthDataType[];
 };
 
 const BankSalaryVoucher = ({ salaryData }: BankSalaryVoucherProps) => {
+  const { user } = useAuth();
   const componentRef = useRef<HTMLDivElement>(null);
 
   console.log("salaryData", salaryData);
@@ -154,7 +156,7 @@ const BankSalaryVoucher = ({ salaryData }: BankSalaryVoucherProps) => {
           <div className="space-y-2">
             <p>Sheikh Rifat</p>
             <p>Managing Director</p>
-            <p>Akaar IT Ltd.</p>
+            <p>{user?.organization?.name}</p>
           </div>
         </div>
       </div>

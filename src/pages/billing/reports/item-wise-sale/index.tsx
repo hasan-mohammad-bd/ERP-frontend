@@ -11,8 +11,10 @@ import { Card } from "@/components/ui/card";
 import { useGetItemWiseSaleReportQuery } from "@/store/services/billing/api/reports/item-wise-sale-report";
 import ItemWiseSaleFilter from "./components/item-wise-sale-filter";
 import ItemWiseSaleTable from "./components/item-wise-sale-table";
+import { useAuth } from "@/store/hooks";
 
 const ItemWisePurchase = () => {
+  const { user } = useAuth();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [filterParams, setFilterParams] = useState("");
@@ -61,7 +63,7 @@ const ItemWisePurchase = () => {
           >
             <div className="flex-1 space-y-4 my-4">
               <div className="text-center">
-                <h2>Akaar IT</h2>
+                <h2>{user?.organization?.name}</h2>
                 <h3 className="text-xl">Item Wise Sale Report</h3>
               </div>
             </div>

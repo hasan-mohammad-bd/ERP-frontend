@@ -13,8 +13,10 @@ import { useGetLeaveUsageQuery } from "@/store/services/hrm/api/report/leave/lea
 import { PaginationInfo } from "@/types";
 import { useState } from "react";
 import LeaveUsagesTable from "./components/leave-usages-table";
+import { useAuth } from "@/store/hooks";
 
 const LeaveUsagesReport = () => {
+  const { user } = useAuth();
   // const [pagination, setPagination] = React.useState<PaginationState>({
   //   pageIndex: 0,
   //   pageSize: 10,
@@ -47,7 +49,7 @@ const LeaveUsagesReport = () => {
         <PrintPDFWrapper className="space-y-4" fileName="leave-usages-report">
           <div className="flex-1 space-y-4 my-4">
             <div className="text-center  ">
-              <h2>Akaar IT</h2>
+              <h2>{user?.organization?.name}</h2>
               <h3 className="text-xl">Leave Usages</h3>
             </div>
           </div>

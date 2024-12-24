@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/common/heading";
 import ProductSalesTable from "./components/product-sales-table";
 import ProductSalesFilter from "./components/product-sales-filter";
+import { useAuth } from "@/store/hooks";
 
 
 // Define your dummy data for Master Sales
@@ -66,6 +67,7 @@ const dummySalesData = {
 };
 
 const ProductSales = () => {
+  const { user } = useAuth();
   const [page, setPage] = useState(1); // Default current page
   const [pageSize, setPageSize] = useState(10); // Number of items per page
 
@@ -110,7 +112,7 @@ const ProductSales = () => {
         <PrintPDFWrapper className="space-y-4" fileName="product-sales-report">
           <div className="flex-1 space-y-4 my-4">
             <div className="text-center">
-              <h2>Akaar IT</h2>
+              <h2>{user?.organization?.name}</h2>
               <h3 className="text-xl">Product Sales Report</h3>
             </div>
           </div>

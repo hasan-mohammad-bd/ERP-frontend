@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/common/heading";
 import InvoiceWiseProfitLossFilter from "./components/invoice-wise-profit-loss-filter";
 import InvoiceWiseProfitLossTable from "./components/invoice-wise-profit-loss-table";
+import { useAuth } from "@/store/hooks";
 
 
 
@@ -86,6 +87,7 @@ const dummySalesData = {
 
 
 const InvoiceWiseProfitLoss = () => {
+  const { user } = useAuth();
   const [page, setPage] = useState(1); // Default current page
   const [pageSize, setPageSize] = useState(10); // Number of items per page
 
@@ -135,7 +137,7 @@ const InvoiceWiseProfitLoss = () => {
       <PrintPDFWrapper className="space-y-4" fileName="invoice-wise-profit/loss-report">
         <div className="flex-1 space-y-4 my-4">
           <div className="text-center">
-            <h2>Akaar IT</h2>
+            <h2>{user?.organization?.name}</h2>
             <h3 className="text-xl">Invoice wise Profit/Loss Report</h3>
           </div>
         </div>

@@ -11,8 +11,10 @@ import { Card } from "@/components/ui/card";
 
 import { useGetPayableReportQuery } from "@/store/services/billing/api/payable-report";
 import PayableReportTable from "./components/payable-report-table";
+import { useAuth } from "@/store/hooks";
 
 const PayableReport = () => {
+  const { user } = useAuth();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const { data, isLoading } = useGetPayableReportQuery(
@@ -39,7 +41,7 @@ const PayableReport = () => {
         <PrintPDFWrapper className="space-y-4" fileName="Payable Report">
           <div className="flex-1 space-y-4 my-4">
             <div className="text-center">
-              <h2>Akaar IT</h2>
+              <h2>{user?.organization?.name}</h2>
               <h3 className="text-xl">Payable Report</h3>
             </div>
           </div>

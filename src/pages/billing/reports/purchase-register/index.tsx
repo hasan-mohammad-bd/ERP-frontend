@@ -11,8 +11,10 @@ import { Card } from "@/components/ui/card";
 import PurchaseRegisterFilter from "./components/purchase-register-filter";
 import { useGetPurchaseRegisterQuery } from "@/store/services/billing/api/reports/purchase-register";
 import PurchaseRegisterTable from "./components/purchase-register-table";
+import { useAuth } from "@/store/hooks";
 
 const PurchaseRegister = () => {
+  const { user } = useAuth();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [filterParams, setFilterParams] = useState("");
@@ -59,7 +61,7 @@ const PurchaseRegister = () => {
           >
             <div className="flex-1 space-y-4 my-4">
               <div className="text-center">
-                <h2>Akaar IT</h2>
+                <h2>{user?.organization?.name}</h2>
                 <h3 className="text-xl">Purchase Register</h3>
               </div>
             </div>

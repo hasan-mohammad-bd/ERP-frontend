@@ -9,8 +9,10 @@ import { useGetLeaveSummaryQuery } from "@/store/services/hrm/api/report/leave/l
 import { PaginationInfo } from "@/types";
 import { useState } from "react";
 import LeaveSummaryTable from "./components/leave-summary-table";
+import { useAuth } from "@/store/hooks";
 
 const LeaveSummary = () => {
+  const { user } = useAuth();
   const [page, setPage] = useState(1); // Default current page
   const [pageSize, setPageSize] = useState(10); // Number of items per page
   const [filterParams, setFilterParams] = useState("");
@@ -39,7 +41,7 @@ const LeaveSummary = () => {
         <PrintPDFWrapper className="space-y-4" fileName="leave-summary-report">
           <div className="flex-1 space-y-4 my-4">
             <div className="text-center  ">
-              <h2>Akaar IT</h2>
+              <h2>{user?.organization?.name}</h2>
               <h3 className="text-xl">Leave Summary</h3>
             </div>
           </div>

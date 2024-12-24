@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/common/heading";
 import SalesTaxReportFilter from "./components/sales-tax-report-filter";
 import SalesTaxReportTable from "./components/sales-tax-report-table";
+import { useAuth } from "@/store/hooks";
 
 
 
@@ -57,6 +58,7 @@ const dummySalesData = {
 };
 
 const SalesTaxReport = () => {
+  const { user } = useAuth();
   const [page, setPage] = useState(1); // Default current page
   const [pageSize, setPageSize] = useState(10); // Number of items per page
 
@@ -101,7 +103,7 @@ const SalesTaxReport = () => {
         <PrintPDFWrapper className="space-y-4" fileName="sales-tax-report">
           <div className="flex-1 space-y-4 my-4">
             <div className="text-center">
-              <h2>Akaar IT</h2>
+              <h2>{user?.organization?.name}</h2>
               <h3 className="text-xl">Sales Tax Report</h3>
             </div>
           </div>

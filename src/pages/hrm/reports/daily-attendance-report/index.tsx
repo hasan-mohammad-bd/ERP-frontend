@@ -8,8 +8,10 @@ import DailyAttendanceReportTable from "./components/daily-attendance-report-tab
 import { useGetDailyAttendanceReportQuery } from "@/store/services/hrm/api/daily-attendance-report";
 import { Heading } from "@/components/common/heading";
 import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/store/hooks";
 
 const DailyAttendanceReport = () => {
+  const { user } = useAuth();
   const [filterParams, setFilterParams] = useState(
     `date=${format(new Date(), "yyyy-MM")}`
   ); // Start with empty string to fetch all data initially
@@ -45,7 +47,7 @@ const DailyAttendanceReport = () => {
           >
             <div className="flex-1 space-y-4 my-4">
               <div className="text-center">
-                <h2>Akaar IT</h2>
+                <h2>{user?.organization?.name}</h2>
                 <h3 className="text-xl">Daily Attendance Report</h3>
               </div>
             </div>
