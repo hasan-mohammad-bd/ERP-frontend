@@ -66,6 +66,7 @@ export const inventoryApi = createApi({
     "sale-wise-profit-loss",
     "customer-wise-item-profit",
     "top-sold-items",
+    "stock-transaction-report",
     "stock-batch",
     "representative-wise-sales",
     "supplier-details-statement",

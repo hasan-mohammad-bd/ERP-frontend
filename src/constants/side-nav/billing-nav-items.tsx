@@ -549,6 +549,13 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
+      {
+        title: "Stock Transaction Report",
+        icon: UserRoundSearch,
+        href: "reports/stock-transaction-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
     ],
   },
   {
