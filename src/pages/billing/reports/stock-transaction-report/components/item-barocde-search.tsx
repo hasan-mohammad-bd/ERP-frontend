@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 import { useGetSearchBarcodeProductsQuery } from "@/store/services/billing/api/search-barcode";
 import { SearchBarcodeItem } from "@/lib/validators/billing/search-barcode-item";
 
