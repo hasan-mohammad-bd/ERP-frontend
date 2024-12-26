@@ -5,6 +5,9 @@ import { DateTimePicker } from "@/components/ui/dayTimePicker";
 // import SearchSelect from "@/components/common/search-select";
 import { useState } from "react";
 import { getYearMonthDayFormatted } from "@/utils/format-dates";
+import { useLazyGetWarehouseQuery } from "@/store/services/billing/api/warehouse";
+import SearchSelect from "@/components/common/search-select";
+import { WarehouseRow } from "@/lib/validators/billing/warehouse";
 // import { useLazyGetWarehouseQuery } from "@/store/services/billing/api/warehouse";
 // import { WarehouseRow } from "@/lib/validators/billing/warehouse";
 
@@ -13,18 +16,19 @@ interface Props {
 }
 
 export default function StockItemSummaryFilter({ setFilterParams }: Props) {
-  // const [warehouse, setWarehouse] = useState<WarehouseRow | undefined>();
+  const [warehouse, setWarehouse] = useState<WarehouseRow | undefined>();
 
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(
     undefined
   );
 
-  // const [getWarehouses, { data: warehouseData }] = useLazyGetWarehouseQuery();
-  // const warehouses = warehouseData?.data || [];
+  const [getWarehouses, { data: warehouseData }] = useLazyGetWarehouseQuery();
+  const warehouses = warehouseData?.data || [];
 
   const handleFilterApply = () => {
     setFilterParams(
+      `warehouse_id=${String(warehouse?.id)}&` +
       `start_date=${
         selectedDate ? getYearMonthDayFormatted(selectedDate) : ""
       }&end_date=${
@@ -37,7 +41,7 @@ export default function StockItemSummaryFilter({ setFilterParams }: Props) {
     <Card className="p-5">
       <div className="flex items-center gap-3">
         {/* warehouse Selector */}
-        {/* <SearchSelect
+        <SearchSelect
           items={warehouses || []}
           labelKey="name"
           valueKey="id"
@@ -46,7 +50,7 @@ export default function StockItemSummaryFilter({ setFilterParams }: Props) {
           onSelect={setWarehouse}
           onChangeSearch={(searchText) => getWarehouses(`text=${searchText}`)}
           className="w-[250px]"
-        /> */}
+        />
         <div className="flex flex-col">
           <DateTimePicker
             displayFormat={{ hour24: "yyyy/MM/dd" }}
