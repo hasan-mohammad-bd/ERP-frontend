@@ -78,7 +78,9 @@ export default function ProductReturnLineItems({
     setSelectedProducts((products) =>
       products.map((product) => {
         if (product.detailId === id) {
-          const availableQty = details?.find((item) => item.id === id)?.available_qty || 0;
+          const availableQty =
+            details?.find((item) => item.id === id)?.available_qty || 0;
+          // const usedQty = details?.find((item) => item.id === id)?.used_qty || 0;
           const newQuantity = increment
             ? Math.min(product.quantity + 1, availableQty)
             : Math.max(0, product.quantity - 1);
@@ -88,7 +90,6 @@ export default function ProductReturnLineItems({
       })
     );
   };
-  
 
   const removeProduct = (id: number) => {
     setSelectedProducts((products) =>
@@ -173,16 +174,45 @@ export default function ProductReturnLineItems({
                         type="button"
                         size="icon"
                         variant="outline"
-                        onClick={() => updateQuantity(product?.detailId, false)}
+                        onClick={() => updateQuantity(product.detailId, false)}
                       >
                         <Minus className="h-4 w-4" />
                       </Button>
-                      <span>{product.quantity}</span>
+                      <Input
+                        className="w-16 text-center"
+                        type="number"
+                        value={product.quantity}
+                        min={0}
+                        max={
+                          details?.find((item) => item.id === product.detailId)
+                            ?.available_qty || 0
+                        }
+                        onChange={(e) => {
+                          const newQuantity = Number(e.target.value);
+                          const availableQty =
+                            details?.find(
+                              (item) => item.id === product.detailId
+                            )?.available_qty || 0;
+
+                          setSelectedProducts((products) =>
+                            products.map((p) =>
+                              p.detailId === product.detailId
+                                ? {
+                                    ...p,
+                                    quantity: Math.max(
+                                      0,
+                                      Math.min(newQuantity, availableQty)
+                                    ),
+                                  }
+                                : p
+                            )
+                          );
+                        }}
+                      />
                       <Button
                         type="button"
                         size="icon"
                         variant="outline"
-                        // disabled={product.quantity === details.}
                         onClick={() => updateQuantity(product.detailId, true)}
                       >
                         <Plus className="h-4 w-4" />
@@ -204,6 +234,10 @@ export default function ProductReturnLineItems({
                       <Input
                         id="note"
                         type="text"
+                        style={{
+                          MozAppearance: "textfield", // For Firefox
+                          WebkitAppearance: "none", // For Chrome, Safari, etc.
+                        }}
                         value={product.note || ""} // Leave empty if no value
                         onChange={(e) => {
                           setSelectedProducts((products) =>
