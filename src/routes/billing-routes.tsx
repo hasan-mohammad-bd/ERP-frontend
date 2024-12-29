@@ -111,6 +111,7 @@ import TopSoldItems from "@/pages/billing/reports/top-sold-items";
 import StockTransactionReport from "@/pages/billing/reports/stock-transaction-report";
 import StockBranchReport from "@/pages/billing/reports/stock-branch-report";
 import StockItemSummaryReport from "@/pages/billing/reports/stock-item-summary-report";
+import SupplierPaymentDetails from "@/pages/billing/supplier-payments/components/supplier-payment-details";
 
 
 const billingRoutes = {
@@ -544,6 +545,11 @@ const billingRoutes = {
         {
           index: true,
           element: withFallback(<SupplierPayments />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "details/:id",
+          element: withFallback(<SupplierPaymentDetails />),
           errorElement: withFallback(<ErrorPage />),
         },
       ],

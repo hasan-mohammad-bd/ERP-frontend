@@ -6,11 +6,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Trash2 } from "lucide-react";
+import { Trash2, ZoomIn } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
 import { BillingPaymentRow } from "@/lib/validators/billing/billing-payment";
 import { useRemoveSupplierPaymentMutation } from "@/store/services/billing/api/supplier-payments";
+import { useNavigate } from "react-router-dom";
 
 interface CellActionProps {
   rowData: BillingPaymentRow;
@@ -18,6 +19,8 @@ interface CellActionProps {
 
 export function CellAction({ rowData }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
+
+  const navigation = useNavigate();
 
   const [removeSupplierPayment, { isLoading: deleteLoading }] =
     useRemoveSupplierPaymentMutation();
@@ -34,6 +37,25 @@ export function CellAction({ rowData }: CellActionProps) {
 
   return (
     <div className="flex justify-center space-x-2">
+            <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:bg-secondary"
+              onClick = {() => navigation(`/billing/supplier-payments/details/${rowData.id}`)}
+
+              // onClick={() => toggleModal()}
+            >
+              <ZoomIn className="h-4 w-4 text-foreground" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Update Opening Balance</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
