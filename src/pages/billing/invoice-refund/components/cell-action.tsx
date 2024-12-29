@@ -11,6 +11,7 @@ import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
 import { BillingPaymentRow } from "@/lib/validators/billing/billing-payment";
 import { useRemovePurchaseRefundMutation } from "@/store/services/billing/api/purchase-refund";
+import RoleAccess from "@/lib/access-control/role-access";
 
 interface CellActionProps {
   rowData: BillingPaymentRow;
@@ -33,7 +34,8 @@ export function CellAction({ rowData }: CellActionProps) {
   };
 
   return (
-    <div className="flex justify-center space-x-2">
+    <div className="flex justify-center space-x-2 min-h-10">
+      <RoleAccess roles={["invoice-refunds.delete"]}>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -49,10 +51,12 @@ export function CellAction({ rowData }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Delete Purchase Refund</p>
+            <p>Delete Invoice Refund</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
+      </RoleAccess>
+      
 
       <AlertModal
         title="Are you sure?"

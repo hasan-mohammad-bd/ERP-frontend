@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { useRemovePaymentReceivedMutation } from "@/store/services/billing/api/payment-received";
 import { BillingPaymentRow } from "@/lib/validators/billing/billing-payment";
 import { useNavigate } from "react-router-dom";
+import RoleAccess from "@/lib/access-control/role-access";
 
 interface CellActionProps {
   rowData: BillingPaymentRow;
@@ -35,7 +36,7 @@ export function CellAction({ rowData }: CellActionProps) {
   };
 
   return (
-    <div className="flex justify-center space-x-2">
+    <div className="flex justify-center space-x-2 min-h-10">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -55,7 +56,8 @@ export function CellAction({ rowData }: CellActionProps) {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <TooltipProvider>
+       <RoleAccess roles={["payment-receives.delete"]}>
+       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -74,6 +76,8 @@ export function CellAction({ rowData }: CellActionProps) {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
+       </RoleAccess>
+     
 
       <AlertModal
         title="Are you sure?"

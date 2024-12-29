@@ -1,6 +1,7 @@
 import {
   BillingPaymentFormType,
   BillingPaymentRow,
+  BillingPaymentRowDetails,
 } from "@/lib/validators/billing/billing-payment";
 import { inventoryApi } from "../..";
 import { DeleteResponse, PaginationInfo } from "@/types";
@@ -12,6 +13,13 @@ const supplierPaymentApi = inventoryApi.injectEndpoints({
       string
     >({
       query: (params) => `payment-mades?${params}`,
+      providesTags: ["payment-mades"],
+    }),
+    getSupplierPaymentById: build.query<
+      { data: BillingPaymentRowDetails },
+      number
+    >({
+      query: (id) => `payment-mades/${id}`,
       providesTags: ["payment-mades"],
     }),
     createSupplierPayment: build.mutation<
@@ -38,6 +46,7 @@ const supplierPaymentApi = inventoryApi.injectEndpoints({
 
 export const {
   useGetSupplierPaymentsQuery,
+ useGetSupplierPaymentByIdQuery, 
   useCreateSupplierPaymentMutation,
   useRemoveSupplierPaymentMutation,
 } = supplierPaymentApi;

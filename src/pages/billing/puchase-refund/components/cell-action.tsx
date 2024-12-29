@@ -33,7 +33,7 @@ export function CellAction({ rowData }: CellActionProps) {
   };
 
   return (
-    <div className="flex justify-center space-x-2">
+    <div className="flex justify-center space-x-2 min-h-10">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>

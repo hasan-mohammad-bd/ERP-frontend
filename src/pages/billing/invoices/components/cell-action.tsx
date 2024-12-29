@@ -14,6 +14,7 @@ import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { useRemoveSalesInvoicesMutation } from "@/store/services/billing/api/invoices";
 import { SaleInvoiceResponse } from "@/lib/validators/billing/billing-responses";
+import RoleAccess from "@/lib/access-control/role-access";
 
 interface CellActionProps {
   rowData: SaleInvoiceResponse;
@@ -38,7 +39,7 @@ export function CellAction({ rowData }: CellActionProps) {
   };
 
   return (
-    <div className="flex justify-center space-x-2">
+    <div className="flex justify-center space-x-2 min-h-10">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -78,7 +79,8 @@ export function CellAction({ rowData }: CellActionProps) {
         </Tooltip>
       </TooltipProvider>
 
-      <TooltipProvider>
+ <RoleAccess roles={["invoices.delete"]}>
+ <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -93,11 +95,13 @@ export function CellAction({ rowData }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Delete Opening Balance</p>
+            <p>Delete Invoice</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
 
+ </RoleAccess>
+     
       <AlertModal
         title="Are you sure?"
         description="This action cannot be undone."
