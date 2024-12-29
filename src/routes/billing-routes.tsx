@@ -109,7 +109,7 @@ import SaleProfitLass from "@/pages/billing/reports/sale-profit-lass";
 import CustomerWiseProfit from "@/pages/billing/reports/customer-wise-item-profit";
 import TopSoldItems from "@/pages/billing/reports/top-sold-items";
 import StockTransactionReport from "@/pages/billing/reports/stock-transaction-report";
-import StockBranchReport from "@/pages/billing/reports/stock-branch-report";
+import StockBatchReport from "@/pages/billing/reports/stock-batch-report";
 import StockItemSummaryReport from "@/pages/billing/reports/stock-item-summary-report";
 import SupplierPaymentDetails from "@/pages/billing/supplier-payments/components/supplier-payment-details";
 
@@ -742,23 +742,63 @@ const billingRoutes = {
           errorElement: withFallback(<ErrorPage />),
         },
         {
-          path: "sale-register",
+          path: "supplier-statement",
+          element: withFallback(<SupplierStatement />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "supplier-details-statement",
+          element: withFallback(<SupplierDetailsStatement />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "customer-collection",
+          element: withFallback(<CustomerCollection />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "supplier-ledger",
+          element: withFallback(<SupplierLedgerReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "customer-ledger",
+          element: withFallback(<CustomerLedgerReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "customer-details-statement-report",
+          element: withFallback(<CustomerDetailsStatement />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "aged-receivable-report",
+          element: withFallback(<AgedReceivableReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "receivable-report",
+          element: withFallback(<ReceiveableReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "sales-register",
           element: withFallback(<SaleRegister />),
           errorElement: withFallback(<ErrorPage />),
         },
         {
-          path: "sale-summary",
+          path: "item-sale-summary",
           element: withFallback(<SaleSummary />),
           errorElement: withFallback(<ErrorPage />),
         },
         {
-          path: "sale-profit-lass",
+          path: "sale-wise-profit-lass",
           element: withFallback(<SaleProfitLass />),
           errorElement: withFallback(<ErrorPage />),
         },
         {
-          path: "stock-branch-report",
-          element: withFallback(<StockBranchReport />),
+          path: "stock-batch-report",
+          element: withFallback(<StockBatchReport />),
           errorElement: withFallback(<ErrorPage />),
         },
         {
@@ -806,13 +846,6 @@ const billingRoutes = {
           element: withFallback(<CustomerReport />),
           errorElement: withFallback(<ErrorPage />),
         },
-
-        {
-          path: "customer-ledger",
-          element: withFallback(<CustomerLedgerReport />),
-          errorElement: withFallback(<ErrorPage />),
-        },
-
         {
           path: "due-receivable-report",
           element: withFallback(<DueReceiveableReport />),
@@ -828,11 +861,7 @@ const billingRoutes = {
           element: withFallback(<SupplierSummary />),
           errorElement: withFallback(<ErrorPage />),
         },
-        {
-          path: "supplier-ledger",
-          element: withFallback(<SupplierLedgerReport />),
-          errorElement: withFallback(<ErrorPage />),
-        },
+      
         {
           path: "due-payable-report",
           element: withFallback(<DuePayableReport />),
@@ -870,24 +899,51 @@ const billingRoutes = {
           element: withFallback(<PurchaseTaxReport />),
           errorElement: withFallback(<ErrorPage />),
         },
+       
+        {
+          path: "supplier-wise-purchase",
+          element: withFallback(<SupplierWisePurchase />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "item-wise-purchase",
+          element: withFallback(<ItemWisePurchase />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "item-wise-sales-report",
+          element: withFallback(<ItemWiseSale />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "stock-transaction-report",
+          element: withFallback(<StockTransactionReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "payable-report",
+          element: withFallback(<PayableReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "aged-payable-report",
+          element: withFallback(<AgedPayableReport />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "customer-statement-report",
+          element: withFallback(<CustomerStatement />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "representative-wise-sale-report",
+          element: withFallback(<RepresentativeWiseSale />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+       
       ],
     },
 
-    {
-      path: "reports/supplier-wise-purchase-report",
-      element: withFallback(<SupplierWisePurchase />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "reports/item-wise-purchase-report",
-      element: withFallback(<ItemWisePurchase />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "reports/item-wise-sale-report",
-      element: withFallback(<ItemWiseSale />),
-      errorElement: withFallback(<ErrorPage />),
-    },
     {
       path: "quotation-qetails-ui",
       element: withFallback(<QuotationDetailsUI />),
@@ -910,61 +966,6 @@ const billingRoutes = {
         </RoleAccess>
       ),
       // element: withFallback(<Stocks />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "customer-collection",
-      element: withFallback(<CustomerCollection />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "receivable-report",
-      element: withFallback(<ReceiveableReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "payable-report",
-      element: withFallback(<PayableReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "aged-receivable-report",
-      element: withFallback(<AgedReceivableReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "aged-payable-report",
-      element: withFallback(<AgedPayableReport />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "customer-statement-report",
-      element: withFallback(<CustomerStatement />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "representative-wise-sale-report",
-      element: withFallback(<RepresentativeWiseSale />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "customer-details-statement-report",
-      element: withFallback(<CustomerDetailsStatement />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "reports/supplier-statement",
-      element: withFallback(<SupplierStatement />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "reports/supplier-details-statement",
-      element: withFallback(<SupplierDetailsStatement />),
-      errorElement: withFallback(<ErrorPage />),
-    },
-    {
-      path: "reports/stock-transaction-report",
-      element: withFallback(<StockTransactionReport />),
       errorElement: withFallback(<ErrorPage />),
     },
     {

@@ -21,6 +21,7 @@ export default function ReportsDashboard() {
       trader: filteredReports.filter(r => r.category === "trader"),
       sales: filteredReports.filter(r => r.category === "sales"),
       purchase: filteredReports.filter(r => r.category === "purchase"),
+      inventory: filteredReports.filter(r => r.category === "inventory"),
     }
     return categories
   }, [filteredReports])
@@ -81,6 +82,17 @@ export default function ReportsDashboard() {
           </CardHeader>
           <CardContent>
             <ReportsList reports={reportsByCategory.purchase} />
+          </CardContent>
+        </Card>
+      )}
+
+      {(!searchQuery || reportsByCategory.inventory.length > 0) && (
+        <Card>
+          <CardHeader>
+            <h2 className="text-lg font-medium">Inventory Reports</h2>
+          </CardHeader>
+          <CardContent>
+            <ReportsList reports={reportsByCategory.inventory} />
           </CardContent>
         </Card>
       )}
