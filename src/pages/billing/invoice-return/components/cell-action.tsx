@@ -20,6 +20,7 @@ import { PurchaseReturnRow } from "@/lib/validators/billing/return";
 import { toast } from "sonner";
 import handleErrors from "@/lib/handle-errors";
 import { useRemoveInvoiceReturnMutation } from "@/store/services/billing/api/invoice-return";
+import RoleAccess from "@/lib/access-control/role-access";
 
 interface CellActionProps {
   rowData: PurchaseReturnRow;
@@ -44,7 +45,7 @@ export function CellAction({ rowData }: CellActionProps) {
   };
 
   return (
-    <div className="flex justify-center space-x-2">
+    <div className="flex justify-center space-x-2 min-h-10">
       {/*       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -66,26 +67,27 @@ export function CellAction({ rowData }: CellActionProps) {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider> */}
-
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-secondary"
-              onClick={() => {
-                setAlertModalOpen(true);
-              }}
-            >
-              <Trash2 className="h-4 w-4 text-foreground" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Delete Opening Balance</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <RoleAccess roles={["invoice-return.delete"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => {
+                  setAlertModalOpen(true);
+                }}
+              >
+                <Trash2 className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Delete Invoice Return</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
 
       <AlertModal
         title="Are you sure?"

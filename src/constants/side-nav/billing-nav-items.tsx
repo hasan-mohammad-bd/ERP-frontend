@@ -225,7 +225,7 @@ const billingNavItems: NavItem[] = [
         icon: CalendarCheck2,
         color: "text-sky-500",
         href: "/billing/stocks",
-        permissions: ["accounts"],
+        permissions: ["stocks"],
       },
       {
         title: "Warehouse",

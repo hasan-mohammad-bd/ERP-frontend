@@ -254,93 +254,154 @@ const billingRoutes = {
     {
       path: "Brand",
       element: withFallback(
-        <RoleAccess roles={["brands"]} showUnauthorizedPage={true}>
+        <RoleAccess roles={["brands"]}  showUnauthorizedPage={true}>
           <Brand />
         </RoleAccess>
       ),
       errorElement: withFallback(<ErrorPage />),
     },
+
     {
       path: "purchases",
-      // element: withFallback(<Invoice />),
       errorElement: withFallback(<ErrorPage />),
       children: [
         {
+
           index: true,
-          element: withFallback(<PurchaseList />),
+          element: withFallback(
+            <RoleAccess roles={["purchases"]} showUnauthorizedPage={true}>
+              <PurchaseList />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         {
           path: "add",
-          element: withFallback(<AddPurchaseForm />),
+          element: withFallback(
+            <RoleAccess roles={["purchases.create"]} showUnauthorizedPage={true}>
+              <AddPurchaseForm />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         {
+
           path: "edit/:id",
-          element: withFallback(<AddPurchaseForm />),
+          element: withFallback(
+            <RoleAccess roles={["purchases.edit"]} showUnauthorizedPage={true}>
+              <AddPurchaseForm />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         {
+
           path: "view/:id",
-          element: withFallback(<PurchaseInvoice />),
+          element: withFallback(
+            <RoleAccess roles={["purchases.show"]} showUnauthorizedPage={true}>
+              <PurchaseInvoice />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
     },
+
+
     {
       path: "purchase-orders/",
       errorElement: withFallback(<ErrorPage />),
       children: [
         {
           index: true,
-          element: withFallback(<PurchaseOrder />),
+          element: withFallback(
+            <RoleAccess roles={["purchase-orders"]} showUnauthorizedPage={true}>
+              <PurchaseOrder />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
+
         },
         {
           path: "add",
-          element: withFallback(<AddPurchaseOrderForm />),
+          element: withFallback(
+            <RoleAccess roles={["purchase-orders.create"]} showUnauthorizedPage={true}>
+              <AddPurchaseOrderForm />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
+
         },
         {
-          path: "edit/:id",
-          element: withFallback(<AddPurchaseOrderForm />),
-          errorElement: withFallback(<ErrorPage />),
+        path: "edit/:id",
+        element: withFallback(
+          <RoleAccess roles={["purchase-orders.edit"]} showUnauthorizedPage={true}>
+            <AddPurchaseOrderForm />
+          </RoleAccess>
+        ),
+        errorElement: withFallback(<ErrorPage />),
         },
+
       ],
     },
+
+
     {
       path: "purchase-return/",
       errorElement: withFallback(<ErrorPage />),
       children: [
         {
           index: true,
-          element: withFallback(<PurchaseReturn />),
+          element: withFallback(
+            <RoleAccess roles={["purchase-return"]} showUnauthorizedPage={true}>
+              <PurchaseReturn />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         {
+
           path: "add/:id",
-          element: withFallback(<AddPurchaseReturnForm />),
-          errorElement: withFallback(<ErrorPage />),
+          element: withFallback(
+            <RoleAccess roles={["purchase-return.create"]} showUnauthorizedPage={true}>
+              <AddPurchaseReturnForm />
+            </RoleAccess>
+          ),
+          errorElement: withFallback(<ErrorPage />),          
         },
         {
           path: "edit/:id",
-          element: withFallback(<AddPurchaseReturnForm />),
+          element: withFallback(
+            <RoleAccess roles={["purchase-return.edit"]} showUnauthorizedPage={true}>
+              <AddPurchaseReturnForm />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
     },
+
+
     {
       path: "invoice-return/",
       errorElement: withFallback(<ErrorPage />),
       children: [
         {
           index: true,
-          element: withFallback(<InvoiceReturn />),
+          element: withFallback(
+            <RoleAccess roles={["invoice-return"]} showUnauthorizedPage={true}>
+              <InvoiceReturn />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         {
           path: "add/:id",
-          element: withFallback(<AddInvoiceReturnForm />),
+          element: withFallback(
+            <RoleAccess roles={["invoice-return.create"]} showUnauthorizedPage={true}>
+              <AddInvoiceReturnForm />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         /*         {
@@ -350,28 +411,40 @@ const billingRoutes = {
         }, */
       ],
     },
+
     {
       path: "purchase-refund",
       errorElement: withFallback(<ErrorPage />),
       children: [
         {
           index: true,
-          element: withFallback(<PurchaseRefunds />),
+          element: withFallback(
+            <RoleAccess roles={["purchase-refunds"]} showUnauthorizedPage={true}>
+              <PurchaseRefunds />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
     },
+
+    
     {
       path: "invoice-refund",
       errorElement: withFallback(<ErrorPage />),
       children: [
         {
           index: true,
-          element: withFallback(<InvoiceRefunds />),
+          element: withFallback(
+            <RoleAccess roles={["invoice-refunds"]} showUnauthorizedPage={true}>
+              <InvoiceRefunds />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
     },
+
     {
       path: "purchase-receive",
       errorElement: withFallback(<ErrorPage />),
@@ -481,29 +554,46 @@ const billingRoutes = {
         },
       ],
     },
+
+
     {
       path: "invoices",
-      // element: withFallback(<Invoice />),
       errorElement: withFallback(<ErrorPage />),
       children: [
         {
           index: true,
-          element: withFallback(<Invoice />),
+          element: withFallback(
+            <RoleAccess roles={["invoices"]} showUnauthorizedPage={true}>
+              <Invoice />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         {
           path: "add",
-          element: withFallback(<AddInvoiceForm />),
+          element: withFallback(
+            <RoleAccess roles={["invoices.create"]} showUnauthorizedPage={true}>
+              <AddInvoiceForm />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         {
           path: "edit/:id",
-          element: withFallback(<AddInvoiceForm />),
+          element: withFallback(
+            <RoleAccess roles={["invoices.edit"]} showUnauthorizedPage={true}>
+              <AddInvoiceForm />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
         {
           path: "view/:id",
-          element: withFallback(<SalesInvoice />),
+          element: withFallback(
+            <RoleAccess roles={["invoices.show"]} showUnauthorizedPage={true}>
+              <SalesInvoice />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
@@ -526,14 +616,19 @@ const billingRoutes = {
         },
       ],
     },
+
+
     {
       path: "payments-received",
-      // element: withFallback(<Invoice />),
       errorElement: withFallback(<ErrorPage />),
       children: [
         {
           index: true,
-          element: withFallback(<PaymentsReceived />),
+          element: withFallback(
+            <RoleAccess roles={["payment-receives"]} showUnauthorizedPage={true}>
+              <PaymentsReceived />
+            </RoleAccess>
+          ),
           errorElement: withFallback(<ErrorPage />),
         },
       ],
@@ -809,7 +904,12 @@ const billingRoutes = {
     },
     {
       path: "stocks",
-      element: withFallback(<Stocks />),
+      element: withFallback(
+        <RoleAccess roles={["stocks"]} showUnauthorizedPage={true}>
+          <Stocks />
+        </RoleAccess>
+      ),
+      // element: withFallback(<Stocks />),
       errorElement: withFallback(<ErrorPage />),
     },
     {
