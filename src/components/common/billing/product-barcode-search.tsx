@@ -266,27 +266,44 @@ export default function ProductBarcodeSearch({
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center space-x-2">
-                      <Button
-                        disabled={product.quantity === product.used_qty}
-                        type="button"
-                        size="icon"
-                        variant="outline"
-                        onClick={() => updateQuantity(product.barcodeId, false)}
-                      >
-                        <Minus className="h-4 w-4" />
-                      </Button>
-                      <span>{product.quantity}</span>
-                      <Button
-                        type="button"
-                        size="icon"
-                        variant="outline"
-                        onClick={() => updateQuantity(product.barcodeId, true)}
-                      >
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
+  <div className="flex items-center space-x-2">
+    <Button
+      disabled={product.quantity === product.used_qty}
+      type="button"
+      size="icon"
+      variant="outline"
+      onClick={() => updateQuantity(product.barcodeId, false)}
+    >
+      <Minus className="h-4 w-4" />
+    </Button>
+    <Input
+      id="quantity"
+      type="number"
+      className="w-16 text-center"
+      value={product.quantity}
+      min={1}
+      onChange={(e) => {
+        const newQuantity = Math.max(1, Number(e.target.value));
+        setSelectedProducts((products) =>
+          products.map((p) =>
+            p.barcodeId === product.barcodeId
+              ? { ...p, quantity: newQuantity }
+              : p
+          )
+        );
+      }}
+    />
+    <Button
+      type="button"
+      size="icon"
+      variant="outline"
+      onClick={() => updateQuantity(product.barcodeId, true)}
+    >
+      <Plus className="h-4 w-4" />
+    </Button>
+  </div>
+</TableCell>
+
 
                   <TableCell>
                     <div className="w-64">
