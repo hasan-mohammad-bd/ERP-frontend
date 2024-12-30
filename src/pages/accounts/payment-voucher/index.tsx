@@ -37,7 +37,7 @@ const PaymentVoucher = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="Received Voucher"
+              title="Payment Voucher"
               description="Manage your sub accounts for you business"
             />
             <RoleAccess roles={["entries.create"]}>
