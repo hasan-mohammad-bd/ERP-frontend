@@ -6,7 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Pencil, Trash2, ZoomIn } from "lucide-react";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { EntryRow } from "@/lib/validators/accounts";
 import { toast } from "sonner";
@@ -65,11 +65,11 @@ export function CellAction({ rowData }: CellActionProps) {
 
                 onClick={handleOpenModal}
               >
-                <ZoomIn className="h-4 w-4 text-foreground" />
+                <Eye className="h-4 w-4 text-foreground" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Update Received Voucher</p>
+              <p>Received Voucher Details</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

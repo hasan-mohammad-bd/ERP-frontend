@@ -6,12 +6,15 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Pencil, Trash2, ZoomIn } from "lucide-react";
+import { Eye, Pencil, Trash2, ZoomIn } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { EntryRow } from "@/lib/validators/accounts";
 import { toast } from "sonner";
 
-import { useGetEntryByIdQuery, useRemoveEntryMutation } from "@/store/services/accounts/api/entries";
+import {
+  useGetEntryByIdQuery,
+  useRemoveEntryMutation,
+} from "@/store/services/accounts/api/entries";
 import { useNavigate } from "react-router-dom";
 import RoleAccess from "@/lib/access-control/role-access";
 import { Modal } from "@/components/common/modal";
@@ -29,7 +32,6 @@ export function CellAction({ rowData }: CellActionProps) {
   const { data, isFetching } = useGetEntryByIdQuery(`${rowData?.id}`, {
     skip: !fetchDataOnOpen,
   });
-
 
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [removeEntry, { isLoading: deleteLoading }] = useRemoveEntryMutation();
@@ -53,7 +55,7 @@ export function CellAction({ rowData }: CellActionProps) {
   return (
     <div className="flex justify-center space-x-2 min-h-10">
       <RoleAccess roles={["entries.edit"]}>
-      <TooltipProvider>
+        <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -61,16 +63,16 @@ export function CellAction({ rowData }: CellActionProps) {
                 size="icon"
                 className="hover:bg-secondary"
                 // onClick={() =>
-                  
+
                 // }
 
                 onClick={handleOpenModal}
               >
-                <ZoomIn className="h-4 w-4 text-foreground" />
+                <Eye className="h-4 w-4 text-foreground" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Update Received Voucher</p>
+              <p>Payment Voucher Details</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -140,21 +142,21 @@ export function CellAction({ rowData }: CellActionProps) {
           modalClose={() => setUpdateModalOpen(false)}
         />
       </Modal> */}
-             {voucherDetailsOpen && data && (
-          <Modal
-            isOpen={voucherDetailsOpen}
-            toggleModal={() => setVoucherDetailsOpen(false)}
-            className="max-w-5xl h-fit"
-          >
-            {isFetching ? (
-              <div className="w-full h-full flex justify-center items-center">
-                <Loading />
-              </div>
-            ) : (
-              <VoucherDetailsForReceivedPayment data={data?.data} />
-            )}
-          </Modal>
-        )}
+      {voucherDetailsOpen && data && (
+        <Modal
+          isOpen={voucherDetailsOpen}
+          toggleModal={() => setVoucherDetailsOpen(false)}
+          className="max-w-5xl h-fit"
+        >
+          {isFetching ? (
+            <div className="w-full h-full flex justify-center items-center">
+              <Loading />
+            </div>
+          ) : (
+            <VoucherDetailsForReceivedPayment data={data?.data} />
+          )}
+        </Modal>
+      )}
     </div>
   );
 }
