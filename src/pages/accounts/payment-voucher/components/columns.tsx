@@ -6,6 +6,7 @@ import { CellActionVoucherDetails } from "@/components/common/accounts/entry/cel
 import { FormatIndianCurrency } from "@/utils/indian-formate";
 import { renderApprovalStatus } from "@/lib/render-status";
 
+
 export const subAccountColumns: ColumnDef<EntryRow>[] = [
   {
     id: "select",

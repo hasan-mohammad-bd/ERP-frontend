@@ -190,7 +190,7 @@ export function AddReceiptForm() {
         <div>
           <div className="flex items-center justify-between mb-4">
             <Heading
-              title={previousData ? "Edit Receipt Entry" : "Add Receipt Entry"}
+              title={previousData ? "Edit Received Entry" : "Add Received Entry"}
               description="Manage your sub accounts for you business"
             />
             <Button
