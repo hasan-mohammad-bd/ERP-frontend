@@ -114,7 +114,12 @@ export function AddSkillForm({
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Skill Name</FormLabel>
+                        <FormLabel>
+                          Skill Name{" "}
+                          <span>
+                            <span className="text-red-500">*</span>
+                          </span>
+                        </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
@@ -169,7 +174,6 @@ export function AddSkillForm({
                     )}
                   />
 
-
                   <FormField
                     control={form.control}
                     name="start_date"
@@ -205,7 +209,7 @@ export function AddSkillForm({
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="description"
@@ -225,7 +229,7 @@ export function AddSkillForm({
                     )}
                   />
 
-{/*                   <FormField
+                  {/*                   <FormField
                     control={form.control}
                     name="sorting_index"
                     render={({ field }) => (

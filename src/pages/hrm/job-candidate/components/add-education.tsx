@@ -114,6 +114,7 @@ export function AddEducationForm({
                             type="text"
                             placeholder="Enter education type(HSC/SSC)"
                             {...field}
+                            value={field.value ?? ""}
                           />
                         </FormControl>
                         <FormMessage />

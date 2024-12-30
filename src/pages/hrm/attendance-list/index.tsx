@@ -13,36 +13,39 @@ import { Loading } from "@/components/common/loading";
 import { useGetAttendanceListQuery } from "@/store/services/hrm/api/attendance-list";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
-import AttendanceFilters from "./components/attendance-filters";
-import { DepartmentColumn } from "@/lib/validators";
-import { format } from "date-fns";
+// import AttendanceFilters from "./components/attendance-filters";
+// import { DepartmentColumn } from "@/lib/validators";
+// import { format } from "date-fns";
+// import EmployeeFilters from "../employee/employee-list/components/employee-filters";
+import AttendanceFilter from "./components/attendance-filter";
 
 export type Tab = "check-in" | "check-out";
 
 const AttendancesList = () => {
   const [tab, setTab] = useState<Tab>("check-in");
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
-  const [selectedDepartment, setSelectedDepartment] = useState<
-    DepartmentColumn | undefined
-  >(undefined);
+  // const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  // const [selectedDepartment, setSelectedDepartment] = useState<
+  //   DepartmentColumn | undefined
+  // >(undefined);
 
   // Pagination state
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [filterParams, setFilterParams] = useState("");
 
-  const attendanceSearchParams = new URLSearchParams({
-    date: selectedDate && format(selectedDate, "yyyy-MM-dd") || "", // Add the selected date
-    per_page: pagination.pageSize.toString(), // Convert to string
-    page: pagination.pageIndex.toString(), // Convert to string
-    // department_id: selectedDepartment?.id?.toString() || "",
-  });
+  // const attendanceSearchParams = new URLSearchParams({
+  //   date: selectedDate && format(selectedDate, "yyyy-MM-dd") || "", // Add the selected date
+  //   per_page: pagination.pageSize.toString(), // Convert to string
+  //   page: pagination.pageIndex.toString(), // Convert to string
+  //   department_id: selectedDepartment?.id?.toString() || "",
+  // });
 
   // Fetch attendance data based on selected date and department
   const { data: attendanceData, isLoading: isLoadingAttendance } =
-    useGetAttendanceListQuery(attendanceSearchParams.toString());
+    useGetAttendanceListQuery(`per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}&${filterParams}`);
 
   const AttendanceListData = attendanceData?.data || [];
   const paginationInfo: PaginationInfo | undefined = attendanceData?.meta;
@@ -63,12 +66,13 @@ const AttendancesList = () => {
             </Button>
           </div>
 
-          <AttendanceFilters
+{/*           <AttendanceFilters
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
             selectedDepartment={selectedDepartment}
             setSelectedDepartment={setSelectedDepartment}
-          />
+          /> */}
+                  <AttendanceFilter setFilterParams={setFilterParams} />
 
           <Separator />
 

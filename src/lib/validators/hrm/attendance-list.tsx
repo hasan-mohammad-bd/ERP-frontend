@@ -39,6 +39,9 @@ export type AttendanceRow = {
     designation: {
       name: string;
     };
+    location: {
+      name: string;
+    }
   };
 };
 

@@ -407,19 +407,15 @@ export type JobPostColumn = z.infer<typeof jobPostColumn>;
 export const EducationFormSchema = z.object({
   model_type: z.string().optional().nullable(),
   model_id: z.coerce.number().optional().nullable(),
-  type: z.string(),
+  type: z.string().optional().nullable(),
   academy: z.string().min(2, {
-    message: "Academy must be at least 2 characters.",
+    message: "Institute must be at least 2 characters.",
   }),
-  title: z.string().min(2, {
-    message: "Title must be at least 2 characters.",
-  }),
-  degree: z.string().min(2, {
-    message: "Degree must be at least 2 characters.",
-  }),
-  start_date: z.string().date(),
-  end_date: z.string().date(),
-  grade: z.string(),
+  title: z.string().optional(),
+  degree: z.string().optional(),
+  start_date: z.string().optional(),
+  end_date: z.string().optional(),
+  grade: z.string().optional(),
   /* sorting_index: z.coerce
     .number()
     .int()
@@ -458,8 +454,8 @@ export const ExperienceFormSchema = z.object({
     message: "Institution must be at least 2 characters.",
   }),
   employment_status_id: z.coerce.number().optional().nullable(),
-  designation: z.string(),
-  start_date: z.string().date(),
+  designation: z.string().optional(),
+  start_date: z.string().optional(),
   end_date: z.string().date().optional().nullable(),
   description: z.string().optional().nullable(),
   /*   sorting_index: z.coerce
@@ -498,9 +494,9 @@ export const SkillFormSchema = z.object({
   name: z.string().min(2, {
     message: "Skill must be at least 2 characters.",
   }),
-  type: z.string(),
-  start_date: z.string().date(),
-  end_date: z.string().date().optional().nullable(),
+  type: z.string().optional(),
+  start_date: z.string().optional(),
+  end_date: z.string().optional(),
   description: z.string().optional().nullable(),
   /*   sorting_index: z.coerce
     .number()

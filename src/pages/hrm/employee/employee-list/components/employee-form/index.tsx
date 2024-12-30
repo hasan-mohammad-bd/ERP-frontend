@@ -63,13 +63,16 @@ import { useGetRolesQuery } from "@/store/services/erp-main/api/role";
 import { AddAdditionalInfoForm } from "./add-additional-data";
 import { AddSkillForm } from "./add-skill";
 import { AddNomineeForm } from "./add-nominee";
-import handleErrors, { ErrorDetail, handleFormErrors } from "@/lib/handle-errors";
+import handleErrors, {
+  ErrorDetail,
+  handleFormErrors,
+} from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { useGetLeaveGroupsQuery } from "@/store/services/hrm/api/leave-group";
 import { LeaveGroupRow } from "@/lib/validators/hrm/leave";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {  Eye } from "lucide-react";
+import { Eye } from "lucide-react";
 import { EyeClosedIcon } from "@radix-ui/react-icons";
 import { Switch } from "@/components/ui/switch";
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
@@ -150,7 +153,9 @@ export default function EmployeeForm() {
   // const countryData = countries?.data || [];
 
   const form = useForm<EmployeeFormValues>({
-    resolver: zodResolver(previousData ? EmployeeUpdateSchema : EmployeeFormSchema ),
+    resolver: zodResolver(
+      previousData ? EmployeeUpdateSchema : EmployeeFormSchema
+    ),
     defaultValues: {},
   });
 
@@ -237,8 +242,7 @@ export default function EmployeeForm() {
     }
   }
   handleFormErrors(form.formState.errors as ErrorDetail);
-	console.log(form.formState.errors)
-
+  console.log(form.formState.errors);
 
   return (
     <>
@@ -295,7 +299,12 @@ export default function EmployeeForm() {
                               name="employee_unique_id"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Employee Unique Id</FormLabel>
+                                  <FormLabel>
+                                    Employee Unique Id{" "}
+                                    <span>
+                                      <span className="text-red-500">*</span>
+                                    </span>
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       type="text"
@@ -314,7 +323,12 @@ export default function EmployeeForm() {
                               name="first_name"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>First Name</FormLabel>
+                                  <FormLabel>
+                                    First Name{" "}
+                                    <span>
+                                      <span className="text-red-500">*</span>
+                                    </span>
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       type="text"
@@ -351,7 +365,12 @@ export default function EmployeeForm() {
                               name="phone"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Phone</FormLabel>
+                                  <FormLabel>
+                                    Phone{" "}
+                                    <span>
+                                      <span className="text-red-500">*</span>
+                                    </span>
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       type="text"
@@ -391,7 +410,12 @@ export default function EmployeeForm() {
                               name="email"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Email</FormLabel>
+                                  <FormLabel>
+                                    Email{" "}
+                                    <span>
+                                      <span className="text-red-500">*</span>
+                                    </span>
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       type="email"
@@ -428,7 +452,12 @@ export default function EmployeeForm() {
                               name="joining_date"
                               render={({ field }) => (
                                 <FormItem className="flex flex-col">
-                                  <FormLabel className="mb-1">Joining Date</FormLabel>
+                                  <FormLabel className="mb-1">
+                                    Joining Date{" "}
+                                    <span>
+                                      <span className="text-red-500">*</span>
+                                    </span>
+                                  </FormLabel>
                                   <FormControl className="">
                                     <DateTimePicker
                                       {...field}
@@ -436,10 +465,12 @@ export default function EmployeeForm() {
                                       value={
                                         field.value
                                           ? new Date(field.value)
-                                          : undefined}
+                                          : undefined
+                                      }
                                       // value={field.value}
                                       onChange={(date) =>
-                                        field.onChange(date?.toISOString())}
+                                        field.onChange(date?.toISOString())
+                                      }
                                       granularity="day"
                                       // hourCycle={12}
                                     />
@@ -457,6 +488,11 @@ export default function EmployeeForm() {
                                     <FormItem>
                                       <FormLabel>
                                         Password{" "}
+                                        <span>
+                                          <span className="text-red-500">
+                                            *
+                                          </span>
+                                        </span>
                                         <span className="text-xs text-muted-foreground">
                                           (8+, A-Z, a-z, 0-9)
                                         </span>
@@ -495,7 +531,12 @@ export default function EmployeeForm() {
                             )}
                           </div>
                           <div className="w-1/4 mb-4">
-                            <span className="text-sm">Status</span>
+                            <span className="text-sm">
+                              Status{" "}
+                              <span>
+                                <span className="text-red-500">*</span>
+                              </span>
+                            </span>
                             <FormField
                               control={form.control}
                               name="status"
@@ -537,8 +578,9 @@ export default function EmployeeForm() {
                               form={form}
                               name="location_id"
                               placeholder="Location"
-                              title="Location"
+                              title="Location "
                               className="w-[330px]"
+                              required
                             />
                             <FormSearchSelect<OrganizationDropdownColumn>
                               loading={organizationLoading}
@@ -550,6 +592,7 @@ export default function EmployeeForm() {
                               placeholder="Organization"
                               className="w-[330px]"
                               title="Organization"
+                              required
                             />
                             <FormSearchSelect<WorkPlaceColumn>
                               loading={workplaceLoading}
@@ -561,6 +604,7 @@ export default function EmployeeForm() {
                               placeholder="Work Place"
                               className="w-[330px]"
                               title="Work Place"
+                              required
                             />
                             <FormSearchSelect<DepartmentColumn>
                               loading={departmentLoading}
@@ -572,6 +616,7 @@ export default function EmployeeForm() {
                               placeholder="Department"
                               className="w-[330px]"
                               title="Department"
+                              required
                             />
                             <FormSearchSelect<DesignationColumn>
                               loading={designationLoading}
@@ -583,6 +628,7 @@ export default function EmployeeForm() {
                               placeholder="Designation"
                               className="w-[330px]"
                               title="Designation"
+                              required
                             />
                             <FormSearchSelect<SectionColumn>
                               loading={sectionLoading}
@@ -594,6 +640,7 @@ export default function EmployeeForm() {
                               placeholder="Section"
                               className="w-[330px]"
                               title="Section"
+                              required
                             />
                             <FormSearchSelect<ScheduleColumn>
                               loading={scheduleLoading}
@@ -605,6 +652,7 @@ export default function EmployeeForm() {
                               placeholder="Schedule"
                               className="w-[330px]"
                               title="Schedule"
+                              required
                             />
                             <FormSearchSelect<EmployeeClassColumn>
                               loading={employeeClassLoading}
@@ -616,6 +664,7 @@ export default function EmployeeForm() {
                               placeholder="Employee Class"
                               className="w-[330px]"
                               title="Employee Class"
+                              required
                             />
                             <FormSearchSelect<EmployeeGradeColumn>
                               loading={employeeGradeLoading}
@@ -627,6 +676,7 @@ export default function EmployeeForm() {
                               placeholder="Employee Grade"
                               className="w-[330px]"
                               title="Employee Grade"
+                              required
                             />
                             <FormSearchSelect<EmploymentStatusColumn>
                               loading={employmentStatusLoading}
@@ -638,6 +688,7 @@ export default function EmployeeForm() {
                               placeholder="Employment Status"
                               className="w-[330px]"
                               title="Employment Status"
+                              required
                             />
                             <FormSearchSelect<BloodGroupColumn>
                               loading={bloodGroupLoading}
@@ -649,6 +700,7 @@ export default function EmployeeForm() {
                               placeholder="Blood Group"
                               className="w-[330px]"
                               title="Blood Group"
+                              required
                             />
                             <FormSearchSelect<ReligionColumn>
                               loading={religionLoading}
@@ -660,6 +712,7 @@ export default function EmployeeForm() {
                               placeholder="Religion"
                               className="w-[330px]"
                               title="Religion"
+                              required
                             />
                             <FormSearchSelect<GenderColumn>
                               loading={genderLoading}
@@ -671,6 +724,7 @@ export default function EmployeeForm() {
                               placeholder="Gender"
                               className="w-[330px]"
                               title="Gender"
+                              required
                             />
                             <FormSearchSelect<RoleColumn>
                               loading={roleLoading}
@@ -682,6 +736,7 @@ export default function EmployeeForm() {
                               placeholder="Role"
                               className="w-[330px]"
                               title="Role"
+                              required
                             />
                             <FormSearchSelect<LeaveGroupRow>
                               loading={LeaveGroupLoading}
@@ -693,6 +748,7 @@ export default function EmployeeForm() {
                               placeholder="Leave Group"
                               className="w-[330px]"
                               title="Leave Group"
+                              required
                             />
                           </div>
                         </ScrollArea>

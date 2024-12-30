@@ -37,6 +37,7 @@ interface FormSearchSelectProps<T> {
   form: any;
   placeholder?: string;
   disabled?: any;
+  required?: boolean;
 }
 
 const FormSearchSelect = <T extends Record<string, any>>({
@@ -50,6 +51,7 @@ const FormSearchSelect = <T extends Record<string, any>>({
   displayField,
   placeholder = "Select an option",
   disabled = false,
+  required = false,
 }: FormSearchSelectProps<T>) => {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -70,7 +72,14 @@ const FormSearchSelect = <T extends Record<string, any>>({
 
         return (
           <FormItem className={cn("w-full")}>
-            <FormLabel>{title}</FormLabel>
+            <FormLabel>
+              {title}{" "}
+              {required && (
+                <span>
+                  <span className="text-red-500">*</span>
+                </span>
+              )}
+            </FormLabel>
             <Popover open={open} onOpenChange={setOpen} modal={true}>
               <PopoverTrigger asChild>
                 <FormControl>

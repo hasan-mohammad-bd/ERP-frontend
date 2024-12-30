@@ -20,8 +20,6 @@ import {
 } from "@/lib/validators";
 import { Loading } from "@/components/common/loading";
 
-
-
 import { useForm } from "react-hook-form";
 import { useGetCountriesQuery } from "@/store/services/hrm/api/country";
 
@@ -52,12 +50,11 @@ export function AddressForm({
   const [createAddress, { isLoading }] = useCreateAddressMutation();
   const [updateAddress, { isLoading: updateLoading }] =
     useUpdateAddressMutation();
-		const [filteredCityState , setFilteredCityState] = useState<CityColumn[]>([])
+  const [filteredCityState, setFilteredCityState] = useState<CityColumn[]>([]);
 
   const { data: countries, isLoading: countriesLoading } =
     useGetCountriesQuery(`per_page=1000&page=1`);
-  const { data: cities } =
-    useGetCitiesQuery(`per_page=1000&page=1`);
+  const { data: cities } = useGetCitiesQuery(`per_page=1000&page=1`);
 
   const countryData = countries?.data || [];
   const cityData = cities?.data || [];
@@ -77,15 +74,17 @@ export function AddressForm({
     },
   });
 
-	useEffect(() => {
-		const selectedCountry = addressForm.watch("country_id")
-		const findCountry = countryData.find((country) => country.id === Number(selectedCountry))
-		//filtered city
-		const filteredCity = cityData.filter((city) => {
-			return city.country === findCountry?.code
-		})
-		setFilteredCityState(filteredCity)
-	},[ addressForm.watch("country_id")])
+  useEffect(() => {
+    const selectedCountry = addressForm.watch("country_id");
+    const findCountry = countryData.find(
+      (country) => country.id === Number(selectedCountry)
+    );
+    //filtered city
+    const filteredCity = cityData.filter((city) => {
+      return city.country === findCountry?.code;
+    });
+    setFilteredCityState(filteredCity);
+  }, [addressForm.watch("country_id")]);
 
   async function onSubmitAddress(data: AddressFromValues) {
     try {
@@ -138,7 +137,12 @@ export function AddressForm({
               name="post_code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Post Code</FormLabel>
+                  <FormLabel>
+                    Post Code{" "}
+                    <span>
+                      <span className="text-red-500">*</span>
+                    </span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="text"
@@ -199,6 +203,7 @@ export function AddressForm({
               placeholder="Country"
               className="w-[500px]"
               title="Country"
+              required
             />
             <FormSearchSelect<CityColumn>
               // loading={countriesLoading}
@@ -210,9 +215,10 @@ export function AddressForm({
               placeholder="City"
               className="w-[500px]"
               title="City"
-							disabled={!addressForm.watch("country_id")}
+              disabled={!addressForm.watch("country_id")}
+              required
             />
-{/*             <FormField
+            {/*             <FormField
               control={addressForm.control}
               name="city_id"
               render={({ field }) => (

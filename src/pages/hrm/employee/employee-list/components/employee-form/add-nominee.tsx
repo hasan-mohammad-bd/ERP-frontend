@@ -32,6 +32,8 @@ import {
 
 import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { useEffect, useState } from "react";
+import handleErrors from "@/lib/handle-errors";
+import { ErrorResponse } from "@/types";
 
 interface AddAddressFormProps {
   previousData?: EmployeeColumn;
@@ -45,8 +47,7 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
 
   const { data: countries, isLoading: countriesLoading } =
     useGetCountriesQuery(`per_page=1000&page=1`);
-  const { data: cities } =
-    useGetCitiesQuery(`per_page=1000&page=1`);
+  const { data: cities } = useGetCitiesQuery(`per_page=1000&page=1`);
 
   const countryData = countries?.data || [];
   const cityData = cities?.data || [];
@@ -77,8 +78,6 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
     },
   });
 
-
-
   useEffect(() => {
     const selectedCountry = form.watch("present_address.country_id");
     const findCountry = countryData.find(
@@ -88,9 +87,9 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
     const filteredCity = cityData.filter((city) => {
       return city.country === findCountry?.code;
     });
-    
+
     setFilteredCityState(filteredCity);
-  }, [form.watch("present_address.country_id")]);
+  }, [form.watch("present_address.country_id"), cityData, countryData, form]);
 
   async function onSubmitNominee(data: NomineeFormValues) {
     try {
@@ -103,11 +102,12 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
         toast.success("Nominee updated successfully");
         // modalClose();
       } else {
-        await createNominee(data);
+        await createNominee(data).unwrap();
         toast.success("Nominee created successfully");
         // modalClose();
       }
     } catch (error) {
+      handleErrors(error as ErrorResponse);
       console.log(error);
     }
   }
@@ -133,7 +133,12 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Name</FormLabel>
+                        <FormLabel>
+                          Name{" "}
+                          <span>
+                            <span className="text-red-500">*</span>
+                          </span>
+                        </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
@@ -234,84 +239,7 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
 
                 <div>
                   <h1 className="text-center font-bold"> Address</h1>
-                  {/*                   <FormField
-                    control={form.control}
-                    name="present_address.country_id"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Country</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={
-                            previousData?.employee_nominee?.present_address?.country?.id
-                              ? String(
-                                previousData?.employee_nominee?.present_address?.country?.id
-                                )
-                              : undefined
-                          }
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Country" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {countriesLoading ? (
-                              <Loading />
-                            ) : (
-                              countryData?.map((country: CountryColumn) => (
-                                <SelectItem
-                                  key={country.id}
-                                  value={String(country.id)}
-                                >
-                                  {country.name}
-                                </SelectItem>
-                              ))
-                            )}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="present_address.city_id"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>City</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={
-                            previousData?.employee_nominee?.present_address?.city?.id
-                              ? String(previousData?.employee_nominee?.present_address?.city?.id)
-                              : undefined
-                          }
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select City" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {citiesLoading ? (
-                              <Loading />
-                            ) : (
-                              cityData?.map((city: CityColumn) => (
-                                <SelectItem
-                                  key={city.id}
-                                  value={String(city.id)}
-                                >
-                                  {city.name}
-                                </SelectItem>
-                              ))
-                            )}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
+
                   <FormField
                     control={form.control}
                     name="present_address.address"
@@ -334,7 +262,12 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
                     name="present_address.post_code"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Post Code</FormLabel>
+                        <FormLabel>
+                          Post Code{" "}
+                          <span>
+                            <span className="text-red-500">*</span>
+                          </span>
+                        </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
@@ -356,6 +289,7 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
                     placeholder="Country"
                     className="w-[500px]"
                     title="Country"
+                    required
                   />
                   <FormSearchSelect<CityColumn>
                     // loading={countriesLoading}
@@ -368,12 +302,13 @@ export function AddNomineeForm({ previousData }: AddAddressFormProps) {
                     className="w-[500px]"
                     title="City"
                     disabled={!form.watch("present_address.country_id")}
+                    required
                   />
                 </div>
               </div>
 
               <div>
-                <Button variant="default" type="submit" className="w-full mt-4">
+                <Button variant="default" type="submit" className="w-fit mt-4">
                   {previousData?.employee_nominee?.id ? "Update" : "Add"}
                 </Button>
               </div>
