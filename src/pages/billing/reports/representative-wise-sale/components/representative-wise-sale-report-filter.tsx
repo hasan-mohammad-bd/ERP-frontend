@@ -8,8 +8,9 @@ interface Props {
   setFilterParams: (params: string) => void;
 }
 
-export default function RepresentativeWiseSaleReportFilter({ setFilterParams }: Props) {
-
+export default function RepresentativeWiseSaleReportFilter({
+  setFilterParams,
+}: Props) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(
     undefined
@@ -57,6 +58,6 @@ export default function RepresentativeWiseSaleReportFilter({ setFilterParams }: 
           apply
         </Button>
       </div>
-    </Card>
-  );
+    </Card>
+  );
 }

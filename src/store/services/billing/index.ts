@@ -70,8 +70,8 @@ export const inventoryApi = createApi({
     "stock-batch",
     "representative-wise-sales",
     "supplier-details-statement",
-    "stock-item-summary-report"
-
+    "stock-item-summary-report",
+    "supplier-wise-sales"
   ],
   endpoints: () => ({}),
 });

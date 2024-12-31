@@ -58,6 +58,7 @@ const supplierAPI = inventoryApi.injectEndpoints({
 
 export const {
   useGetSuppliersQuery,
+  useLazyGetSuppliersQuery,
   useGetSupplierQuery,
   useCreateSupplierMutation,
   useRemoveSupplierMutation,

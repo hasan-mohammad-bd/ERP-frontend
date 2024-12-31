@@ -23,7 +23,7 @@ export const reports: Report[] = [
   { name: "Item Sale Summary", category: "sales", href: "/billing/reports/item-sale-summary" },
   { name: "Sale Wise Profit/Loss", category: "sales", href: "/billing/reports/sale-wise-profit-lass" },
   { name: "Representative Wise Sale", category: "sales", href: "/billing/reports/representative-wise-sale-report" },
-  { name: "Supplier Wise Sale Report", category: "sales", href: "#" },
+  { name: "Supplier Wise Sale Report", category: "sales", href: "/billing/reports/supplier-wise-sales-report" },
   { name: "Customer Wise Item Profit", category: "sales", href: "/billing/reports/customer-wise-item-profit" },
   { name: "Item Wise Sales Report", category: "sales", href: "/billing/reports/item-wise-sales-report" },
   { name: "Top Sold Items", category: "sales", href: "/billing/reports/top-sold-items" },

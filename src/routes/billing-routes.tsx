@@ -112,6 +112,7 @@ import StockTransactionReport from "@/pages/billing/reports/stock-transaction-re
 import StockBatchReport from "@/pages/billing/reports/stock-batch-report";
 import StockItemSummaryReport from "@/pages/billing/reports/stock-item-summary-report";
 import SupplierPaymentDetails from "@/pages/billing/supplier-payments/components/supplier-payment-details";
+import SupplierWiseSale from "@/pages/billing/reports/supplier-wise-sales";
 
 
 const billingRoutes = {
@@ -938,6 +939,11 @@ const billingRoutes = {
         {
           path: "representative-wise-sale-report",
           element: withFallback(<RepresentativeWiseSale />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "supplier-wise-sales-report",
+          element: withFallback(<SupplierWiseSale />),
           errorElement: withFallback(<ErrorPage />),
         },
        

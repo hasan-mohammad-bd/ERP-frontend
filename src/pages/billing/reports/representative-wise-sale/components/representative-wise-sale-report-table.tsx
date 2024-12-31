@@ -14,29 +14,16 @@ import { format } from "date-fns";
 interface Props {
   reportData: RepresentativeWiseSaleReport[];
   totalData: TotalSummary;
-  selectedDate?: Date;
-  selectedEndDate?: Date;
+
 }
 
 const RepresentativeWiseSaleReportTable = ({
   reportData,
   totalData,
-  selectedDate,
-  selectedEndDate,
+
 }: Props) => {
   return (
     <Card className="p-6">
-      <div className="space-y-4">
-        {/* Header Information */}
-        <div className="space-y-2">
-          <h2 className="text-lg font-semibold">
-            From {selectedDate ? format(selectedDate, "dd-MM-yyyy") : ""} to{" "}
-            {selectedEndDate
-              ? format(selectedEndDate, "dd-MM-yyyy")
-              : format(new Date(), "dd-MM-yyyy")}
-          </h2>
-        </div>
-
         {/* Transaction Table */}
         <Table>
           <TableHeader>
@@ -76,7 +63,6 @@ const RepresentativeWiseSaleReportTable = ({
             </TableRow>
           </TableBody>
         </Table>
-      </div>
     </Card>
   );
 };
