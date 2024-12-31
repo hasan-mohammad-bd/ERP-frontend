@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { useLazyGetDepartmentsQuery } from "@/store/services/hrm/api/department";
+import { useLazyGetSectionsQuery } from "@/store/services/hrm/api/section"; // Import for sections
 import SearchSelect from "@/components/common/search-select";
 import { DepartmentColumn, LocationColumn, ScheduleColumn } from "@/lib/validators";
 import { useState } from "react";
@@ -16,10 +17,11 @@ interface Props {
 }
 
 export default function AttendanceFilter({ setFilterParams }: Props) {
-  // Fetch department, branch, and shift data
+  // Fetch department, branch, shift, and section data
   const [getDepartments, { data: departmentData }] = useLazyGetDepartmentsQuery();
   const [getBranches, { data: branchData }] = useLazyGetLocationsQuery();
   const [getShifts, { data: ShiftsData }] = useLazyGetSchedulesQuery();
+  const [getSections, { data: sectionData }] = useLazyGetSectionsQuery(); // Lazy query for sections
 
   // Filter states
   const [selectedDepartment, setSelectedDepartment] = useState<
@@ -31,6 +33,7 @@ export default function AttendanceFilter({ setFilterParams }: Props) {
   const [selectedShift, setSelectedShift] = useState<ScheduleColumn | undefined>(
     undefined
   );
+  const [selectedSection, setSelectedSection] = useState<any | undefined>(undefined); // State for selected section
   const [selectEstimateDate, setSelectEstimateDate] = useState<Date | undefined>(
     undefined
   );
@@ -45,8 +48,8 @@ export default function AttendanceFilter({ setFilterParams }: Props) {
       params.append("department_id", selectedDepartment.id.toString());
     if (selectedBranch) params.append("location_id", selectedBranch.id.toString());
     if (selectedShift) params.append("schedule_id", selectedShift.id.toString());
-    if (selectEstimateDate)
-      params.append("date", estimateMonth.toString());
+    if (selectedSection) params.append("section_id", selectedSection.id.toString()); // Add section filter
+    if (selectEstimateDate) params.append("date", estimateMonth.toString());
 
     const filterParams = params.toString();
     setFilterParams(filterParams);
@@ -57,6 +60,7 @@ export default function AttendanceFilter({ setFilterParams }: Props) {
     setSelectedDepartment(undefined);
     setSelectedBranch(undefined);
     setSelectedShift(undefined);
+    setSelectedSection(undefined); // Reset section filter
     setSelectEstimateDate(undefined);
     setFilterParams(""); // reset filters
     toast.success("Filters reset successfully");
@@ -65,7 +69,8 @@ export default function AttendanceFilter({ setFilterParams }: Props) {
   return (
     <Card className="w-full p-5">
       <div className="flex gap-4 flex-wrap">
-      <div className="space-y-2 flex flex-col py-0">
+        {/* Date Picker */}
+        <div className="space-y-2 flex flex-col py-0">
           <DatePicker
             selected={selectEstimateDate}
             onChange={(date) => {
@@ -73,11 +78,12 @@ export default function AttendanceFilter({ setFilterParams }: Props) {
               if (!date) return;
             }}
             dateFormat="dd/MM/yyyy"
-            // showMonthYearPicker
             placeholderText="Select date"
-            className="border rounded p-[6px] w-full bg-none bg_remove "
+            className="border rounded p-[6px] w-full bg-none bg_remove"
           />
         </div>
+
+        {/* Department Filter */}
         <SearchSelect
           items={departmentData?.data || []}
           labelKey="name"
@@ -87,6 +93,8 @@ export default function AttendanceFilter({ setFilterParams }: Props) {
           onSelect={setSelectedDepartment}
           onChangeSearch={(searchText) => getDepartments(`text=${searchText}`)}
         />
+
+        {/* Location Filter */}
         <SearchSelect
           items={branchData?.data || []}
           labelKey="name"
@@ -96,6 +104,8 @@ export default function AttendanceFilter({ setFilterParams }: Props) {
           onSelect={setSelectedBranch}
           onChangeSearch={(searchText) => getBranches(`text=${searchText}`)}
         />
+
+        {/* Shift Filter */}
         <SearchSelect
           items={ShiftsData?.data || []}
           labelKey="name"
@@ -106,6 +116,18 @@ export default function AttendanceFilter({ setFilterParams }: Props) {
           onChangeSearch={(searchText) => getShifts(`text=${searchText}`)}
         />
 
+        {/* Section Filter */}
+        <SearchSelect
+          items={sectionData?.data || []}
+          labelKey="name"
+          valueKey="id"
+          value={selectedSection}
+          placeholder="Select Section"
+          onSelect={setSelectedSection}
+          onChangeSearch={(searchText) => getSections(`text=${searchText}`)} // Fetch sections based on search input
+        />
+
+        {/* Buttons */}
         <Button variant="outline" size={"sm"} onClick={handleResetFilters}>
           Reset Filters
         </Button>

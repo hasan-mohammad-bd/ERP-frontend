@@ -15,7 +15,7 @@ interface Props {
 }
 const AttendanceSummaryTable = ({ tableData }: Props) => {
 
-  console.log(tableData)
+
   return (
     <Card>
       {" "}
@@ -41,6 +41,8 @@ const AttendanceSummaryTable = ({ tableData }: Props) => {
               <TableRow key={item?.employee_id} className="">
                 <TableCell className="">{item?.employee_id}</TableCell>
                 <TableCell className="">{item?.employee_name}</TableCell>
+                {/* <TableCell>{item?.employee?.section?.name}</TableCell>
+                <TableCell>{item?.employee?.location?.name}</TableCell> */}
                 <TableCell>{item.late}</TableCell>
                 <TableCell>{item?.extreme_late}</TableCell>
                 <TableCell>{item?.on_time}</TableCell>

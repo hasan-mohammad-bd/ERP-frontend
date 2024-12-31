@@ -26,6 +26,8 @@ const DailyAttendanceReportTable = ({ tableData }: Props) => {
           <TableRow>
             <TableHead>Employee Id</TableHead>
             <TableHead>Employee Name</TableHead>
+            <TableHead>Section</TableHead>
+            <TableHead>Location</TableHead>
             <TableHead>Check In</TableHead>
             <TableHead>Check Out</TableHead>
             <TableHead>Total Hour</TableHead>
@@ -41,6 +43,8 @@ const DailyAttendanceReportTable = ({ tableData }: Props) => {
               <TableRow key={item?.employee?.id} className="">
                 <TableCell className="">{item?.employee?.id}</TableCell>
                 <TableCell className="">{item?.employee?.name}</TableCell>
+                <TableCell>{item?.employee?.section?.name}</TableCell>
+                <TableCell>{item?.employee?.location?.name}</TableCell>
                 <TableCell className="">{item?.check_in}</TableCell>
                 <TableCell>{item.check_out}</TableCell>
                 <TableCell>{item?.late_time}</TableCell>

@@ -25,6 +25,12 @@ export interface dailyAttendanceReport {
       user_id: number | null;
       organization_id: number | null;
     };
+    location: {
+      name: string;
+    };
+    section: {
+      name: string;
+    };
     designation: {
       id: number;
       name: string;

@@ -2,7 +2,6 @@ import { z } from "zod";
 
 // Define the schema for the new check-in data structure
 export const attendanceAddSchema = z.object({
-
   // .refine((val) => !isNaN(Date.parse(val)), {
   //   message: "Invalid date-time format",
   // }),
@@ -41,11 +40,12 @@ export type AttendanceRow = {
     };
     location: {
       name: string;
-    }
+    };
+    section: {
+      name: string;
+    };
   };
 };
-
-
 
 // Infer types from the schema
 export type attendanceCheckInFormValues = z.infer<typeof attendanceAddSchema>;

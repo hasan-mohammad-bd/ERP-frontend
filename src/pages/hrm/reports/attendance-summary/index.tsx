@@ -4,13 +4,15 @@ import { Card } from "@/components/ui/card";
 import { useGetAttendanceSummaryQuery } from "@/store/services/hrm/api/attendance-summary";
 import AttendanceSummaryTable from "./components/attendance-summary-table";
 import { useState } from "react";
-import AttendanceSummarySearchToolbar from "./components/attendance-summary-search-toolbar";
+
 import { format } from "date-fns";
 import { PaginationInfo } from "@/types";
 import { Paginator } from "@/components/common/paginator";
 import { Heading } from "@/components/common/heading";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/store/hooks";
+
+import AttendanceFilterSummary from "./components/attendance-filter";
 
 const AttendanceSummary = () => {
   const { user } = useAuth();
@@ -38,7 +40,7 @@ const AttendanceSummary = () => {
       </div>
       <Separator />
       <div className="">
-        <AttendanceSummarySearchToolbar setFilterParams={setFilterParams} />
+      <AttendanceFilterSummary setFilterParams={setFilterParams} />
       </div>
       <div>
         <Card>

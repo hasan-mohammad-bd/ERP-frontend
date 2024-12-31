@@ -15,6 +15,10 @@ export const attendanceColumns: ColumnDef<AttendanceRow>[] = [
     accessorKey: "employee.department.name",
     header: "Department",
   },
+  {
+    accessorKey: "employee.section.name",
+    header: "Section",
+  },
 
   {
     accessorKey: "employee.designation.name",
