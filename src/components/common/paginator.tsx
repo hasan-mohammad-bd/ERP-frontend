@@ -51,11 +51,15 @@ export function Paginator({
               <SelectValue placeholder={meta.per_page} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[10, 20, 30, 40, 50].map((pageSize) => (
+              {[10, 20, 30, 40, 50,].map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>
               ))}
+              <SelectItem key={100000} value="100000">
+                All
+              </SelectItem>
+
             </SelectContent>
           </Select>
         </div>
