@@ -1,8 +1,6 @@
 import { Loading } from "@/components/common/loading";
 import PrintPDFWrapper from "@/components/common/print-pdf-wrapper";
-import { Card } from "@/components/ui/card";
 import { useState } from "react";
-
 
 import DailyAttendanceReportTable from "./components/daily-attendance-report-table";
 import { useGetDailyAttendanceReportQuery } from "@/store/services/hrm/api/daily-attendance-report";
@@ -12,20 +10,24 @@ import { useAuth } from "@/store/hooks";
 
 import { getYearMonthDayFormatted } from "@/utils/format-dates";
 import AttendanceFilterDaily from "./components/attendance-filter";
+import { PaginationInfo } from "@/types";
+import { Paginator } from "@/components/common/paginator";
+import NoDataFound from "@/components/common/no-data-found";
 
 const DailyAttendanceReport = () => {
   const { user } = useAuth();
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [filterParams, setFilterParams] = useState(
-    `date=${getYearMonthDayFormatted( new Date())}`
+    `date=${getYearMonthDayFormatted(new Date())}`
   ); // Start with empty string to fetch all data initially
 
-  const { data, isLoading } = useGetDailyAttendanceReportQuery(filterParams);
-
-
+  const { data, isLoading } = useGetDailyAttendanceReportQuery(
+    `per_page=${pageSize}&page=${page}&${filterParams}`
+  );
 
   const dailyAttendanceReportData = data?.data || [];
-
-
+  const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   if (isLoading) return <Loading />;
 
@@ -42,25 +44,40 @@ const DailyAttendanceReport = () => {
         <AttendanceFilterDaily setFilterParams={setFilterParams} />
       </div>
       <div>
-        <Card>
-          <PrintPDFWrapper
-            className="space-y-4"
-            fileName="daily-attendance-report"
-          >
-            <div className="flex-1 space-y-4 my-4">
-              <div className="text-center">
-                <h2>{user?.organization?.name}</h2>
-                <h3 className="text-xl">Daily Attendance Report</h3>
-              </div>
-            </div>
+        <div>
+          {dailyAttendanceReportData.length > 0 ? (
+            <>
+              <PrintPDFWrapper
+                className="space-y-4"
+                fileName="daily-attendance-report"
+              >
+                <div className="flex-1 space-y-4 my-4">
+                  <div className="text-center">
+                    <h2>{user?.organization?.name}</h2>
+                    <h3 className="text-xl">Daily Attendance Report</h3>
+                  </div>
+                </div>
 
-            {dailyAttendanceReportData ? (
-              <DailyAttendanceReportTable
-                tableData={dailyAttendanceReportData}
-              />
-            ) : null}
-          </PrintPDFWrapper>
-        </Card>
+                <DailyAttendanceReportTable
+                  tableData={dailyAttendanceReportData}
+                />
+              </PrintPDFWrapper>
+              {paginationInfo && (
+                <Paginator
+                  className="px-4 pb-4"
+                  meta={paginationInfo}
+                  dataCount={dailyAttendanceReportData.length}
+                  onPageChange={setPage}
+                  onPageSizeChange={setPageSize}
+                />
+              )}
+            </>
+          ) : (
+            <div className="text-center">
+              <NoDataFound />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

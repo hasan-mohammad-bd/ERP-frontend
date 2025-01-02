@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { Loading } from "@/components/common/loading";
 import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
@@ -13,16 +13,23 @@ import { useNavigate } from "react-router-dom";
 import { holidayColumns } from "./components/columns";
 import { HolidayFormRows } from "@/lib/validators/hrm/holidays";
 
+const initialPaginationState = {
+  pageIndex: 0,
+  pageSize: 10,
+};
+
 const Holiday = () => {
   const navigate = useNavigate();
 
-  const [pagination, setPagination] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+  const [pagination, setPagination] = useState<PaginationState>(
+    initialPaginationState
+  );
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const { data, isLoading } = useGetHolidaysQuery(
-    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+    `per_page=${pagination.pageSize}&page=${
+      pagination.pageIndex + 1
+    }&text=${searchTerm}`
   );
 
   // Ensure the correct type assignment
@@ -57,6 +64,10 @@ const Holiday = () => {
               paginationInfo={paginationInfo}
               pagination={pagination}
               setPagination={setPagination}
+              onChangeSearch={(value) => {
+                setPagination(initialPaginationState);
+                setSearchTerm(value);
+              }}
             />
           )}
         </div>

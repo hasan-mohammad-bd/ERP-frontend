@@ -44,15 +44,16 @@ const BULK_ACTIONS = [
   },
 ];
 
+const initialPaginationState = {
+  pageIndex: 0,
+  pageSize: 10,
+}
+
 const Employee = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [filterParams, setFilterParams] = useState("");
-  // console.log(filterParams?.split("="));
-  const [pagination, setPagination] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+  const [pagination, setPagination] = React.useState<PaginationState>(initialPaginationState);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const { data, isLoading } = useGetEmployeesQuery(
@@ -130,7 +131,10 @@ const Employee = () => {
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}
-                onChangeSearch={setSearchTerm}
+                onChangeSearch={(value) => {
+                  setPagination(initialPaginationState);
+                  setSearchTerm(value);
+                }}
               />
             </div>
           )}

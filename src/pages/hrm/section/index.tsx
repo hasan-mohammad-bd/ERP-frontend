@@ -14,15 +14,22 @@ import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
 import RoleAccess from "@/lib/access-control/role-access";
 
+const initialPaginationState = {
+  pageIndex: 0,
+  pageSize: 10,
+};
+
 const Section = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [pagination, setPagination] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+  const [pagination, setPagination] = React.useState<PaginationState>(
+    initialPaginationState
+  );
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const { data, isLoading } = useGetSectionsQuery(
-    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+    `per_page=${pagination.pageSize}&page=${
+      pagination.pageIndex + 1
+    }&text=${searchTerm}`
   );
 
   const sections = data?.data || [];
@@ -55,6 +62,10 @@ const Section = () => {
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}
+                onChangeSearch={(value) => {
+                  setPagination(initialPaginationState);
+                  setSearchTerm(value);
+                }}
               />
             </div>
           )}

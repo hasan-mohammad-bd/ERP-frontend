@@ -31,7 +31,7 @@ export function Paginator({
   dataCount,
   className,
 }: PaginationProps) {
-  console.log(meta);
+  // console.log(meta, "meta");
   return (
     <div className={cn("flex items-center justify-between px-2", className)}>
       <div className="flex-1 text-sm text-muted-foreground">
@@ -64,7 +64,7 @@ export function Paginator({
           </Select>
         </div>
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Page {meta.current_page} of {meta.total}
+          Page {meta.current_page} of {meta.last_page}
         </div>
         <div className="flex items-center space-x-2">
           <Button

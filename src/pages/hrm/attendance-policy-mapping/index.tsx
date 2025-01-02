@@ -14,16 +14,24 @@ import { AttendancePolicyForm } from "./components/add-attendance-policy-mapping
 import { useGetEmployeeAttendancePoliciesQuery } from "@/store/services/hrm/api/attendance-policy-mapping";
 import { useNavigate } from "react-router-dom";
 
+const initialPaginationState = {
+  pageIndex: 0,
+  pageSize: 10,
+};
+
 const AttendancePolicyMapping = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [pagination, setPagination] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+  const [pagination, setPagination] = React.useState<PaginationState>(
+    initialPaginationState
+  );
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
   const navigate = useNavigate();
 
   const { data, isLoading } = useGetEmployeeAttendancePoliciesQuery(
-    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+    `per_page=${pagination.pageSize}&page=${
+      pagination.pageIndex + 1
+    }&text=${searchTerm}`
   );
 
   const pmData = data?.data || [];
@@ -53,6 +61,10 @@ const AttendancePolicyMapping = () => {
                 paginationInfo={paginationInfo}
                 pagination={paginationInfo && pagination}
                 setPagination={paginationInfo && setPagination}
+                onChangeSearch={(value) => {
+                  setPagination(initialPaginationState);
+                  setSearchTerm(value);
+                }}
               />
             </div>
           )}

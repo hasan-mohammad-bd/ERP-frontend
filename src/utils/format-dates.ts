@@ -37,7 +37,8 @@ export const getDatesInRange = (startDate: Date, endDate: Date) => {
  * @returns The function `getFormattedDateTime` returns a formatted date and time string in the format
  * "yyyy-MM-dd hh:mm a".
  */
-export const getFormattedDateTime = (date: string) => {
+export const getFormattedDateTime = (date: string | Date | undefined) => {
+  if (!date) return "";
   // const parsedDate = parseISO(date);
   const formattedDate = format(date, "yyyy-MM-dd hh:mm a");
   return formattedDate;

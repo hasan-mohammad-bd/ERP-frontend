@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table";
 
 import { dailyAttendanceReport } from "@/store/services/hrm/api/daily-attendance-report/type";
+import { getFormattedDateTime } from "@/utils/format-dates";
 
 interface Props {
   tableData?: dailyAttendanceReport[];
@@ -45,9 +46,9 @@ const DailyAttendanceReportTable = ({ tableData }: Props) => {
                 <TableCell className="">{item?.employee?.name}</TableCell>
                 <TableCell>{item?.employee?.section?.name}</TableCell>
                 <TableCell>{item?.employee?.location?.name}</TableCell>
-                <TableCell className="">{item?.check_in}</TableCell>
-                <TableCell>{item.check_out}</TableCell>
-                <TableCell>{item?.late_time}</TableCell>
+                <TableCell className="">{getFormattedDateTime(item.check_in || undefined)}</TableCell>
+                <TableCell>{getFormattedDateTime(item.check_out || undefined)}</TableCell>
+                <TableCell>{item?.duration}</TableCell>
                 <TableCell>{item?.check_in_status}</TableCell>
                 <TableCell>{item?.note}</TableCell>
                 {/* <TableCell>{item?.present_days}</TableCell>

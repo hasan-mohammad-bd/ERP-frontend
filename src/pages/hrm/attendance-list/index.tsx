@@ -13,39 +13,33 @@ import { Loading } from "@/components/common/loading";
 import { useGetAttendanceListQuery } from "@/store/services/hrm/api/attendance-list";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
-// import AttendanceFilters from "./components/attendance-filters";
-// import { DepartmentColumn } from "@/lib/validators";
-// import { format } from "date-fns";
-// import EmployeeFilters from "../employee/employee-list/components/employee-filters";
 import AttendanceFilter from "./components/attendance-filter";
 
 export type Tab = "check-in" | "check-out";
 
+const initialPaginationState = {
+  pageIndex: 0,
+  pageSize: 10,
+};
+
 const AttendancesList = () => {
   const [tab, setTab] = useState<Tab>("check-in");
   const [isOpen, setIsOpen] = useState(false);
-  // const [selectedDate, setSelectedDate] = useState<Date | undefined>();
-  // const [selectedDepartment, setSelectedDepartment] = useState<
-  //   DepartmentColumn | undefined
-  // >(undefined);
 
   // Pagination state
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+  const [pagination, setPagination] = useState<PaginationState>(
+    initialPaginationState
+  );
   const [filterParams, setFilterParams] = useState("");
-
-  // const attendanceSearchParams = new URLSearchParams({
-  //   date: selectedDate && format(selectedDate, "yyyy-MM-dd") || "", // Add the selected date
-  //   per_page: pagination.pageSize.toString(), // Convert to string
-  //   page: pagination.pageIndex.toString(), // Convert to string
-  //   department_id: selectedDepartment?.id?.toString() || "",
-  // });
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   // Fetch attendance data based on selected date and department
   const { data: attendanceData, isLoading: isLoadingAttendance } =
-    useGetAttendanceListQuery(`per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}&${filterParams}`);
+    useGetAttendanceListQuery(
+      `per_page=${pagination.pageSize}&page=${
+        pagination.pageIndex + 1
+      }&text=${searchTerm}&${filterParams}`
+    );
 
   const AttendanceListData = attendanceData?.data || [];
   const paginationInfo: PaginationInfo | undefined = attendanceData?.meta;
@@ -65,33 +59,21 @@ const AttendancesList = () => {
               <Plus className="mr-2 h-4 w-4" /> Add Attendance
             </Button>
           </div>
-
-{/*           <AttendanceFilters
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-            selectedDepartment={selectedDepartment}
-            setSelectedDepartment={setSelectedDepartment}
-          /> */}
-                  <AttendanceFilter setFilterParams={setFilterParams} />
-
+          <AttendanceFilter setFilterParams={setFilterParams} />
           <Separator />
 
-          {AttendanceListData.length > 0 ? (
-            <DataTable
-              columns={attendanceColumns}
-              data={AttendanceListData}
-              paginationInfo={paginationInfo}
-              pagination={pagination}
-              setPagination={setPagination}
-              className={"py-2 px-4"}
-            />
-          ) : (
-            <div className="grid place-items-center min-h-[60vh]">
-              <p className="text-xl">
-                No attendance records found for the selected date or department.
-              </p>
-            </div>
-          )}
+          <DataTable
+            columns={attendanceColumns}
+            data={AttendanceListData}
+            paginationInfo={paginationInfo}
+            pagination={pagination}
+            setPagination={setPagination}
+            className={"py-2 px-4"}
+            onChangeSearch={(value) => {
+              setPagination(initialPaginationState);
+              setSearchTerm(value);
+            }}
+          />
         </div>
       </div>
 

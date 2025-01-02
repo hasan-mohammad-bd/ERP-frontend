@@ -14,15 +14,18 @@ import { PaginationState } from "@tanstack/react-table";
 import { AddScheduleForm } from "./components/add-schedule-form";
 import { scheduleColumns } from "./components/columns";
 
+const initialPaginationState = {
+  pageIndex: 0,
+  pageSize: 10,
+}
+
 const Schedule = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [pagination, setPagination] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+  const [pagination, setPagination] = React.useState<PaginationState>(initialPaginationState);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const { data, isLoading } = useGetSchedulesQuery(
-    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
+    `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}&text=${searchTerm}`
   );
 
   const schedules = data?.data || [];
@@ -53,6 +56,10 @@ const Schedule = () => {
                 paginationInfo={paginationInfo}
                 pagination={pagination}
                 setPagination={setPagination}
+                onChangeSearch={(value) => {
+                  setPagination(initialPaginationState);
+                  setSearchTerm(value);
+                }}
               />
             </div>
           )}
