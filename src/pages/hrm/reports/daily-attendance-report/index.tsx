@@ -13,6 +13,7 @@ import AttendanceFilterDaily from "./components/attendance-filter";
 import { PaginationInfo } from "@/types";
 import { Paginator } from "@/components/common/paginator";
 import NoDataFound from "@/components/common/no-data-found";
+import { Card } from "@/components/ui/card";
 
 const DailyAttendanceReport = () => {
   const { user } = useAuth();
@@ -43,9 +44,9 @@ const DailyAttendanceReport = () => {
       <div className="">
         <AttendanceFilterDaily setFilterParams={setFilterParams} />
       </div>
-      <div>
-        <div>
-          {dailyAttendanceReportData.length > 0 ? (
+      {dailyAttendanceReportData.length > 0 ? (
+        <Card>
+          <div>
             <>
               <PrintPDFWrapper
                 className="space-y-4"
@@ -72,13 +73,13 @@ const DailyAttendanceReport = () => {
                 />
               )}
             </>
-          ) : (
-            <div className="text-center">
-              <NoDataFound />
-            </div>
-          )}
+          </div>
+        </Card>
+      ) : (
+        <div className="text-center">
+          <NoDataFound />
         </div>
-      </div>
+      )}
     </div>
   );
 };
