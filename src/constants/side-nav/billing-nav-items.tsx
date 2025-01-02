@@ -562,6 +562,13 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
+      {
+        title: "Month to Date Sale Report",
+        icon: UserRoundSearch,
+        href: "reports/month-to-date-sale-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
     ],
   },
   {

@@ -19,7 +19,7 @@ export const reports: Report[] = [
   { name: "Customer Statement", category: "trader", href: "/billing/reports/customer-statement-report" },
 
   // Sales Reports
-  { name: "Month to Date Sales", category: "sales", href: "#" },
+  { name: "Month to Date Sales", category: "sales", href: "/billing/reports/month-to-date-sale-report" },
   { name: "Item Sale Summary", category: "sales", href: "/billing/reports/item-sale-summary" },
   { name: "Sale Wise Profit/Loss", category: "sales", href: "/billing/reports/sale-wise-profit-lass" },
   { name: "Representative Wise Sale", category: "sales", href: "/billing/reports/representative-wise-sale-report" },
@@ -29,6 +29,7 @@ export const reports: Report[] = [
   { name: "Top Sold Items", category: "sales", href: "/billing/reports/top-sold-items" },
   { name: "Sales Register", category: "sales", href: "/billing/reports/sales-register" },
   { name: "Warehouse wise item sales", category: "sales", href: "/billing/reports/warehouse-wise-item-sale-summary" },
+
 
 
   // Purchase Reports
