@@ -1,6 +1,6 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { AttendanceRow } from "@/lib/validators/hrm/attendance-list";
-import { getFormattedDateTime } from "@/utils/format-dates";
+import { getFormattedDateTime, getFormattedTime } from "@/utils/format-dates";
 
 export const attendanceColumns: ColumnDef<AttendanceRow>[] = [
   {
@@ -10,6 +10,16 @@ export const attendanceColumns: ColumnDef<AttendanceRow>[] = [
   {
     accessorKey: "employee.location.name",
     header: "Location",
+  },
+  {
+    // accessorKey: "employee.designation.name",
+    header: "Shift",
+    cell: ({ row }) => (
+      <span>
+        {getFormattedTime(row.original?.employee?.schedule?.start_time)} {" - "}
+        {getFormattedTime(row.original?.employee?.schedule?.end_time)}
+      </span>
+    ),
   },
   {
     accessorKey: "employee.department.name",
@@ -24,7 +34,6 @@ export const attendanceColumns: ColumnDef<AttendanceRow>[] = [
     accessorKey: "employee.designation.name",
     header: "Designation",
   },
-
   {
     accessorKey: "check_in",
     header: "Check In",

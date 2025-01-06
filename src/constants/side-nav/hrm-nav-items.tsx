@@ -309,6 +309,13 @@ const hrmNavItems: NavItem[] = [
     isChildren: true,
     children: [
       {
+        title: "Daily Attendance Report",
+        icon: UserRoundSearch,
+        href: "/hrm/daily-attendance-report",
+        color: "text-sky-500",
+        permissions: ["hrm-report.daily-attendance-report"],
+      },
+      {
         title: "Employee Payslip",
         icon: CalendarCheck2,
         color: "text-sky-500",
@@ -378,13 +385,7 @@ const hrmNavItems: NavItem[] = [
         href: "/hrm/salary-bill-report",
         permissions: ["hrm-report.pay-slip-report"],
       },
-      {
-        title: "Daily Attendance Report",
-        icon: UserRoundSearch,
-        href: "/hrm/daily-attendance-report",
-        color: "text-sky-500",
-        permissions: ["hrm-report.daily-attendance-report"],
-      },
+      
     ],
   },
   /*   {

@@ -27,20 +27,20 @@ export const getDatesInRange = (startDate: Date, endDate: Date) => {
   return dates;
 };
 
+
 /**
- * The function `getFormattedDateTime` takes a date string, parses it, and returns a formatted date and
- * time string in the "yyyy-MM-dd hh:mm a" format.
- * @param {string} date - The `getFormattedDateTime` function takes a `date` parameter as a string
- * input. This date string should be in a format that can be parsed by the `parseISO` function from
- * date-fns library. The function then formats this parsed date into a specific format "yyyy-MM-dd
- * hh:mm
+ * The function `getFormattedDateTime` takes a date input and returns it in a formatted string with the
+ * format "dd-MMM-yyyy hh:mm a".
+ * @param {string | Date | undefined} date - The `getFormattedDateTime` function takes a parameter
+ * `date` which can be a string, a Date object, or undefined. It formats the date in the "dd-MMM-yyyy
+ * hh:mm a" format and returns the formatted date as a string. If the `date` parameter is undefined,
  * @returns The function `getFormattedDateTime` returns a formatted date and time string in the format
- * "yyyy-MM-dd hh:mm a".
+ * "dd-MMM-yyyy hh:mm a".
  */
 export const getFormattedDateTime = (date: string | Date | undefined) => {
   if (!date) return "";
   // const parsedDate = parseISO(date);
-  const formattedDate = format(date, "yyyy-MM-dd hh:mm a");
+  const formattedDate = format(date, "dd-MMM-yyyy hh:mm a");
   return formattedDate;
 };
 

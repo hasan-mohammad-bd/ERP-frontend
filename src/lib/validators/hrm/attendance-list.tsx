@@ -17,6 +17,15 @@ export const attendanceAddSchema = z.object({
   }),
 });
 
+type Schedule = {
+  id: number;
+  name: string;
+  hour: string;
+  start_time: string;
+  end_time: string;
+  sorting_index: number | null;
+};
+
 export type AttendanceRow = {
   id: number;
   date: string;
@@ -44,6 +53,7 @@ export type AttendanceRow = {
     section: {
       name: string;
     };
+    schedule: Schedule;
   };
 };
 
