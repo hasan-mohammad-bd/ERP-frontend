@@ -209,6 +209,7 @@ const VoucherDetails = ({ data }: Props) => {
                 </div>
                 <div>Prepared By </div>
               </div>
+              <div>Received By</div>
               <div>Accounts</div>
               <div>
                 <div></div>
