@@ -101,7 +101,6 @@ import PurchaseInvoice from "@/pages/billing/purchases/components/purchase-invoi
 import SaleSummary from "@/pages/billing/reports/sale-summary";
 import RoleAccess from "@/lib/access-control/role-access";
 import CustomerDetailsStatement from "@/pages/billing/reports/customer-details-statement";
-import ReportsDashboard from "@/pages/billing/reports/all-reports";
 import SupplierStatement from "@/pages/billing/reports/supplier-statement";
 import SupplierDetailsStatement from "@/pages/billing/reports/supplier-details-statement";
 import WarehouseWiseItemSale from "@/pages/billing/reports/warehouse-wise-item-sale-summary";
@@ -114,6 +113,7 @@ import StockItemSummaryReport from "@/pages/billing/reports/stock-item-summary-r
 import SupplierPaymentDetails from "@/pages/billing/supplier-payments/components/supplier-payment-details";
 import SupplierWiseSale from "@/pages/billing/reports/supplier-wise-sales";
 import MonthToDateSale from "@/pages/billing/reports/month-to-date-sale";
+import BillingReportsDashboard from "@/pages/billing/reports-dashboard";
 
 
 const billingRoutes = {
@@ -738,7 +738,7 @@ const billingRoutes = {
           path: "dashboard",
           element: withFallback(
             <RoleAccess roles={["reports"]}>
-              <ReportsDashboard />
+              <BillingReportsDashboard />
             </RoleAccess>
           ),
           errorElement: withFallback(<ErrorPage />),

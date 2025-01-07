@@ -1,10 +1,7 @@
-export interface Report {
-  name: string;
-  category: "trader" | "sales" | "purchase" | "inventory";
-  href?: string;
-}
+import ReportsDashboard from "@/components/common/reports-dashboard";
+import { ReportDashboardItem } from "@/types";
 
-export const reports: Report[] = [
+ const BILLING_REPORTS:ReportDashboardItem<"trader" | "sales" | "purchase" | "inventory" | "test">[] = [
   // Trader Reports
   { name: "Supplier Statement", category: "trader", href: "/billing/reports/supplier-statement" },
   { name: "Supplier Detail Statement", category: "trader", href: "/billing/reports/supplier-details-statement" },
@@ -29,9 +26,7 @@ export const reports: Report[] = [
   { name: "Top Sold Items", category: "sales", href: "/billing/reports/top-sold-items" },
   { name: "Sales Register", category: "sales", href: "/billing/reports/sales-register" },
   { name: "Warehouse wise item sales", category: "sales", href: "/billing/reports/warehouse-wise-item-sale-summary" },
-
-
-
+  
   // Purchase Reports
   { name: "Purchase Register", category: "purchase", href: "/billing/reports/purchase-register" },
   { name: "Item wise Purchase", category: "purchase" , href: "/billing/reports/item-wise-purchase" },
@@ -43,3 +38,10 @@ export const reports: Report[] = [
   { name: "Stock Item Summary Report", category: "inventory", href: "/billing/reports/stock-item-summary-report" },
   { name: "Stock Transaction Report", category: "inventory", href: "/billing/reports/stock-transaction-report" },
 ];
+
+
+export default function BillingReportsDashboard() {
+  return (
+     <ReportsDashboard reports={BILLING_REPORTS} />
+  )
+}

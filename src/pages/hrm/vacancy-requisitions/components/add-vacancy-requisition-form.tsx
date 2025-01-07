@@ -35,9 +35,9 @@ import {
 } from "@/store/services/hrm/api/vacancy-requisition";
 import { useGetDepartmentsQuery } from "@/store/services/hrm/api/department";
 import { useGetDesignationQuery } from "@/store/services/hrm/api/designation";
-import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
+import { useGetOrganizationsQuery } from "@/store/services/erp-main/api/organization";
 
 interface AddVacancyRequisitionFormProps {
 	modalClose: () => void;
@@ -53,7 +53,7 @@ export function AddVacancyRequisitionForm({
 	const [updateVacancyRequisition, { isLoading: updateLoading }] =
 		useUpdateVacancyRequisitionMutation();
 	const { data: organizations, isLoading: organizationLoading } =
-		useGetOrganizationForDropDownQuery();
+		useGetOrganizationsQuery("page=1&per_page=1000");
 	const { data: departments, isLoading: departmentLoading } =
 		useGetDepartmentsQuery("page=1&per_page=1000");
 	const { data: designations, isLoading: designationLoading } =

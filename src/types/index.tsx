@@ -54,3 +54,11 @@ export type FileType = {
 };
 
 export type FilesType = FileType[];
+
+
+// Define the Report type with a generic category
+export interface ReportDashboardItem<CategoryType = string> {
+  name: string;
+  category: CategoryType;
+  href?: string;
+}

@@ -27,13 +27,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import handleErrors from "@/lib/handle-errors";
-import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
 import {
   useCreateScheduleMutation,
   useUpdateScheduleMutation,
 } from "@/store/services/hrm/api/schedule";
 import { ErrorResponse } from "@/types";
 import { formatTo24HourTime } from "@/utils/format-dates";
+import { useGetOrganizationsQuery } from "@/store/services/erp-main/api/organization";
 
 interface AddScheduleFormProps {
   modalClose: () => void;
@@ -48,7 +48,7 @@ export function AddScheduleForm({
   const [updateSchedule, { isLoading: updateLoading }] =
     useUpdateScheduleMutation();
   const { data, isLoading: organizationLoading } =
-    useGetOrganizationForDropDownQuery();
+    useGetOrganizationsQuery("page=1&per_page=1000");
 
   const organizationData = data?.data || [];
 

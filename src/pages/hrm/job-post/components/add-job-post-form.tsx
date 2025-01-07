@@ -45,7 +45,7 @@ import {
 	useUpdateJobPostMutation,
 } from "@/store/services/hrm/api/job-post";
 import { Textarea } from "@/components/ui/textarea";
-import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
+import { useGetOrganizationsQuery } from "@/store/services/erp-main/api/organization";
 
 interface AddJobPostFormProps {
 	modalClose: () => void;
@@ -60,7 +60,7 @@ export function AddJobPostForm({
 	const [updateJobPost, { isLoading: updateLoading }] =
 		useUpdateJobPostMutation();
 	const { data: organizations, isLoading: organizationLoading } =
-		useGetOrganizationForDropDownQuery();
+		useGetOrganizationsQuery("page=1&per_page=1000");
 	const { data: departments, isLoading: departmentLoading } =
 		useGetDepartmentsQuery("page=1&per_page=1000");
 	const { data: designations, isLoading: designationLoading } =

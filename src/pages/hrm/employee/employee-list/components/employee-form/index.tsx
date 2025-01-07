@@ -49,7 +49,6 @@ import {
 } from "@/store/services/hrm/api/employee-list";
 
 import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
-import { useGetOrganizationForDropDownQuery } from "@/store/services/hrm/api/organization-dropdown";
 import { useGetWorkplacesQuery } from "@/store/services/hrm/api/workplace";
 import { useGetDepartmentsQuery } from "@/store/services/hrm/api/department";
 import { useGetDesignationQuery } from "@/store/services/hrm/api/designation";
@@ -81,6 +80,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { serialize } from "object-to-formdata";
 import { Heading } from "@/components/common/heading";
 import { DateTimePicker } from "@/components/ui/dayTimePicker";
+import { useGetOrganizationsQuery } from "@/store/services/erp-main/api/organization";
 
 // interface EmployeeFormProps {
 // 	modalClose?: () => void;
@@ -100,7 +100,7 @@ export default function EmployeeForm() {
   const { data: religions, isLoading: religionLoading } =
     useGetReligionsQuery();
   const { data: organizations, isLoading: organizationLoading } =
-    useGetOrganizationForDropDownQuery();
+    useGetOrganizationsQuery("page=1&per_page=1000");
   const { data: workplaces, isLoading: workplaceLoading } =
     useGetWorkplacesQuery();
   const { data: departments, isLoading: departmentLoading } =
