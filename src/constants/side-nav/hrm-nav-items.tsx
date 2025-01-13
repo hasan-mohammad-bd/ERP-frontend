@@ -232,6 +232,32 @@ const hrmNavItems: NavItem[] = [
     ],
   },
 
+
+//loan
+{
+  title: "Loan",
+  icon: CalendarCheck2,
+  href: "/hrm",
+  color: "text-sky-500",
+  permissions: [
+
+    "hrm"
+  ],
+  isChildren: true,
+  children: [
+    {
+      title: "Loan Type",
+      icon: CalendarCheck2,
+      color: "text-sky-500",
+      href: "/hrm/loan-type",
+      permissions: ["hrm"],
+    }
+
+  ],
+},
+
+
+
   {
     title: "Provident Fund",
     icon: Captions,
