@@ -114,6 +114,9 @@ import SupplierPaymentDetails from "@/pages/billing/supplier-payments/components
 import SupplierWiseSale from "@/pages/billing/reports/supplier-wise-sales";
 import MonthToDateSale from "@/pages/billing/reports/month-to-date-sale";
 import BillingReportsDashboard from "@/pages/billing/reports-dashboard";
+import Division from "@/pages/billing/regions/division";
+import Area from "@/pages/billing/regions/area";
+import Territory from "@/pages/billing/regions/territory";
 
 
 const billingRoutes = {
@@ -955,6 +958,50 @@ const billingRoutes = {
        
       ],
     },
+
+
+
+
+
+
+    {
+      path: "division",
+      element: withFallback(
+        // <RoleAccess roles={["categories"]} showUnauthorizedPage={true}>
+          <Division />
+        // </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "area",
+      element: withFallback(
+        // <RoleAccess roles={["categories"]} showUnauthorizedPage={true}>
+          <Area />
+        // </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+    {
+      path: "territory",
+      element: withFallback(
+        // <RoleAccess roles={["categories"]} showUnauthorizedPage={true}>
+          <Territory />
+        // </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
+
+
+
+
+
+
+
+
+
 
     {
       path: "quotation-qetails-ui",

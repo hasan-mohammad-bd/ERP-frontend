@@ -9,28 +9,27 @@ import {
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
-import { CategoryFormValues } from "@/lib/validators/billing/category";
 import { Modal } from "@/components/common/modal";
-import { AddCategoryForm } from "./add-category-form";
-import { useRemoveCategoryMutation } from "@/store/services/billing/api/category";
+import { AddDivisionForm } from "./add-division-form";
 import RoleAccess from "@/lib/access-control/role-access";
+import { DivisionFormValues } from "@/lib/validators/billing/regions";
+import { useRemoveRegionMutation } from "@/store/services/billing/api/regions";
 
 interface CellActionProps {
-  data: CategoryFormValues; // Data type as defined
+  data: DivisionFormValues; // Data type as defined
 }
 
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
-  const [deleteCategory, { isLoading: deleteLoading }] =
-    useRemoveCategoryMutation();
+  const [deleteDivision, { isLoading: deleteLoading }] =
+    useRemoveRegionMutation();
 
-
-  const handleCategoryDelete = async (id: number) => {
+  const handleRegionDelete = async (id: number) => {
     try {
-      await deleteCategory(id);
-      toast.success("Category deleted successfully");
+      await deleteDivision(id);
+      toast.success("Division deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
@@ -53,7 +52,7 @@ export function CellAction({ data }: CellActionProps) {
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Update Category</p>
+              <p>Update Division</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -72,7 +71,7 @@ export function CellAction({ data }: CellActionProps) {
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Delete Category</p>
+              <p>Delete Division</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -84,18 +83,18 @@ export function CellAction({ data }: CellActionProps) {
         name={data.name}
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
-        onConfirm={() => handleCategoryDelete(data.id!)} // Use non-null assertion here
+        onConfirm={() => handleRegionDelete(data.id!)} // Use non-null assertion here
         loading={deleteLoading}
       />
       {updateModalOpen && (
         <Modal
-          title="Update Category"
+          title="Update Division"
           isOpen={updateModalOpen}
           toggleModal={() => setUpdateModalOpen(false)}
           className="w-3/5 max-w-3xl"
         >
-          <AddCategoryForm
-            data={{ data, message: "Update category details" }} // Adjusted the structure here
+          <AddDivisionForm
+            data={{ data, message: "Update Division details" }} // Adjusted the structure here
             modalClose={() => setUpdateModalOpen(false)}
           />
         </Modal>

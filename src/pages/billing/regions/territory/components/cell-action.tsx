@@ -6,31 +6,31 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+
 import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
-import { CategoryFormValues } from "@/lib/validators/billing/category";
 import { Modal } from "@/components/common/modal";
-import { AddCategoryForm } from "./add-category-form";
-import { useRemoveCategoryMutation } from "@/store/services/billing/api/category";
 import RoleAccess from "@/lib/access-control/role-access";
+import { AddTerritoryForm } from "./add-territory-form";
+import { DivisionRow } from "@/lib/validators/billing/regions";
+import { useRemoveRegionMutation } from "@/store/services/billing/api/regions";
 
 interface CellActionProps {
-  data: CategoryFormValues; // Data type as defined
+  data: DivisionRow;
 }
 
 export function CellAction({ data }: CellActionProps) {
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
-  const [deleteCategory, { isLoading: deleteLoading }] =
-    useRemoveCategoryMutation();
+  const [deleteTerritory, { isLoading: deleteLoading }] =
+    useRemoveRegionMutation();
 
-
-  const handleCategoryDelete = async (id: number) => {
+  const handleTerritoryDelete = async (id: number) => {
     try {
-      await deleteCategory(id);
-      toast.success("Category deleted successfully");
+      await deleteTerritory(id);
+      toast.success("Territory deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
@@ -53,7 +53,7 @@ export function CellAction({ data }: CellActionProps) {
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Update Category</p>
+              <p>Update Territory</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -66,13 +66,15 @@ export function CellAction({ data }: CellActionProps) {
                 variant="ghost"
                 size="icon"
                 className="hover:bg-secondary"
-                onClick={() => setAlertModalOpen(true)}
+                onClick={() => {
+                  setAlertModalOpen(true);
+                }}
               >
                 <Trash2 className="h-4 w-4 text-foreground" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Delete Category</p>
+              <p>Delete Territory</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -84,18 +86,19 @@ export function CellAction({ data }: CellActionProps) {
         name={data.name}
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
-        onConfirm={() => handleCategoryDelete(data.id!)} // Use non-null assertion here
+        onConfirm={() => handleTerritoryDelete(data?.id)}
         loading={deleteLoading}
       />
+
       {updateModalOpen && (
         <Modal
-          title="Update Category"
+          title="Update Territory"
           isOpen={updateModalOpen}
           toggleModal={() => setUpdateModalOpen(false)}
-          className="w-3/5 max-w-3xl"
+          className="max-w-2xl"
         >
-          <AddCategoryForm
-            data={{ data, message: "Update category details" }} // Adjusted the structure here
+          <AddTerritoryForm
+            data={data}
             modalClose={() => setUpdateModalOpen(false)}
           />
         </Modal>
