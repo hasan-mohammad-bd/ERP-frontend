@@ -78,7 +78,8 @@ export const hrmApi = createApi({
     "salary-batch",
     "salary-batch-month",
     "hrm-approvals",
-    "loan-types"
+    "loan-types",
+    "loans"
   ],
   endpoints: () => ({}),
 });

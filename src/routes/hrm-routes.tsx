@@ -59,6 +59,7 @@ import HRM_RejectedApprovals from "@/pages/hrm/approvals/hrm-rejected-approvals"
 import EmployeeProfile from "@/pages/hrm/employee/employee-list/components/employee-profile";
 import HRMReportsDashboard from "@/pages/hrm/reports-dashboard";
 import LoanType from "@/pages/hrm/loan/loan-type";
+import LoanList from "@/pages/hrm/loan/loan-list-create";
 
 const hrmRoutes = {
   path: "hrm/",
@@ -448,6 +449,15 @@ const hrmRoutes = {
     element: withFallback(
       <RoleAccess roles={["hrm"]} showUnauthorizedPage={true}>
         <LoanType />
+       </RoleAccess>
+    ),
+    errorElement: withFallback(<ErrorPage />),
+  },
+  {
+    path: "loan-list",
+    element: withFallback(
+      <RoleAccess roles={["hrm"]} showUnauthorizedPage={true}>
+        <LoanList />
        </RoleAccess>
     ),
     errorElement: withFallback(<ErrorPage />),

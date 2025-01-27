@@ -206,8 +206,7 @@ const hrmNavItems: NavItem[] = [
         color: "text-sky-500",
         href: "/hrm/salary-list",
         permissions: ["salaries"],
-      }
-      ,
+      },
       {
         title: "Salary Breakup",
         icon: CalendarCheck2,
@@ -232,31 +231,31 @@ const hrmNavItems: NavItem[] = [
     ],
   },
 
-
-//loan
-{
-  title: "Loan",
-  icon: CalendarCheck2,
-  href: "/hrm",
-  color: "text-sky-500",
-  permissions: [
-
-    "hrm"
-  ],
-  isChildren: true,
-  children: [
-    {
-      title: "Loan Type",
-      icon: CalendarCheck2,
-      color: "text-sky-500",
-      href: "/hrm/loan-type",
-      permissions: ["hrm"],
-    }
-
-  ],
-},
-
-
+  //loan
+  {
+    title: "Loan",
+    icon: CalendarCheck2,
+    href: "/hrm",
+    color: "text-sky-500",
+    permissions: ["hrm"],
+    isChildren: true,
+    children: [
+      {
+        title: "Loan Type",
+        icon: CalendarCheck2,
+        color: "text-sky-500",
+        href: "/hrm/loan-type",
+        permissions: ["hrm"],
+      },
+      {
+        title: "Loan List",
+        icon: CalendarCheck2,
+        color: "text-sky-500",
+        href: "/hrm/loan-list",
+        permissions: ["hrm"],
+      },
+    ],
+  },
 
   {
     title: "Provident Fund",
@@ -418,7 +417,6 @@ const hrmNavItems: NavItem[] = [
         href: "/hrm/reports/salary-certificate",
         permissions: ["salaries"],
       },
-      
     ],
   },
   /*   {
