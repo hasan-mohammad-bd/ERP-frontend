@@ -10,10 +10,9 @@ import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
 import { Modal } from "@/components/common/modal";
-import { AttendancePolicyForm } from "./add-leave-request-form";
-import { LeaveRequestRow } from "@/lib/validators/hrm/leave";
-import { useRemoveLeaveRequestMutation } from "@/store/services/hrm/api/leave-request";
+import { AttendancePolicyForm } from "./add-loan-request-form";
 import { LoanRow } from "@/lib/validators/hrm/loan";
+import { useRemoveLoanMutation } from "@/store/services/hrm/api/loan";
 
 interface CellActionProps {
   data: LoanRow;
@@ -24,12 +23,12 @@ export function CellAction({ data }: CellActionProps) {
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
   const [deleteLeaveRequest, { isLoading: deleteLoading }] =
-    useRemoveLeaveRequestMutation();
+    useRemoveLoanMutation();
 
   const handleDepartmentDelete = async (id: number) => {
     try {
       await deleteLeaveRequest(id);
-      toast.success("Leave deleted successfully");
+      toast.success("Loan deleted successfully");
       setAlertModalOpen(false);
     } catch (error) {
       console.log(error);
@@ -96,7 +95,7 @@ export function CellAction({ data }: CellActionProps) {
       />
       {updateModalOpen && (
         <Modal
-          title="Update Leave Request"
+          title="Update Loan Request"
           isOpen={updateModalOpen}
           toggleModal={() => setUpdateModalOpen(false)}
           className="w-3/5 max-w-3xl"

@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-export const LoanFormValues = z.object({
-  employee_id: z.coerce.number().int().positive(),
-  loan_type_id: z.coerce.number().int().positive(),
+export const LoanFormSchema = z.object({
+  employee_id: z.string(),
+  loan_type_id: z.string(),
   subject: z.string().optional(),
   description: z.string().optional(),
   date: z
@@ -24,10 +24,10 @@ export const LoanFormValues = z.object({
     }),
   loan_request_amount: z.coerce.number().positive(),
   total_installments: z.coerce.number().int().positive(),
-  pay_by: z.enum(["salary", "other"]),
+  pay_by: z.string(),
 });
 
-export type LoanFormValues = z.infer<typeof LoanFormValues>;
+export type LoanFormValues = z.infer<typeof LoanFormSchema>;
 
 export type LoanRow = {
   id: number;
@@ -37,7 +37,7 @@ export type LoanRow = {
   date: string;
   start_date: string;
   end_date: string;
-  loan_request_amount: string;
+  loan_request_amount: number;
   refundable_amount: string;
   installment_amount: string;
   total_installments: number;
@@ -61,6 +61,11 @@ export type LoanRow = {
     name: string;
     title: string;
   };
+  loan_type: {
+    id: number;
+    name: string;
+    description: string
+  }
 
   approval: {
     id: number;

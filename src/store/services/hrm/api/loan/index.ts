@@ -29,11 +29,11 @@ const loanApi = hrmApi.injectEndpoints({
     }),
     updateLoan: build.mutation<
       { data: LoanRow },
-      { loanId: number; updatedLoan: FormData }
+      { loanId: number; updatedLoan: LoanFormValues }
     >({
       query: ({ loanId, updatedLoan }) => ({
         url: `loan/${loanId}`,
-        method: "POST",
+        method: "PUT",
         body: updatedLoan,
       }),
       invalidatesTags: ["loans"],

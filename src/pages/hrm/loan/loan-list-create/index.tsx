@@ -9,7 +9,7 @@ import { Modal } from "@/components/common/modal";
 import { loanColumns } from "./components/columns";
 import { PaginationState } from "@tanstack/react-table";
 import { PaginationInfo } from "@/types";
-import { AttendancePolicyForm } from "./components/add-leave-request-form";
+import { AttendancePolicyForm } from "./components/add-loan-request-form";
 // import { LeaveRequestRow } from "@/lib/validators/hrm/leave";
 // import { BulkAction } from "@/components/ui/data-table/data-table-bulk-actions";
 // import { LeaveStatusChangeForm } from "./components/leave-status-change";
@@ -30,7 +30,7 @@ const LoanList = () => {
     pageSize: 10,
   });
 
-/*   const [selectedBulkAction, setSelectedBulkAction] = useState<
+  /*   const [selectedBulkAction, setSelectedBulkAction] = useState<
   BulkAction<LoanRow>
 >({ action: "", payload: [] }); */
 
@@ -38,15 +38,13 @@ const LoanList = () => {
     `per_page=${pagination.pageSize}&page=${pagination.pageIndex + 1}`
   );
 
-  console.log(data)
+  console.log(data);
 
   const loanData = data?.data || [];
-  console.log(loanData)
+  console.log(loanData);
   const paginationInfo: PaginationInfo | undefined = data?.meta;
 
   if (isLoading) return <Loading />;
-
-
 
   return (
     <>
@@ -80,7 +78,7 @@ const LoanList = () => {
 
       {isOpen && (
         <Modal
-          title="Add Leave Request"
+          title="Add Loan Request"
           isOpen={isOpen}
           toggleModal={() => setIsOpen(false)}
           className="w-3/5 max-w-3xl"
@@ -92,7 +90,7 @@ const LoanList = () => {
         </Modal>
       )}
 
-{/*       {selectedBulkAction.action === "change-leave-status" && (
+      {/*       {selectedBulkAction.action === "change-leave-status" && (
         <Modal
           title="Change Leave Status"
           toggleModal={() => setSelectedBulkAction({ action: "", payload: [] })}
