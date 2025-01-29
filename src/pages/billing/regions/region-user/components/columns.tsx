@@ -59,6 +59,10 @@ export const regionUserColumns: ColumnDef<RegionUserDataType>[] = [
     header: "Email",
   },
   {
+    accessorKey: "user_target.target_amount",
+    header: "Target",
+  },
+  {
     id: "actions",
     header: "Actions",
     cell: ({ row }) => <CellAction rowData={row.original} />,

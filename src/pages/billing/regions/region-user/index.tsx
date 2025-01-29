@@ -28,7 +28,7 @@ const RegionUsers = () => {
         <div className="flex-1 space-y-4">
           <div className="flex items-center justify-between">
             <Heading
-              title="Users"
+              title="Region Users"
               description="Manage your sub accounts for you business"
             />
           </div>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,7 @@ import { useGetRegionQuery } from "@/store/services/billing/api/regions";
 import { DateTimePicker } from "@/components/ui/dayTimePicker";
 import { ErrorResponse } from "@/types";
 import { useCreateApplyRegionUserMutation } from "@/store/services/billing/api/region-user";
+import { toast } from "sonner";
 
 type AddDivisionProps = {
   modalClose: () => void;
@@ -46,18 +47,20 @@ export function ApplyRegionUserForm({ modalClose, userId }: AddDivisionProps) {
 
   // Fetch all regions data
   const { data: divisions } = useGetRegionQuery("type=division");
-  const { data: areas } = useGetRegionQuery("type=area");
-  const { data: territories } = useGetRegionQuery("type=territory");
+  const { data: areas } = useGetRegionQuery(
+    `type=area&parent_id=${selectedDivisionId}`
+  );
+  const { data: territories } = useGetRegionQuery(
+    `type=territory&parent_id=${selectedAreaId}`
+  );
 
+  // const filteredAreas = areas?.data?.filter(
+  //   (area: any) => area.parent_id === selectedDivisionId
+  // ) || [];
 
-  const filteredAreas = areas?.data?.filter(
-    (area: any) => area.parent_id === selectedDivisionId
-  ) || [];
-
-
-  const filteredTerritories = territories?.data?.filter(
-    (territory: any) => territory.parent_id === selectedAreaId
-  ) || [];
+  // const filteredTerritories = territories?.data?.filter(
+  //   (territory: any) => territory.parent_id === selectedAreaId
+  // ) || [];
 
   const [createApplyRegionUser, { isLoading: createLoading }] =
     useCreateApplyRegionUserMutation();
@@ -84,6 +87,7 @@ export function ApplyRegionUserForm({ modalClose, userId }: AddDivisionProps) {
         effective_date: data.effective_date,
       };
       await createApplyRegionUser(payload).unwrap();
+      toast.success("Region user applied successfully");
       modalClose();
     } catch (error) {
       handleErrors(error as ErrorResponse);
@@ -113,7 +117,7 @@ export function ApplyRegionUserForm({ modalClose, userId }: AddDivisionProps) {
                 <div className="mt-2">
                   {/* Area Select */}
                   <FormSearchSelect
-                    data={filteredAreas}
+                    data={areas?.data || []}
                     displayField="name"
                     valueField="id"
                     form={form}
@@ -126,7 +130,7 @@ export function ApplyRegionUserForm({ modalClose, userId }: AddDivisionProps) {
                 <div className="mt-2">
                   {/* Territory Select */}
                   <FormSearchSelect
-                    data={filteredTerritories}
+                    data={territories?.data || []}
                     displayField="name"
                     valueField="id"
                     form={form}

@@ -6,12 +6,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Pencil } from "lucide-react";
+import { Crosshair, MapPin} from "lucide-react";
 
 import { Modal } from "@/components/common/modal";
 import RoleAccess from "@/lib/access-control/role-access";
 import { RegionUserDataType } from "@/store/services/billing/api/region-user/type";
 import { ApplyRegionUserForm } from "./apply-region-user-form";
+import { ApplyTargetForm } from "./apply-target";
 
 interface CellActionProps {
   rowData: RegionUserDataType;
@@ -19,9 +20,31 @@ interface CellActionProps {
 
 export function CellAction({ rowData }: CellActionProps) {
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [targetModalOpen, setTargetModalOpen] = useState(false);
 
   return (
-    <div className="flex justify-center space-x-2 min-h-10">
+    <div className="flex justify-start space-x-2 min-h-10">
+            <RoleAccess roles={["users.edit"]}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-secondary"
+                onClick={() => setTargetModalOpen(true)}
+
+                // onClick={() => toggleModal()}
+              >
+                <Crosshair className="h-4 w-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Apply Target</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </RoleAccess>
       <RoleAccess roles={["users.edit"]}>
         <TooltipProvider>
           <Tooltip>
@@ -34,7 +57,7 @@ export function CellAction({ rowData }: CellActionProps) {
 
                 // onClick={() => toggleModal()}
               >
-                <Pencil className="h-4 w-4 text-foreground" />
+                <MapPin className="h-4 w-4 text-foreground" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -43,6 +66,7 @@ export function CellAction({ rowData }: CellActionProps) {
           </Tooltip>
         </TooltipProvider>
       </RoleAccess>
+
 
       {/* <AlertModal
         title="Are you sure?"
@@ -62,6 +86,17 @@ export function CellAction({ rowData }: CellActionProps) {
         <ApplyRegionUserForm
           userId={rowData.id}
           modalClose={() => setUpdateModalOpen(false)}
+        />
+      </Modal>
+      <Modal
+        title=""
+        isOpen={targetModalOpen}
+        toggleModal={() => setTargetModalOpen(false)}
+        className="w-1/2 max-w-xl"
+      >
+        <ApplyTargetForm
+          userData={rowData}
+          modalClose={() => setTargetModalOpen(false)}
         />
       </Modal>
     </div>
