@@ -355,6 +355,52 @@ const billingNavItems: NavItem[] = [
   },
 
 
+
+  {
+    title: "Regions",
+    icon: Users,
+    href: "/billing",
+    color: "text-sky-500",
+    permissions: ["accounts"],
+    isChildren: true,
+    children: [
+      {
+        title: "Division",
+        icon: PlayIcon,
+        color: "text-sky-500",
+        href: "/billing/division",
+         permissions: ["units"],
+      },
+
+      {
+        title: "Area",
+        icon: PlayIcon,
+        color: "text-sky-500",
+        href: "/billing/area",
+        permissions: ["categories"],
+      },
+
+      {
+        title: "Territory",
+        icon: PlayIcon,
+        color: "text-sky-500",
+        href: "/billing/territory",
+        permissions: ["categories"],
+      },
+
+      {
+        title: "Region User",
+        icon: PlayIcon,
+        color: "text-sky-500",
+        href: "/billing/region-user",
+        permissions: ["categories"],
+      },
+    ],
+  },
+
+
+
+
   {
     title: "Reports",
     icon: NotebookText,
@@ -571,46 +617,6 @@ const billingNavItems: NavItem[] = [
       },
     ],
   },
-
-
-
-
-
-  {
-    title: "Regions",
-    icon: Users,
-    href: "/billing",
-    color: "text-sky-500",
-    permissions: ["accounts"],
-    isChildren: true,
-    children: [
-      {
-        title: "Division",
-        icon: PlayIcon,
-        color: "text-sky-500",
-        href: "/billing/division",
-         permissions: ["units"],
-      },
-
-      {
-        title: "Area",
-        icon: PlayIcon,
-        color: "text-sky-500",
-        href: "/billing/area",
-        permissions: ["categories"],
-      },
-
-      {
-        title: "Territory",
-        icon: PlayIcon,
-        color: "text-sky-500",
-        href: "/billing/territory",
-        permissions: ["categories"],
-      },
-    ],
-  },
-
-
 
   {
     title: "Other Reports",

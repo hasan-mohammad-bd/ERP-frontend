@@ -117,6 +117,7 @@ import BillingReportsDashboard from "@/pages/billing/reports-dashboard";
 import Division from "@/pages/billing/regions/division";
 import Area from "@/pages/billing/regions/area";
 import Territory from "@/pages/billing/regions/territory";
+import RegionUsers from "@/pages/billing/regions/region-user";
 
 
 const billingRoutes = {
@@ -994,6 +995,16 @@ const billingRoutes = {
       errorElement: withFallback(<ErrorPage />),
     },
 
+
+   {
+      path: "region-user",
+      element: withFallback(
+        // <RoleAccess roles={["categories"]} showUnauthorizedPage={true}>
+          <RegionUsers />
+        // </RoleAccess>
+      ),
+      errorElement: withFallback(<ErrorPage />),
+    },
 
 
 

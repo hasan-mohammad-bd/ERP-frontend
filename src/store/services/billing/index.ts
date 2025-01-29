@@ -73,7 +73,8 @@ export const inventoryApi = createApi({
     "stock-item-summary-report",
     "supplier-wise-sales",
     "month-date-sale-report",
-    "regions"
+    "regions",
+    "region-user",
   ],
   endpoints: () => ({}),
 });
