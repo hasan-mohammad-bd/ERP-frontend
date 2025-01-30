@@ -6,7 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Crosshair, MapPin} from "lucide-react";
+import { Crosshair, MapPin } from "lucide-react";
 
 import { Modal } from "@/components/common/modal";
 import RoleAccess from "@/lib/access-control/role-access";
@@ -24,7 +24,7 @@ export function CellAction({ rowData }: CellActionProps) {
 
   return (
     <div className="flex justify-start space-x-2 min-h-10">
-            <RoleAccess roles={["users.edit"]}>
+      <RoleAccess roles={["users.edit"]}>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -33,8 +33,6 @@ export function CellAction({ rowData }: CellActionProps) {
                 size="icon"
                 className="hover:bg-secondary"
                 onClick={() => setTargetModalOpen(true)}
-
-                // onClick={() => toggleModal()}
               >
                 <Crosshair className="h-4 w-4 text-foreground" />
               </Button>
@@ -54,29 +52,17 @@ export function CellAction({ rowData }: CellActionProps) {
                 size="icon"
                 className="hover:bg-secondary"
                 onClick={() => setUpdateModalOpen(true)}
-
-                // onClick={() => toggleModal()}
               >
                 <MapPin className="h-4 w-4 text-foreground" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Update User</p>
+              <p>Set Region</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </RoleAccess>
 
-
-      {/* <AlertModal
-        title="Are you sure?"
-        description="This action cannot be undone."
-        name={rowData.name}
-        isOpen={alertModalOpen}
-        onClose={() => setAlertModalOpen(false)}
-        onConfirm={() => handleDepartmentDelete(rowData.id)}
-        loading={deleteLoading}
-      /> */}
       <Modal
         title=""
         isOpen={updateModalOpen}

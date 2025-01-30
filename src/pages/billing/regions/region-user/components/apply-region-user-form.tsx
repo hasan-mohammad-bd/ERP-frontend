@@ -54,14 +54,6 @@ export function ApplyRegionUserForm({ modalClose, userId }: AddDivisionProps) {
     `type=territory&parent_id=${selectedAreaId}`
   );
 
-  // const filteredAreas = areas?.data?.filter(
-  //   (area: any) => area.parent_id === selectedDivisionId
-  // ) || [];
-
-  // const filteredTerritories = territories?.data?.filter(
-  //   (territory: any) => territory.parent_id === selectedAreaId
-  // ) || [];
-
   const [createApplyRegionUser, { isLoading: createLoading }] =
     useCreateApplyRegionUserMutation();
 
