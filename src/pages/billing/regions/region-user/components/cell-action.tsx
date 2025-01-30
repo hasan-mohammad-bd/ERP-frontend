@@ -64,7 +64,7 @@ export function CellAction({ rowData }: CellActionProps) {
       </RoleAccess>
 
       <Modal
-        title=""
+        title="Add User Region"
         isOpen={updateModalOpen}
         toggleModal={() => setUpdateModalOpen(false)}
         className="w-1/2 max-w-xl"
@@ -75,7 +75,7 @@ export function CellAction({ rowData }: CellActionProps) {
         />
       </Modal>
       <Modal
-        title=""
+        title="Add User Target"
         isOpen={targetModalOpen}
         toggleModal={() => setTargetModalOpen(false)}
         className="w-1/2 max-w-xl"

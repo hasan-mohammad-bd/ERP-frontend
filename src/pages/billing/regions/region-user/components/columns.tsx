@@ -1,10 +1,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import {
-  RegionUserDataType,
-  RegionUserType,
-} from "@/store/services/billing/api/region-user/type";
+import { RegionUserDataType } from "@/store/services/billing/api/region-user/type";
 
 export const regionUserColumns: ColumnDef<RegionUserDataType>[] = [
   {
@@ -43,12 +40,22 @@ export const regionUserColumns: ColumnDef<RegionUserDataType>[] = [
     header: "Name",
   },
   {
-    accessorKey: "region_user",
-    header: "Region Name",
-    cell: ({ row }) => {
-      const regionUser = row.getValue("region_user") as RegionUserType | null;
-      return regionUser?.region?.name;
-    },
+    header: "Division",
+    cell: ({ row }) => (
+      <>
+        {row.original?.region_user?.region?.parent_region?.parent_region?.name}
+      </>
+    ),
+  },
+  {
+    header: "Area",
+    cell: ({ row }) => (
+      <>{row.original?.region_user?.region?.parent_region?.name}</>
+    ),
+  },
+  {
+    header: "Territory",
+    cell: ({ row }) => <>{row.original?.region_user?.region?.name}</>,
   },
   {
     accessorKey: "phone",
@@ -59,7 +66,7 @@ export const regionUserColumns: ColumnDef<RegionUserDataType>[] = [
     header: "Email",
   },
   {
-    accessorKey: "user_target.target_amount",
+    accessorKey: "current_target.target_amount",
     header: "Target",
   },
   {
