@@ -118,6 +118,7 @@ import Division from "@/pages/billing/regions/division";
 import Area from "@/pages/billing/regions/area";
 import Territory from "@/pages/billing/regions/territory";
 import RegionUsers from "@/pages/billing/regions/region-user";
+import CustomerSummaryReport from "@/pages/billing/reports/customer-balance-summary-report";
 
 
 const billingRoutes = {
@@ -939,6 +940,11 @@ const billingRoutes = {
         {
           path: "customer-statement-report",
           element: withFallback(<CustomerStatement />),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
+          path: "customer-summary-report",
+          element: withFallback(<CustomerSummaryReport />),
           errorElement: withFallback(<ErrorPage />),
         },
         {

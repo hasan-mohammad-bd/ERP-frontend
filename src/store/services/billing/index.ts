@@ -75,7 +75,8 @@ export const inventoryApi = createApi({
     "month-date-sale-report",
     "regions",
     "region-user",
-    "user-target"
+    "user-target",
+    "customer-balance-summary"
   ],
   endpoints: () => ({}),
 });

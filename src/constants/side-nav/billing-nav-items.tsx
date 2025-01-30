@@ -241,7 +241,9 @@ const billingNavItems: NavItem[] = [
     icon: CalendarCheck2,
     href: "/billing",
     color: "text-sky-500",
-    permissions:   [...import.meta.env.VITE_DEVELOPMENT_PERMISSIONS?.split(',') || ""], // under development
+    permissions: [
+      ...(import.meta.env.VITE_DEVELOPMENT_PERMISSIONS?.split(",") || ""),
+    ], // under development
     isChildren: true,
     children: [
       {
@@ -354,8 +356,6 @@ const billingNavItems: NavItem[] = [
     ],
   },
 
-
-
   {
     title: "Regions",
     icon: Users,
@@ -369,7 +369,7 @@ const billingNavItems: NavItem[] = [
         icon: PlayIcon,
         color: "text-sky-500",
         href: "/billing/division",
-         permissions: ["units"],
+        permissions: ["units"],
       },
 
       {
@@ -397,9 +397,6 @@ const billingNavItems: NavItem[] = [
       },
     ],
   },
-
-
-
 
   {
     title: "Reports",
@@ -479,7 +476,7 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
-      
+
       {
         title: "Aged Payable Report",
         icon: UserRoundSearch,
@@ -579,7 +576,7 @@ const billingNavItems: NavItem[] = [
         color: "text-sky-500",
         permissions: ["accounts"],
       },
-      
+
       {
         title: "Stock Report",
         icon: UserRoundSearch,
@@ -623,7 +620,9 @@ const billingNavItems: NavItem[] = [
     icon: CalendarCheck2,
     href: "/billing",
     color: "text-sky-500",
-    permissions: [...import.meta.env.VITE_DEVELOPMENT_PERMISSIONS?.split(',') || ""],
+    permissions: [
+      ...(import.meta.env.VITE_DEVELOPMENT_PERMISSIONS?.split(",") || ""),
+    ],
     isChildren: true,
     children: [
       {
@@ -637,6 +636,13 @@ const billingNavItems: NavItem[] = [
         title: "Customer Summary",
         icon: UserRoundSearch,
         href: "reports/customer-summary",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
+        title: "Customer Balance Summary",
+        icon: UserRoundSearch,
+        href: "reports/customer-summary-report",
         color: "text-sky-500",
         permissions: ["accounts"],
       },
@@ -718,7 +724,9 @@ const billingNavItems: NavItem[] = [
     icon: Settings,
     href: "billing/new-route",
     color: "text-sky-500",
-    permissions: [...import.meta.env.VITE_DEVELOPMENT_PERMISSIONS?.split(',') || ""],
+    permissions: [
+      ...(import.meta.env.VITE_DEVELOPMENT_PERMISSIONS?.split(",") || ""),
+    ],
   },
 ];
 
