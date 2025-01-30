@@ -23,7 +23,7 @@ import { ErrorResponse } from "@/types";
 import handleErrors from "@/lib/handle-errors";
 import { toast } from "sonner";
 import { Loading } from "@/components/common/loading";
-import { CustomerColumn } from "@/lib/validators/billing/customer";
+import { CustomerColumn } from "@/lib/validators/billing/customer-supplier";
 import { useEffect } from "react";
 
 interface AddContactPersonProps {

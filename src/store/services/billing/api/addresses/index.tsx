@@ -5,7 +5,7 @@ import {
   AddressColumn,
   AddressTypeApi,
   UpdateAddressTypeApi,
-} from "@/lib/validators/billing/customer";
+} from "@/lib/validators/billing/customer-supplier";
 
 const addressesAPI = inventoryApi.injectEndpoints({
   endpoints: (build) => ({

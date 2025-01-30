@@ -11,7 +11,7 @@ import { Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
 
-import { Attachment } from "@/lib/validators/billing/customer";
+import { Attachment } from "@/lib/validators/billing/customer-supplier";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { useRemoveAttachmentMutation } from "@/store/services/billing/api/attachment";

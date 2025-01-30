@@ -49,7 +49,7 @@ import {
   PurchaseOrderFormValues,
   purchaseOrderSchema,
 } from "@/lib/validators/billing/billing-transactions";
-import { CustomerColumn } from "@/lib/validators/billing/customer";
+import { CustomerColumn } from "@/lib/validators/billing/customer-supplier";
 import {
   useCreatePurchaseOrderMutation,
   useGetPurchaseOrderByIdQuery,

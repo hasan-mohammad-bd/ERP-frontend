@@ -1,7 +1,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { type ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import { Attachment } from "@/lib/validators/billing/customer";
+import { Attachment } from "@/lib/validators/billing/customer-supplier";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const contactPersonColumn: ColumnDef<Attachment>[] = [

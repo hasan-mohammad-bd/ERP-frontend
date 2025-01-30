@@ -13,7 +13,7 @@ import {
   AddressColumn,
   addressSchema,
   AddressType,
-} from "@/lib/validators/billing/customer";
+} from "@/lib/validators/billing/customer-supplier";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useGetCountriesQuery } from "@/store/services/erp-main/api/country";

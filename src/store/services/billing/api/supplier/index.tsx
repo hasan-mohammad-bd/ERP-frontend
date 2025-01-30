@@ -3,9 +3,9 @@ import { DeleteResponse, PaginationInfo } from "@/types";
 import { inventoryApi } from "../..";
 import {
   CustomerColumn,
-  CustomerFormTypeForAPI,
+  ContactFormType,
   CustomerShowType,
-} from "@/lib/validators/billing/customer";
+} from "@/lib/validators/billing/customer-supplier";
 
 const supplierAPI = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
@@ -24,7 +24,7 @@ const supplierAPI = inventoryApi.injectEndpoints({
 
     createSupplier: build.mutation<
       { data: CustomerColumn }, // Adjust the response type if necessary
-      CustomerFormTypeForAPI // Expect FormData here as well
+      ContactFormType // Expect FormData here as well
     >({
       query: (formData) => ({
         url: `suppliers`,
@@ -43,12 +43,12 @@ const supplierAPI = inventoryApi.injectEndpoints({
     }),
     updateSupplier: build.mutation<
       { data: CustomerColumn },
-      { supplier_id: number; updatedCustomer: CustomerFormTypeForAPI }
+      { supplier_id: number; updatedSupplier: ContactFormType }
     >({
-      query: ({ supplier_id, updatedCustomer }) => ({
+      query: ({ supplier_id, updatedSupplier }) => ({
         url: `suppliers/${supplier_id}`,
         method: "PUT",
-        body: updatedCustomer,
+        body: updatedSupplier,
       }),
       invalidatesTags: ["suppliers"],
     }),

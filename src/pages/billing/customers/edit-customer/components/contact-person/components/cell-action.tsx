@@ -11,7 +11,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
 
-import { CustomerColumn } from "@/lib/validators/billing/customer";
+import { CustomerColumn } from "@/lib/validators/billing/customer-supplier";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { useRemoveContactPersonMutation } from "@/store/services/billing/api/contact-person";

@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CustomerColumn } from "@/lib/validators/billing/customer";
+import { CustomerColumn } from "@/lib/validators/billing/customer-supplier";
 
 interface Props {
   tableData?: CustomerColumn[]; // Update to use SalesDataRow[]

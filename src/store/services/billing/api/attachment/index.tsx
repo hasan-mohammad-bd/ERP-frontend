@@ -1,7 +1,7 @@
 import { DeleteResponse, PaginationInfo } from "@/types";
 
 import { inventoryApi } from "../..";
-import { Attachment } from "@/lib/validators/billing/customer";
+import { Attachment } from "@/lib/validators/billing/customer-supplier";
 import { AttachmentFormValues } from "@/pages/billing/customers/edit-customer/components/attachment";
 
 const attachmentAPI = inventoryApi.injectEndpoints({

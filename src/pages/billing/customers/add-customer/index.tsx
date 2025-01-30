@@ -2,7 +2,7 @@ import { Heading } from "@/components/common/heading";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { AddCustomerForm } from "./components/add-supplier-form";
+import { AddCustomerForm } from "./components/add-customer-form";
 import { Separator } from "@/components/ui/separator";
 
 const CustomerAddForm = () => {

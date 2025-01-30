@@ -27,9 +27,9 @@ import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { LocationColumn } from "@/lib/validators";
 import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
 import {
-  CustomerFormType,
-  customerSchema,
-} from "@/lib/validators/billing/customer";
+  ContactFormType,
+  contactSchema,
+} from "@/lib/validators/billing/customer-supplier";
 import { Textarea } from "@/components/ui/textarea";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
@@ -57,11 +57,11 @@ export function AddSupplierForm() {
     }));
   };
 
-  const supplierform = useForm<CustomerFormType>({
-    resolver: zodResolver(customerSchema),
+  const supplierForm = useForm<ContactFormType>({
+    resolver: zodResolver(contactSchema),
     defaultValues: {
       name: "",
-      opening_balance: "",
+      opening_balance: 0,
       email: "",
       phone: "",
       note: "",
@@ -71,21 +71,22 @@ export function AddSupplierForm() {
     },
   });
 
-  async function onSupplierFormSubmit(data: CustomerFormType) {
+  async function onSupplierFormSubmit(data: ContactFormType) {
+    // console.log(data, "supplier data");
     try {
       const response = await createSupplier({
         ...data,
-        opening_balance: Number(data.opening_balance),
-        location_id: Number(data.location_id),
       }).unwrap();
       toast.success("Supplier created successfully");
       navigate(`/billing/supplier/edit/${response.data.id}`);
-      supplierform.reset();
+      supplierForm.reset();
     } catch (error) {
       handleErrors(error as ErrorResponse);
       console.log(error);
     }
   }
+
+  // console.log(supplierForm.formState.errors, "form errors");
 
   return (
     <Tabs defaultValue="supplier" className="max-w-[1000px] mx-auto mt-10">
@@ -103,9 +104,9 @@ export function AddSupplierForm() {
         </TabsTrigger>
       </TabsList>
 
-      <Form {...supplierform}>
+      <Form {...supplierForm}>
         <form
-          onSubmit={supplierform.handleSubmit(onSupplierFormSubmit)}
+          onSubmit={supplierForm.handleSubmit(onSupplierFormSubmit)}
           className="space-y-3 max-w-[1200px] mx-auto"
         >
           <TabsContent value="supplier">
@@ -118,7 +119,7 @@ export function AddSupplierForm() {
                   {/* Form Fields */}
 
                   <FormField
-                    control={supplierform.control}
+                    control={supplierForm.control}
                     name="name"
                     render={({ field }) => (
                       <FormItem>
@@ -135,7 +136,7 @@ export function AddSupplierForm() {
                     )}
                   />
                   <FormField
-                    control={supplierform.control}
+                    control={supplierForm.control}
                     name="company_name"
                     render={({ field }) => (
                       <FormItem>
@@ -152,7 +153,7 @@ export function AddSupplierForm() {
                     )}
                   />
                   <FormField
-                    control={supplierform.control}
+                    control={supplierForm.control}
                     name="company_id"
                     render={({ field }) => (
                       <FormItem>
@@ -169,7 +170,7 @@ export function AddSupplierForm() {
                     )}
                   />
                   <FormField
-                    control={supplierform.control}
+                    control={supplierForm.control}
                     name="work_phone"
                     render={({ field }) => (
                       <FormItem>
@@ -186,7 +187,7 @@ export function AddSupplierForm() {
                     )}
                   />
                   <FormField
-                    control={supplierform.control}
+                    control={supplierForm.control}
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
@@ -203,7 +204,7 @@ export function AddSupplierForm() {
                     )}
                   />
                   <FormField
-                    control={supplierform.control}
+                    control={supplierForm.control}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
@@ -221,7 +222,7 @@ export function AddSupplierForm() {
                   />
 
                   <FormField
-                    control={supplierform.control}
+                    control={supplierForm.control}
                     name="opening_balance"
                     render={({ field }) => (
                       <FormItem>
@@ -238,7 +239,7 @@ export function AddSupplierForm() {
                   />
 
                   <FormField
-                    control={supplierform.control}
+                    control={supplierForm.control}
                     name={`date`}
                     render={({ field }) => (
                       <FormItem>
@@ -287,14 +288,14 @@ export function AddSupplierForm() {
                     data={locationData}
                     displayField="name"
                     valueField="id"
-                    form={supplierform}
+                    form={supplierForm}
                     name="location_id"
                     placeholder="Location"
                     title="Location"
                     className="w-[300px]"
                   />
                   <FormField
-                    control={supplierform.control}
+                    control={supplierForm.control}
                     name="note"
                     render={({ field }) => (
                       <FormItem className="col-span-2">

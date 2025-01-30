@@ -67,18 +67,14 @@ const FormSearchSelect = <T extends Record<string, any>>({
       name={name}
       render={({ field }) => {
         const selectedItem = data.find(
-          (singleData) => String(singleData[valueField]) === field.value
+          (singleData) => singleData[valueField] === field.value || String(singleData[valueField]) === String(field.value)
         );
 
         return (
           <FormItem className={cn("w-full")}>
             <FormLabel>
               {title}{" "}
-              {required && (
-                <span>
-                  <span className="text-red-500">*</span>
-                </span>
-              )}
+              {required && <span className="text-red-500">*</span>}
             </FormLabel>
             <Popover open={open} onOpenChange={setOpen} modal={true}>
               <PopoverTrigger asChild>
@@ -116,7 +112,7 @@ const FormSearchSelect = <T extends Record<string, any>>({
                           <CommandItem
                             key={index}
                             onSelect={() => {
-                              field.onChange(String(item[valueField]));
+                              field.onChange(item[valueField]); // Ensure correct type
                               setOpen(false);
                             }}
                             disabled={disabled}
@@ -124,7 +120,7 @@ const FormSearchSelect = <T extends Record<string, any>>({
                             <Check
                               className={cn(
                                 "mr-2 h-4 w-4",
-                                field.value === String(item[valueField])
+                                field.value === item[valueField] || String(field.value) === String(item[valueField])
                                   ? "opacity-100"
                                   : "opacity-0"
                               )}
@@ -145,5 +141,6 @@ const FormSearchSelect = <T extends Record<string, any>>({
     />
   );
 };
+
 
 export default FormSearchSelect;

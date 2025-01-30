@@ -1,7 +1,7 @@
 import { DeleteResponse, PaginationInfo } from "@/types";
 
 import { inventoryApi } from "../..";
-import { CustomerColumn } from "@/lib/validators/billing/customer";
+import { CustomerColumn } from "@/lib/validators/billing/customer-supplier";
 import { ContactPersonsFormValues } from "@/lib/validators/billing/contact-persons";
 
 const contactPersonAPI = inventoryApi.injectEndpoints({

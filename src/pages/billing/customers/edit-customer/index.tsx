@@ -29,7 +29,7 @@ import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
 import {
   CustomerFormType,
   customerSchema,
-} from "@/lib/validators/billing/customer";
+} from "@/lib/validators/billing/customer-supplier";
 import { Textarea } from "@/components/ui/textarea";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
@@ -44,6 +44,7 @@ import CustomerContactPerson from "./components/contact-person";
 import CustomerAttachment from "./components/attachment";
 import { Heading } from "@/components/common/heading";
 import { Separator } from "@/components/ui/separator";
+import { useGetRegionQuery } from "@/store/services/billing/api/regions";
 
 export default function EditCustomerForm() {
   const navigate = useNavigate();
@@ -51,6 +52,12 @@ export default function EditCustomerForm() {
   const customerId = Number(params.id);
   const [openDatePickers, setOpenDatePickers] = useState({
     date: false,
+  });
+
+  // Initialize the form with zod resolver
+  const customerform = useForm<CustomerFormType>({
+    resolver: zodResolver(customerSchema),
+    defaultValues: {},
   });
 
   // Query to fetch locations data
@@ -64,6 +71,19 @@ export default function EditCustomerForm() {
     });
   const locationData = locations?.data || [];
 
+  // Watch form values for filtering
+  const selectedDivisionId = customerform.watch("region_id");
+  const selectedAreaId = customerform.watch("area_id");
+
+  // Fetch all regions data
+  const { data: divisions } = useGetRegionQuery("type=division");
+  const { data: areas } = useGetRegionQuery(
+    `type=area&parent_id=${selectedDivisionId}`
+  );
+  const { data: territories } = useGetRegionQuery(
+    `type=territory&parent_id=${selectedAreaId}`
+  );
+
   const [updateCustomer, { isLoading: isUpdateLoading }] =
     useUpdateCustomerMutation();
 
@@ -75,12 +95,6 @@ export default function EditCustomerForm() {
     }));
   };
 
-  // Initialize the form with zod resolver
-  const customerform = useForm<CustomerFormType>({
-    resolver: zodResolver(customerSchema),
-    defaultValues: {},
-  });
-
   // Reset the form only when `customerData` changes and has valid data
   useEffect(() => {
     if (customerData?.data) {
@@ -89,24 +103,28 @@ export default function EditCustomerForm() {
         email: customerData?.data.email || "",
         phone: customerData?.data.phone || "",
         work_phone: customerData?.data.work_phone || "",
-        opening_balance: String(customerData?.data.opening_balance) || "",
+        opening_balance: customerData?.data.opening_balance || 0,
         note: customerData?.data.note || "",
         date: customerData?.data.date || "",
         company_name: customerData?.data.company_name || "",
         company_id: customerData?.data.company_id || "",
-        location_id: String(customerData?.data.location.id) || "",
+        location_id: customerData?.data.location.id || 0,
+        region_id: customerData?.data.region?.parent_region?.parent_region?.id,
+        area_id: customerData?.data.region?.parent_region?.id,
+        territory_id: customerData?.data.region?.id,
+        credit_limit: customerData?.data.credit_limit || 0,
       });
     }
   }, [customerData?.data, customerform]); // Removed customerform from dependencies
 
   async function onCustomerFormSubmit(data: CustomerFormType) {
-    console.log(data);
+    // console.log(data, "customer data");
+
     try {
       await updateCustomer({
         updatedCustomer: {
           ...data,
-          location_id: Number(data.location_id),
-          opening_balance: Number(data.opening_balance),
+          region_id: data.territory_id, // Use territory_id as region_id
         },
         customerId: customerId,
       }).unwrap();
@@ -116,6 +134,9 @@ export default function EditCustomerForm() {
       console.log(error);
     }
   }
+
+  // console.log(customerform.formState.errors, "customer form errors");
+
 
   if (isCustomerLoading) {
     return <Loading />;
@@ -334,6 +355,39 @@ export default function EditCustomerForm() {
                       title="Location"
                       className="w-[300px]"
                     />
+
+                    {/* Division Select */}
+                    <FormSearchSelect
+                      data={divisions?.data || []}
+                      displayField="name"
+                      valueField="id"
+                      form={customerform}
+                      name="region_id"
+                      title="Select Region"
+                    />
+
+                    {/* Area Select */}
+                    <FormSearchSelect
+                      data={areas?.data || []}
+                      displayField="name"
+                      valueField="id"
+                      form={customerform}
+                      name="area_id"
+                      title="Select Area"
+                      disabled={!selectedDivisionId}
+                    />
+
+                    {/* Territory Select */}
+                    <FormSearchSelect
+                      data={territories?.data || []}
+                      displayField="name"
+                      valueField="id"
+                      form={customerform}
+                      name="territory_id"
+                      title="Select Territory"
+                      disabled={!selectedAreaId}
+                    />
+
                     <FormField
                       control={customerform.control}
                       name="note"
@@ -342,6 +396,22 @@ export default function EditCustomerForm() {
                           <FormLabel>Note</FormLabel>
                           <FormControl>
                             <Textarea placeholder="Enter note" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={customerform.control}
+                      name="credit_limit"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Credit Limit</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Enter credit limit"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -404,140 +474,6 @@ export default function EditCustomerForm() {
             </CardContent>
           </Card>
         </TabsContent>
-
-        {/* contact person */}
-        {/* <TabsContent value="contact_person">
-        <Card>
-          <CardHeader>
-            <CardTitle>Contact Supplier</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {fields.map((field, index) => (
-              <div className="flex gap-4" key={field.id}>
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Enter name"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                Email field
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email Address</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="Enter email address"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                Mobile number field
-                <FormField
-                  control={form.control}
-                  name="mobile_number"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Mobile number</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Enter mobile number"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                Note field
-                <FormField
-                  control={form.control}
-                  name="note"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Note</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Enter your note"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                Delete button
-                {index >= 0 && (
-                  <div className="flex items-center mt-8">
-                    <Button
-                      variant="outline"
-                      className="text-red-600"
-                      type="button"
-                      onClick={() => remove(index)} 
-                    >
-                      <Trash2 size={16} />
-                    </Button>
-                  </div>
-                )}
-              </div>
-            ))}
-
-            Add Supplier button
-            <Button
-              variant="outline"
-              className="border border-dashed border-gray-700 w-full"
-              type="button"
-              onClick={() =>
-                append({ name: "", email: "", mobile_number: "", note: "" })
-            >
-              <Plus size={16} /> <span className="ml-2">Add Supplier</span>
-            </Button>
-          </CardContent>
-        </Card>
-      </TabsContent> */}
-
-        {/* Attachment */}
-        {/* <TabsContent value="attachment">
-        <Card>
-          <CardHeader>
-            <CardTitle>Attachment </CardTitle>
-       
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="space-y-2">
-              <FormLabel>Upload Files</FormLabel>
-              <FileUpload
-                setUploadedFiles={setUploadedFiles}
-                uploadedFiles={previousData?.files}
-                onDeleteSuccess={() => ()}
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </TabsContent> */}
       </Tabs>
     </div>
   );

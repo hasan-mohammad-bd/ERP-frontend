@@ -10,7 +10,7 @@ import {
   useGetAddressesQuery,
   useRemoveAddressMutation,
 } from "@/store/services/billing/api/addresses";
-import { AddressColumn } from "@/lib/validators/billing/customer";
+import { AddressColumn } from "@/lib/validators/billing/customer-supplier";
 import { AlertModal } from "@/components/common/alert-modal";
 import { ErrorResponse } from "@/types";
 import handleErrors from "@/lib/handle-errors";

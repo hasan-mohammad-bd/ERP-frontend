@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+export interface Region {
+  id: number;
+  name: string;
+  parent_id: number | null;
+  parent_region?: Region;
+  sorting_index?: number | null;
+}
+
 // Define the schema for the category data
 export const divisionSchema = z.object({
   name: z.string().min(1, "Regions name is required"),

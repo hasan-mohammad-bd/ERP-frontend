@@ -27,9 +27,9 @@ import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { LocationColumn } from "@/lib/validators";
 import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
 import {
-  CustomerFormType,
-  customerSchema,
-} from "@/lib/validators/billing/customer";
+  ContactFormType,
+  contactSchema,
+} from "@/lib/validators/billing/customer-supplier";
 import { Textarea } from "@/components/ui/textarea";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
@@ -76,36 +76,34 @@ export default function EditSupplierForm() {
   };
 
   // Initialize the form with zod resolver
-  const supplierform = useForm<CustomerFormType>({
-    resolver: zodResolver(customerSchema),
+  const supplierForm = useForm<ContactFormType>({
+    resolver: zodResolver(contactSchema),
     defaultValues: {},
   });
 
   // Reset the form only when `customerData` changes and has valid data
   useEffect(() => {
     if (customerData?.data) {
-      supplierform.reset({
+      supplierForm.reset({
         name: customerData?.data.name || "",
         email: customerData?.data.email || "",
         phone: customerData?.data.phone || "",
         work_phone: customerData?.data.work_phone || "",
-        opening_balance: String(customerData?.data.opening_balance) || "",
+        opening_balance: customerData?.data.opening_balance,
         note: customerData?.data.note || "",
         date: customerData?.data.date || "",
         company_name: customerData?.data.company_name || "",
         company_id: customerData?.data.company_id || "",
-        location_id: String(customerData?.data.location.id) || "",
+        location_id: customerData?.data.location.id,
       });
     }
-  }, [customerData?.data, supplierform]); // Removed supplierform from dependencies
+  }, [customerData?.data, supplierForm]); // Removed supplierForm from dependencies
 
-  async function onSupplierFormSubmit(data: CustomerFormType) {
+  async function onSupplierFormSubmit(data: ContactFormType) {
     try {
       await updateSupplier({
-        updatedCustomer: {
+        updatedSupplier: {
           ...data,
-          location_id: Number(data.location_id),
-          opening_balance: Number(data.opening_balance),
         },
         supplier_id: supplierId,
       }).unwrap();
@@ -140,9 +138,9 @@ export default function EditSupplierForm() {
           <TabsTrigger value="attachment">Attachment</TabsTrigger>
         </TabsList>
 
-        <Form {...supplierform}>
+        <Form {...supplierForm}>
           <form
-            onSubmit={supplierform.handleSubmit(onSupplierFormSubmit)}
+            onSubmit={supplierForm.handleSubmit(onSupplierFormSubmit)}
             className="space-y-3 max-w-[1200px] mx-auto"
           >
             <TabsContent value="supplier">
@@ -155,7 +153,7 @@ export default function EditSupplierForm() {
                     {/* Form Fields */}
 
                     <FormField
-                      control={supplierform.control}
+                      control={supplierForm.control}
                       name="name"
                       render={({ field }) => (
                         <FormItem>
@@ -172,7 +170,7 @@ export default function EditSupplierForm() {
                       )}
                     />
                     <FormField
-                      control={supplierform.control}
+                      control={supplierForm.control}
                       name="company_name"
                       render={({ field }) => (
                         <FormItem>
@@ -189,7 +187,7 @@ export default function EditSupplierForm() {
                       )}
                     />
                     <FormField
-                      control={supplierform.control}
+                      control={supplierForm.control}
                       name="company_id"
                       render={({ field }) => (
                         <FormItem>
@@ -206,7 +204,7 @@ export default function EditSupplierForm() {
                       )}
                     />
                     <FormField
-                      control={supplierform.control}
+                      control={supplierForm.control}
                       name="work_phone"
                       render={({ field }) => (
                         <FormItem>
@@ -223,7 +221,7 @@ export default function EditSupplierForm() {
                       )}
                     />
                     <FormField
-                      control={supplierform.control}
+                      control={supplierForm.control}
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
@@ -240,7 +238,7 @@ export default function EditSupplierForm() {
                       )}
                     />
                     <FormField
-                      control={supplierform.control}
+                      control={supplierForm.control}
                       name="email"
                       render={({ field }) => (
                         <FormItem>
@@ -258,7 +256,7 @@ export default function EditSupplierForm() {
                     />
 
                     <FormField
-                      control={supplierform.control}
+                      control={supplierForm.control}
                       name="opening_balance"
                       render={({ field }) => (
                         <FormItem>
@@ -275,7 +273,7 @@ export default function EditSupplierForm() {
                     />
 
                     <FormField
-                      control={supplierform.control}
+                      control={supplierForm.control}
                       name={`date`}
                       render={({ field }) => (
                         <FormItem>
@@ -326,14 +324,14 @@ export default function EditSupplierForm() {
                       data={locationData}
                       displayField="name"
                       valueField="id"
-                      form={supplierform}
+                      form={supplierForm}
                       name="location_id"
                       placeholder="Location"
                       title="Location"
                       className="w-[300px]"
                     />
                     <FormField
-                      control={supplierform.control}
+                      control={supplierForm.control}
                       name="note"
                       render={({ field }) => (
                         <FormItem className="col-span-2">

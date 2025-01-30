@@ -6,7 +6,7 @@ import { useState } from "react";
 import { getYearMonthDayFormatted } from "@/utils/format-dates";
 import SearchSelect from "@/components/common/search-select";
 import { useLazyGetSuppliersQuery } from "@/store/services/billing/api/supplier";
-import { CustomerColumn } from "@/lib/validators/billing/customer";
+import { CustomerColumn } from "@/lib/validators/billing/customer-supplier";
 interface Props {
   setFilterParams: (params: string) => void;
 }
