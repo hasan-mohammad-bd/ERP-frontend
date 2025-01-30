@@ -26,5 +26,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/asbd-agrovet/htdocs/agrovet-erp-frontend;
-            git config --global --add safe.directory /home/runner/work/agrovet-erp-frontend/agrovet-erp-frontend/
+            git config pull.rebase false
             git pull origin main
