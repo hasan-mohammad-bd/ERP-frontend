@@ -26,6 +26,7 @@ import { ReportDashboardItem } from "@/types";
   { name: "Top Sold Items", category: "sales", href: "/billing/reports/top-sold-items" },
   { name: "Sales Register", category: "sales", href: "/billing/reports/sales-register" },
   { name: "Warehouse wise item sales", category: "sales", href: "/billing/reports/warehouse-wise-item-sale-summary" },
+  { name: "Customer Balance Summary", category: "sales", href: "/billing/reports/customer-summary-report" },
   
   // Purchase Reports
   { name: "Purchase Register", category: "purchase", href: "/billing/reports/purchase-register" },

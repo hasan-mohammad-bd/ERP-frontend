@@ -492,6 +492,13 @@ const billingNavItems: NavItem[] = [
         permissions: ["accounts"],
       },
       {
+        title: "Customer Balance Summary",
+        icon: UserRoundSearch,
+        href: "/billing/reports/customer-summary-report",
+        color: "text-sky-500",
+        permissions: ["accounts"],
+      },
+      {
         title: "Sales Register",
         icon: UserRoundSearch,
         href: "/billing/reports/sales-register",
@@ -636,13 +643,6 @@ const billingNavItems: NavItem[] = [
         title: "Customer Summary",
         icon: UserRoundSearch,
         href: "reports/customer-summary",
-        color: "text-sky-500",
-        permissions: ["accounts"],
-      },
-      {
-        title: "Customer Balance Summary",
-        icon: UserRoundSearch,
-        href: "reports/customer-summary-report",
         color: "text-sky-500",
         permissions: ["accounts"],
       },
