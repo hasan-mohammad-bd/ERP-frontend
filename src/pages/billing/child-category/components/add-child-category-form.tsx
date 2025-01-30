@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import FileUploadSingle from "@/components/common/file-upload-single";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { toast } from "sonner";
 import { serialize } from "object-to-formdata";
 import { Loading } from "@/components/common/loading";

@@ -37,7 +37,7 @@ import {
   useCreateExpensesCategoryMutation,
   useUpdateExpensesCategoryMutation,
 } from "@/store/services/billing/api/expenses-category";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 // import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
 // import { LocationColumn } from "@/lib/validators";
 import { useGetLedgerGroupsArrayQuery } from "@/store/services/accounts/api/ledger-group";

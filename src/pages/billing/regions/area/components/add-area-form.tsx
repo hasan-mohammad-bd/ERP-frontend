@@ -17,7 +17,7 @@ import handleErrors from "@/lib/handle-errors";
 
 import { useEffect } from "react";
 
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { toast } from "sonner";
 import { serialize } from "object-to-formdata";
 import { Loading } from "@/components/common/loading";

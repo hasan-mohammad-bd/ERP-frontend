@@ -33,7 +33,7 @@ import {
   attributeSchema,
 } from "@/lib/validators/billing/attributes";
 import { useGetAttributeCategoriesQuery } from "@/store/services/billing/api/attribute-category";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { AttributeCategoryRow } from "@/lib/validators/billing/attribute-category";
 
 interface AddAttributeProps {

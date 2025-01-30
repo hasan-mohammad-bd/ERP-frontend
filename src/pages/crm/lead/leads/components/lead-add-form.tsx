@@ -18,7 +18,7 @@ import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 
 import { Heading } from "@/components/common/heading";
 import {

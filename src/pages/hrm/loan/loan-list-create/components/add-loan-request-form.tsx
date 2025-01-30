@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import { format, parseISO  } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import handleErrors from "@/lib/handle-errors";

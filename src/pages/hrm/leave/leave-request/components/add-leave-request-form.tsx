@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import { differenceInDays, format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import FileUpload from "@/components/common/file-uploader";
 // import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
 import {

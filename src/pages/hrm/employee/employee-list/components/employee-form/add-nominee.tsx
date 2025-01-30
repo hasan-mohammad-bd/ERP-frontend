@@ -30,7 +30,7 @@ import {
   useUpdateNomineeMutation,
 } from "@/store/services/hrm/api/nominee";
 
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { useEffect, useState } from "react";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";

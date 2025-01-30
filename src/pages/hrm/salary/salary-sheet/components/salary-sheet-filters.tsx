@@ -10,7 +10,7 @@ import {
 
 import { useGetDepartmentsQuery } from "@/store/services/hrm/api/department";
 import { Card } from "@/components/ui/card";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
 import { useGetEmployeeClassesQuery } from "@/store/services/hrm/api/employee-class";
 import DatePicker from "react-datepicker";

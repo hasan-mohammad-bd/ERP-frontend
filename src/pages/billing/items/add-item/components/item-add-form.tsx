@@ -31,7 +31,7 @@ import { ErrorResponse } from "@/types";
 import handleErrors from "@/lib/handle-errors";
 import { toast } from "sonner";
 // import { serialize } from "object-to-formdata";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { UnitRow } from "@/lib/validators/billing/unit";
 import { useGetUnitsQuery } from "@/store/services/billing/api/unit";
 import { useGetCategoryQuery } from "@/store/services/billing/api/category";

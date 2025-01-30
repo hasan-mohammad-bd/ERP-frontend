@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import handleErrors from "@/lib/handle-errors";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { Loading } from "@/components/common/loading";
 import {
   RegionUserFormValues,

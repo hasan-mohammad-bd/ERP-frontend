@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { useNavigate, useParams } from "react-router-dom";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { LocationColumn } from "@/lib/validators";
 import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
 import {
@@ -45,6 +44,7 @@ import CustomerAttachment from "./components/attachment";
 import { Heading } from "@/components/common/heading";
 import { Separator } from "@/components/ui/separator";
 import { useGetRegionQuery } from "@/store/services/billing/api/regions";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 
 export default function EditCustomerForm() {
   const navigate = useNavigate();

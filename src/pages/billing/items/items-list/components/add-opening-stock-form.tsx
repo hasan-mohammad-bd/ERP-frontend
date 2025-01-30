@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/table";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { useGetWarehouseQuery } from "@/store/services/billing/api/warehouse";
 import {
   Popover,

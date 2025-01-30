@@ -11,7 +11,7 @@ import {
 import { useGetAttendancePoliciesQuery } from "@/store/services/hrm/api/attendance-policy";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance-policy";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { Loading } from "@/components/common/loading";
 import { useState } from "react";
 import {

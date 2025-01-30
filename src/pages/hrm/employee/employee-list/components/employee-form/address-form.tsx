@@ -31,7 +31,7 @@ import { useGetCitiesQuery } from "@/store/services/hrm/api/city";
 import { CardHeader, CardTitle } from "@/components/ui/card";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { useEffect, useState } from "react";
 
 interface AddressFormProps {

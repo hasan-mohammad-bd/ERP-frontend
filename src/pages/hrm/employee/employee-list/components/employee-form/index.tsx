@@ -74,7 +74,7 @@ import { useEffect, useState } from "react";
 import { Eye } from "lucide-react";
 import { EyeClosedIcon } from "@radix-ui/react-icons";
 import { Switch } from "@/components/ui/switch";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { GenderColumn } from "../validators";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { serialize } from "object-to-formdata";

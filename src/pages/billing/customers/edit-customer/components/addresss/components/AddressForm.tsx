@@ -17,7 +17,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useGetCountriesQuery } from "@/store/services/erp-main/api/country";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { CityColumn, CountryColumn } from "@/lib/validators";
 import { useGetCitiesQuery } from "@/store/services/erp-main/api/cities";
 import handleErrors from "@/lib/handle-errors";

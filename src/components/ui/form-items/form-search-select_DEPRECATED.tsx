@@ -25,7 +25,7 @@ import { useState } from "react";
 import { Loading } from "../../common/loading";
 
 // Define the types for your props
-interface FormSearchSelectProps<T> {
+interface FormSearchSelect_DEPRECATEDProps<T> {
   name: string;
   title?: string;
   data: T[];
@@ -40,7 +40,7 @@ interface FormSearchSelectProps<T> {
   required?: boolean;
 }
 
-const FormSearchSelect = <T extends Record<string, any>>({
+const FormSearchSelect_DEPRECATED = <T extends Record<string, any>>({
   form,
   name,
   title,
@@ -52,7 +52,7 @@ const FormSearchSelect = <T extends Record<string, any>>({
   placeholder = "Select an option",
   disabled = false,
   required = false,
-}: FormSearchSelectProps<T>) => {
+}: FormSearchSelect_DEPRECATEDProps<T>) => {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -67,14 +67,18 @@ const FormSearchSelect = <T extends Record<string, any>>({
       name={name}
       render={({ field }) => {
         const selectedItem = data.find(
-          (singleData) => singleData[valueField] === field.value || String(singleData[valueField]) === String(field.value)
+          (singleData) => String(singleData[valueField]) === field.value
         );
 
         return (
           <FormItem className={cn("w-full")}>
             <FormLabel>
               {title}{" "}
-              {required && <span className="text-red-500">*</span>}
+              {required && (
+                <span>
+                  <span className="text-red-500">*</span>
+                </span>
+              )}
             </FormLabel>
             <Popover open={open} onOpenChange={setOpen} modal={true}>
               <PopoverTrigger asChild>
@@ -112,7 +116,7 @@ const FormSearchSelect = <T extends Record<string, any>>({
                           <CommandItem
                             key={index}
                             onSelect={() => {
-                              field.onChange(item[valueField]); // Ensure correct type
+                              field.onChange(String(item[valueField]));
                               setOpen(false);
                             }}
                             disabled={disabled}
@@ -120,7 +124,7 @@ const FormSearchSelect = <T extends Record<string, any>>({
                             <Check
                               className={cn(
                                 "mr-2 h-4 w-4",
-                                field.value === item[valueField] || String(field.value) === String(item[valueField])
+                                field.value === String(item[valueField])
                                   ? "opacity-100"
                                   : "opacity-0"
                               )}
@@ -142,4 +146,4 @@ const FormSearchSelect = <T extends Record<string, any>>({
   );
 };
 
-export default FormSearchSelect;
+export default FormSearchSelect_DEPRECATED;

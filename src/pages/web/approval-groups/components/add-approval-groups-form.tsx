@@ -35,7 +35,7 @@ import {
   // approvalGroupSchema,
 } from "@/lib/validators/web/approval-group";
 import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import MultipleSelector, { Option } from "@/components/ui/multiSelectSearch";
 // import { useGetEmployeesQuery } from "@/store/services/hrm/api/employee-list";
 import { useGetUsersQuery } from "@/store/services/erp-main/api/users";

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { EmployeeColumn } from "@/lib/validators";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { format } from "date-fns";
 import { zodResolver } from "@hookform/resolvers/zod"; // Import the resolver
 import { z } from "zod";

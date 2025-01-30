@@ -19,7 +19,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 // import FileUpload from "@/components/common/file-uploader";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { LedgerRow } from "@/lib/validators/accounts";

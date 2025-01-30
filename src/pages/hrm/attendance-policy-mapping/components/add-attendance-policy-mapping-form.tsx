@@ -24,7 +24,7 @@ import {
 import { useUpdateEmployeeAttendancePolicyMutation } from "@/store/services/hrm/api/attendance-policy-mapping";
 import { useGetAttendancePoliciesQuery } from "@/store/services/hrm/api/attendance-policy";
 import { AttendancePolicyRow } from "@/lib/validators/hrm/attendance-policy";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";

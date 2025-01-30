@@ -30,7 +30,7 @@ import { Card } from "@/components/ui/card";
 import { useState } from "react";
 import SearchPaymentReceived, { PurchaseRow } from "./search-payment-received";
 import FileUpload from "@/components/common/file-uploader";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { LedgerRow } from "@/lib/validators/accounts";
 import { useGetLedgerAccountsQuery } from "@/store/services/accounts/api/ledger-account";
 import { serialize } from "object-to-formdata";

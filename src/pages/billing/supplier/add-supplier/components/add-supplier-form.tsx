@@ -23,8 +23,6 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { useNavigate } from "react-router-dom";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
-import { LocationColumn } from "@/lib/validators";
 import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
 import {
   ContactFormType,
@@ -35,6 +33,7 @@ import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { toast } from "sonner";
 import { useCreateSupplierMutation } from "@/store/services/billing/api/supplier";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 
 export function AddSupplierForm() {
   const navigate = useNavigate();
@@ -283,7 +282,7 @@ export function AddSupplierForm() {
                       </FormItem>
                     )}
                   />
-                  <FormSearchSelect<LocationColumn>
+                  <FormSearchSelect
                     loading={locationLoading}
                     data={locationData}
                     displayField="name"

@@ -27,7 +27,7 @@ import { toast } from "sonner";
 import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { Loading } from "@/components/common/loading";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { useGetLeaveTypesQuery } from "@/store/services/hrm/api/leave-type";
 // import { Switch } from "@/components/ui/switch";
 

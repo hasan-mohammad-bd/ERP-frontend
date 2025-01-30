@@ -23,7 +23,7 @@ import {
 
 import MultipleSelector, { Option } from "@/components/ui/multiSelectSearch";
 
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 // import PriceAndStockTable from "./price-and-stock-table";
 import { useGetAttributeCategoriesQuery } from "@/store/services/billing/api/attribute-category";
 import { AttributeCategoryRow } from "@/lib/validators/billing/attribute-category";

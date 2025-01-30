@@ -49,7 +49,7 @@ import FileUpload from "@/components/common/file-uploader";
 import handleErrors from "@/lib/handle-errors";
 import { ProjectRow } from "@/lib/validators/accounts/projects";
 import { ErrorResponse } from "@/types";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select_DEPRECATED";
 import { InputNumberFormat } from "@react-input/number-format";
 
 export function AddJournalForm() {

@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { useNavigate } from "react-router-dom";
-import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 import { useGetLocationsQuery } from "@/store/services/erp-main/api/location";
 import {
   CustomerFormType,
@@ -35,6 +34,7 @@ import handleErrors from "@/lib/handle-errors";
 import { ErrorResponse } from "@/types";
 import { toast } from "sonner";
 import { useGetRegionQuery } from "@/store/services/billing/api/regions";
+import FormSearchSelect from "@/components/ui/form-items/form-search-select";
 
 export function AddCustomerForm() {
   const navigate = useNavigate();
