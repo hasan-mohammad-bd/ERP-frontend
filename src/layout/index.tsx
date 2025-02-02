@@ -16,7 +16,7 @@ const Layout = () => {
           </main>
           <Footer />
         </div>
-        <Toaster richColors/>
+        <Toaster richColors position="top-right"/>
       </div>
     </>
   );

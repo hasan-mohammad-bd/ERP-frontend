@@ -595,6 +595,15 @@ const billingRoutes = {
           errorElement: withFallback(<ErrorPage />),
         },
         {
+          path: "add-from-sales-order/:sales_order_id",
+          element: withFallback(
+            <RoleAccess roles={["invoices.create"]} showUnauthorizedPage={true}>
+              <AddInvoiceForm />
+            </RoleAccess>
+          ),
+          errorElement: withFallback(<ErrorPage />),
+        },
+        {
           path: "view/:id",
           element: withFallback(
             <RoleAccess roles={["invoices.show"]} showUnauthorizedPage={true}>

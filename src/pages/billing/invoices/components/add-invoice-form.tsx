@@ -54,6 +54,7 @@ import {
 } from "@/store/services/billing/api/invoices";
 import { getInclusiveTaxAmount } from "@/utils";
 import BillingSummaryShow from "@/components/common/billing/billing-summary-show";
+import { useGetSalesOrderByIdQuery } from "@/store/services/billing/api/sales-order";
 
 export default function AddInvoiceForm() {
   const navigate = useNavigate();
@@ -100,8 +101,9 @@ export default function AddInvoiceForm() {
     },
   });
 
-  // For update
   const params = useParams();
+
+  // For update
   const salesInvoiceId = Number(params.id);
   const { data: salesInvoiceData } = useGetSalesInvoicesByIdQuery(
     salesInvoiceId,
@@ -109,12 +111,18 @@ export default function AddInvoiceForm() {
       skip: !salesInvoiceId,
     }
   );
-
   const [updateSalesInvoice, { isLoading: isUpdateLoading }] =
     useUpdateSalesInvoicesMutation(); // For update
 
-  const salesOrder = salesInvoiceData?.data || undefined;
-  // console.log(salesOrder, "salesOrderData");
+  //To generate invoice from sales order
+  const salesOrderId = Number(params.sales_order_id);
+  const { data: salesOrderData } = useGetSalesOrderByIdQuery(salesOrderId, {
+    skip: !salesOrderId,
+  });
+
+  const invoice = salesInvoiceData?.data; // to update existing invoice
+  const salesOrderInfo = salesOrderData?.data; // to generate invoice from sales order
+  const salesOrder = invoice || salesOrderInfo;
 
   useEffect(() => {
     if (salesOrder) {
@@ -145,18 +153,18 @@ export default function AddInvoiceForm() {
         due_date: salesOrder.due_date || "",
         delivery_date: salesOrder.delivery_date || "",
         note: salesOrder.note || "",
-        warranty: salesOrder.warranty || "",
+        warranty: invoice ? invoice.warranty : "",
         terms_conditions: salesOrder.terms_conditions || "",
         sub_total: salesOrder.sub_total,
         reference: salesOrder.reference || "",
         tax: salesOrder.tax,
-        shipping_charge: salesOrder.shipping_charge || 0,
-        adjustment: salesOrder.adjustment || 0,
-        warehouse_id: salesOrder.warehouse?.id.toString(),
-        sales_order_id: salesOrder.sales_order?.id,
+        shipping_charge: invoice ? invoice.shipping_charge : 0,
+        adjustment: invoice ? invoice.adjustment : 0,
+        warehouse_id: invoice ? invoice.warehouse?.id.toString() : "",
+        sales_order_id: invoice ? invoice.sales_order?.id : salesOrderInfo?.id,
       });
     }
-  }, [salesOrder, form]);
+  }, [salesOrder, invoice, salesOrderInfo, form]);
   // end of update
 
   const discount = form.watch("discount");
@@ -227,7 +235,7 @@ export default function AddInvoiceForm() {
     // console.log(payload, "payload");
 
     try {
-      if (!salesOrder) {
+      if (!invoice) {
         await createSalesInvoice(payload).unwrap();
         toast.success("Invoice created successfully");
       } else {
@@ -249,7 +257,7 @@ export default function AddInvoiceForm() {
       <div>
         <div className="flex items-center justify-between mb-4">
           <Heading
-            title={salesOrder ? "Edit Invoice" : "Add Invoice"}
+            title={invoice ? "Edit Invoice" : salesOrderInfo ? "Add Invoice From Sales Order" : "Add Invoice"}
             description="Manage your sub accounts for you business"
           />
           <Button onClick={() => navigate("/billing/invoices")} size={"sm"}>
@@ -571,7 +579,7 @@ export default function AddInvoiceForm() {
                 type="submit"
                 className="w-fit mt-4"
               >
-                {salesOrder ? "Update" : "Add"}
+                {invoice ? "Update" : "Add"}
               </Button>
             </div>
           </form>
