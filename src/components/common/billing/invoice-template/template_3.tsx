@@ -7,9 +7,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
-import { Invoice } from "@/lib/validators/billing/billing-responses";
-import { numberToWords } from "@/utils/formate-number";
+
 import PrintPDFWrapper from "../../print-pdf-wrapper";
+import { numberToWords } from "@/utils/formate-number";
 
 interface Props {
   invoiceData: any;
@@ -117,7 +117,7 @@ export default function Invoice_template_3({
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {invoiceData?.details.map((item, index) => (
+                    {invoiceData?.details.map((item: any, index: number) => (
                       <TableRow key={item.id}>
                         <TableCell>{index + 1}</TableCell>
                         <TableCell>
@@ -148,7 +148,7 @@ export default function Invoice_template_3({
 
                       <TableCell className="text-right">
                         {invoiceData?.details.reduce(
-                          (total, item) => total + item.qty,
+                          (total: number, item: any) => total + item.qty,
                           0
                         )}
                       </TableCell>
