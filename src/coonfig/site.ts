@@ -16,4 +16,5 @@ export const siteConfig = {
 	email: {
 		pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
 	},
+	template: import.meta.env.VITE_INV_TEMPLATE
 };
