@@ -6,7 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, RotateCw, Trash2 } from "lucide-react";
 import { AlertModal } from "@/components/common/alert-modal";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -48,14 +48,33 @@ export function CellAction({ rowData }: CellActionProps) {
               size="icon"
               className="hover:bg-secondary"
               onClick={() =>
-                navigation(`/billing/quotes/edit/${rowData.id}`)
+                navigation(
+                  `/billing/invoices/add-from-sales-order/${rowData.id}`
+                )
               }
+            >
+              <RotateCw className="h-4 w-4 text-foreground" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Convert to sales</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:bg-secondary"
+              onClick={() => navigation(`/billing/quotes/edit/${rowData.id}`)}
             >
               <Pencil className="h-4 w-4 text-foreground" />
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Update Opening Balance</p>
+            <p>Edit</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -75,7 +94,7 @@ export function CellAction({ rowData }: CellActionProps) {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Delete Opening Balance</p>
+            <p>Delete</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

@@ -1,0 +1,14 @@
+# Enable RewriteEngine
+RewriteEngine On
+
+# Redirect requests to index.html except for existing files and directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]
+
+# Serve gzip or Brotli compressed files if they exist
+<IfModule mod_headers.c>
+    <FilesMatch "\.(js|css|html|json|ico|svg|ttf|woff|woff2|eot|otf|png|jpg|jpeg|gif|webp|avif)$">
+        Header set Cache-Control "max-age=31536000, public"
+    </FilesMatch>
+</IfModule>
