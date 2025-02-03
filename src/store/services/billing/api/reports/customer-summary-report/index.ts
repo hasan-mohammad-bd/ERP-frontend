@@ -1,6 +1,6 @@
 import { PaginationInfo } from "@/types";
 import { inventoryApi } from "../../..";
-import { CustomerSummaryType } from "@/lib/validators/billing/customer-summary";
+import { CustomerSummaryType, TotalsType } from "@/lib/validators/billing/customer-summary";
 
 const customerBalanceSummaryReportApi = inventoryApi.injectEndpoints({
   endpoints: (build) => ({
@@ -8,6 +8,10 @@ const customerBalanceSummaryReportApi = inventoryApi.injectEndpoints({
       {
         data: CustomerSummaryType[];
         meta: PaginationInfo;
+        start_date: string;
+        end_date: string;
+        totals: TotalsType;
+
       },
       string
     >({

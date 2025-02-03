@@ -541,7 +541,7 @@ const billingRoutes = {
       ],
     },
     {
-      path: "quotes/", // basically the sales order
+      path: "sales-order/", // basically the sales order
       errorElement: withFallback(<ErrorPage />),
       children: [
         {

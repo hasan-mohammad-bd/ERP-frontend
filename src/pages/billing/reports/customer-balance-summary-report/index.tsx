@@ -11,7 +11,7 @@ import { useAuth } from "@/store/hooks";
 import CustomerBalanceTable from "./components/customer-balance-table";
 import CustomerBalanceFilter from "./components/customer-balance-filter";
 import { useGetCustomerBalanceSummaryReportQuery } from "@/store/services/billing/api/reports/customer-summary-report";
-
+import { getFormattedDate } from "@/utils/format-dates";
 
 const CustomerSummaryReport = () => {
   const { user } = useAuth();
@@ -21,21 +21,17 @@ const CustomerSummaryReport = () => {
 
   const [filterParams, setFilterParams] = useState("");
   //   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-    
-  );
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
 
   console.log();
-  const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(
-  
-  );
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>();
 
   // Fetch leave balance data with pagination
   const { data, isLoading } = useGetCustomerBalanceSummaryReportQuery(
     `per_page=${pageSize}&page=${page}&${filterParams}`
   );
 
-  
+  const totals = data?.totals;
 
   const fetchedData = data?.data || [];
   console.log("fetchedData", data);
@@ -62,24 +58,40 @@ const CustomerSummaryReport = () => {
         />
       </div>
       <Card>
-        <PrintPDFWrapper className="space-y-4" fileName="leave-usages-report">
-          <div className="flex-1 space-y-4 my-4">
+        <PrintPDFWrapper
+          className="py-4  "
+          fileName="customer-balance-summary-report"
+          landscape={true}
+        >
+          <div className="flex-1 space-y-4 my-4 relative">
+            <div className="absolute left-2 top-6 h-[80px] max-w-[180px]">
+              {user?.organization?.logo && (
+                <img
+                  src={user?.organization?.logo}
+                  alt="logo"
+                  className="w-full h-full object-contain"
+                />
+              )}
+            </div>
             <div className="text-center  ">
-              <h2>{user?.organization?.name}</h2>
-              <h3 className="text-xl">Customer Balance Summary Report</h3>
-              {/* {selectedDate && selectedEndDate && (
-                <h5 className="text-md">
-                  From: {selectedDate.toString().slice(0, 10)} to{" "}
-                  {selectedEndDate.toString().slice(0, 10)}
+              <h2 className="text-2xl font-semibold">
+                {user?.organization?.name}
+              </h2>
+              <h4>{user?.organization?.address.join(". ")}</h4>
+              <h3 className="text-lg font-normal">Customer Balance Summary</h3>
+              {data?.start_date && data?.end_date ? (
+                <h5 className="text-sm">
+                  From: {getFormattedDate(data?.start_date)} to{" "}
+                  {getFormattedDate(data?.end_date)}
                 </h5>
-              )} */}
+              ) : null}
             </div>
           </div>
           <div className="flex-1 space-y-4 w-full mx-auto">
             <Separator />
 
             {fetchedData ? (
-              <CustomerBalanceTable tableData={fetchedData} />
+              <CustomerBalanceTable totals={totals} tableData={fetchedData} />
             ) : null}
           </div>
         </PrintPDFWrapper>

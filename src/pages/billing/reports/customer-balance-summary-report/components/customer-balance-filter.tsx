@@ -59,7 +59,8 @@ export default function CustomerBalanceFilter({
 
   return (
     <Card className="w-full p-5">
-      <div className="flex gap-4 flex-wrap">
+      <div className="flex gap-4 flex-wrap items-center">
+
         <Popover open={openFromDate} onOpenChange={setOpenFromDate}>
           <PopoverTrigger asChild className="h-9">
             <Button
@@ -90,7 +91,7 @@ export default function CustomerBalanceFilter({
           <PopoverTrigger asChild className="h-9">
             <Button
               variant={"outline"}
-              className={`w-56 justify-start text-left font-normal ${
+              className={`w-56 justify-start text-left  font-normal ${
                 !selectedEndDate && "text-muted-foreground"
               }`}
             >
@@ -107,8 +108,7 @@ export default function CustomerBalanceFilter({
             />
           </PopoverContent>
         </Popover>
-      </div>
-      <div className="mt-4 flex justify-end gap-4">
+        <div className=" flex gap-4 items-center">
         <Button variant="outline" size={"sm"} onClick={handleResetFilters}>
           Reset Filters
         </Button>
@@ -117,6 +117,8 @@ export default function CustomerBalanceFilter({
           Apply Filters
         </Button>
       </div>
+      </div>
+
     </Card>
   );
 }

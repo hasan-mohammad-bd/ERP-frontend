@@ -205,15 +205,15 @@ export default function AddSaleOrderForm() {
     try {
       if (!salesOrder) {
         await createSalesOrder(payload).unwrap();
-        toast.success("Quote created successfully");
+        toast.success("Sales Order created successfully");
       } else {
         await updateSalesOrder({
           salesOrderId: salesOrderId,
           updatedSalesOrder: payload,
         }).unwrap();
-        toast.success("Quote updated successfully");
+        toast.success("Sales Order updated successfully");
       }
-      navigate("/billing/quotes");
+      navigate("/billing/sales-order");
     } catch (error) {
       handleErrors(error as ErrorResponse);
     }
@@ -225,11 +225,11 @@ export default function AddSaleOrderForm() {
       <div>
         <div className="flex items-center justify-between mb-4">
           <Heading
-            title={salesOrder ? "Edit Quote" : "Add quote"}
+            title={salesOrder ? "Edit Sales Order" : "Add Sales Order"}
             description="Manage your sub accounts for you business"
           />
-          <Button onClick={() => navigate("/billing/quotes")} size={"sm"}>
-            quotes List
+          <Button onClick={() => navigate("/billing/sales-order")} size={"sm"}>
+            Sales Order List
           </Button>
         </div>
 
@@ -492,7 +492,7 @@ export default function AddSaleOrderForm() {
             <div className="text-right">
               <Button
                 type="button"
-                onClick={() => navigate("/billing/quotes")}
+                onClick={() => navigate("/billing/sales-order")}
                 className="mr-2"
                 variant="primary"
               >

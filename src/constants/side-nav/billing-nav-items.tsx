@@ -108,10 +108,10 @@ const billingNavItems: NavItem[] = [
         permissions: ["customers"],
       },
       {
-        title: "Quotes",
+        title: "Sales Order",
         icon: CalendarCheck2,
         color: "text-sky-500",
-        href: "/billing/quotes",
+        href: "/billing/sales-order",
         permissions: ["accounts"],
       },
       {
