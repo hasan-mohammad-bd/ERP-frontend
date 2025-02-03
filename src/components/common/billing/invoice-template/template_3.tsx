@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import PrintPDFWrapper from "../../print-pdf-wrapper";
 import { numberToWords } from "@/utils/formate-number";
 import { useAuth } from "@/store/hooks";
+import { getFormattedDate } from "@/utils/format-dates";
 
 interface Props {
   invoiceData: any;
@@ -66,7 +67,7 @@ export default function Invoice_template_3({
               </p>
               <p>
                 <span className="font-medium">Date: </span>
-                {invoiceData?.date}
+                {getFormattedDate(invoiceData?.date)}
               </p>
               <div className="border inline-block px-2 py-0.5 mb-1 text-xs">
                 Billing To
@@ -89,11 +90,21 @@ export default function Invoice_template_3({
                 <TableHeader>
                   <TableRow className="hover:bg-transparent">
                     <TableHead className="h-8 px-2 py-1">SL.</TableHead>
-                    <TableHead className="h-8 px-2 py-1">Item Description</TableHead>
-                    <TableHead className="h-8 px-2 py-1 text-right">Price</TableHead>
-                    <TableHead className="h-8 px-2 py-1 text-right">Discount</TableHead>
-                    <TableHead className="h-8 px-2 py-1 text-right">Qty</TableHead>
-                    <TableHead className="h-8 px-2 py-1 text-right">Total</TableHead>
+                    <TableHead className="h-8 px-2 py-1">
+                      Item Description
+                    </TableHead>
+                    <TableHead className="h-8 px-2 py-1 text-right">
+                      Price
+                    </TableHead>
+                    <TableHead className="h-8 px-2 py-1 text-right">
+                      Discount
+                    </TableHead>
+                    <TableHead className="h-8 px-2 py-1 text-right">
+                      Qty
+                    </TableHead>
+                    <TableHead className="h-8 px-2 py-1 text-right">
+                      Total
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -106,14 +117,25 @@ export default function Invoice_template_3({
                           {item?.item_barcode?.barcode}
                         </div>
                       </TableCell>
-                      <TableCell className="px-2 py-1 text-right">{item.price}</TableCell>
-                      <TableCell className="px-2 py-1 text-right">{item.discount}</TableCell>
-                      <TableCell className="px-2 py-1 text-right">{item.qty}</TableCell>
-                      <TableCell className="px-2 py-1 text-right">{item.total}</TableCell>
+                      <TableCell className="px-2 py-1 text-right">
+                        {item.price}
+                      </TableCell>
+                      <TableCell className="px-2 py-1 text-right">
+                        {item.discount}
+                      </TableCell>
+                      <TableCell className="px-2 py-1 text-right">
+                        {item.qty}
+                      </TableCell>
+                      <TableCell className="px-2 py-1 text-right">
+                        {item.total}
+                      </TableCell>
                     </TableRow>
                   ))}
                   <TableRow className="hover:bg-transparent">
-                    <TableCell colSpan={4} className="px-2 py-1 text-right font-medium">
+                    <TableCell
+                      colSpan={4}
+                      className="px-2 py-1 text-right font-medium"
+                    >
                       Total Qty:
                     </TableCell>
                     <TableCell className="px-2 py-1 text-right">
@@ -156,9 +178,7 @@ export default function Invoice_template_3({
           </div>
 
           <div className="text-xs mb-4">
-            <p className="font-medium">
-              {numberToWords(invoiceData?.total)}
-            </p>
+            <p className="font-medium">{numberToWords(invoiceData?.total)}</p>
           </div>
 
           {/* Signatures */}
