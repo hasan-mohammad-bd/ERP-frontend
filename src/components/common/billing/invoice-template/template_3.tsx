@@ -7,9 +7,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
-
 import PrintPDFWrapper from "../../print-pdf-wrapper";
 import { numberToWords } from "@/utils/formate-number";
+import { useAuth } from "@/store/hooks";
 
 interface Props {
   invoiceData: any;
@@ -20,233 +20,160 @@ export default function Invoice_template_3({
   invoiceData,
   totalDiscount,
 }: Props) {
-  console.log(invoiceData);
+  const { user } = useAuth();
   return (
-    <>
-      <Card
-        style={{
-          padding: "26px",
-          margin: "30px",
-          border: "1px solid hsl(var(--border))",
-        }}
-      >
-        <PrintPDFWrapper
-          className=""
-          fileName="due-received-report"
-        >
-          <div className="max-w-4xl mx-auto p-8 bg-white">
-            {/* Header */}
-            <div className="flex justify-between items-start mb-8">
-              <div className="flex items-center gap-2">
+    <Card className="p-4 m-4 border">
+      <PrintPDFWrapper fileName="due-received-report">
+        <div className="max-w-3xl mx-auto p-4 bg-white text-xs">
+          {/* Header */}
+          <div className="flex justify-between items-start mb-4">
+            <div className="flex items-center gap-2">
+              {user?.organization?.logo && (
                 <img
-                  src={
-                    invoiceData?.organization?.logo
-                      ? invoiceData?.organization?.logo
-                      : undefined
-                  }
-                  alt="AmarSolution Logo"
-                  width={60}
-                  height={60}
-                  className="rounded"
+                  src={user?.organization?.logo}
+                  alt="ERP Logo"
+                  className="rounded h-12 object-contain"
                 />
-                <div className="text-2xl font-bold text-blue-600">
-                  {invoiceData?.organization?.name}
-                </div>
-              </div>
-              <div className="text-4xl font-bold text-blue-600">INVOICE</div>
+              )}
             </div>
+            <div className="text-2xl font-bold text-primary">INVOICE</div>
+          </div>
 
-            {/* Company Info & Billing */}
-            <div className="grid grid-cols-2 gap-8 mb-8">
-              <div className="space-y-1">
-                <p>
-                  <span className="font-semibold">Address:</span>
-                  {invoiceData?.organization?.address}
-                </p>
-                <p>
-                  <span className="font-semibold">Mobile:</span>{" "}
-                  {invoiceData?.organization?.phone?.join(", ")}
-                </p>
-                <p>
-                  <span className="font-semibold">Email:</span>{" "}
-                  {invoiceData?.organization?.email?.join(", ")}
-                </p>
-                {/* <p>
-            <span className="font-semibold">BIN:</span> {invoiceData?.organization?.address?.join(", ") }
-          </p> */}
-                <p>
-                  <span className="font-semibold">Sold By:</span>{" "}
-                  {invoiceData?.organization?.name}
-                </p>
-              </div>
-              <div className="space-y-1">
-                <p>
-                  <span className="font-semibold">Invoice No:</span>{" "}
-                  {invoiceData?.invoice_number}
-                </p>
-                <p>
-                  <span className="font-semibold">Date:</span>{" "}
-                  {invoiceData?.date}
-                </p>
-                <div className="border inline-block px-4 py-1 mb-2">
-                  Billing To
-                </div>
-                <p>
-                  <span className="font-semibold">Name:</span>{" "}
-                  {invoiceData?.contact?.name}
-                </p>
-                <p>
-                  <span className="font-semibold">Mobile:</span>{" "}
-                  {invoiceData?.contact?.phone}
-                </p>
-              </div>
-            </div>
-
-            {/* Items Table */}
-            <Card className="mb-8">
-              <CardContent className="p-0">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>SL.</TableHead>
-                      <TableHead>Item Description</TableHead>
-                      <TableHead className="text-right">Price</TableHead>
-                      <TableHead className="text-right">Discount</TableHead>
-                      <TableHead className="text-right">Quantity</TableHead>
-                      <TableHead className="text-right">Total</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {invoiceData?.details.map((item: any, index: number) => (
-                      <TableRow key={item.id}>
-                        <TableCell>{index + 1}</TableCell>
-                        <TableCell>
-                          <div>{item?.item?.name}</div>
-                          <div className="text-gray-600 text-sm">
-                            {item?.item_barcode?.barcode}
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {item.price}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {item.discount}
-                        </TableCell>
-                        <TableCell className="text-right">{item.qty}</TableCell>
-                        <TableCell className="text-right">
-                          {item.total}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                    <TableRow>
-                      <TableCell
-                        colSpan={4}
-                        className="text-right font-semibold"
-                      >
-                        Total Qty:
-                      </TableCell>
-
-                      <TableCell className="text-right">
-                        {invoiceData?.details.reduce(
-                          (total: number, item: any) => total + item.qty,
-                          0
-                        )}
-                      </TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-
-            {/* Totals */}
-            <div className="flex justify-end mb-8">
-              <div className="w-64 space-y-1">
-                <div className="flex justify-between">
-                  <span>Subtotal:</span>
-                  <span>Tk. {invoiceData?.sub_total}</span>
-                </div>
-                <div className="flex justify-between font-semibold">
-                  <span>Discount:</span>
-                  <span>Tk. {totalDiscount.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between font-semibold">
-                  <span>Tax:</span>
-                  <span>Tk. {invoiceData?.tax}</span>
-                </div>
-                <div className="flex justify-between font-semibold">
-                  <span>Shipping Charge:</span>
-                  <span>
-                    Tk.{" "}
-                    {invoiceData?.shipping_charges
-                      ? invoiceData?.shipping_charges
-                      : 0}
-                  </span>
-                </div>
-                <div className="flex justify-between font-semibold">
-                  <span>Total:</span>
-                  <span>Tk. {invoiceData?.total}</span>
-                </div>
-                {/* <div className="flex justify-between text-gray-600">
-            <span>Paid:</span>
-            <span>Tk. { invoiceData?.}</span>
-          </div> */}
-              </div>
-            </div>
-
-            <div className="text-sm mb-8">
-              <p className="font-semibold">
-                {numberToWords(invoiceData?.total)}
+          {/* Company Info & Billing */}
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="space-y-1">
+              <p className="truncate">
+                <span className="font-medium">Address: </span>
+                {invoiceData?.organization?.address}
+              </p>
+              <p>
+                <span className="font-medium">Mobile: </span>
+                {invoiceData?.organization?.phone?.join(", ")}
+              </p>
+              <p>
+                <span className="font-medium">Email: </span>
+                {invoiceData?.organization?.email?.join(", ")}
+              </p>
+              <p>
+                <span className="font-medium">Sold By: </span>
+                {invoiceData?.organization?.name}
               </p>
             </div>
-
-            {/* Payment Details */}
-            {/*       <p>Payment Details</p>
-      <Card className="mb-8 w-2/3">
-        <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Sl</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Payment Method</TableHead>
-                <TableHead>Payment By</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>1</TableCell>
-                <TableCell>{invoiceData?.due_date}</TableCell>
-                <TableCell>{invoiceData?.payment_term.}</TableCell>
-                <TableCell>-</TableCell>
-                <TableCell className="text-right">Tk. 1,900.00</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell colSpan={4} className="text-right font-semibold">
-                  Total:
-                </TableCell>
-                <TableCell className="text-right">Tk. 1,900.00</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card> */}
-
-            {/* Signatures */}
-            <div className="flex justify-between mt-16">
-              <div className="text-center">
-                <div className="border-t border-black w-32"></div>
-                <p className="text-sm mt-1">Received By</p>
+            <div className="space-y-1">
+              <p>
+                <span className="font-medium">Invoice No: </span>
+                {invoiceData?.invoice_number}
+              </p>
+              <p>
+                <span className="font-medium">Date: </span>
+                {invoiceData?.date}
+              </p>
+              <div className="border inline-block px-2 py-0.5 mb-1 text-xs">
+                Billing To
               </div>
-              <div className="text-center">
-                <div className="border-t border-black w-32"></div>
-                <p className="text-sm mt-1">Authorised By</p>
+              <p>
+                <span className="font-medium">Name: </span>
+                {invoiceData?.contact?.name}
+              </p>
+              <p>
+                <span className="font-medium">Mobile: </span>
+                {invoiceData?.contact?.phone}
+              </p>
+            </div>
+          </div>
+
+          {/* Items Table */}
+          <Card className="mb-4">
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead className="h-8 px-2 py-1">SL.</TableHead>
+                    <TableHead className="h-8 px-2 py-1">Item Description</TableHead>
+                    <TableHead className="h-8 px-2 py-1 text-right">Price</TableHead>
+                    <TableHead className="h-8 px-2 py-1 text-right">Discount</TableHead>
+                    <TableHead className="h-8 px-2 py-1 text-right">Qty</TableHead>
+                    <TableHead className="h-8 px-2 py-1 text-right">Total</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {invoiceData?.details.map((item: any, index: number) => (
+                    <TableRow key={item.id} className="hover:bg-transparent">
+                      <TableCell className="px-2 py-1">{index + 1}</TableCell>
+                      <TableCell className="px-2 py-1">
+                        <div>{item?.item?.name}</div>
+                        <div className="text-gray-600 text-2xs">
+                          {item?.item_barcode?.barcode}
+                        </div>
+                      </TableCell>
+                      <TableCell className="px-2 py-1 text-right">{item.price}</TableCell>
+                      <TableCell className="px-2 py-1 text-right">{item.discount}</TableCell>
+                      <TableCell className="px-2 py-1 text-right">{item.qty}</TableCell>
+                      <TableCell className="px-2 py-1 text-right">{item.total}</TableCell>
+                    </TableRow>
+                  ))}
+                  <TableRow className="hover:bg-transparent">
+                    <TableCell colSpan={4} className="px-2 py-1 text-right font-medium">
+                      Total Qty:
+                    </TableCell>
+                    <TableCell className="px-2 py-1 text-right">
+                      {invoiceData?.details.reduce(
+                        (total: number, item: any) => total + item.qty,
+                        0
+                      )}
+                    </TableCell>
+                    <TableCell className="px-2 py-1"></TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
+          {/* Totals */}
+          <div className="flex justify-end mb-4">
+            <div className="w-56 space-y-1">
+              <div className="flex justify-between">
+                <span>Subtotal:</span>
+                <span>Tk. {invoiceData?.sub_total}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Discount:</span>
+                <span>Tk. {totalDiscount.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Tax:</span>
+                <span>Tk. {invoiceData?.tax}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Shipping:</span>
+                <span>Tk. {invoiceData?.shipping_charges || 0}</span>
+              </div>
+              <div className="flex justify-between font-medium border-t pt-1">
+                <span>Total:</span>
+                <span>Tk. {invoiceData?.total}</span>
               </div>
             </div>
           </div>
-        </PrintPDFWrapper>
-      </Card>
-    </>
+
+          <div className="text-xs mb-4">
+            <p className="font-medium">
+              {numberToWords(invoiceData?.total)}
+            </p>
+          </div>
+
+          {/* Signatures */}
+          <div className="flex justify-between mt-8">
+            <div className="text-center">
+              <div className="border-t border-black w-24 mx-auto"></div>
+              <p className="text-2xs mt-1">Received By</p>
+            </div>
+            <div className="text-center">
+              <div className="border-t border-black w-24 mx-auto"></div>
+              <p className="text-2xs mt-1">Authorised By</p>
+            </div>
+          </div>
+        </div>
+      </PrintPDFWrapper>
+    </Card>
   );
 }
