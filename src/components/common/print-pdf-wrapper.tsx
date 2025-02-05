@@ -36,9 +36,10 @@ const PrintPDFWrapper = ({
       format: "a4",
     });
 
-    const canvas = await html2canvas(componentRef.current, {
+    const canvas = await html2canvas(componentRef.current,  {
       scale: 2, // Reduce scale to lower image resolution
       useCORS: true,
+      
     });
 
     const imgData = canvas.toDataURL("image/jpeg", 1);
