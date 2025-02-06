@@ -34,19 +34,20 @@ import handleErrors from "@/lib/handle-errors";
 import { toast } from "sonner";
 import { AttributeRow } from "@/lib/validators/billing/attributes";
 
+
 export function PricingArea({
   setAttributeCategoriesData,
   setResponseData,
   previousData,
 }: any) {
   const [generateDemoBarcode] = useGenerateDemoBarcodeMutation();
-  // const [updateApprovalGroup, { isLoading: updateLoading }] = useUpdateApprovalGroupMutation();
+
 
   const [adminOptions, setAdminOptions] = useState<{ [key: number]: Option[] }>(
     {}
   );
   const [employeeSearchTerm, setEmployeeSearchTerm] = useState("");
-  // const [attributePicked, setAttributePicked] = useState<any[]>([]);
+
   
 
 
@@ -61,14 +62,10 @@ export function PricingArea({
 
   console.log(employeeSearchTerm);
 
-  // const users = data?.data || [];
-  // const { data: employeeList } = useGetEmployeesQuery(`per_page=15&page=1&search=${employeeSearchTerm}`);
 
-  // const { id } = useParams();
-  // const { data } = useGetApprovalGroupByIdQuery(`${id}`);
 
   const form = useForm<any>({
-    // resolver: zodResolver(approvalGroupSchema),
+
     defaultValues: {},
   });
 
@@ -112,24 +109,15 @@ export function PricingArea({
         {}
       );
   
-      // setAttributePicked(updatedAttributeGroups);
-      setAdminOptions(mappedAdminOptions); // Set the adminOptions state
+
+      setAdminOptions(mappedAdminOptions); 
     }
-  }, [previousData, form, attributesData]);
+  }, [previousData]);
+
+
   
 
-  /*   useEffect(() => {
-
-    if (previousData) {
-      form.reset({
-
-        pricing: previousData.pricing?.map((item : { level: number; admin_ids: number[] }) => ({ 
-          level: item.level, 
-          admin_ids: item.admin_ids 
-        })) || [],
-      });
-    } 
-  }, [previousData, form]); */
+ 
 
   const {
     fields: attribute_categories,
@@ -167,6 +155,8 @@ export function PricingArea({
     }.attribute_category_id`
   );
 
+
+
   console.log(catchCategory);
 
   const filteredAttributes = attributesData.filter(
@@ -185,6 +175,26 @@ export function PricingArea({
 
     return options;
   };
+
+  const handleRemoveCategory = (index: number) => {
+    const updatedCategories = form.getValues("attribute_categories").filter((_, i) => i !== index);
+    
+    // Remove from the useFieldArray state
+    removeAttributeCategory(index);
+  
+    // Reset the form state with updated categories
+    form.setValue("attribute_categories", updatedCategories);
+  
+    // Remove from adminOptions state
+    setAdminOptions((prev) => {
+      const newOptions = { ...prev };
+      delete newOptions[index]; // Remove the specific index from state
+      return newOptions;
+    });
+  }
+
+  
+  
 
   return (
     <>
@@ -247,7 +257,7 @@ export function PricingArea({
                       className={`flex items-center justify-center ${
                         index === 0 ? "!mt-8" : "!mt-0"
                       }`}
-                      onClick={() => removeAttributeCategory(index)}
+                      onClick={() => handleRemoveCategory(index)}
                     >
                       <Trash2 size={16} className="text-red-500" />
                     </span>

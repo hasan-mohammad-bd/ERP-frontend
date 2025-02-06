@@ -13,7 +13,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { cn } from "@/utils";
-import { ScrollArea } from "./scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export interface Option {
   value: string;
@@ -31,6 +31,8 @@ interface GroupOption {
 interface MultipleSelectorProps {
   value?: Option[];
   defaultOptions?: Option[];
+  selected: any;
+  setSelected: any;
   /** manually controlled options */
   options?: Option[];
   placeholder?: string;
@@ -188,6 +190,8 @@ const MultipleSelector = React.forwardRef<
       delay,
       onSearch,
       onSearchSync,
+      selected,
+      setSelected,
       loadingIndicator,
       emptyIndicator,
       maxSelected = Number.MAX_SAFE_INTEGER,
@@ -212,8 +216,7 @@ const MultipleSelector = React.forwardRef<
     const [isLoading, setIsLoading] = React.useState(false);
     const dropdownRef = React.useRef<HTMLDivElement>(null); // Added this
 
-    const [selected, setSelected] = React.useState<Option[]>(value || []);
-    console.log("selected", selected);
+    // const [selected, setSelected] = React.useState<Option[]>(value || []);
     const [options, setOptions] = React.useState<GroupOption>(
       transToGroupOption(arrayDefaultOptions, groupBy)
     );
